@@ -47,24 +47,16 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
   fCurrentTrackID = aTrack->GetTrackID();
   
 #ifdef G4_STORE_TRAJECTORY
-  if (fpTrackingManager && fpTrackingManager->GetStoreTrajectory()) { 
-
-     switch (fStoredTrajectoryID) {
-    
-        case 1 :  // charged particle only
-
-           if (aTrack->GetDefinition()->GetPDGCharge() != 0) {
-              fpTrackingManager->SetStoreTrajectory(true); 
-           } 
-           break;
-
-        case 2 :  // all particles
-
-           fpTrackingManager->SetStoreTrajectory(true); 
-           break;
-
+//  if (fpTrackingManager && fpTrackingManager->GetStoreTrajectory()) { 
+     if (fStoredTrajectoryID == 1) {
+        // charged particle only
+        if (aTrack->GetDefinition()->GetPDGCharge()) {
+            fpTrackingManager->SetStoreTrajectory(true); 
+        } else {
+            fpTrackingManager->SetStoreTrajectory(false); 
+        }
      }
-  }
+//  }
 #endif
 
 

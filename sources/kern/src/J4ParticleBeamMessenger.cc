@@ -175,10 +175,15 @@ J4ParticleBeamMessenger::J4ParticleBeamMessenger(J4ParticleBeam * fPtclBeam)
   fPolCmd->SetParameterName("Px","Py","Pz",true,true); 
   fPolCmd->SetRange("Px>=-1.&&Px<=1.&&Py>=-1.&&Py<=1.&&Pz>=-1.&&Pz<=1.");
 
-  fNumberCmd = new G4UIcmdWithAnInteger("/jupiter/beam/number",this);
-  fNumberCmd->SetGuidance("Set number of particles to be generated.");
-  fNumberCmd->SetParameterName("N",true,true);
-  fNumberCmd->SetRange("N>0");
+  fNVerticesPerBeamCmd = new G4UIcmdWithAnInteger("/jupiter/beam/numberOfVertices",this);
+  fNVerticesPerBeamCmd->SetGuidance("Set number of vertices to be generated per a beam.");
+  fNVerticesPerBeamCmd->SetParameterName("N",true,true);
+  fNVerticesPerBeamCmd->SetRange("N>0");
+  
+  fNParticlesPerVertexCmd = new G4UIcmdWithAnInteger("/jupiter/beam/numberOfParticles",this);
+  fNParticlesPerVertexCmd->SetGuidance("Set number of particles per a vertex.");
+  fNParticlesPerVertexCmd->SetParameterName("N",true,true);
+  fNParticlesPerVertexCmd->SetRange("N>0");
 
   fIonCmd = new G4UIcommand("/jupiter/beam/ion",this);
   fIonCmd->SetGuidance("Set properties of ion to be generated.");
@@ -219,7 +224,8 @@ J4ParticleBeamMessenger::~J4ParticleBeamMessenger()
   delete fPositionCmd;
   delete fTimeCmd;
   delete fPolCmd;
-  delete fNumberCmd;
+  delete fNVerticesPerBeamCmd;
+  delete fNParticlesPerVertexCmd;
   delete fGunDirectory;
 }
 
@@ -284,8 +290,10 @@ void J4ParticleBeamMessenger::SetNewValue(G4UIcommand * command,G4String newValu
      fParticleBeam->SetParticleTime(fTimeCmd->GetNewDoubleValue(newValues)); 
   } else if( command==fPolCmd ) { 
      fParticleBeam->SetParticlePolarization(fPolCmd->GetNew3VectorValue(newValues)); 
-  } else if( command==fNumberCmd ) { 
-     fParticleBeam->SetNumberOfParticles(fNumberCmd->GetNewIntValue(newValues)); 
+  } else if( command==fNVerticesPerBeamCmd ) { 
+     fParticleBeam->SetNumberOfVertices(fNVerticesPerBeamCmd->GetNewIntValue(newValues)); 
+  } else if( command==fNParticlesPerVertexCmd ) { 
+     fParticleBeam->SetNumberOfParticles(fNParticlesPerVertexCmd->GetNewIntValue(newValues)); 
   } else if( command==fIonCmd ) { 
      IonCommand(newValues); 
   }
@@ -337,8 +345,10 @@ G4String J4ParticleBeamMessenger::GetCurrentValue(G4UIcommand * command)
   { cv = fTimeCmd->ConvertToString(fParticleBeam->GetParticleTime(),"ns"); }
   else if( command==fPolCmd )
   { cv = fPolCmd->ConvertToString(fParticleBeam->GetParticlePolarization()); }
-  else if( command==fNumberCmd )
-  { cv = fNumberCmd->ConvertToString(fParticleBeam->GetNumberOfParticles()); }
+  else if( command==fNVerticesPerBeamCmd )
+  { cv = fNVerticesPerBeamCmd->ConvertToString(fParticleBeam->fNVerticesPerBeam); }
+  else if( command==fNParticlesPerVertexCmd )
+  { cv = fNParticlesPerVertexCmd->ConvertToString(fParticleBeam->fNParticlesPerVertex); }
   else if( command==fIonCmd )
   { 
     if (fShootIon) {

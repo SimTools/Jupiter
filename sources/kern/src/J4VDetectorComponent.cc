@@ -24,6 +24,18 @@
 
 J4VDetectorComponent::J4VDetectorComponent(const G4String& groupname,
 					   const G4String& name,
+					   J4VComponent* parent,
+					   G4int     nclones,
+					   G4int     nbrothers,
+					   G4int     me,
+                                           G4int     copyno)
+                        :J4VComponent(groupname, name, parent,
+                                      nclones, nbrothers, me, copyno)
+{
+} 
+
+J4VDetectorComponent::J4VDetectorComponent(const G4String& groupname,
+					   const G4String& name,
 					   J4VDetectorComponent* parent,
 					   G4int     nclones,
 					   G4int     nbrothers,

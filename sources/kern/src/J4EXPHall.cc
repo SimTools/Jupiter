@@ -1,7 +1,7 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* J4ExpHall
+//* J4EXPHall
 //* --------------------
 //* (Description)
 //* 	Class for describing his/her detector compornents.
@@ -12,22 +12,19 @@
 
 #include "G4Box.hh"
 
-#include "J4ExpHall.hh"
+#include "J4EXPHall.hh"
 #include "J4VMaterialStore.hh"
-#include "J4Parameter.hh"
+#include "J4ParameterList.hh"
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
 
 
-J4VMaterialStore* J4ExpHall::fMaterialStore = 0;
+J4VMaterialStore* J4EXPHall::fMaterialStore = 0;
 
-static const G4ThreeVector dxyzExpHall(_EXPHALLHALFX_, 
-                                       _EXPHALLHALFY_,
-                                       _EXPHALLHALFZ_);
-G4String J4ExpHall::fProjectName("JLC");
-G4String J4ExpHall::fExpName("ExpName");
+G4String J4EXPHall::fProjectName("JLC");
+G4String J4EXPHall::fEXPName("EXPName");
 
 //=====================================================================
 //---------------------
@@ -37,47 +34,54 @@ G4String J4ExpHall::fExpName("ExpName");
 // ====================================================================
 //* constructor -------------------------------------------------------
 
-J4ExpHall::J4ExpHall(J4VComponent *parent,
+J4EXPHall::J4EXPHall(J4VComponent *parent,
                      G4int         nclones,
                      G4int         nbrothers, 
                      G4int         me,
                      G4int         copyno ) :
-           J4VComponent( fProjectName, fExpName, parent, 
+           J4VComponent( fProjectName, fEXPName, parent, 
                          nclones, nbrothers, me, copyno  )
 { 
   
+      
   Assemble();
 
 }
 
 // ====================================================================
 //* destructor --------------------------------------------------------
-J4ExpHall::~J4ExpHall()
+J4EXPHall::~J4EXPHall()
 {	
   if (Deregister(fMaterialStore)) delete fMaterialStore;
 }
 
 // ====================================================================
 //* Assemble   --------------------------------------------------------
-void J4ExpHall::Assemble()
+void J4EXPHall::Assemble()
 {  
-  if (!GetLV()){
-  	
-   G4VSolid *solid = new G4Box(fExpName, dxyzExpHall.x(), dxyzExpHall.y(), dxyzExpHall.z());
-   Register(solid);
-   SetSolid(solid);
-   MakeLVWith(OpenMaterialStore()->Order(_EXPHALLMATERIAL_));
+   if (!GetLV()){
+      J4ParameterList *list = J4ParameterList::GetInstance();  	
+      fSizeOfEXPHall.set(list->GetEXPHallHalfX(),
+                         list->GetEXPHallHalfY(),
+                         list->GetEXPHallHalfZ());
+      G4VSolid *solid = new G4Box(fEXPName, 
+                                  fSizeOfEXPHall.x(),
+                                  fSizeOfEXPHall.y(),
+                                  fSizeOfEXPHall.z());
+      Register(solid);
+      SetSolid(solid);
+      MakeLVWith(OpenMaterialStore()->Order(list->GetEXPHallMaterial()));
    
-   PaintLV(FALSE, G4Colour(1., 1., 1.));
+      PaintLV(FALSE, G4Colour(1., 1., 1.));
    
-   SetPVPlacement();
-  }	
+      SetPVPlacement();
+   }	
 }
 
 
 //* InstallIn  --------------------------------------------------------
 
-void J4ExpHall::InstallIn(J4VComponent         *mother,
+void J4EXPHall::InstallIn(J4VComponent         *mother,
                           G4RotationMatrix     *prot, 
                           const G4ThreeVector  &tlate ) 
 {
@@ -85,24 +89,18 @@ void J4ExpHall::InstallIn(J4VComponent         *mother,
 
 
 //* Draw  --------------------------------------------------------
-void J4ExpHall::Draw()
+void J4EXPHall::Draw()
 {
   // set visualization attributes
 }
 	
 //* Print  --------------------------------------------------------
-void J4ExpHall::Print() const
+void J4EXPHall::Print() const
 {
-}
-
-//* GetCenter -----------------------------------------------------
-const G4ThreeVector& J4ExpHall::GetCenter() const
-{
-  return dxyzExpHall;	
 }
 
 //* OpenMaterialStore ---------------------------------------------
-J4VMaterialStore* J4ExpHall::OpenMaterialStore()
+J4VMaterialStore* J4EXPHall::OpenMaterialStore()
 {
 
   if (!fMaterialStore) {

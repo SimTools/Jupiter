@@ -92,7 +92,7 @@ void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
           << anEvent->GetEventID() << " %%%%%%%%%" <<G4endl << G4std::flush;
 #endif  
 
-   J4DetectorConstruction::fExpHall->UnlockOutput();
+   J4DetectorConstruction::GetEXPHall()->UnlockOutput();
    fEventTimer->Start();
    
 }
@@ -143,7 +143,7 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
   
    G4cerr << "EventAction::EndOfEvent is called " << G4endl;
      
-   J4DetectorConstruction::fExpHall->OutputAll(HCTE);
+   J4DetectorConstruction::GetEXPHall()->OutputAll(HCTE);
      
    G4cerr << "EventAction::OutputAll finished " << G4endl;
   

@@ -12,10 +12,10 @@
 
 
 #include "J4DetectorConstruction.hh"
-#include "J4ExpHall.hh"
+#include "J4EXPHall.hh"
 
 
-J4ExpHall* J4DetectorConstruction::fExpHall = 0; 
+J4EXPHall* J4DetectorConstruction::fEXPHall = 0; 
 
 //************************************************************************
 //---------------------
@@ -27,8 +27,8 @@ J4ExpHall* J4DetectorConstruction::fExpHall = 0;
 
 J4DetectorConstruction::J4DetectorConstruction() : fComponents(64)
 {  
-   fExpHall  = new J4ExpHall(0, 1, 1, 0);
-   Register(fExpHall);
+   fEXPHall  = new J4EXPHall(0, 1, 1, 0);
+   Register(fEXPHall);
 }
 
 //=====================================================================
@@ -36,7 +36,7 @@ J4DetectorConstruction::J4DetectorConstruction() : fComponents(64)
 
 J4DetectorConstruction::~J4DetectorConstruction()
 {
-  if (Deregister(fExpHall))  delete fExpHall;
+  if (Deregister(fEXPHall))  delete fEXPHall;
   if (fComponents.entries()) {
      unsigned int i;
      for (i=0; i<fComponents.entries(); i++) {
@@ -68,8 +68,8 @@ G4VPhysicalVolume* J4DetectorConstruction::Construct()
     		
     	J4VComponent* detector 
     		= (J4VComponent *)fComponents.operator[](i);     
-    	detector->InstallIn(fExpHall);
-    	fExpHall->SetDaughter(detector);
+    	detector->InstallIn(fEXPHall);
+    	fEXPHall->SetDaughter(detector);
     	
     }  
 
@@ -86,6 +86,6 @@ G4VPhysicalVolume* J4DetectorConstruction::Construct()
 
   // ==============================================================
   // return PV of the world volume
-    return fExpHall->GetPV();
+    return fEXPHall->GetPV();
 }
 
