@@ -87,11 +87,11 @@ void J4TPCParameterList::SetParameters()
    fOuterSupportTubHalfThick = 4.1175*cm;
 
    // Layer
-#ifdef __GLC3T__   
-   fNlayers             = 130;
+#ifdef __GLD_V1__   
+   fNlayers             = 200;
    fFirstLayerInnerR    = 5.0*mm;
 #else
-   fNlayers             = 200;
+   fNlayers             = 130;
    fFirstLayerInnerR    = 5.0*mm;
 #endif
 #if 0

@@ -20,6 +20,7 @@ include $(JUPITERROOT)/config/architecture.gmk
 
 G4TMPDIR  := $(G4TMP)/$(G4SYSTEM)/$(G4TARGET)
 
+CPPFLAGS  += -D__GLD_V1__
 CPPFLAGS  += -I../kern/include \
 	     -I../lcexp/include 	
 /* CPPFLAGS  += -Wno-deprecated */
