@@ -44,7 +44,7 @@ J4IT::J4IT(J4VDetectorComponent *parent,
 
 J4IT::~J4IT()
 {
-  J4ITParameterList *list = J4ITParameterList::GetInstance(); 
+  J4ITParameterList *list = OpenParameterList(); 
   if (fLayers){	
     G4int i;  
     for (i = 0; i < list->GetNlayers(); i++) {
@@ -61,7 +61,7 @@ void J4IT::Assemble()
 {   
   if(!GetLV()){
   	
-    J4ITParameterList *list = J4ITParameterList::GetInstance(); 
+    J4ITParameterList *list = OpenParameterList(); 
     G4double rmin = list->GetITInnerR(); 
     G4double rmax = list->GetITOuterR();
     G4double len  = list->GetITHalfZ();

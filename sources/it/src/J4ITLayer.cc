@@ -11,9 +11,9 @@
 //*************************************************************************
 
 #include "J4ITLayer.hh"
+#include "J4ITLayerSD.hh"
 #include "J4ITParameterList.hh"
 
-#include "G4Tubs.hh"
 
 // ====================================================================
 //--------------------------------
@@ -43,11 +43,11 @@ J4ITLayer::J4ITLayer(J4VDetectorComponent* parent,
 
   // Define Layer parameters ----------------//    
 
-    J4ITParameterList * list = J4ITParameterList::GetInstance();
+    J4ITParameterList * list = OpenParameterList();
 
-    fRmin     = list->GetLayerR(me);
-    fRmax     = fRmin + list->GetLayerThick(); 
-    fLen      = list->GetLayerZ(me);
+    fRmin     = list->GetLayerInnerR(me);
+    fRmax     = list->GetLayerOuterR(me);
+    fLen      = list->GetLayerHalfZ(me);
     fTotalPhi = ((G4Tubs *)parent->GetLV()->GetSolid())->GetDeltaPhiAngle();
     fOffset   = 0.;
     
@@ -92,7 +92,7 @@ void J4ITLayer::Assemble()
   {	  
     // define geometry
 
-    J4ITParameterList * list = J4ITParameterList::GetInstance();
+    J4ITParameterList * list = OpenParameterList();
       
     // MakeSolid ----------//
     OrderNewTubs (fRmin, fRmax, fLen, fTotalPhi );
@@ -104,8 +104,6 @@ void J4ITLayer::Assemble()
     PaintLV(list->GetLayerVisAtt() , list->GetLayerColor());    
         
     // Install daughter PV //
-  
-    
   }
 }
 
@@ -114,8 +112,10 @@ void J4ITLayer::Assemble()
 
 void J4ITLayer::Cabling()
 {
- 
-}
+  J4ITLayerSD* sd = new J4ITLayerSD(this);
+  Register(sd);
+  SetSD(sd);
+} 
 
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
@@ -130,6 +130,8 @@ void J4ITLayer::InstallIn(J4VComponent         *mother,
   // Placement function into mother object ------//
   
   SetPVPlacement();
+  
+  if (!GetSD()) Cabling(); 
   
 }
 
