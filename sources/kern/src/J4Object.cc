@@ -26,7 +26,7 @@ G4bool J4Object::Deregister(void * child)
       } else {
          G4String name("unnamed");
          if (dynamic_cast<J4Named *>(this)) {
-            name = ((J4Named *)this)->GetName();
+            name = dynamic_cast<J4Named *>(this)->GetName();
          }
          std::cerr << " J4Object::Deregister of "
                << name

@@ -270,7 +270,7 @@ void J4VComponent::SetName(const G4String&       name,
     }
   } 
   J4Named::SetName(newname);
-  std::cerr << " My name is " << GetName() << std::endl;
+  std::cerr << (void *)this << " My name is " << GetName() << std::endl;
 }
 
 //=====================================================================
@@ -440,7 +440,7 @@ void J4VComponent::OrderNewTubs( G4double rmin,
         abort();
   }
 
-  G4double  dphi = totalphi/fNclones;
+  G4double  dphi = (fNclones != 1 ? totalphi/fNclones : totalphi);
   
   if (sphi == DBL_MAX) {   
     sphi = (-dphi/2.);
@@ -464,7 +464,16 @@ void J4VComponent::OrderNewTubs( G4double rmin,
     G4String cylindername(GetName());                       //* description of ccenter
     cylindername += ".Cylinder";
     std::cerr << "Make " << cylindername << std::endl;
+#if 1
     G4double cylinderlen = halfzlen - endcaphalfthickness * 2;
+#else
+    G4double cylinderlen;
+    if (leftrmin < 0) {
+       cylinderlen = halfzlen - endcaphalfthickness * 2;
+    } else {
+       cylinderlen = halfzlen;
+    }
+#endif
     G4Tubs*  cylinder    
         = new G4Tubs( cylindername, rmin, rmax, cylinderlen, sphi, dphi );
 
@@ -488,7 +497,16 @@ void J4VComponent::OrderNewTubs( G4double rmin,
     G4String cupname(GetName());                            //* description of uniting
     cupname += ".Cup";
     std::cerr << "Make " << cupname << std::endl;
+#if 1
     J4UnionSolid*  cup = new J4UnionSolid ( cupname, cylinder, leftendcap, lefttransform );
+#else
+    G4VSolid *cup = 0;
+    if (leftrmin < 0) {
+       cup = new J4UnionSolid ( cupname, cylinder, leftendcap, lefttransform );
+    } else {
+       cup = new J4UnionSolid ( cupname, cylinder, leftendcap, lefttransform );
+    }
+#endif
         
     G4String rightendcapname(GetName());                    //* description of right
     rightendcapname += ".RightEndcap";
@@ -513,7 +531,15 @@ void J4VComponent::OrderNewTubs( G4double rmin,
     G4ThreeVector    righttranslation ( 0., 0., -(halfzlen - endcaphalfthickness));
     G4Transform3D    righttransform   (rotation, righttranslation);
     std::cerr << "Make " << GetName() << std::endl;
+#if 1
     fSolid = new J4UnionSolid ( GetName(), cup, rightendcap, righttransform );    
+#else
+    if (leftrmin < 0) {
+       fSolid = new J4UnionSolid ( GetName(), cup, rightendcap, righttransform );    
+    } else {
+       fSolid = new J4SubtractionSolid ( GetName(), cup, rightendcap, righttransform );    
+    }
+#endif
     
   }
  

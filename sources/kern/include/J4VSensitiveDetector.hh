@@ -122,9 +122,9 @@ inline J4VComponent* J4VSensitiveDetector::GetComponent(G4int depth) const
   if (fNewStep) {
      G4VPhysicalVolume *pv = fNewStep->GetTrack()->GetTouchable()->GetVolume(depth);
      if (dynamic_cast<J4PVPlacement *>(pv)) {
-        return ((J4PVPlacement *)pv)->GetComponent();
+        return dynamic_cast<J4PVPlacement *>(pv)->GetComponent();
      } else if (dynamic_cast<J4PVReplica *>(pv)) {
-        return ((J4PVReplica *)pv)->GetComponent();
+        return dynamic_cast<J4PVReplica *>(pv)->GetComponent();
      } else {
         std::cerr << "J4VSensitiveDetector::GetComponent: unsupported physicalvolume. abort." << std::endl;
         abort();

@@ -12,6 +12,11 @@
 //*				that of J4VNamed.
 //*     2004/07/29  Y.Ichikawa  Modified OrderNewTubs to allow endcaps
 //*                             made of G4Cons.
+//*	2004/08/26  K.Fujii	Removed J4Named::SetName(name) from
+//*                             J4VComponent(orig,copyno).
+//*                             This is an appendix that should have been
+//*                             removed after the removal of fName data 
+//*                             member.
 //*************************************************************************
 
 //_________________________________________________________________________
@@ -232,8 +237,6 @@ J4VComponent::J4VComponent(const J4VComponent& orig, G4int copyno)
   G4String name(origname.substr(loc1,loc2-loc1+1));
 
   SetName( name, fNbrothers, fMyID, fNclones, fCopyNo, fMother);
-  J4Named::SetName(name);
-
 }
 
 const J4VComponent& 
