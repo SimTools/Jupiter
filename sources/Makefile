@@ -23,7 +23,7 @@ MFLAGS	=
 CURRDIR	= .
 
 #SUBDIRS	= kern ir bd cal cdc it vtx sol main
-SUBDIRS	= kern ir bd cal cdc it sol lcexp vtx main
+SUBDIRS	= kern ir bd cal cdc it sol lcexp vtx ct main
 
 CPPFLAGS += -D__HOSHINA__
 
