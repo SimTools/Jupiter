@@ -19,6 +19,10 @@
 #ifndef J4_EVENT_ACTION_H
 #define J4_EVENT_ACTION_H 
 
+#ifdef __THEBE__
+#include <fstream>
+#endif
+
 #include "G4UserEventAction.hh"
 #include "G4Timer.hh"
 
@@ -29,18 +33,23 @@
 // ====================================================================
 
 class G4Event;
+class J4Timer;
 
 class J4EventAction : public G4UserEventAction {
 public:
   J4EventAction();
-  ~J4EventAction() { }
+  virtual ~J4EventAction();
 
   // methods
   virtual void BeginOfEventAction(const G4Event* anEvent);
   virtual void EndOfEventAction(const G4Event* anEvent);
 
 private:
-  G4Timer fEventTimer;
+  J4Timer          *fEventTimer;
+  
+#ifdef __THEBE__
+  G4std::ofstream   fErrorOfs;
+#endif
   
 };  
 

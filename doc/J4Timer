@@ -1,0 +1,45 @@
+------------------------------------------------------------------------------
+     Usage of J4Timer 
+------------------------------------------------------------------------------
+// Include header file
+#include "J4Timer.hh"
+
+void SomeFunction()
+{
+// How to create, start, and stop a timer
+   static G4int timerid = -1;
+   J4Timer timer(timerid, "classname", "timername");
+   timer.Start();
+           :
+           :
+   timer.Stop();
+   // This timer stays alive till end of job. 
+}
+
+// How to print accumulated time
+void OtherFunction()
+{
+            :
+            :
+   J4Timer::PrintAllAccumulatedTimes();
+}
+// This will produce something like ...
+ *********************************************************************************
+ * Output of Accumulated Time ****************************************************
+ * ---------+---------+---------+---------+---------+---------+---------+---------
+ * Timer Name                                   Real[s]   System[s]     User[s]
+ * ---------+---------+---------+---------+---------+---------+---------+---------
+ *                 J4EventAction:EventTimer      114.36           0      111.22
+ *                            G4Tubs:Inside           0           0           0
+ *                      G4Tubs:DistanceToIn         1.6           0        1.61
+ *                 G4Tubs:DistanceToInWithV        1.23           0        1.24
+ *                     G4Tubs:DistanceToOut        2.28           0        2.65
+ *                G4Tubs:DistanceToOutWithV        0.83           0        0.81
+ *                     J4TwistedTubs:Inside         8.8           0        8.62
+ *               J4TwistedTubs:DistanceToIn       13.83           0       13.75
+ *          J4TwistedTubs:DistanceToInWithV       14.96           0       14.59
+ *              J4TwistedTubs:DistanceToOut        2.23           0        2.24
+ *         J4TwistedTubs:DistanceToOutWithV        9.47           0        9.43
+ *              J4TwistedTubs:SurfaceNormal         7.7           0         7.3
+ *                     G4Tubs:SurfaceNormal           0           0           0
+ *********************************************************************************

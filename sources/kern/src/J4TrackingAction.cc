@@ -13,11 +13,30 @@
 #include "J4TrackingAction.hh"
 #include "G4TrackingManager.hh"
 #include "G4Track.hh"
+#include "J4Global.hh"
 
+//=====================================================================
+//* PreUserTrackingAction ---------------------------------------------
 void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 {
-#if 1  
-  // Create trajectory only for primaries
+#ifdef __THEBE__
+#ifdef __DUMPERRORPERTRACK__
+   if ( !fErrorOfs.is_open() ) {
+      fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), ios::out);
+      if(! fErrorOfs.good()) {
+         G4String errorMessage=
+         "*** J4TrackingAction::PreUserTrackingAction:fail to open a file ("
+         + J4Global::GetErrorOutputFilename() + ").";
+         G4Exception(errorMessage);
+      } else {
+         J4Global::SetErrorOutputStream(fErrorOfs);
+      }
+   }
+#endif
+#endif
+   
+#ifdef __REMOVENEUTRALTRAJECTORY__  
+  // Create trajectory only for charged particles
   
   if(aTrack->GetDefinition()->GetPDGCharge()!=0)
   { fpTrackingManager->SetStoreTrajectory(true); }
@@ -26,4 +45,14 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 #endif
 }
 
-
+//=====================================================================
+//* PostUserTrackingAction --------------------------------------------
+void J4TrackingAction::PostUserTrackingAction(const G4Track* aTrack)
+{
+#ifdef __THEBE__
+#ifdef __DUMPERRORPERTRACK__
+   J4Global::GetGlobal()->CloseErrorOutputStream();
+#endif
+#endif
+   
+}

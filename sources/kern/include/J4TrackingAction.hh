@@ -14,6 +14,9 @@
 //*************************************************************************
 //
 
+#ifdef __THEBE__
+#include <fstream>
+#endif
 
 #include "G4UserTrackingAction.hh"
 
@@ -24,7 +27,15 @@ class J4TrackingAction : public G4UserTrackingAction {
     J4TrackingAction(){};
     virtual ~J4TrackingAction(){};
    
-    virtual void PreUserTrackingAction(const G4Track*);
+    virtual void PreUserTrackingAction(const G4Track* aTrack);
+    virtual void PostUserTrackingAction(const G4Track* aTrack);
+    inline virtual G4TrackingManager* GetTrackingManager() const
+                   { return fpTrackingManager; }
+
+  private:
+#ifdef __THEBE__
+    G4std::ofstream  fErrorOfs;
+#endif
 
 };
 

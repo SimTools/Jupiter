@@ -93,7 +93,7 @@ public:
   inline virtual void SetPrePosition   (const G4ThreeVector& pre){ fPrePosition    = pre; }
   inline virtual void SetPostPosition  (const G4ThreeVector& pos){ fPostPosition   = pos; }
   inline virtual void SetHitNumber     (G4int hno)               { fHitNumber      = hno; }
-  static void         SetOutputFileStream(G4std::ofstream& ofs)         { fOfs = &ofs; }
+  static void         SetOutputFileStream(G4std::ofstream& ofs)  { fOfs = &ofs; }
   
   // inclement functions
   inline virtual void AddEdep          (G4double edep)           { fEnergyDeposit += edep;}  

@@ -6,6 +6,9 @@
 //    K.Hoshina, 29-May-2002  
 // ********************************************************************
 
+#include "g4std/strstream"
+#include <iostream>
+#include <iomanip>
 
 #include "G4ios.hh"
 #include "G4PrimaryVertex.hh"
@@ -67,30 +70,62 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 {
 
   if (!fInputStream.is_open()) { OpenHEPEvtFile(); }
-
-  G4int    NHEP;     // number of entries
-  G4int    ISTHEP;   // status code
-  G4int    IDHEP;    // PDG code
-  G4int    JDAHEP1;  // first daughter
-  G4int    JDAHEP2;  // last daughter
-  G4double PHEP1;    // px in GeV
-  G4double PHEP2;    // py in GeV
-  G4double PHEP3;    // pz in GeV
-  G4double PHEP5;    // mass in GeV
-
+  G4int NHEP;     // number of entries
+  G4int ISTHEP;   // status code
+  G4int IDHEP;    // PDG code
+  G4int JDAHEP1;  // first daughter
+  G4int JDAHEP2;  // last daughter
+  G4double PHEP1; // px in GeV
+  G4double PHEP2; // py in GeV
+  G4double PHEP3; // pz in GeV
+  G4double PHEP5; // mass in GeV
+  
+#ifdef __THEBE__
+#ifdef __DUMPREADDATA__  
+  G4std::ofstream ofs;
+  ofs.open("readpythia_event.data");
+#endif
+#endif
+  
   // skip events. Default is no skip.
-  for (G4int i=0; i<fNskipEvents; i++) {
-     G4cerr << "J4HEPEvtInterFace::GeneratePrimaryVertex: skipped event " 
-            << i << G4endl;
+  for (G4int i=0; i<fNskipEvents; i++) {  
      fInputStream >> NHEP;
      if (fInputStream.eof()) {
         G4Exception("End-Of-File : HEPEvt input file");
         return;
      }
+     
+     G4cerr << "J4HEPEvtInterFace::GeneratePrimaryVertex: Skipped event "
+            << i << G4endl;
+     
+#ifdef __THEBE__
+#ifdef __DUMPREADDATA__  
+     ofs << "J4HEPEvtInterFace::GeneratePrimaryVertex:_Skipped_event_" 
+         << i << "_==========================" << G4endl;
+     ofs << NHEP << G4endl;
+#endif
+#endif
+
      // skip events .....
      for (G4int IHEP=0; IHEP<NHEP; IHEP++) {
         fInputStream >> ISTHEP >> IDHEP >> JDAHEP1 >> JDAHEP2
-        >> PHEP1 >> PHEP2 >> PHEP3 >> PHEP5;
+                     >> PHEP1 >> PHEP2 >> PHEP3 >> PHEP5;
+                     
+#ifdef __THEBE__
+#ifdef __DUMPREADDATA__  
+        ofs << G4std::setw(10) << ISTHEP 
+            << G4std::setw(10) << IDHEP 
+            << G4std::setw(10) << JDAHEP1 
+            << G4std::setw(10) << JDAHEP2
+            << G4std::setiosflags(G4std::ios::scientific) << G4std::setprecision(8) 
+            << G4std::setw(16) << PHEP1 
+            << G4std::setw(16) << PHEP2 
+            << G4std::setw(16) << PHEP3 
+            << G4std::setw(16) << PHEP5 
+            << G4std::resetiosflags(G4std::ios::scientific) << G4endl;
+#endif
+#endif
+
      }   
   }
   
@@ -99,15 +134,36 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 
   fInputStream >> NHEP;
   if (fInputStream.eof()) {
-    G4Exception("End-Of-File : HEPEvt input file");
-    return;
+     G4Exception("End-Of-File : HEPEvt input file");
+     return;
   }
+  
+#ifdef __THEBE__
+#ifdef __DUMPREADDATA__
+  ofs << "J4HEPEvtInterFace::GeneratePrimaryVertex:_Loaded_event_"
+     << fNskipEvents << "_==========================" << G4endl;
+  ofs << NHEP << G4endl;
+#endif
+#endif
 
   for (G4int IHEP=0; IHEP<NHEP; IHEP++) {
-
+    // read data......
     fInputStream >> ISTHEP >> IDHEP >> JDAHEP1 >> JDAHEP2
-       >> PHEP1 >> PHEP2 >> PHEP3 >> PHEP5;
-
+                 >> PHEP1 >> PHEP2 >> PHEP3 >> PHEP5;
+                 
+#ifdef __THEBE__
+#ifdef __DUMPREADDATA__
+    ofs << G4std::setw(10) << ISTHEP
+        << G4std::setw(10) << IDHEP
+        << G4std::setw(10) << JDAHEP1
+        << G4std::setw(10) << JDAHEP2
+        << G4std::setw(16) << PHEP1
+        << G4std::setw(16) << PHEP2
+        << G4std::setw(16) << PHEP3
+        << G4std::setw(16) << PHEP5 << G4endl;
+#endif
+#endif
+     
     // create G4PrimaryParticle object
     G4PrimaryParticle* particle 
       = new G4PrimaryParticle( IDHEP, PHEP1*GeV, PHEP2*GeV, PHEP3*GeV );
@@ -120,21 +176,26 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
     // Store
     fHPlist.push_back( hepParticle );
   }
-
+#ifdef __THEBE__
+#ifdef __DUMPREADDATA__
+  ofs.close();
+#endif
+#endif
+  
   // check if there is at least one particle
   if (fHPlist.size() == 0) return; 
 
   // make connection between daughter particles decayed from 
   // the same mother
   for (size_t i=0; i<fHPlist.size(); i++) {
-    if (fHPlist[i]->GetJDAHEP1() > 0) //  it has daughters
-    {
+    if (fHPlist[i]->GetJDAHEP1() > 0) {//  it has daughters
+    
       G4int jda1 = fHPlist[i]->GetJDAHEP1()-1; // FORTRAN index starts from 1
       G4int jda2 = fHPlist[i]->GetJDAHEP2()-1; // but C++ starts from 0.
       G4PrimaryParticle* mother = fHPlist[i]->GetTheParticle();
       for (G4int j=jda1; j<=jda2; j++) {
         G4PrimaryParticle* daughter = fHPlist[j]->GetTheParticle();
-        if (fHPlist[j]->GetISTHEP() > 0) {
+        if (fHPlist[j]->GetISTHEP()>0) {
           mother->SetDaughter( daughter );
           fHPlist[j]->Done();
         }
@@ -146,7 +207,8 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
   G4PrimaryVertex* vertex = new G4PrimaryVertex(particle_position,particle_time);
 
   // put initial particles to the vertex
-  for (size_t ii=0; ii<fHPlist.size(); ii++) {
+  for (size_t ii=0; ii<fHPlist.size(); ii++)
+  {
     if (fHPlist[ii]->GetISTHEP() > 0) // ISTHEP of daughters had been 
                                        // set to negative
     {
@@ -157,7 +219,9 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 
   // clear G4HEPEvtParticles
   //fHPlist.clearAndDestroy();
-  for (size_t iii=0;iii<fHPlist.size();iii++) delete fHPlist[iii];
+  for (size_t iii=0;iii<fHPlist.size();iii++) { 
+     delete fHPlist[iii]; 
+  }
   fHPlist.clear();
 
   // Put the vertex to G4Event object

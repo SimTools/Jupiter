@@ -25,14 +25,17 @@ CURRDIR	= .
 
 SUBDIRS	= sources 
 
-.PHONY: all clean
+.PHONY: all clean dir
 
-all:
+all: dir
 	@case '${MFLAGS}' in *[ik]*) set +e;; esac; \
 	for i in $(SUBDIRS); do \
 	(cd $$i; echo ``making'' all ``in $(CURRDIR)/$$i...''; \
 	$(MAKE) $(MFLAGS)); \
 	done
+
+dir:
+	mkdir -p seeds 
 
 clean:
 	@case '${MFLAGS}' in *[ik]*) set +e;; esac; \
@@ -52,5 +55,5 @@ distclean: clean
 	find . -name '.DS*'    -exec rm -rf {} \;
 	find . -name '.DAWN*'  -exec rm -rf {} \;
 	find . -name '.VRML*'  -exec rm -rf {} \;
-
+	rm -rf seeds
 

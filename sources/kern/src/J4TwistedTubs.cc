@@ -11,6 +11,7 @@
 //*************************************************************************
 
 #include "J4TwistedTubs.hh"
+#include "J4VComponent.hh"
 
 #include "G4VoxelLimits.hh"
 #include "G4AffineTransform.hh"
@@ -26,14 +27,15 @@
 #include "G4NURBStube.hh"
 #include "G4NURBScylinder.hh"
 #include "G4NURBStubesector.hh"
+#include "J4Timer.hh"
+
 
 //#define __SOLIDDEBUG__
 
 // ====================================================================
 //--------------------------------
-// constants 
+// constants & static value
 //--------------------------------
-
 
 //=====================================================================
 //---------------------
@@ -52,10 +54,10 @@ J4TwistedTubs::J4TwistedTubs(const G4String &pname,
               :G4VSolid(pname), fDPhi(dphi)
 {
    if (endinnerrad < DBL_MIN) {
-      G4cerr << "J4VTwistedTubs: invalid endinnerrad" << G4endl;
+      J4cerr << "J4VTwistedTubs: invalid endinnerrad" << J4endl;
       abort();
    }
-      
+            
    G4double sinhalftwist = sin(0.5 * twistedangle);
 
    G4double endinnerradX = endinnerrad * sinhalftwist;
@@ -72,19 +74,19 @@ J4TwistedTubs::J4TwistedTubs(const G4String &pname,
    
 #ifdef __SOLIDDEBUG__
 
-   G4cerr << "J4TwistedTubs::constracter ===========================" << G4endl;
-   G4cerr << "   EndInnerRad(0,1)   : " << fEndInnerRadius[0]
-          << " " << fEndInnerRadius[1] << G4endl;
-   G4cerr << "   EndOuterRad(0,1)   : " << fEndOuterRadius[0]
-          << " " << fEndOuterRadius[1] << G4endl;
-   G4cerr << "   EndZ(0,1)          : " << fEndZ[0] << " " << fEndZ[1] << G4endl;
-   G4cerr << "   Inner/Outer rad    : " << fInnerRadius << " "
-          << fOuterRadius << G4endl;
-   G4cerr << "   Inner/Outer Stereo : " << fInnerStereo << " "
-          << fOuterStereo << G4endl;
-   G4cerr << "   phitwist, deltaphi : " << fPhiTwist << " "
-          << fDPhi << G4endl;
-   G4cerr << "======================================================" << G4endl;
+   J4cerr << "J4TwistedTubs::constracter ===========================" << J4endl;
+   J4cerr << "   EndInnerRad(0,1)   : " << fEndInnerRadius[0]
+          << " " << fEndInnerRadius[1] << J4endl;
+   J4cerr << "   EndOuterRad(0,1)   : " << fEndOuterRadius[0]
+          << " " << fEndOuterRadius[1] << J4endl;
+   J4cerr << "   EndZ(0,1)          : " << fEndZ[0] << " " << fEndZ[1] << J4endl;
+   J4cerr << "   Inner/Outer rad    : " << fInnerRadius << " "
+          << fOuterRadius << J4endl;
+   J4cerr << "   Inner/Outer Stereo : " << fInnerStereo << " "
+          << fOuterStereo << J4endl;
+   J4cerr << "   phitwist, deltaphi : " << fPhiTwist << " "
+          << fDPhi << J4endl;
+   J4cerr << "======================================================" << J4endl;
    
 #endif
 }
@@ -99,12 +101,12 @@ J4TwistedTubs::J4TwistedTubs(const G4String &pname,
                :G4VSolid(pname)
 {
 
-   if (!nseg) G4cerr << "J4VTwistedTubs: invalid nseg" << G4endl;
+   if (!nseg) J4cerr << "J4VTwistedTubs: invalid nseg" << J4endl;
    if (totphi == DBL_MIN || endinnerrad < DBL_MIN) {
-      G4cerr << "J4VTwistedTubs: invalid totphi or endinnerrad" << G4endl;
+      J4cerr << "J4VTwistedTubs: invalid totphi or endinnerrad" << J4endl;
       abort();
-   }      
-
+   }    
+         
    G4double sinhalftwist = sin(0.5 * twistedangle);
 
    G4double endinnerradX = endinnerrad * sinhalftwist;
@@ -132,7 +134,7 @@ J4TwistedTubs::J4TwistedTubs(const G4String &pname,
               :G4VSolid(pname), fDPhi(dphi)
 {
    if (innerrad < DBL_MIN) {
-      G4cerr << "J4VTwistedTubs: invalid innerrad" << G4endl;
+      J4cerr << "J4VTwistedTubs: invalid innerrad" << J4endl;
       abort();
    }
                  
@@ -150,12 +152,12 @@ J4TwistedTubs::J4TwistedTubs(const G4String &pname,
                                    G4double  totphi)
                :G4VSolid(pname)
 {
-   if (!nseg) G4cerr << "J4VTwistedTubs: invalid nseg" << G4endl;
+   if (!nseg) J4cerr << "J4VTwistedTubs: invalid nseg" << J4endl;
    if (totphi == DBL_MIN || innerrad < DBL_MIN) {
-      G4cerr << "J4VTwistedTubs: invalid totphi or innerrad" << G4endl;
+      J4cerr << "J4VTwistedTubs: invalid totphi or innerrad" << J4endl;
       abort();
    }
-   
+            
    fDPhi = totphi / nseg;
    SetFields(twistedangle, innerrad, outerrad, negativeEndz, positiveEndz);
    CreateSurfaces();
@@ -184,8 +186,8 @@ J4TwistedTubs::~J4TwistedTubs()
                               const G4int n,
                               const G4VPhysicalVolume* pRep)
 {
-    G4cerr << "J4TwistedTubs::ComputeDimensions: J4TwistedTubs does not "
-    << "support Parameterisation. abort. " << G4endl;
+    J4cerr << "J4TwistedTubs::ComputeDimensions: J4TwistedTubs does not "
+    << "support Parameterisation. abort. " << J4endl;
     abort();
 }
 
@@ -428,68 +430,112 @@ void J4TwistedTubs::AddPolyToExtent( const G4ThreeVector &v0,
 
 EInside J4TwistedTubs::Inside(const G4ThreeVector& p) const
 {
+
    static const G4double halftol = 0.5 * kRadTolerance;
+   static G4int timerid = -1;
+   J4Timer timer(timerid, "J4TwistedTubs", "Inside");
+   timer.Start();
+   
 #ifdef __SOLIDDEBUG__
-   G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " << G4endl; 
-   G4cerr <<">>>>> J4TwistedTubs:Inside : Start from p : " 
-          << p <<  " >>>>>> " << G4endl;  
+   J4cerr << ">>>>> J4TwistedTubs:Inside(p) : Start from >>>>>>>>>>>>>> " << J4endl;
+   J4cerr << "   name : " << GetName() << J4endl;
+   J4cerr << "   gp   : " << p << J4endl;
+   J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+#endif
+
+   G4ThreeVector *tmpp;
+   EInside       *tmpinside;
+   if (fLastInside.p == p) {
+#ifdef __SOLIDDEBUG__
+   J4cerr << ">>>>> J4TwistedTubs:Inside(p) >>>>>>>>>>>>>>>>>>>>>>>>>>> " << J4endl;
+   J4cerr << "   p is same as lastp.  " << J4endl;
+   J4cerr << "   Status(0:kOutside, 1:kSurface, 2:kInside) : " 
+                 << fLastInside.inside << J4endl;
+   J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+#endif
+      timer.Stop();
+      return fLastInside.inside;
+   } else {
+      tmpp      = const_cast<G4ThreeVector*>(&(fLastInside.p));
+      tmpinside = const_cast<EInside*>(&(fLastInside.inside));
+      tmpp->set(p.x(), p.y(), p.z());
+   }
+   
+#ifdef __SOLIDDEBUG__
+   J4cerr << "J4TwistedTubs:Inside : fLastInside.p is updated : "
+      << fLastInside.p << J4endl;
 #endif
    
-   EInside  area          = ((J4HyperbolicSurface *)fOuterHype)->Inside(p);
-   G4double fInnerHypeRho = ((J4HyperbolicSurface *)fInnerHype)->GetRhoAtPZ(p);
-   G4double distanceToOut = p.getRho() - fInnerHypeRho;
-   EInside  returnvalue; 
+   EInside  outerhypearea = ((J4HyperbolicSurface *)fOuterHype)->Inside(p);
+   G4double innerhyperho  = ((J4HyperbolicSurface *)fInnerHype)->GetRhoAtPZ(p);
+   G4double distanceToOut = p.getRho() - innerhyperho; // +ve: inside
 
-   if (area == kOutside) {
-      returnvalue =  kOutside;
-   } else if (area == kInside) {
-      if (distanceToOut >= halftol)  {
-         returnvalue = kInside;
-      } else if (distanceToOut <= -halftol) {
-         returnvalue =  kOutside;
+   if (outerhypearea == kOutside || distanceToOut < -halftol) {
+      *tmpinside = kOutside;
+   } else if (outerhypearea == kSurface) {
+      *tmpinside = kSurface;
+   } else {
+      if (distanceToOut <= halftol) {
+         *tmpinside = kSurface;
       } else {
-         returnvalue =  kSurface;
-      }
-   } else {                           // area == kSurface
-      if (distanceToOut >= halftol)  {
-         returnvalue =  kSurface;
-      } else if (distanceToOut <= -halftol) {
-         returnvalue =  kOutside;
-      } else {
-         returnvalue =  kSurface;
+         *tmpinside = kInside;
       }
    }
-
-#ifdef __SOLIDDEBUG__ 
-   G4cerr <<">>>>> J4TwistedTubs:Inside(p) : >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " << G4endl;
-   G4cerr <<"   area from HyperbolicSurface::Inside(p)   : " << area << G4endl;
-   G4cerr <<"   inside(0:kOutside, 1:kSurface, 2:kInside : " << returnvalue << G4endl;
-   G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
+   
+#ifdef __SOLIDDEBUG__
+   J4cerr <<">>>>> J4TwistedTubs:Inside(p) : >>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+   J4cerr <<"   SolidName   : " << GetName() << J4endl;
+   J4cerr <<"   area from OuterHyperbolicSurface::Inside(p)   : " << outerhypearea << J4endl;
+   J4cerr <<"   distanceToOut(innersurface)  : " << distanceToOut << J4endl;
+   J4cerr <<"   inside(0:kOutside, 1:kSurface, 2:kInside : " << fLastInside.inside << J4endl;
+   J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
 #endif   
 
-   return returnvalue;
+   timer.Stop();
+   return fLastInside.inside;
 
 }
 
 //=====================================================================
 //* SurfaceNormal -----------------------------------------------------
 
-G4ThreeVector J4TwistedTubs::SurfaceNormal( const G4ThreeVector& p) const
+G4ThreeVector J4TwistedTubs::SurfaceNormal(const G4ThreeVector& p) const
 {
    //
    // return the normal unit vector to the Hyperbolical Surface at a point 
    // p on (or nearly on) the surface
    //
-   //
    // Which of the three or four surfaces are we closest to?
    //
-   // Initialize
+
+   static G4int timerid = -1;
+   J4Timer timer(timerid, "J4TwistedTubs", "SurfaceNormal");
+   timer.Start();
+   
+
 #ifdef __SOLIDDEBUG__
-   G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " << G4endl; 
-   G4cerr <<">>>>> J4TwistedTubs:SurfaceNormal : Start from p : " 
-          << p <<  " >>>>>> " << G4endl;  
+   J4cerr << ">>>>> J4TwistedTubs:SurfaceNormal(p) : Start from >>>>>>> " << J4endl;
+   J4cerr << "   name : " << GetName() << J4endl;
+   J4cerr << "   gp   : " << p << J4endl;
+   J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
 #endif
 
+   if (fLastNormal.p == p) {
+#ifdef __SOLIDDEBUG__
+      J4cerr << ">>>>> J4TwistedTubs:SurfaceNormal(p) >>>>>>>>>>>>>>>>>>>> " << J4endl;
+      J4cerr << "   p is same as lastp.  " << J4endl;
+      J4cerr << "   normal : " << fLastNormal.vec << J4endl;
+      J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+#endif
+      timer.Stop();
+      return fLastNormal.vec;
+   }    
+   G4ThreeVector *tmpp       = const_cast<G4ThreeVector*>(&(fLastNormal.p));
+   G4ThreeVector *tmpnormal  = const_cast<G4ThreeVector*>(&(fLastNormal.vec));
+   J4VSurface    **tmpsurface = const_cast<J4VSurface**>(fLastNormal.surface);
+   tmpp->set(p.x(), p.y(), p.z());
+   
+   
    G4double      distance = kInfinity;
 
    J4VSurface *surfaces[6];
@@ -513,25 +559,31 @@ G4ThreeVector J4TwistedTubs::SurfaceNormal( const G4ThreeVector& p) const
       }
    }
 
-   G4ThreeVector normal = surfaces[besti]->GetNormal(bestxx, TRUE);
-
+   tmpsurface[0] = surfaces[besti];
+   *tmpnormal = tmpsurface[0]->GetNormal(bestxx, TRUE);
+   
 #ifdef __SOLIDDEBUG__
    if (besti < 0) {
-      G4cerr <<">>>>> J4TwistedTubs:SurfaceNormal(p) : last winner >>>>>>>>>>>>>>>>>>>>> " << G4endl;
-      G4cerr <<"   No winner!  : " << G4endl;
-      G4cerr <<"   bestdist    : " << distance << G4endl;
-      G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
+      J4cerr <<">>>>> J4TwistedTubs:SurfaceNormal(p) : last winner >>>>>>" << J4endl;
+      J4cerr <<"   No winner!  : " << J4endl;
+      J4cerr <<"   SolidName   : " << GetName() << J4endl;
+      J4cerr <<"   gp          : " << p << J4endl;
+      J4cerr <<"   bestdist    : " << distance << J4endl;
+      J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
    } else {
-      G4cerr <<">>>>> J4TwistedTubs:SurfaceNormal(p) : last winner >>>>>>>>>>>>>>>>>>>>> " << G4endl;
-      G4cerr <<"   NAME        : " << surfaces[besti]->GetName() << G4endl;
-      G4cerr <<"   bestxx      : " << bestxx << G4endl;
-      G4cerr <<"   bestdist    : " << distance << G4endl;
-      G4cerr <<"   normal      : " << normal << G4endl;
-      G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
+      J4cerr <<">>>>> J4TwistedTubs:SurfaceNormal(p) : last winner >>>>>>" << J4endl;
+      J4cerr <<"   SolidName   : " << GetName() << J4endl;
+      J4cerr <<"   SurfaceName : " << surfaces[besti]->GetName() << J4endl;
+      J4cerr <<"   gp          : " << p << J4endl;
+      J4cerr <<"   bestxx      : " << bestxx << J4endl;
+      J4cerr <<"   bestdist    : " << distance << J4endl;
+      J4cerr <<"   normal      : " << *tmpnormal << J4endl;
+      J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
    }
 #endif
 
-   return normal;
+   timer.Stop();
+   return fLastNormal.vec;
    
 }
 
@@ -542,59 +594,103 @@ G4double J4TwistedTubs::DistanceToIn (const G4ThreeVector& p,
                                       const G4ThreeVector& v ) const
 {
 
-   // The function returns kInfinity if no intersection or just grazing within tolerance.
+   // DistanceToIn (p, v):
+   // Calculate distance to surface of shape from `outside' 
+   // along with the v, allowing for tolerance.
+   // The function returns kInfinity if no intersection or
+   // just grazing within tolerance.
+   //
+
+   
+   //
+   // opening message
+   //
+
+   static G4int timerid = -1;
+   J4Timer timer(timerid, "J4TwistedTubs", "DistanceToInWithV");
+   timer.Start();
 
 #ifdef __SOLIDDEBUG__
-   G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " << G4endl; 
-   G4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p,v) : Start from p, v : " 
-          << p << " , "  
-          << v << " >>>>> " << G4endl;  
+   J4cerr << ">>>>> J4TwistedTubs:DistanceToIn(p,v) : Start from >>>>>> " << J4endl;
+   J4cerr << "   name : " << GetName() << J4endl; 
+   J4cerr << "   gp   : " << p << J4endl; 
+   J4cerr << "   gv   : " << v << J4endl; 
+   J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " << J4endl;
 #endif
+
+   //
+   // checking last value
+   //
+   
+   G4ThreeVector *tmpp;
+   G4ThreeVector *tmpv;
+   G4double      *tmpdist;
+   if (fLastDistanceToInWithV.p == p && fLastDistanceToInWithV.vec == v) {
+#ifdef __SOLIDDEBUG__
+      J4cerr << ">>>>> J4TwistedTubs:DistanceToIn(p,v) >>>>>>>>>>>>>>>>>>> " << J4endl;
+      J4cerr << "   p & v is same as last p,v.  " << J4endl;
+      J4cerr << "   distance   : " << fLastDistanceToInWithV.value << J4endl;
+      J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+#endif
+      timer.Stop();
+      return fLastDistanceToIn.value;
+   } else {
+      tmpp    = const_cast<G4ThreeVector*>(&(fLastDistanceToInWithV.p));
+      tmpv    = const_cast<G4ThreeVector*>(&(fLastDistanceToInWithV.vec));
+      tmpdist = const_cast<G4double*>(&(fLastDistanceToInWithV.value));
+      tmpp->set(p.x(), p.y(), p.z());
+      tmpv->set(v.x(), v.y(), v.z());
+   }
+
+
+   //
+   // Calculate DistanceToIn(p,v)
+   //
+   
+   EInside currentside = Inside(p);
+
+   if (currentside == ::kInside) {
+      J4cerr << "J4TwistedTubs:DistanceToIn(p,v) is called from inside! abort." << J4endl;
+      abort();
+   } else if (currentside == ::kSurface) {
+      // particle is just on a boundary.
+      // if the particle is entering to the volume, return 0.
+      G4ThreeVector normal = SurfaceNormal(p);
+      if (normal*v < 0) {
+#ifdef __SOLIDDEBUG__
+         J4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p,v) : last winner >>>>>" << J4endl;
+         J4cerr <<"   p is on surface and particle comes in. return 0. "<< J4endl;
+         J4cerr <<"   SolidName   : " << GetName() << J4endl;
+         J4cerr <<"   gp , gv     : " << p  << " " << v << J4endl;
+         J4cerr <<"   normal      : " << normal << J4endl;
+         J4cerr <<"   normal*gv   : " << normal*v << J4endl;
+         J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+#endif
+         *tmpdist = 0;
+         timer.Stop();
+         return fLastDistanceToInWithV.value;
+      } 
+   }
+      
+   // now, we can take smallest positive distance.
    
    // Initialize
    G4double      distance = kInfinity;   
-   
-   // If p is outside endcaps, check intersection on endcaps;
-   if (p.z() > fEndZ[1] || p.z() < fEndZ[0]) {
-      if (p.z()*v.z() >= 0) {
-#ifdef __SOLIDDEBUG__
-         G4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p,v) : last winner >>>>>>>>>>>>>>>> " << G4endl;
-         G4cerr <<"   No winner!  : " << G4endl;
-         G4cerr <<"   bestdist    : " << distance << G4endl;
-         G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
-#endif
-         return kInfinity;
-      }
-
-      J4VSurface *endcap = (p.z() < fEndZ[0] ? fLowerEndcap : fUpperEndcap);
-      G4ThreeVector xx(0,0,0);
-      distance = endcap->DistanceToIn(p, v, xx);
-      if (distance != kInfinity) {
-         // intersection is on endcap.
-#ifdef __SOLIDDEBUG__
-         G4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p,v) : last winner >>>>>>>>>>>>>>>> " << G4endl;
-         G4cerr <<"   NAME        : " << endcap->GetName() << G4endl;
-         G4cerr <<"   bestxx      : " << xx << G4endl;
-         G4cerr <<"   bestdist    : " << distance << G4endl;
-         G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
-#endif
-         return distance;
-      }
-   }  // endcaps have been treated.
-
 
    // find intersections and choose nearest one.
-   J4VSurface *surfaces[4];
-   surfaces[0] = fLatterTwisted;
-   surfaces[1] = fFormerTwisted;
-   surfaces[2] = fInnerHype;
-   surfaces[3] = fOuterHype;
-
+   J4VSurface *surfaces[6];
+   surfaces[0] = fLowerEndcap;
+   surfaces[1] = fUpperEndcap;
+   surfaces[2] = fLatterTwisted;
+   surfaces[3] = fFormerTwisted;
+   surfaces[4] = fInnerHype;
+   surfaces[5] = fOuterHype;
+   
    G4ThreeVector xx;
    G4ThreeVector bestxx;
    G4int i;
    G4int besti = -1;
-   for (i=0; i< 4; i++) {
+   for (i=0; i< 6; i++) {
       G4double tmpdistance = surfaces[i]->DistanceToIn(p, v, xx);
       if (tmpdistance < distance) {
          distance = tmpdistance;
@@ -605,21 +701,26 @@ G4double J4TwistedTubs::DistanceToIn (const G4ThreeVector& p,
 
 #ifdef __SOLIDDEBUG__
    if (besti < 0) {
-      G4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p,v) : last winner >>>>>>>>>>>>>>>> " << G4endl;
-      G4cerr <<"   No winner!  : " << G4endl;
-      G4cerr <<"   bestdist    : " << distance << G4endl;
-      G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
+      J4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p,v) : last winner >>>>>" << J4endl;
+      J4cerr <<"   No winner!  : " << J4endl;
+      J4cerr <<"   SolidName   : " << GetName() << J4endl;
+      J4cerr <<"   gp , gv     : " << p  << " " << v << J4endl;
+      J4cerr <<"   bestdist    : " << distance << J4endl;
+      J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
    } else {
-      G4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p,v) : last winner >>>>>>>>>>>>>>>> " << G4endl;
-      G4cerr <<"   NAME        : " << surfaces[besti]->GetName() << G4endl;
-      G4cerr <<"   bestxx      : " << bestxx << G4endl;
-      G4cerr <<"   bestdist    : " << distance << G4endl;
-      G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
+      J4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p,v) : last winner >>>>>" << J4endl;
+      J4cerr <<"   SolidName   : " << GetName() << J4endl;
+      J4cerr <<"   SurfaceName : " << surfaces[besti]->GetName() << J4endl;
+      J4cerr <<"   gp , gv     : " << p  << " " << v << J4endl;
+      J4cerr <<"   bestxx      : " << bestxx << J4endl;
+      J4cerr <<"   bestdist    : " << distance << J4endl;
+      J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
    }
 #endif
 
-   return distance;
-   
+   *tmpdist = distance;
+   timer.Stop();
+   return fLastDistanceToInWithV.value;
 }
  
 //=====================================================================
@@ -627,70 +728,128 @@ G4double J4TwistedTubs::DistanceToIn (const G4ThreeVector& p,
 
 G4double J4TwistedTubs::DistanceToIn (const G4ThreeVector& p) const
 {
-
-   // Initialize
-   G4double      distance = kInfinity;   
-#ifdef __SOLIDDEBUG__  
-      G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " << G4endl; 
-      G4cerr << ">>>>> J4TwistedTubs::DistanceToIn(p): start from p : "
-             <<  p << " >>>>> " << G4endl;
-#endif
-
-   // If p is outside endcaps, check intersection on endcaps;
-   if (p.z() > fEndZ[1] || p.z() < fEndZ[0]) {
-
-      J4VSurface *endcap = (p.z() < 0 ? fLowerEndcap : fUpperEndcap);
-      G4ThreeVector xx(0,0,0);
-      distance = endcap->DistanceTo(p, xx);
-      if (distance != kInfinity) {
-         // intersection is on endcap.
-         G4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p) : last winner >>>>>>>>>>>>>>>> " << G4endl;
-         G4cerr <<"   NAME        : " << endcap->GetName() << G4endl;
-         G4cerr <<"   bestxx      : " << xx << G4endl;
-         G4cerr <<"   bestdist    : " << distance << G4endl;
-         G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
-         return distance;
-      }
-   }  // endcaps have been treated.
-
-       
-   // find intersections and choose nearest one.
-   J4VSurface *surfaces[4];
-   surfaces[0] = fLatterTwisted;
-   surfaces[1] = fFormerTwisted;
-   surfaces[2] = fInnerHype;
-   surfaces[3] = fOuterHype;
-
-   G4int i;
-   G4int besti = -1;
-   G4ThreeVector xx;
-   G4ThreeVector bestxx;
-   for (i=0; i< 4; i++) {
-      G4double tmpdistance = surfaces[i]->DistanceTo(p, xx);
-      if (tmpdistance < distance)  {
-         distance = tmpdistance;
-         bestxx = xx;
-         besti = i;
-      }
-   }
-
-#ifdef __SOLIDDEBUG__
-   if (besti < 0) {
-      G4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p) : last winner >>>>>>>>>>>>>>>> " << G4endl;
-      G4cerr <<"   No winner!  : " << G4endl;
-      G4cerr <<"   bestdist    : " << distance << G4endl;
-      G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
-   } else {
-      G4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p) : last winner >>>>>>>>>>>>>>>> " << G4endl;
-      G4cerr <<"   NAME        : " << surfaces[besti]->GetName() << G4endl;
-      G4cerr <<"   bestxx      : " << bestxx << G4endl;
-      G4cerr <<"   bestdist    : " << distance << G4endl;
-      G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
-   }
-#endif
-
-   return distance;
+   // DistanceToIn(p):
+   // Calculate distance to surface of shape from `outside',
+   // allowing for tolerance
+   //
    
+   //
+   // opening message
+   //
+   
+   static G4int timerid = -1;
+   J4Timer timer(timerid, "J4TwistedTubs", "DistanceToIn");
+   timer.Start();
+   
+#ifdef __SOLIDDEBUG__
+   J4cerr << ">>>>> J4TwistedTubs:DistanceToIn(p) : Start from >>>>>>>> " << J4endl;
+   J4cerr << "   name : " << GetName() << J4endl;
+   J4cerr << "   gp   : " << p << J4endl;
+   J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+#endif
+
+   //
+   // checking last value
+   //
+   
+   G4ThreeVector *tmpp;
+   G4double      *tmpdist;
+   if (fLastDistanceToIn.p == p) {
+#ifdef __SOLIDDEBUG__
+      J4cerr << ">>>>> J4TwistedTubs:DistanceToIn(p) >>>>>>>>>>>>>>>>>>>>> " << J4endl;
+      J4cerr << "   p is same as lastp.  " << J4endl;
+      J4cerr << "   distance   : " << fLastDistanceToIn.value << J4endl;
+      J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+#endif
+      timer.Stop();
+      return fLastDistanceToIn.value;
+   } else {
+      tmpp    = const_cast<G4ThreeVector*>(&(fLastDistanceToIn.p));
+      tmpdist = const_cast<G4double*>(&(fLastDistanceToIn.value));
+      tmpp->set(p.x(), p.y(), p.z());
+   }
+   
+   
+   //
+   // Calculate DistanceToIn(p) 
+   //
+   
+   EInside currentside = Inside(p);
+
+   switch (currentside) {
+
+      case (::kInside) : {
+         J4cerr << "J4TwistedTubs:DistanceToIn(p) is called from inside! abort." << J4endl;
+         abort();
+      }
+
+      case (::kSurface) : {
+         *tmpdist = 0.;
+         timer.Stop();
+#ifdef __SOLIDDEBUG__
+         J4cerr << ">>>>> J4TwistedTubs:DistanceToIn(p) >>>>>>>>>>>>>>>>>> " << J4endl;
+         J4cerr << "   p is on surface. return 0. " << J4endl;
+         J4cerr << "   distance   : " << fLastDistanceToIn.value << J4endl;
+         J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+#endif
+         return fLastDistanceToIn.value;
+      }
+
+      case (::kOutside) : {
+         // Initialize
+         G4double      distance = kInfinity;   
+
+         // find intersections and choose nearest one.
+         J4VSurface *surfaces[6];
+         surfaces[0] = fLowerEndcap;
+         surfaces[1] = fUpperEndcap;
+         surfaces[2] = fLatterTwisted;
+         surfaces[3] = fFormerTwisted;
+         surfaces[4] = fInnerHype;
+         surfaces[5] = fOuterHype;
+
+         G4int i;
+         G4int besti = -1;
+         G4ThreeVector xx;
+         G4ThreeVector bestxx;
+         for (i=0; i< 6; i++) {
+            G4double tmpdistance = surfaces[i]->DistanceTo(p, xx);
+            if (tmpdistance < distance)  {
+               distance = tmpdistance;
+               bestxx = xx;
+               besti = i;
+            }
+         }
+      
+#ifdef __SOLIDDEBUG__
+         if (besti < 0) {
+            J4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p) : last winner >>>>>>>" << J4endl;
+            J4cerr <<"   No winner!  : " << J4endl;
+            J4cerr <<"   SolidName   : " << GetName() << J4endl;
+            J4cerr <<"   gp          : " << p << J4endl;
+            J4cerr <<"   bestdist    : " << distance << J4endl;
+            J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+         } else {
+            J4cerr <<">>>>> J4TwistedTubs:DistanceToIn(p) : last winner >>>>>>>" << J4endl;
+            J4cerr <<"   SolidName   : " << GetName() << J4endl;
+            J4cerr <<"   SurfaceName : " << surfaces[besti]->GetName() << J4endl;
+            J4cerr <<"   gp          : " << p << J4endl;
+            J4cerr <<"   bestxx      : " << bestxx << J4endl;
+            J4cerr <<"   bestdist    : " << distance << J4endl;
+            J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+         }
+#endif
+
+         *tmpdist = distance;
+         timer.Stop();
+         return fLastDistanceToIn.value;
+      }
+
+      default : {
+         J4cerr << "J4TwistedTubs:DistanceToIn(p) invalid option! abort." << J4endl;
+         abort();
+      }
+   } // switch end
 }
 
 //=====================================================================
@@ -701,15 +860,89 @@ G4double J4TwistedTubs::DistanceToOut( const G4ThreeVector& p,
                                        const G4bool calcNorm,
                                        G4bool *validNorm, G4ThreeVector *norm ) const
 {
+   // DistanceToOut (p, v):
+   // Calculate distance to surface of shape from `inside'
+   // along with the v, allowing for tolerance.
+   // The function returns kInfinity if no intersection or
+   // just grazing within tolerance.
    //
-   // Calculate distance to surface of shape from `inside', allowing for tolerance
+   
    //
+   // opening message
+   //
+   
+   static G4int timerid = -1;
+   J4Timer timer(timerid, "J4TwistedTubs", "DistanceToOutWithV");
+   timer.Start();
+   
 #ifdef __SOLIDDEBUG__
-   G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " << G4endl; 
-   G4cerr <<">>>>> J4TwistedTubs:DistanceToOut(p,v) : Start from p, v : " 
-          << p << " , "  
-          << v << " >>>>> " << G4endl;  
+   J4cerr << ">>>>> J4TwistedTubs:DistanceToOut(p,v) : Start from >>>>> " << J4endl;
+   J4cerr << "   name : " << GetName() << J4endl;
+   J4cerr << "   gp   : " << p << J4endl;
+   J4cerr << "   gv   : " << v << J4endl;
+   J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " << J4endl;
 #endif
+
+   //
+   // checking last value
+   //
+   
+   G4ThreeVector *tmpp;
+   G4ThreeVector *tmpv;
+   G4double      *tmpdist;
+   if (fLastDistanceToOutWithV.p == p && fLastDistanceToOutWithV.vec == v  ) {
+#ifdef __SOLIDDEBUG__
+      J4cerr << ">>>>> J4TwistedTubs:DistanceToOut(p,v) >>>>>>>>>>>>>>>>>> " << J4endl;
+      J4cerr << "   p & v is same as last p,v.  " << J4endl;
+      J4cerr << "   distance   : " << fLastDistanceToOutWithV.value << J4endl;
+      J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+#endif
+      timer.Stop();
+      return fLastDistanceToOutWithV.value;
+   } else {
+      tmpp    = const_cast<G4ThreeVector*>(&(fLastDistanceToOutWithV.p));
+      tmpv    = const_cast<G4ThreeVector*>(&(fLastDistanceToOutWithV.vec));
+      tmpdist = const_cast<G4double*>(&(fLastDistanceToOutWithV.value));
+      tmpp->set(p.x(), p.y(), p.z());
+      tmpv->set(v.x(), v.y(), v.z());
+   }
+
+   
+   //
+   // Calculate DistanceToOut(p,v)
+   //
+   
+   EInside currentside = Inside(p);
+
+   if (currentside == ::kOutside) {
+      J4cerr << "J4TwistedTubs:DistanceToOut(p,v) is called from outside! abort." << J4endl;
+      abort();
+   } else if (currentside == ::kSurface) {
+      // particle is just on a boundary.
+      // if the particle is exiting from the volume, return 0.
+      G4ThreeVector normal = SurfaceNormal(p);
+      J4VSurface *blockedsurface = fLastNormal.surface[0];
+      if (normal*v > 0) {
+#ifdef __SOLIDDEBUG__
+            J4cerr <<">>>>> J4TwistedTubs:DistanceToOut(p,v) : last winner >>>>>" << J4endl;
+            J4cerr <<"   p is on surface and particle goes out. return 0. "<< J4endl;
+            J4cerr <<"   SolidName   : " << GetName() << J4endl;
+            J4cerr <<"   gp , gv     : " << p  << " " << v << J4endl;
+            J4cerr <<"   normal      : " << normal << J4endl;
+            J4cerr <<"   normal*gv   : " << normal*v << J4endl;
+            J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+#endif
+            if (calcNorm) {
+               *norm = (blockedsurface->GetNormal(p, TRUE));
+               *validNorm = blockedsurface->IsValidNorm();
+            }
+            *tmpdist = 0.;
+            timer.Stop();
+            return fLastDistanceToOutWithV.value;
+      }
+   }
+      
+   // now, we can take smallest positive distance.
    
    // Initialize
    G4double      distance = kInfinity;
@@ -739,26 +972,33 @@ G4double J4TwistedTubs::DistanceToOut( const G4ThreeVector& p,
    if (calcNorm) {
       if (besti != -1) {
          *norm = (surfaces[besti]->GetNormal(p, TRUE));
-         *validNorm = (besti < 4 ? FALSE : TRUE);
+         *validNorm = surfaces[besti]->IsValidNorm();
       }
    }
 
 #ifdef __SOLIDDEBUG__
    if (besti < 0) {
-      G4cerr <<">>>>> J4TwistedTubs:DistanceToOut(p,v) : last winner >>>>>>>>>>>>>>>> " << G4endl;
-      G4cerr <<"   No winner!  : " << G4endl;
-      G4cerr <<"   bestdist    : " << distance << G4endl;
-      G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
+      J4cerr <<">>>>> J4TwistedTubs:DistanceToOut(p,v) : last winner >>>>" << J4endl;
+      J4cerr <<"   No winner! abort. " << J4endl;
+      J4cerr <<"   SolidName   : " << GetName() << J4endl;
+      J4cerr <<"   gp , gv     : " << p  << " " << v << J4endl;
+      J4cerr <<"   bestdist    : " << distance << J4endl;
+      J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+      abort();
    } else {
-      G4cerr <<">>>>> J4TwistedTubs:DistanceToOut(p,v) : last winner >>>>>>>>>>>>>>>> " << G4endl;
-      G4cerr <<"   NAME        : " << surfaces[besti]->GetName() << G4endl;
-      G4cerr <<"   bestxx      : " << bestxx << G4endl;
-      G4cerr <<"   bestdist    : " << distance << G4endl;
-      G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
+      J4cerr <<">>>>> J4TwistedTubs:DistanceToOut(p,v) : last winner >>>>" << J4endl;
+      J4cerr <<"   SolidName   : " << GetName() << J4endl;
+      J4cerr <<"   SurfaceName : " << surfaces[besti]->GetName() << J4endl;
+      J4cerr <<"   gp , gv     : " << p  << " " << v << J4endl;
+      J4cerr <<"   bestxx      : " << bestxx << J4endl;
+      J4cerr <<"   bestdist    : " << distance << J4endl;
+      J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
    }
 #endif
 
-   return distance;
+   *tmpdist = distance;
+   timer.Stop();
+   return fLastDistanceToOutWithV.value;
        
 }
 
@@ -768,57 +1008,126 @@ G4double J4TwistedTubs::DistanceToOut( const G4ThreeVector& p,
 
 G4double J4TwistedTubs::DistanceToOut( const G4ThreeVector& p ) const
 {
+   // DistanceToOut(p):
+   // Calculate distance to surface of shape from `inside', 
+   // allowing for tolerance
    //
-   // Calculate distance to surface of shape from `inside', allowing for tolerance
+   
    //
-#ifdef __SOLIDDEBUG__  
-      G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " << G4endl; 
-      G4cerr << ">>>>> J4TwistedTubs::DistanceToOut(p): start from p : "
-             <<  p << " >>>>> " << G4endl;
+   // opening message
+   //
+   
+   static G4int timerid = -1;
+   J4Timer timer(timerid, "J4TwistedTubs", "DistanceToOut");
+   timer.Start();
+   
+#ifdef __SOLIDDEBUG__
+   J4cerr << ">>>>> J4TwistedTubs:DistanceToOut(p) : Start from >>>>>>> " << J4endl;
+   J4cerr << "   name : " << GetName() << J4endl;
+   J4cerr << "   gp   : " << p << J4endl;
+   J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " << J4endl;
 #endif
-   
-   // Initialize
-   G4double      distance = kInfinity;
-   
-   // find intersections and choose nearest one.
-   J4VSurface *surfaces[6];
-   surfaces[0] = fLatterTwisted;
-   surfaces[1] = fFormerTwisted;
-   surfaces[2] = fInnerHype;
-   surfaces[3] = fOuterHype;
-   surfaces[4] = fLowerEndcap;
-   surfaces[5] = fUpperEndcap;
 
-   G4int i;
-   G4int besti = -1;
-   G4ThreeVector xx;
-   G4ThreeVector bestxx;
-   for (i=0; i< 6; i++) {
-      G4double tmpdistance = surfaces[i]->DistanceTo(p, xx);
-      if (tmpdistance < distance) {
-         distance = tmpdistance;
-         bestxx = xx;
-         besti = i;
-      }
+   //
+   // checking last value
+   //
+   
+   G4ThreeVector *tmpp;
+   G4double      *tmpdist;
+   if (fLastDistanceToOut.p == p) {
+#ifdef __SOLIDDEBUG__
+      J4cerr << ">>>>> J4TwistedTubs:DistanceToOut(p) >>>>>>>>>>>>>>>>>> " << J4endl;
+      J4cerr << "   p is same as lastp.  " << J4endl;
+      J4cerr << "   distance   : " << fLastDistanceToOut.value << J4endl;
+      J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+#endif
+      return fLastDistanceToOut.value;
+   } else {
+      tmpp    = const_cast<G4ThreeVector*>(&(fLastDistanceToOut.p));
+      tmpdist = const_cast<G4double*>(&(fLastDistanceToOut.value));
+      tmpp->set(p.x(), p.y(), p.z());
    }
+   
+   
+   //
+   // Calculate DistanceToOut(p)
+   //
+   
+   EInside currentside = Inside(p);
+
+   switch (currentside) {
+      case (::kOutside) : {
+         J4cerr << "J4TwistedTubs:DistanceToOut(p,v) is called from outside! abort." << J4endl;
+         abort();
+      }
+      case (::kSurface) : {
+        *tmpdist = 0.;
+         timer.Stop();
+#ifdef __SOLIDDEBUG__
+         J4cerr << ">>>>> J4TwistedTubs:DistanceToOut(p) >>>>>>>>>>>>>>>>>> " << J4endl;
+         J4cerr << "   p is on surface. return 0. " << J4endl;
+         J4cerr << "   distance   : " << fLastDistanceToOut.value << J4endl;
+         J4cerr << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+#endif
+         return fLastDistanceToOut.value;
+      }
+      
+      case (::kInside) : {
+         // Initialize
+         G4double      distance = kInfinity;
+   
+         // find intersections and choose nearest one.
+         J4VSurface *surfaces[6];
+         surfaces[0] = fLatterTwisted;
+         surfaces[1] = fFormerTwisted;
+         surfaces[2] = fInnerHype;
+         surfaces[3] = fOuterHype;
+         surfaces[4] = fLowerEndcap;
+         surfaces[5] = fUpperEndcap;
+
+         G4int i;
+         G4int besti = -1;
+         G4ThreeVector xx;
+         G4ThreeVector bestxx;
+         for (i=0; i< 6; i++) {
+            G4double tmpdistance = surfaces[i]->DistanceTo(p, xx);
+            if (tmpdistance < distance) {
+               distance = tmpdistance;
+               bestxx = xx;
+               besti = i;
+            }
+         }
 
 #ifdef __SOLIDDEBUG__
-   if (besti < 0) {
-      G4cerr <<">>>>> J4TwistedTubs:DistanceToOut(p) : last winner >>>>>>>>>>>>>>>> " << G4endl;
-      G4cerr <<"   No winner!  : " << G4endl;
-      G4cerr <<"   bestdist    : " << distance << G4endl;
-      G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
-   } else {
-      G4cerr <<">>>>> J4TwistedTubs:DistanceToOut(p) : last winner >>>>>>>>>>>>>>>> " << G4endl;
-      G4cerr <<"   NAME        : " << surfaces[besti]->GetName() << G4endl;
-      G4cerr <<"   bestxx      : " << bestxx << G4endl;
-      G4cerr <<"   bestdist    : " << distance << G4endl;
-      G4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << G4endl;
-   }
+         if (besti < 0) {
+            J4cerr <<">>>>> J4TwistedTubs:DistanceToOut(p) : last winner >>>>>>" << J4endl;
+            J4cerr <<"   No winner! abort. " << J4endl;
+            J4cerr <<"   SolidName   : " << GetName() << J4endl;
+            J4cerr <<"   gp          : " << p << J4endl;
+            J4cerr <<"   bestdist    : " << distance << J4endl;
+            J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+            abort();
+         } else {
+            J4cerr <<">>>>> J4TwistedTubs:DistanceToOut(p) : last winner >>>>>>" << J4endl;
+            J4cerr <<"   SolidName   : " << GetName() << J4endl;
+            J4cerr <<"   SurfaceName : " << surfaces[besti]->GetName() << J4endl;
+            J4cerr <<"   gp          : " << p << J4endl;
+            J4cerr <<"   bestxx      : " << bestxx << J4endl;
+            J4cerr <<"   bestdist    : " << distance << J4endl;
+            J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+         }
 #endif
 
-   return distance;
-
+         *tmpdist = distance;
+         timer.Stop();
+         return fLastDistanceToOut.value;
+      }
+      
+      default : {
+         J4cerr << "J4TwistedTubs:DistanceToOut(p) invalid option! abort." << J4endl;
+         abort();
+      }
+   } // switch end
 }
 
 //=====================================================================

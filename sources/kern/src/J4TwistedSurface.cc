@@ -32,9 +32,10 @@ J4TwistedSurface::J4TwistedSurface(const G4String         &name,
                   fKappa(kappa)
 {
    if (axis0 == kZAxis && axis1 == kXAxis) {
-       G4cerr << "JTwistedSurface::Constructor: Swap axis0 and axis1. abort. " << G4endl;
+       J4cerr << "JTwistedSurface::Constructor: Swap axis0 and axis1. abort. " << J4endl;
        abort();
    }
+   fIsValidNorm = FALSE;
    SetCorners();
    SetBoundaries();
 }
@@ -55,6 +56,7 @@ J4TwistedSurface::J4TwistedSurface(const G4String      &name,
    fKappa = solid->GetKappa();
    fRot.rotateZ(fHandedness > 0 ? -0.5*(solid->GetDPhi()) : 0.5*(solid->GetDPhi()));
    fTrans.set(0, 0, 0);
+   fIsValidNorm = FALSE;
    
    SetCorners(solid);
    SetBoundaries();
@@ -79,8 +81,15 @@ G4ThreeVector J4TwistedSurface::GetNormal(const G4ThreeVector &tmpxx,
    G4ThreeVector xx;
    if (isGlobal) {
       xx = fRot.inverse()*tmpxx - fTrans;
+      if ((xx - fCurrentNormal.p).mag() < 0.5 * kCarTolerance) {
+         fCurrentNormal.p = xx;
+         return fCurrentNormal.normal;
+      }
    } else {
       xx = tmpxx;
+      if (xx == fCurrentNormal.p) {
+         return fCurrentNormal.normal;
+      }
    }
    
    G4ThreeVector er(1, fKappa * xx.z(), 0);
@@ -88,11 +97,11 @@ G4ThreeVector J4TwistedSurface::GetNormal(const G4ThreeVector &tmpxx,
    G4ThreeVector normal = fHandedness*(er.cross(ez));
 
    if (isGlobal) {
-      fCurrentNormal = fRot*(normal.unit());
+      fCurrentNormal.normal = fRot*(normal.unit());
    } else {
-      fCurrentNormal = normal.unit();
+      fCurrentNormal.normal = normal.unit();
    }
-   return fCurrentNormal;
+   return fCurrentNormal.normal;
 }
 
 //=====================================================================
@@ -148,7 +157,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
    //    the one that gives a positive rho(z=0).
    //
    //
-   
+      
    fCurStatWithV.ResetfDone(validate, &gp, &gv);
 
    if (fCurStatWithV.IsDone()) {
@@ -170,102 +179,53 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
          gxx[i].set(kInfinity, kInfinity, kInfinity);
       }
    }
-   
+
    G4ThreeVector p = fRot.inverse()*gp - fTrans;
    G4ThreeVector v = fRot.inverse()*gv;
    G4ThreeVector xx[2]; 
 
 #ifdef __SOLIDDEBUG__
-   G4cerr << "~~~~~ J4TwistedSurface:DistanceToSurface(p,v) : "
-          << "Start from gp, gv, p, v :" << G4endl;
-   G4cerr << "      "
-          << GetName() << " , "
-          << gp << " , "
-          << gv << " , "
-          << p << " , "
-          << v << " ~~~~~ " << G4endl;
+   J4cerr << "      ~~~~~ J4TwistedSurface:DistanceToSurface(p,v):Start"
+          << J4endl;
+   J4cerr << "         Name : " << GetName() << J4endl;
+   J4cerr << "         gp   : " << gp << J4endl;
+   J4cerr << "         gv   : " << gv << J4endl;
+   J4cerr << "         p    : " << p << J4endl;
+   J4cerr << "         v    : " << v << J4endl;
+   J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          << J4endl;
 #endif
 
 
    // 
    // special case! 
-   // p is on z-axis or vt is parallel to pt, or 
-   // p is on surface.
+   // p is origin or
    //
+
    G4double absvz = fabs(v.z());
+
    if ((absvz < DBL_MIN) && (fabs(p.x() * v.y() - p.y() * v.x()) < DBL_MIN)) {
+      // no intersection
+
       isvalid[0] = FALSE;
       fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                                 isvalid[0], 0, validate, &gp, &gv);
 #ifdef __SOLIDDEBUG__
-      G4cerr << "~~~~~ J4TwistedSurface:DistanceToSurface(p,v) : last return ~~~~~~ "
-             << G4endl;
-      G4cerr << "   p is on z-axis or v(transverse) is parallel to p(transverse)."
-             << " return 0." << G4endl; 
-      G4cerr << "   NAME     : " << GetName() <<  G4endl;
-      G4cerr << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-             << G4endl;
+      J4cerr << "      ~~~~~ J4TwistedSurface:DistanceToSurface(p,v):return"
+             << J4endl;
+      J4cerr << "         p is on z-axis and v(transverse) is parallel to "
+             <<           "p(transverse). return 0." << J4endl; 
+      J4cerr << "         NAME     : " << GetName() <<  J4endl;
+      J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+             << J4endl;
 #endif
       return 0;
    } 
    
-   G4ThreeVector xxatp;   // surface point at x = p.x, z = p.z
-   xxatp.set(p.x(), p.x() * p.z() * fKappa, p.z());
-   G4double diff = (p - xxatp).mag();
-
-#ifdef __SOLIDDEBUG__ 
-   G4cerr << "~~~~~ J4TwistedSurface:DistanceToSurface(p,v) : diff = "
-          << diff << G4endl;
-#endif
-
-   if (diff <= 0.5 * kCarTolerance) {
-      if (validate == kValidateWithTol) {   
-          areacode[0] = GetAreaCode(p);   
-          if ((areacode[0] & kAreaMask) != kOutside) {   
-             distance[0] = 0;   
-             gxx[0] = gp;   
-             xx[0] = p;   
-             isvalid[0] = TRUE;   
-          }     
-      } else if (validate == kValidateWithoutTol) {   
-          areacode[0] = GetAreaCode(p, FALSE);   
-          if ((areacode[0] & kAreaMask) == kInside) {   
-             distance[0] = 0;   
-             gxx[0] = gp;   
-             xx[0] = p;   
-             isvalid[0] = TRUE;   
-          } 
-      } else { // kDontValidate   
-          areacode[0] = kInside;   
-          distance[0] = 0;   
-          gxx[0] = gp;   
-          xx[0] = p;   
-          isvalid[0] = TRUE;   
-      }   
-
-      fCurStatWithV.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],   
-                                     isvalid[0], 1, validate, &gp, &gv);  
-
-#ifdef __SOLIDDEBUG__
-      G4cerr <<"~~~~~ J4TwistedSurface:DistanceToSurface(p,v) : last return ~~~~~ " 
-             << G4endl;
-      G4cerr <<"   P is on surface. return 0. " << G4endl;
-      G4cerr <<"   NAME        : " << GetName() << G4endl;
-      G4cerr <<"   xx[0]       : " << xx[0] << G4endl;
-      G4cerr <<"   gxx[0]      : " << gxx[0] << G4endl;
-      G4cerr <<"   dist[0]     : " << distance[0] << G4endl;
-      G4cerr <<"   areacode[0] : " << areacode[0] << G4endl;
-      G4cerr <<"   isvalid[0]  : " << isvalid[0]  << G4endl;
-      G4cerr <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-             << G4endl;
-#endif
-
-      return 1;   
-
-   }     
    // 
    // special case end
    //
+
    
    G4double a = fKappa * v.x() * v.z();
    G4double b = fKappa * (v.x() * p.z() + v.z() * p.x()) - v.y();
@@ -273,13 +233,14 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
    G4double D = b * b - 4 * a * c;             // discriminant
 
 #ifdef __SOLIDDEBUG__
-   G4cerr << "//* J4TwistedSurface::DistanceToSurface: name, p, v, a,b,c,D = ------"
-          << G4endl;
-   G4cerr << "//*   NAME    " << GetName() << G4endl;
-   G4cerr << "//*   p, v    " << p << " , " << v << G4endl;
-   G4cerr << "//*   a,b,c,D " << a << " " << b << " " << c << " " << D << G4endl;
-   G4cerr << "//*------------------------------------------------------------------"
-          << G4endl;
+   J4cerr << "      ~~~ J4TwistedSurface::DistanceToSurface: a,b,c,D = "
+          << J4endl;
+   J4cerr << "      //*   NAME    " << GetName() << J4endl;
+   J4cerr << "      //*   p, v    " << p << " , " << v << J4endl;
+   J4cerr << "      //*   a,b,c,D " << a << " " << b << " " 
+                                    << c << " " << D << J4endl;
+   J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          << J4endl;
 #endif 
 
 
@@ -313,12 +274,16 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
                                               isvalid[0], 0, validate, &gp, &gv);
 
 #ifdef __SOLIDDEBUG__
-               G4cerr << "~~~~~ J4TwistedSurface:DistanceToSurface(p,v) : last return " 
-                      << "~~~~~~ " << G4endl;
-               G4cerr << "   xx is out of boundary. return 0. " << G4endl; 
-               G4cerr << "   NAME      : " << GetName()  << G4endl;
-               G4cerr << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-                      << "~~~~~~ " << G4endl;
+               J4cerr 
+               << "      ~~~~~ J4TwistedSurface:DistanceToSurface(p,v):return" 
+               << J4endl;
+               J4cerr 
+               << "         xx is out of boundary. return 0. " << J4endl; 
+               J4cerr 
+               << "         NAME      : " << GetName()  << J4endl;
+               J4cerr 
+               << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                      << J4endl;
 #endif
 
                return 0;
@@ -330,38 +295,49 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
                                         isvalid[0], 1, validate, &gp, &gv);
 
 #ifdef __SOLIDDEBUG__
-         G4cerr << "~~~~~ J4TwistedSurface:DistanceToSurface(p,v) : last return ~~~~~~ "
-                << G4endl;
-         G4cerr << "   Single solution. " << G4endl;
-         G4cerr << "   NAME        : " << GetName() << G4endl;
-         G4cerr << "   xx[0]       : " << xx[0] << G4endl;
-         G4cerr << "   gxx[0]      : " << gxx[0] << G4endl;
-         G4cerr << "   dist[0]     : " << distance[0] << G4endl;
-         G4cerr << "   areacode[0] : " << G4std::hex << areacode[0] << G4std::dec << G4endl;
-         G4cerr << "   isvalid[0]  : " << isvalid[0]  << G4endl;
-         G4cerr << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-                << G4endl;
+         J4cerr 
+         << "      ~~~~~ J4TwistedSurface:DistanceToSurface(p,v):return" 
+                << J4endl;
+         J4cerr << "         Single solution. " << J4endl;
+         J4cerr << "         NAME        : " << GetName() << J4endl;
+         J4cerr << "         xx[0]       : " << xx[0] << J4endl;
+         J4cerr << "         gxx[0]      : " << gxx[0] << J4endl;
+         J4cerr << "         dist[0]     : " << distance[0] << J4endl;
+         J4cerr << "         areacode[0] : " << hex << areacode[0] 
+                << J4endl;
+         J4cerr << "         isvalid[0]  : " << dec << isvalid[0] 
+                << J4endl;
+         J4cerr 
+         << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
+                << J4endl;
 #endif
 
          return 1;
          
       } else {
-         // if a=b=0 and c!=0, no solution, parallel to the surface
-         // if a=b=c=0, the track is exactly on the surface, return kInfinity
-         // if D < 0, no intersection.
+         // if a=b=0 , v.y=0 and (v.x=0 && p.x=0) or (v.z=0 && p.z=0) .
+         //    if v.x=0 && p.x=0, no intersection unless p is on z-axis
+         //    (in that case, v is paralell to surface). 
+         //    if v.z=0 && p.z=0, no intersection unless p is on x-axis
+         //    (in that case, v is paralell to surface). 
+         // return distance = infinity.
 
          fCurStatWithV.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                                         isvalid[0], 0, validate, &gp, &gv);
 
 #ifdef __SOLIDDEBUG__
-         G4cerr << "~~~~~ J4TwistedSurface:DistanceToSurface(p,v) : last return ~~~~~~ "
-                << G4endl;
-         G4cerr << "   paralell to the surface or on surface but flying away opposit "
-                <<     "direction. return 0. " << G4endl; 
-         G4cerr << "   a, b, c  : " <<  a  << " , " << b << " , " << c << G4endl; 
-         G4cerr << "   NAME     : " << GetName() << G4endl;
-         G4cerr << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-                << G4endl;
+         J4cerr 
+         << "      ~~~~~ J4TwistedSurface:DistanceToSurface(p,v):return"
+                << J4endl;
+         J4cerr << "         paralell to the surface or on surface but"
+                <<           " flying away opposit direction. return 0" 
+                << J4endl; 
+         J4cerr << "         a, b, c  : " <<  a  << " , " << b << " , " 
+                                          << c << J4endl; 
+         J4cerr << "         NAME     : " << GetName() << J4endl;
+         J4cerr 
+         << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                << J4endl;
 #endif
 
          return 0;
@@ -409,7 +385,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
             }                     
          }
       }
-
+      
       if (tmpdist[0] <= tmpdist[1]) {
          distance[0] = tmpdist[0];
          distance[1] = tmpdist[1];
@@ -440,17 +416,22 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
                                      isvalid[1], 2, validate, &gp, &gv);
 
 #ifdef __SOLIDDEBUG__
-      G4cerr << "~~~~~ J4TwistedSurface:DistanceToSurface(p,v) : last return ~~~~~~ "
-             << G4endl;
-      G4cerr << "   NAME,        : " << GetName() << " , " << i << G4endl;
-      G4cerr << "   xx[0,1]      : " << xx[0] << " , " << xx[1] << G4endl;
-      G4cerr << "   gxx[0,1]     : " << gxx[0] << " , " << gxx[1] << G4endl;
-      G4cerr << "   dist[0,1]    : " << distance[0] << " , " << distance[1] << G4endl;
-      G4cerr << "   areacode[0,1]: " << G4std::hex << areacode[0] << " , " << areacode[1] 
-                                     << G4std::dec << G4endl;
-      G4cerr << "   isvalid[0,1] : " << isvalid[0] << " , " << isvalid[1] << G4endl;
-      G4cerr << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " 
-             << G4endl;
+      J4cerr << "      ~~~~~ J4TwistedSurface:DistanceToSurface(p,v):return"
+             << J4endl;
+      J4cerr << "         NAME,        : " << GetName() << " , " << i 
+             << J4endl;
+      J4cerr << "         xx[0,1]      : " << xx[0] << " , " << xx[1] 
+             << J4endl;
+      J4cerr << "         gxx[0,1]     : " << gxx[0] << " , " << gxx[1] 
+             << J4endl;
+      J4cerr << "         dist[0,1]    : " << distance[0] << " , " 
+                                           << distance[1] << J4endl;
+      J4cerr << "         areacode[0,1]: " << hex << areacode[0] << " , " 
+                                           << areacode[1] << dec << J4endl;
+      J4cerr << "         isvalid[0,1] : " << isvalid[0] << " , " 
+                                           << isvalid[1] << J4endl;
+      J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+             << J4endl;
 #endif
 
       return 2;
@@ -463,20 +444,21 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
                                      isvalid[0], 0, validate, &gp, &gv);
 
 #ifdef __SOLIDDEBUG__
-      G4cerr << "~~~~~ J4TwistedSurface:DistanceToSurface(p,v) : last return ~~~~~~ "
-             << G4endl;
-      G4cerr << "   paralell to the surface or on surface but flying away opposit "
-             <<     "direction. return 0. " << G4endl; 
-      G4cerr << "   NAME     : " << GetName() << G4endl;
-      G4cerr << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-             << G4endl;
+      J4cerr << "      ~~~~~ J4TwistedSurface:DistanceToSurface(p,v):return"
+             << J4endl;
+      J4cerr << "         paralell to the surface or on surface but flying "
+             <<           "away opposit direction. return 0. " << J4endl; 
+      J4cerr << "         NAME     : " << GetName() << J4endl;
+      J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+             << J4endl;
 #endif
 
       return 0;
 
    }
-   G4cerr << "J4TwistedSurface::DistanceToSurface(p,v) illigal operation!! abort"
-          << G4endl;
+   J4cerr << "      J4TwistedSurface::DistanceToSurface(p,v) "
+          << "illigal operation!! abort"
+          << J4endl;
    abort(); 
 }
 
@@ -512,16 +494,20 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
    G4int          parity  = (fKappa >= 0 ? 1 : -1);
 
 #ifdef __SOLIDDEBUG__
-   G4cerr <<"~~~~~ J4TwistedSurface:DistanceToSurface(p) : Start from gp, p : "
-          << GetName() << " , "
-          << gp << " , "
-          << p << " ~~~~~ " << G4endl;
+   J4cerr << "      ~~~~~ J4TwistedSurface:DistanceToSurface(p):Start"
+          << J4endl;
+   J4cerr << "         Name : " << GetName() << J4endl;
+   J4cerr << "         gp   : " << gp << J4endl;
+   J4cerr << "         p    : " << p << J4endl;
+   J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          << J4endl;
 #endif
  
    // 
-   // special case! if p is on z-axis, 
-   // the track cannot cross with surface.
-   // or if p is on surface, return distance = 0 immediatery .
+   // special case! 
+   // If p is on surface, or
+   // p is on z-axis, 
+   // return here immediatery.
    //
    
    G4ThreeVector  lastgxx[2];
@@ -529,44 +515,74 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
    for (G4int i=0; i<2; i++) {
       lastgxx[i] = fCurStatWithV.GetXX(i);
       distfromlast[i] = (gp - lastgxx[i]).mag();
-#ifdef __SOLIDDEBUG__
-      G4cerr <<"//* J4TwistedSurface:DistanceToSurface(p) : lastgxx, distance from last = "
-             << lastgxx[i] << " , " 
-             << distfromlast[i] << G4endl;
-#endif
    } 
 
    if ((gp - lastgxx[0]).mag() <= halftol || (gp - lastgxx[1]).mag() <= halftol) { 
-      // last winner, or last poststep point is on the surface. 
-      areacode[0] = kInside;
-      distance[0] = 0;
-      gxx[0] = gp;
+      // last winner, or last poststep point is on the surface.
       xx = p;
+      areacode[0] = GetAreaCode(xx, FALSE);
+      if ((areacode[0] & kInside) == kInside) {
+         distance[0] = 0;
+         gxx[0] = gp;
+      } else {
+         // xx is out of boundary or corner
+         if ((areacode[0] & kCorner) == kCorner) {
+            xx = GetCorner(areacode[0]);
+            distance[0] = (xx - p).mag();
+         } else {
+            distance[0] = DistanceToBoundary(areacode[0], xx, p);
+         }
+         gxx[0] = fRot * xx + fTrans;
+      }
       G4bool isvalid = TRUE;
       fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                              isvalid, 1, kDontValidate, &gp);
 #ifdef __SOLIDDEBUG__
-      G4cerr <<"~~~~~ J4TwistedSurface:DistanceToSurface(p) : last return ~~~~~~~~ " << G4endl;
-      G4cerr <<"   I'm a last winner ! or last poststep point is on my surface. " << G4endl;
-      G4cerr <<"   NAME        : " << GetName() << G4endl;
-      G4cerr <<"   xx          : " << xx << G4endl;
-      G4cerr <<"   gxx[0]      : " << gxx[0] << G4endl;
-      G4cerr <<"   dist[0]     : " << distance[0] << G4endl;
-      G4cerr <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << G4endl;
+      J4cerr <<"      ~~~~~ J4TwistedSurface:DistanceToSurface(p):return" 
+             << J4endl;
+      J4cerr <<"         I'm a last winner !" << J4endl;
+      J4cerr <<"         Otherwise last poststep point is on my surface."
+             << J4endl;
+      J4cerr <<"         NAME        : " << GetName() << J4endl;
+      J4cerr <<"         xx          : " << xx << J4endl;
+      J4cerr <<"         gxx[0]      : " << gxx[0] << J4endl;
+      J4cerr <<"         dist[0]     : " << distance[0] << J4endl;
+      J4cerr <<"      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+             << J4endl;
 #endif
 
       return 1;
 
    }
-
+          
    if (p.getRho() == 0) { 
-
-      G4bool isvalid = FALSE;
+      // p is on z-axis. Namely, p is on twisted surface (invalid area).
+      // We must return here, however, returning distance to x-minimum
+      // boundary is better than return 0-distance.
+      //
+      G4bool isvalid = TRUE;
+      if (fAxis[0] == kXAxis && fAxis[1] == kZAxis) {
+         distance[0] = DistanceToBoundary(kAxis0 & kAxisMin, xx, p);
+         areacode[0] = kInside;
+      } else {
+         distance[0] = 0;
+         xx.set(0., 0., 0.);
+      }
+      gxx[0] = fRot * xx + fTrans;
       fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                                 isvalid, 0, kDontValidate, &gp);
-
-      return 0;
-
+#ifdef __SOLIDDEBUG__
+      J4cerr <<"      ~~~~~ J4TwistedSurface:DistanceToSurface(p):return"
+             << J4endl;
+      J4cerr <<"         p is on z-axis. return x-axis-min or 0 " 
+             << J4endl;
+      J4cerr <<"         NAME        : " << GetName() << J4endl;
+      J4cerr <<"         dist[0]     : " << distance[0] << J4endl;
+      J4cerr <<"      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+             << J4endl;
+#endif
+      return 1;
+      
    } 
 
    // 
@@ -585,67 +601,99 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
 
    distToA = DistanceToBoundary(kAxis0 & kAxisMin, A, p);
    distToC = DistanceToBoundary(kAxis0 & kAxisMax, C, p);
+   
+   // is p.z between a.z and c.z?
+   // p.z must be bracketed a.z and c.z.
+   if (A.z() > C.z()) {
+      if (p.z() > A.z()) {
+         A = GetBoundaryAtPZ(kAxis0 & kAxisMin, p);
+      } else if (p.z() < C.z()) {
+         C = GetBoundaryAtPZ(kAxis0 & kAxisMax, p);
+      }
+   } else {
+      if (p.z() > C.z()) {
+         C = GetBoundaryAtPZ(kAxis0 & kAxisMax, p);
+      } else if (p.z() < A.z()) {
+         A = GetBoundaryAtPZ(kAxis0 & kAxisMin, p);
+      }
+   }
+   
 
-   G4ThreeVector  d[2];    // direction vectors of boundary
-   G4ThreeVector  x0[2];   // foot of normal from line to p 
-   G4int          boundarytype[2];
+   G4ThreeVector  d[2];     // direction vectors of boundary
+   G4ThreeVector  x0[2];    // foot of normal from line to p 
+   G4int          btype[2]; // boundary type
 
    for (G4int i=0; i<2; i++) {
       if (i == 0) {
-         GetBoundaryParameters((kAxis0 & kAxisMax), d[i], x0[i], boundarytype[i]);
-         B = x0[i] + ((A.z() - x0[i].z()) / d[i].z()) * d[i]; // x0 + t*d , d is direction unit vector.
+         GetBoundaryParameters((kAxis0 & kAxisMax), d[i], x0[i], btype[i]);
+         B = x0[i] + ((A.z() - x0[i].z()) / d[i].z()) * d[i]; 
+         // x0 + t*d , d is direction unit vector.
       } else {
-         GetBoundaryParameters((kAxis0 & kAxisMin), d[i], x0[i], boundarytype[i]);
+         GetBoundaryParameters((kAxis0 & kAxisMin), d[i], x0[i], btype[i]);
          D = x0[i] + ((C.z() - x0[i].z()) / d[i].z()) * d[i]; 
       }
    }
 
    // In order to set correct diagonal, swap A and D, C and B if needed.  
-   G4ThreeVector pt(p.x(), p.y(), 0.); 
-   G4ThreeVector At(A.x(), A.y(), 0.); 
-   G4int         pside = AmIOnLeftSide(pt, At); 
+   G4ThreeVector pt(p.x(), p.y(), 0.);
+   G4double      rc = fabs(p.x());
+   G4ThreeVector surfacevector(rc, rc * fKappa * p.z(), 0.); 
+   G4int         pside = AmIOnLeftSide(pt, surfacevector); 
    G4double      test  = (A.z() - C.z()) * parity * pside;  
 
    if (test == 0) {
       if (pside == 0) {
          // p is on surface.
-         areacode[0] = kInside;
-         distance[0] = 0;
-         gxx[0] = gp;
-         G4ThreeVector xx(p);
+         xx = p;
+         areacode[0] = GetAreaCode(xx, FALSE);
+         if ((areacode[0] & kInside) == kInside) {
+            distance[0] = 0;
+            gxx[0] = gp;
+         } else {
+            // xx is out of boundary or corner
+            if ((areacode[0] & kCorner) == kCorner) {
+               xx = GetCorner(areacode[0]);
+               distance[0] = (xx - p).mag();
+            } else {
+               distance[0] = DistanceToBoundary(areacode[0], xx, p);
+            }
+            gxx[0] = fRot * xx + fTrans;
+         }
          G4bool isvalid = TRUE;
          fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                                 isvalid, 1, kDontValidate, &gp);
 #ifdef __SOLIDDEBUG__
-         G4cerr <<"~~~~~ J4TwistedSurface:DistanceToSurface(p) : last return ~~~~~~~~ " << G4endl;
-         G4cerr <<"   I'm a last winner ! or last poststep point is on my surface. " << G4endl;
-         G4cerr <<"   NAME        : " << GetName() << G4endl;
-         G4cerr <<"   xx          : " << xx << G4endl;
-         G4cerr <<"   gxx[0]      : " << gxx[0] << G4endl;
-         G4cerr <<"   dist[0]     : " << distance[0] << G4endl;
-         G4cerr <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << G4endl;
+         J4cerr <<"      ~~~~~ J4TwistedSurface:DistanceToSurface(p):return"
+                << J4endl;
+         J4cerr <<"         I'm a last winner !" << J4endl;
+         J4cerr <<"         Otherwise last poststep point is on my surface."
+                << J4endl;
+         J4cerr <<"         NAME        : " << GetName() << J4endl;
+         J4cerr <<"         xx          : " << xx << J4endl;
+         J4cerr <<"         gxx[0]      : " << gxx[0] << J4endl;
+         J4cerr <<"         dist[0]     : " << distance[0] << J4endl;
+         J4cerr <<"      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+             << J4endl;
 #endif
          return 1;
       } else {
          // A.z = C.z(). return distance to line.
          d[0] = C - A;
-         d[0] = d[0].unit();
-         G4double t  = - d[0] * (A - p);
-         xx = A + t * d[0];
-         distance[0] = (xx - p).mag();
-
+         distance[0] = DistanceToLine(p, A, d[0], xx);
          areacode[0] = kInside;
          gxx[0] = fRot * xx + fTrans;
          G4bool isvalid = TRUE;
          fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                                 isvalid, 1, kDontValidate, &gp);
 #ifdef __SOLIDDEBUG__
-         G4cerr <<"~~~~~ J4TwistedSurface:DistanceToSurface(p) : last return ~~~~~~~~ " << G4endl;
-         G4cerr <<"   NAME        : " << GetName() << G4endl;
-         G4cerr <<"   xx          : " << xx << G4endl;
-         G4cerr <<"   gxx[0]      : " << gxx[0] << G4endl;
-         G4cerr <<"   dist[0]     : " << distance[0] << G4endl;
-         G4cerr <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << G4endl;
+         J4cerr <<"      ~~~~~ J4TwistedSurface:DistanceToSurface(p):return"
+                << J4endl;
+         J4cerr <<"         NAME        : " << GetName() << J4endl;
+         J4cerr <<"         xx          : " << xx << J4endl;
+         J4cerr <<"         gxx[0]      : " << gxx[0] << J4endl;
+         J4cerr <<"         dist[0]     : " << distance[0] << J4endl;
+         J4cerr <<"      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+                << J4endl;
 #endif
          return 1;
       } 
@@ -692,12 +740,14 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
       fCurStat.SetCurrentStatus(0, gxx[0], distance[0] , areacode[0],
                                 isvalid, 1, kDontValidate, &gp);
 #ifdef __SOLIDDEBUG__
-      G4cerr <<"~~~~~ J4TwistedSurface:DistanceToSurface(p) : last return ~~~~~~~~ " << G4endl;
-      G4cerr <<"   NAME        : " << GetName() << G4endl;
-      G4cerr <<"   xx          : " << xx << G4endl;
-      G4cerr <<"   gxx[0]      : " << gxx[0] << G4endl;
-      G4cerr <<"   dist[0]     : " << distance[0] << G4endl;
-      G4cerr <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << G4endl;
+      J4cerr <<"      ~~~~~ J4TwistedSurface:DistanceToSurface(p):return"
+             << J4endl;
+      J4cerr <<"         NAME        : " << GetName() << J4endl;
+      J4cerr <<"         xx          : " << xx << J4endl;
+      J4cerr <<"         gxx[0]      : " << gxx[0] << J4endl;
+      J4cerr <<"         dist[0]     : " << distance[0] << J4endl;
+      J4cerr <<"      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+             << J4endl;
 #endif
 
       return 1;
@@ -705,61 +755,87 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
    }
 
 #ifdef __SOLIDDEBUG__
-   G4cerr << "//* J4TwistedSurface::DistanceToSurface(p):---------------------------------" << G4endl;
-   G4cerr << "//*   NAME          : " << GetName() << G4endl;
-   G4cerr << "//*   p             : " << p << G4endl; 
-   G4cerr << "//*   A, C, parity  : " << A << " , " << C << " , " << parity << G4endl;
-   G4cerr << "//*   nacb, ncad    : " << nacb << " , " << ncad << G4endl;
-   G4cerr << "//*   xxacb, xxcad  : " << xxacb << " , " << xxcad << G4endl;
-   G4cerr << "//*   distToACB, distToCAD  : " << distToACB << " , " << distToCAD << G4endl; 
-   G4cerr << "//*-------------------------------------------------------------------------" << G4endl;
+   J4cerr << "      ~~~ J4TwistedSurface::DistanceToSurface(p):~~~~~~~"
+          << J4endl;
+   J4cerr << "      //*   NAME          : " << GetName() << J4endl;
+   J4cerr << "      //*   p             : " << p << J4endl; 
+   J4cerr << "      //*   A, C, parity  : " << A << " , " << C << " , " 
+                                            << parity << J4endl;
+   J4cerr << "      //*   nacb, ncad    : " << nacb << " , " << ncad 
+          << J4endl;
+   J4cerr << "      //*   xxacb, xxcad  : " << xxacb << " , " << xxcad 
+          << J4endl;
+   J4cerr << "      //*   distToACB, distToCAD  : " << distToACB << " , "
+                                                << distToCAD << J4endl; 
+   J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          << J4endl;
 #endif
-#ifdef __SOLIDDEBUG__
-   G4cerr << "//* J4TwistedSurface::DistanceToSurface(p):---------------------------------" << G4endl;
-   G4cerr << "//*   nacb * (p - xxacb) : " <<  nacb * (p -xxacb)  << G4endl;
-   G4cerr << "//*   ncad * (p - xxcad) : " <<  ncad * (p -xxcad)  << G4endl;
-   G4cerr << "//*-------------------------------------------------------------------------" << G4endl;
-#endif
-
-   if (distance[0] < 0 || distance[1] < 0)
-   {
+   
+   if (distToACB * distToCAD > 0 && distToACB < 0) {
+      // both distToACB and distToCAD are negative.
+      // divide quadrangle into double triangle by diagonal
       G4ThreeVector normal;
       distance[0] = DistanceToPlane(p, A, B, C, D, parity, xx, normal);
-
-   } else if ( distance[0] * distance[1] < 0) {
-
-      if (distToACB > 0) {
-         distance[0] = distToACB;
-         xx   = xxacb;
-      } else {
-         distance[0] = distToCAD;
-         xx   = xxcad;
-      }
-
    } else {
-
-      if (distToACB <= distToCAD) {
-         distance[0] = distToACB;
-         xx   = xxacb;
+      if (distToACB * distToCAD > 0) {
+         // both distToACB and distToCAD are positive.
+         // Take smaller one.
+         if (distToACB <= distToCAD) {
+            distance[0] = distToACB;
+            xx   = xxacb;
+         } else {
+            distance[0] = distToCAD;
+            xx   = xxcad;
+         }
       } else {
-         distance[0] = distToCAD;
-         xx   = xxcad;
+         // distToACB * distToCAD is negative.
+         // take positive one
+         if (distToACB > 0) {
+            distance[0] = distToACB;
+            xx   = xxacb;
+         } else {
+            distance[0] = distToCAD;
+            xx   = xxcad;
+         }
       }
 
-   }
+#ifdef __BOUNDARYCHECK__     
+      // boundary check 
+      G4ThreeVector xxt(xx.x(), xx.y(), 0.);
+      G4double      xxrc     = fabs(xx.x());
+      G4ThreeVector xxsurfacevector(xxrc, xxrc * fKappa * xx.z(), 0.);
+      G4int         xxpside  = AmIOnLeftSide(xxt, xxsurfacevector);
+      G4double      xxtest   = pside * xxpside;
+      G4int         areacode = 0;
 
+      if (xxtest < 0) {
+         if (fabs(xx.x() - fAxisMin[0]) < fabs(xx.x() -fAxisMax[0])) {
+            // fAxisMin[0] : kAxisX minimum.
+            areacode |= (kAxis0 & kAxisMin);
+            distance[0] = DistanceToBoundary(areacode, xx, p);
+         } else {
+            // kAxisX maximum.
+            areacode |= (kAxis0 & kAxisMax);
+            distance[0] = DistanceToBoundary(areacode, xx, p);
+         }
+      }
+#endif
+      
+   }
    areacode[0] = kInside;
    gxx[0]      = fRot * xx + fTrans;
    G4bool isvalid = TRUE;
    fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                              isvalid, 1, kDontValidate, &gp);
 #ifdef __SOLIDDEBUG__
-      G4cerr <<"~~~~~ J4TwistedSurface:DistanceToSurface(p) : last return ~~~~~~~~ " << G4endl;
-      G4cerr <<"   NAME        : " << GetName() << G4endl;
-      G4cerr <<"   xx          : " << xx << G4endl;
-      G4cerr <<"   gxx[0]      : " << gxx[0] << G4endl;
-      G4cerr <<"   dist[0]     : " << distance[0] << G4endl;
-      G4cerr <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " << G4endl;
+      J4cerr <<"      ~~~~~ J4TwistedSurface:DistanceToSurface(p):return"
+             << J4endl;
+      J4cerr <<"         NAME        : " << GetName() << J4endl;
+      J4cerr <<"         xx          : " << xx << J4endl;
+      J4cerr <<"         gxx[0]      : " << gxx[0] << J4endl;
+      J4cerr <<"         dist[0]     : " << distance[0] << J4endl;
+      J4cerr <<"      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+             << J4endl;
 #endif
    return 1;
    
@@ -776,6 +852,8 @@ G4double J4TwistedSurface::DistanceToPlane(const G4ThreeVector &p,
                                                  G4ThreeVector &xx,
                                                  G4ThreeVector &n)
 {
+   static const G4double halftol = 0.5 * kCarTolerance;
+   
    G4ThreeVector M = 0.5*(A + B);
    G4ThreeVector N = 0.5*(C + D);
    G4ThreeVector xxanm;  // foot of normal from p to plane ANM
@@ -786,20 +864,42 @@ G4double J4TwistedSurface::DistanceToPlane(const G4ThreeVector &p,
    G4double distToanm = J4VSurface::DistanceToPlane(p, A, (N - A), (M - A), xxanm, nanm) * parity;
    G4double distTocmn = J4VSurface::DistanceToPlane(p, C, (M - C), (N - C), xxcmn, ncmn) * parity;
 
+   // if p is behind of both surfaces, abort.
+   if (distToanm * distTocmn > 0 && distToanm < 0) {
+      J4cerr << "      J4TwistedSurface::DistanceToPlane: p is "
+             << "behind the surfaces. abort." << J4endl;
+      abort();
+   }
+
+   // if p is on surface, return 0.
+   if (fabs(distToanm) <= halftol) {
+      xx = xxanm;
+      n  = nanm * parity;
+      return 0;
+   } else if (fabs(distTocmn) <= halftol) {
+      xx = xxcmn;
+      n  = ncmn * parity;
+      return 0;
+   }
+   
    if (distToanm <= distTocmn) {
-      if (distToanm >= 0) {
+      if (distToanm > 0) {
+         // both distanses are positive. take smaller one.
          xx = xxanm;
          n  = nanm * parity;
          return distToanm;
       } else {
+         // take -ve distance and call the function recursively.
          return DistanceToPlane(p, A, M, N, D, parity, xx, n);
       }
    } else {
-      if (distTocmn >= 0) {
+      if (distTocmn > 0) {
+         // both distanses are positive. take smaller one.
          xx = xxcmn;
          n  = ncmn * parity;
          return distTocmn;
       } else {
+         // take -ve distance and call the function recursively.
          return DistanceToPlane(p, C, N, M, B, parity, xx, n);
       }
    }
@@ -808,7 +908,7 @@ G4double J4TwistedSurface::DistanceToPlane(const G4ThreeVector &p,
 //=====================================================================
 //* GetAreaCode -------------------------------------------------------
 G4int J4TwistedSurface::GetAreaCode(const G4ThreeVector &xx, 
-                                          G4bool withTol) const
+                                          G4bool withTol)
 {
    // We must use the function in local coordinate system.
    // See the description of DistanceToSurface(p,v).
@@ -821,10 +921,14 @@ G4int J4TwistedSurface::GetAreaCode(const G4ThreeVector &xx,
       G4int zaxis = 1;
 
 #ifdef __SOLIDDEBUGAREACODE__
-      G4cerr << "//# J4TwistedSurface::GetAreaCode: ----------------------------" << G4endl;
-      G4cerr << "//#    fAxisMin,Max(xaxis)  : " << fAxisMin[xaxis] << " , " << fAxisMax[xaxis] << G4endl;
-      G4cerr << "//#    fAxisMin,Max(zaxis)  : " << fAxisMin[zaxis] << " , " << fAxisMax[zaxis] << G4endl;
-      G4cerr << "//# -----------------------------------------------------------" << G4endl;
+      J4cerr << "         === J4TwistedSurface::GetAreaCode ============"
+             << J4endl;
+      J4cerr << "         //#    fAxisMin,Max(xaxis)  : " 
+             << fAxisMin[xaxis] << " , " << fAxisMax[xaxis] << J4endl;
+      J4cerr << "         //#    fAxisMin,Max(zaxis)  : " 
+             << fAxisMin[zaxis] << " , " << fAxisMax[zaxis] << J4endl;
+      J4cerr << "         =============================================="
+             << J4endl;
 #endif
       
       if (withTol) {
@@ -909,9 +1013,9 @@ G4int J4TwistedSurface::GetAreaCode(const G4ThreeVector &xx,
       }
    } else {
 
-      G4cerr << "J4FlatSurface::GetAreaCode fAxis[0] = " << fAxis[0]
+      J4cerr << "          J4FlatSurface::GetAreaCode fAxis[0] = " << fAxis[0]
              << " fAxis[1] = " << fAxis[1]
-             << " is yet implemented. Write the code yourself." << G4endl;
+             << " is yet implemented. Write the code yourself." << J4endl;
       abort();
    }   
 }
@@ -966,9 +1070,9 @@ void J4TwistedSurface::SetCorners(J4TwistedTubs *solid)
       SetCorner(kCorner0Min1Max, x, y, z);
 
    } else {
-      G4cerr << "J4FlatSurface::SetCorners fAxis[0] = " << fAxis[0]
+      J4cerr << "J4FlatSurface::SetCorners fAxis[0] = " << fAxis[0]
       << " fAxis[1] = " << fAxis[1]
-      << " is yet implemented. Write the code yourself." << G4endl;
+      << " is yet implemented. Write the code yourself." << J4endl;
       abort();
    }
 }
@@ -977,8 +1081,8 @@ void J4TwistedSurface::SetCorners(J4TwistedTubs *solid)
 //* SetCorners() ------------------------------------------------------
 void J4TwistedSurface::SetCorners()
 {
-   G4cerr << "J4FlatSurface::SetCorners" 
-   << " is yet implemented. Write the code yourself." << G4endl;
+   J4cerr << "J4FlatSurface::SetCorners" 
+   << " is yet implemented. Write the code yourself." << J4endl;
    abort();
 }
 
@@ -1017,9 +1121,9 @@ void J4TwistedSurface::SetBoundaries()
                   GetCorner(kCorner0Min1Max), kAxisX);
                   
    } else {
-      G4cerr << "J4FlatSurface::SetBoundaries fAxis[0] = " << fAxis[0]
+      J4cerr << "J4FlatSurface::SetBoundaries fAxis[0] = " << fAxis[0]
       << " fAxis[1] = " << fAxis[1]
-      << " is yet implemented. Write the code yourself." << G4endl;
+      << " is yet implemented. Write the code yourself." << J4endl;
       abort();
    }
 }

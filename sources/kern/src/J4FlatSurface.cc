@@ -10,6 +10,7 @@
 #include "J4TwistedTubs.hh"
 
 //#define __SOLIDDEBUG__
+//#define __SOLIDDEBUGAREACODE__
 
 //=====================================================================
 //* constructor -------------------------------------------------------
@@ -28,11 +29,13 @@ J4FlatSurface::J4FlatSurface(const G4String         &name,
                           axis0max, axis1max)
 {   
    if (axis0 == kPhi && axis1 == kRho) {
-      G4cerr << "J4FlatSurface::Constructor: Swap axis0 and axis1. abort. " << G4endl;
+      J4cerr << "J4FlatSurface::Constructor: Swap axis0 and axis1. abort. " << J4endl;
       abort();
    }
    
-   fCurrentNormal = (rot.inverse()*n).unit();   // in local coordinate system
+   G4ThreeVector normal = rot.inverse()*n;
+   fCurrentNormal.normal = normal.unit();   // in local coordinate system
+   fIsValidNorm = TRUE;
 
    SetCorners();
    SetBoundaries();
@@ -51,9 +54,11 @@ J4FlatSurface::J4FlatSurface(const G4String      &name,
    fAxisMax[0] = solid->GetEndOuterRadius(i);  // Outer-hype radius at z=0
    fAxisMin[1] = -0.5*(solid->GetDPhi());
    fAxisMax[1] = -fAxisMin[1];
-   fCurrentNormal.set(0, 0, (fHandedness < 0 ? -1 : 1)); // Unit vector, in local coordinate system
+   fCurrentNormal.normal.set(0, 0, (fHandedness < 0 ? -1 : 1)); 
+         // Unit vector, in local coordinate system
    fRot.rotateZ(solid->GetEndPhi(i));
    fTrans.set(0, 0, solid->GetEndZ(i));
+   fIsValidNorm = TRUE;
 
    SetCorners();
    SetBoundaries();
@@ -67,12 +72,13 @@ J4FlatSurface::~J4FlatSurface()
 
 //=====================================================================
 //* GetNormal ---------------------------------------------------------
-G4ThreeVector J4FlatSurface::GetNormal(const G4ThreeVector &xx, G4bool isGlobal)
+G4ThreeVector J4FlatSurface::GetNormal(const G4ThreeVector &xx, 
+                                             G4bool isGlobal)
 {
    if (isGlobal) {
-      return fRot*fCurrentNormal;
+      return fRot*fCurrentNormal.normal;
    } else {
-      return fCurrentNormal;
+      return fCurrentNormal.normal;
    }
 }
 
@@ -112,15 +118,15 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
    G4ThreeVector v = fRot.inverse()*gv;
 
 #ifdef __SOLIDDEBUG__
-   G4cerr << "~~~~~ J4FlatSurface:DistanceToSurface(p,v) : Start from gp, gv,"
-          << " p, v ,n :" << G4endl;
-   G4cerr << "      "
-          << GetName() << " , "
-          << gp << " , "
-          << gv << " , "
-          << p << " , "
-          << v << " , " 
-          << fCurrentNormal << " ~~~~~ " << G4endl;
+   J4cerr << "      ~~~~~ J4FlatSurface:DistanceToSurface(p,v) : Start" 
+          << J4endl;
+   J4cerr << "         Name : " << GetName() << J4endl;
+   J4cerr << "         gp   : " << gp << J4endl;
+   J4cerr << "         gv   : " << gv << J4endl;
+   J4cerr << "         p    : " << p << J4endl;
+   J4cerr << "         v    : " << v << J4endl;
+   J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
+          << J4endl;
 #endif    
  
    //
@@ -128,7 +134,7 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
    // if p is on surface, distance = 0. 
    //
 
-   if (fabs(p.z()) <= 0.5 * kCarTolerance) {   // if p is on the plane, return 1
+   if (fabs(p.z()) == 0.) {   // if p is on the plane
       distance[0] = 0;
       G4ThreeVector xx = p;
       gxx[0] = fRot*xx + fTrans;
@@ -149,17 +155,17 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
       }
 
 #ifdef __SOLIDDEBUG__
-      G4cerr << "~~~~~ J4FlatSurface:DistanceToSurface(p,v) : last return ~~~~~~ "
-             << G4endl;
-      G4cerr << "   P is on surface. return 0. " << G4endl;
-      G4cerr << "   NAME        : " << GetName() << G4endl;
-      G4cerr << "   xx          : " << xx << G4endl;
-      G4cerr << "   gxx[0]      : " << gxx[0] << G4endl;
-      G4cerr << "   dist[0]     : " << distance[0] << G4endl;
-      G4cerr << "   areacode[0] : " << areacode[0] << G4endl;
-      G4cerr << "   isvalid[0]  : " << isvalid[0]  << G4endl;
-      G4cerr << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-             << G4endl;
+      J4cerr << "      ~~~~~ J4FlatSurface:DistanceToSurface(p,v) : return"
+             << J4endl;
+      J4cerr << "         P is on surface. return 0. " << J4endl;
+      J4cerr << "         NAME        : " << GetName() << J4endl;
+      J4cerr << "         xx          : " << xx << J4endl;
+      J4cerr << "         gxx[0]      : " << gxx[0] << J4endl;
+      J4cerr << "         dist[0]     : " << distance[0] << J4endl;
+      J4cerr << "         areacode[0] : " << areacode[0] << J4endl;
+      J4cerr << "         isvalid[0]  : " << isvalid[0]  << J4endl;
+      J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
+             << J4endl;
 #endif
 
       return 1;
@@ -176,12 +182,12 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
                                      isvalid[0], 0, validate, &gp, &gv);
 
 #ifdef __SOLIDDEBUG__
-      G4cerr << "~~~~~ J4FlatSurface:DistanceToSurface(p,v) : last return ~~~~~~ "
-             << G4endl;
-      G4cerr << "  v.z = 0. no intersection. return 0. " << G4endl; 
-      G4cerr << "   NAME     : " << GetName() << G4endl;
-      G4cerr << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-             << G4endl;
+      J4cerr << "      ~~~~~ J4FlatSurface:DistanceToSurface(p,v) : return"
+             << J4endl;
+      J4cerr << "         v.z = 0. no intersection. return 0. " << J4endl; 
+      J4cerr << "         NAME     : " << GetName() << J4endl;
+      J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
+             << J4endl;
 #endif   
 
       return 0;
@@ -196,32 +202,32 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
    if (validate == kValidateWithTol) {
       areacode[0] = GetAreaCode(xx);
       if ((areacode[0] & kAreaMask) != kOutside) {
-         if (distance[0] > 0) isvalid[0] = TRUE;
+         if (distance[0] >= 0) isvalid[0] = TRUE;
       }
    } else if (validate == kValidateWithoutTol) {
       areacode[0] = GetAreaCode(xx, FALSE);
       if ((areacode[0] & kAreaMask) == kInside) {
-         if (distance[0] > 0) isvalid[0] = TRUE;
+         if (distance[0] >= 0) isvalid[0] = TRUE;
       }
    } else { // kDontValidate
       areacode[0] = kInside;
-      if (distance[0] > 0) isvalid[0] = TRUE;
+         if (distance[0] >= 0) isvalid[0] = TRUE;
    }
 
    fCurStatWithV.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                                   isvalid[0], 1, validate, &gp, &gv);
 
 #ifdef __SOLIDDEBUG__
-   G4cerr <<"~~~~~ J4FlatSurface:DistanceToSurface(p,v) : last return ~~~~~~ "
-          << G4endl;
-   G4cerr <<"   NAME        : " << GetName() << G4endl;
-   G4cerr <<"   xx          : " << xx << G4endl;
-   G4cerr <<"   gxx[0]      : " << gxx[0] << G4endl;
-   G4cerr <<"   dist[0]     : " << distance[0] << G4endl;
-   G4cerr <<"   areacode[0] : " << areacode[0] << G4endl;
-   G4cerr <<"   isvalid[0]  : " << isvalid[0]  << G4endl;
-   G4cerr <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
-          << G4endl;
+   J4cerr <<"      ~~~~~ J4FlatSurface:DistanceToSurface(p,v) : return"
+          << J4endl;
+   J4cerr <<"         NAME        : " << GetName() << J4endl;
+   J4cerr <<"         xx          : " << xx << J4endl;
+   J4cerr <<"         gxx[0]      : " << gxx[0] << J4endl;
+   J4cerr <<"         dist[0]     : " << distance[0] << J4endl;
+   J4cerr <<"         areacode[0] : " << areacode[0] << J4endl;
+   J4cerr <<"         isvalid[0]  : " << isvalid[0]  << J4endl;
+   J4cerr <<"      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
+          << J4endl;
 #endif
 
    return 1;
@@ -260,19 +266,33 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
    }
    
    G4ThreeVector p = fRot.inverse()*gp - fTrans;
+   G4ThreeVector xx;
 
    // The plane is placed on origin with making its normal 
    // parallel to z-axis. 
    if (fabs(p.z()) <= 0.5 * kCarTolerance) {   // if p is on the plane, return 1
       distance[0] = 0;
-      G4ThreeVector xx = p;
-      gxx[0] = fRot*xx + fTrans;
+      xx = p;
    } else {
       distance[0] = fabs(p.z());
-      G4ThreeVector xx(p.x(), p.y(), 0);  
-      gxx[0] = fRot*xx + fTrans;
+      xx.set(p.x(), p.y(), 0);  
    }
 
+#ifdef __BOUNDARYCHECK__
+   areacode[0] = GetAreaCode(xx, FALSE);
+   if ((areacode[0] & kInside) != kInside) {
+      // xx is out of boundary. 
+      // return distance to boundary or corner.
+      if ((areacode[0] & kCorner) == kCorner) {
+         xx = GetCorner(areacode[0]);
+         distance[0] = (xx - p).mag();
+      } else {
+         distance[0] = DistanceToBoundary(areacode[0], xx, p);
+      }
+   }
+#endif
+
+   gxx[0] = fRot*xx + fTrans;
    areacode[0] = kInside;
    G4bool isvalid = TRUE;
    fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
@@ -284,13 +304,10 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
 //=====================================================================
 //* GetAreaCode -------------------------------------------------------
 G4int J4FlatSurface::GetAreaCode(const G4ThreeVector &xx, 
-                                       G4bool withTol) const
+                                       G4bool withTol)
 {
 
-   G4RotationMatrix unitrot; // unit matrix
-   static const G4double         rtol      = 0.5*kRadTolerance;
-   static const G4RotationMatrix rottol    = unitrot.rotateZ(0.5*kAngTolerance);
-   static const G4RotationMatrix invrottol = unitrot.rotateZ(-0.5*kAngTolerance);
+   static const G4double rtol = 0.5*kRadTolerance;
    
    G4int areacode = 0;
 
@@ -300,21 +317,21 @@ G4int J4FlatSurface::GetAreaCode(const G4ThreeVector &xx,
       G4ThreeVector dphimin;   // direction of phi-minimum boundary
       G4ThreeVector dphimax;   // direction of phi-maximum boundary
       dphimin = GetCorner(kCorner0Max1Min);
-      dphimax = GetCorner(kCorner0Max1Max);
+      dphimax = GetCorner(kCorner0Max1Max);   
       
       if (withTol) {
          
          // inside or outside
          if (xx.getRho() >= fAxisMin[rhoaxis] + rtol 
                     && xx.getRho() <= fAxisMax[rhoaxis] - rtol
-                    && xx.cross(rottol*dphimin).z() <= 0
-                    && xx.cross(invrottol*dphimax).z() >= 0 ) {
+                    && (AmIOnLeftSide(xx, dphimin) < 0)    // xx is rightside of dphimin
+                    && (AmIOnLeftSide(xx, dphimax) > 0)) { // xx is leftside of dphimax
             areacode |= (kAxis0 & kAxisRho) | (kAxis1 & kAxisPhi) | kInside;
             return areacode;
          } else if (xx.getRho() <= fAxisMin[rhoaxis] - rtol 
                     || xx.getRho() >= fAxisMax[rhoaxis] + rtol
-                    || xx.cross(invrottol*dphimin).z() >= 0
-                    || xx.cross(rottol*dphimax).z() <= 0 ) {
+                    || (AmIOnLeftSide(xx, dphimin) > 0)    // xx is leftside of dphimin
+                    || (AmIOnLeftSide(xx, dphimax) < 0)) { // xx is rightside of dphimax
             areacode |= (kAxis0 & kAxisRho) | (kAxis1 & kAxisPhi) | kOutside;
             return areacode;
          }
@@ -327,15 +344,15 @@ G4int J4FlatSurface::GetAreaCode(const G4ThreeVector &xx,
             areacode |= (kAxis0 & (kAxisRho | kAxisMax)) | kBoundary; // rho-max
          }         
          // on boundary of phi-axis
-         if (xx.cross(rottol*dphimin).z() > 0) { 
-            areacode |= (kAxis1 & (kAxisPhi | kAxisMin)); // phi-min
+         if (AmIOnLeftSide(xx, dphimin) == 0) {           // xx is on dphimin
+            areacode |= (kAxis1 & (kAxisPhi | kAxisMin)); 
             if (areacode & kBoundary) {
                areacode |= kCorner;  // xx is on the corner.
             } else {
                areacode |= kBoundary;
             }
-         } else if (xx.cross(invrottol*dphimax).z() < 0) {
-            areacode |= (kAxis1 & (kAxisPhi | kAxisMax)); // phi-max
+         } else if (AmIOnLeftSide(xx, dphimax) == 0) {    // xx is on dphimax
+            areacode |= (kAxis1 & (kAxisPhi | kAxisMax)); 
             if (areacode & kBoundary) {
                areacode |= kCorner;  // xx is on the corner.
             } else {
@@ -349,8 +366,8 @@ G4int J4FlatSurface::GetAreaCode(const G4ThreeVector &xx,
          // inside
          if (xx.getRho() >= fAxisMin[rhoaxis]
              && xx.getRho() <= fAxisMax[rhoaxis]
-             && xx.cross(dphimin).z() <= 0
-             && xx.cross(dphimax).z() >= 0 ) {
+             && (AmIOnLeftSide(xx, dphimin, FALSE) < 0)    // xx is rightside of dphimin
+             && (AmIOnLeftSide(xx, dphimax, FALSE) > 0)) { // xx is leftside of dphimax
             areacode |= (kAxis0 & kAxisRho) | (kAxis1 & kAxisPhi) | kInside;
             return areacode;
          }
@@ -362,16 +379,17 @@ G4int J4FlatSurface::GetAreaCode(const G4ThreeVector &xx,
          } else if (xx.getRho() > fAxisMax[rhoaxis]) {
             areacode |= (kAxis0 & (kAxisRho | kAxisMax)) | kBoundary;
          }
+         
          // out of boundary of phi-axis
-         if (xx.cross(dphimin).z() > 0 ) {
-            areacode |= (kAxis1 & (kAxisPhi | kAxisMin)) ;
+         if (AmIOnLeftSide(xx, dphimin, FALSE) >= 0) {       // xx is leftside or
+            areacode |= (kAxis1 & (kAxisPhi | kAxisMin)) ;   // boundary of dphimin
             if (areacode & kBoundary) {
                areacode |= kCorner;  // xx is on the corner.
             } else {
                areacode |= kBoundary;
             }
-         } else if (xx.cross(dphimax).z() < 0 ) {
-            areacode |= (kAxis1 & (kAxisPhi | kAxisMax)) ;
+         } else if (AmIOnLeftSide(xx, dphimax, FALSE) <= 0) { // xx is rightside or
+            areacode |= (kAxis1 & (kAxisPhi | kAxisMax)) ;    // boundary of dphimax
             if (areacode & kBoundary) {
                areacode |= kCorner;  // xx is on the corner.
             } else {
@@ -382,9 +400,9 @@ G4int J4FlatSurface::GetAreaCode(const G4ThreeVector &xx,
       }
    } else {
 
-      G4cerr << "J4FlatSurface::GetAreaCode(withTol) fAxis[0] = " << fAxis[0]
+      J4cerr << "      J4FlatSurface::GetAreaCode(withTol) fAxis[0] = " << fAxis[0]
              << " fAxis[1] = " << fAxis[1]
-             << " is yet implemented. Write the code yourself." << G4endl;
+             << " is yet implemented. Write the code yourself." << J4endl;
       abort();
    }
 }
@@ -424,9 +442,9 @@ void J4FlatSurface::SetCorners()
          SetCorner(kCorner0Min1Max, x, y, z);
        
    } else {
-      G4cerr << "J4FlatSurface::SetCorners fAxis[0] = " << fAxis[0]
+      J4cerr << "      J4FlatSurface::SetCorners fAxis[0] = " << fAxis[0]
              << " fAxis[1] = " << fAxis[1]
-             << " is yet implemented. Write the code yourself." << G4endl;
+             << " is yet implemented. Write the code yourself." << J4endl;
       abort();   
    }
 }
@@ -440,25 +458,35 @@ void J4FlatSurface::SetBoundaries()
    
    if (fAxis[0] == kRho && fAxis[1] == kPhi) {
    
-      G4ThreeVector direction(0., 0., 0.);
-      SetBoundary(kAxis0 & kAxisMin, direction,
+      G4ThreeVector direction;
+      // kAxis0 & kAxisMin
+      direction = GetCorner(kCorner0Min1Max) - GetCorner(kCorner0Min1Min);
+      direction = direction.unit();
+      SetBoundary(kAxis0 & (kAxisPhi | kAxisMin), direction,
                   GetCorner(kCorner0Min1Min), kAxisPhi);
-      
-      SetBoundary( kAxis0 & kAxisMax, direction,
-                  GetCorner(kCorner0Min1Max), kAxisPhi);
-      
+                  
+      // kAxis0 & kAxisMax
+      direction = GetCorner(kCorner0Max1Max) - GetCorner(kCorner0Max1Min);
+      direction = direction.unit();
+      SetBoundary(kAxis0 & (kAxisPhi | kAxisMax), direction,
+                  GetCorner(kCorner0Max1Min), kAxisPhi);
+
+      // kAxis1 & kAxisMin
       direction = GetCorner(kCorner0Max1Min) - GetCorner(kCorner0Min1Min);
-      SetBoundary(kAxis1 & kAxisMin, direction.unit(), 
-                  GetCorner(kCorner0Min1Min), kAxisRho); 
-   
+      direction = direction.unit();
+      SetBoundary(kAxis1 & (kAxisRho | kAxisMin), direction,
+                  GetCorner(kCorner0Min1Min), kAxisRho);
+      
+      // kAxis1 & kAxisMax
       direction = GetCorner(kCorner0Max1Max) - GetCorner(kCorner0Min1Max);
-      SetBoundary(kAxis1 & kAxisMax, direction.unit(), 
-                  GetCorner(kCorner0Min1Max), kAxisRho);
-                                 
+      direction = direction.unit();
+      SetBoundary(kAxis1 & (kAxisRho | kAxisMax), direction,
+                  GetCorner(kCorner0Min1Max), kAxisPhi);
+                                       
    } else {
-      G4cerr << "J4FlatSurface::SetBoundaries fAxis[0] = " << fAxis[0] 
+      J4cerr << "      J4FlatSurface::SetBoundaries fAxis[0] = " << fAxis[0] 
              << " fAxis[1] = " << fAxis[1]
-             << " is yet implemented. Write the code yourself." << G4endl;
+             << " is yet implemented. Write the code yourself." << J4endl;
       abort();
    }
 }

@@ -1,17 +1,18 @@
 ------------------------------------------------------------------------------
                                  JUPITER 
 ------------------------------------------------------------------------------
-Version:        2.0.00
+Version:        2.1.00
 
 Description:    JLC Monte-Carlo event simulator based on Geant4 
 
 UpdateRecord:   
-  2002/11/01    K.Fujii  (v.2.0.00)	Replaced Main stream
-  2002/10/30    K.Fujii  (v.1.8.00)	Merged with K.Hosina's main stream
-  2002/10/28    K.Fujii  (v.1.7.01)	Separated magnet from kern
-  2002/10/27    K.Fujii  (v.1.7.00)	Rearranged directory tree.
+  2002/11/05    K.Hoshina  (v.2.1.00)   J4TwistedTubs fixed. J4Timer added.
+  2002/11/01    K.Fujii    (v.2.0.00)	Replaced Main stream
+  2002/10/30    K.Fujii    (v.1.8.00)	Merged with K.Hosina's main stream
+  2002/10/28    K.Fujii    (v.1.7.01)	Separated magnet from kern
+  2002/10/27    K.Fujii    (v.1.7.00)	Rearranged directory tree.
 					Made gcc3.X compliant.
-  2002/04/22    K.Hoshina(v.1.2.03)	
+  2002/04/22    K.Hoshina  (v.1.2.03)	
 
 Usage:
 

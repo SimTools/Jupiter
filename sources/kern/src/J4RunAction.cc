@@ -54,7 +54,7 @@ void J4RunAction::EndOfRunAction(const G4Run* aRun)
 //////////////////////////////////////////////////////
 {
   G4UImanager* UI= G4UImanager::GetUIpointer();
-  if(G4VVisManager::GetConcreteInstance()) {
+  if (G4VVisManager::GetConcreteInstance()) {
     UI-> ApplyCommand("/vis/scene/notifyHandlers");
     G4UImanager::GetUIpointer()-> ApplyCommand("/vis/draw/update");
   }  

@@ -38,7 +38,7 @@ public:
    virtual ~J4TwistedSurface();
    
    virtual G4ThreeVector  GetNormal(const G4ThreeVector &xx, G4bool isGlobal = FALSE) ;   
-
+   
    virtual G4int          DistanceToSurface(const G4ThreeVector &gp,
                                             const G4ThreeVector &gv,
                                                   G4ThreeVector  gxx[],
@@ -52,6 +52,8 @@ public:
                                                   G4double       distance[],
                                                   G4int          areacode[]);
  
+   inline G4ThreeVector   ProjectAtPXPZ(const G4ThreeVector &p, G4bool isglobal = FALSE) const ;
+
  private:
    virtual G4double       DistanceToPlane(const G4ThreeVector &p,
                                           const G4ThreeVector &A,
@@ -63,7 +65,7 @@ public:
                                                 G4ThreeVector &n);
 
    virtual G4int          GetAreaCode(const G4ThreeVector &xx, 
-                                            G4bool         withTol = TRUE) const;
+                                            G4bool         withTol = TRUE);
 
    virtual void           SetCorners();
    virtual void           SetCorners(J4TwistedTubs *solid);
@@ -76,5 +78,32 @@ private:
    G4double       fKappa;          // tan(TwistedAngle/2)/HalfLenZ;
   
 };   
+
+
+//========================================================
+// inline function
+//========================================================
+
+inline
+G4ThreeVector J4TwistedSurface::ProjectAtPXPZ(const G4ThreeVector &p, 
+                                              G4bool isglobal) const 
+{
+  // Get Rho at p.z() on Hyperbolic Surface.
+  G4ThreeVector tmpp;
+  if (isglobal) {
+     tmpp = fRot.inverse()*p - fTrans;
+  } else {
+     tmpp = p;
+  }
+  
+  G4ThreeVector xx(p.x(), p.x() * fKappa * p.z(), p.z());
+  
+  if (isglobal) {
+     return (fRot * xx + fTrans);
+  } else {
+     return xx;
+  }
+  
+}
 
 #endif

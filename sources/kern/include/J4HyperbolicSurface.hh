@@ -55,15 +55,15 @@ public:
                                                    G4int          areacode[]);
  
    virtual G4ThreeVector   GetNormal(const G4ThreeVector &xx, G4bool isGlobal = FALSE) ;
-   virtual EInside         Inside(const G4ThreeVector &gp) const ;
+   virtual EInside         Inside(const G4ThreeVector &gp) ;
    
    inline virtual G4double GetRhoAtPZ(const G4ThreeVector &p, G4bool isglobal = FALSE) const ;
    
 private:
    virtual G4int           GetAreaCode(const G4ThreeVector &xx, 
-                                             G4bool withTol = TRUE) const;
+                                             G4bool withTol = TRUE);
    virtual G4int           GetAreaCodeInPhi(const G4ThreeVector &xx, 
-                                                  G4bool withTol = TRUE) const;
+                                                  G4bool withTol = TRUE);
 
    virtual void            SetCorners();
    virtual void            SetCorners(J4TwistedTubs *solid);
@@ -76,6 +76,12 @@ private:
    G4double          fTan2Stereo;   // tan(StereoAngle)**2
    G4double          fR0;           // radius at z = 0
    G4double          fR02;          // radius**2 at z = 0
+   class             Insidetype{
+                       public:
+                         G4ThreeVector gp;
+                         EInside       inside;
+                     };
+   Insidetype        fInside;
 
 };
 

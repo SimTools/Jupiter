@@ -54,7 +54,7 @@ public:
                                                   
 protected:                                                  
    virtual G4int          GetAreaCode(const G4ThreeVector &xx, 
-                                      G4bool withTol = TRUE) const;
+                                      G4bool withTol = TRUE) ;
 
 private:
 

@@ -21,14 +21,18 @@
 //*************************************************************************
 
 #include "G4VSolid.hh"
+#include "G4EventManager.hh"
 #include "J4FlatSurface.hh"
 #include "J4TwistedSurface.hh"
 #include "J4HyperbolicSurface.hh"
+#include "J4PVPlacement.hh"
 
 //#define __SOLIDDEBUG__
 
 class G4SolidExtentList;
 class G4ClippablePolygon;
+class J4VComponent;
+
 
 class J4TwistedTubs : public G4VSolid
 {
@@ -204,8 +208,76 @@ class J4TwistedTubs : public G4VSolid
   J4VSurface *fFormerTwisted;  // Surface of +ve phi
   J4VSurface *fInnerHype;      // Surface of -ve r
   J4VSurface *fOuterHype;      // Surface of +ve r
-
+    
+  class       LastState {                // last Inside result
+                public:
+                   LastState()
+                   {
+                      p.set(kInfinity,kInfinity,kInfinity);
+                      inside = kOutside;
+                   }
+                   virtual ~LastState(){}
+                public:
+                   G4ThreeVector p;
+                   EInside       inside;
+              };
+              
+  class       LastVector{                // last SurfaceNormal result
+                public:
+                   LastVector()
+                   {
+                      p.set(kInfinity,kInfinity,kInfinity);
+                      vec.set(kInfinity,kInfinity,kInfinity);
+                      surface = new J4VSurface*[1];
+                   }
+                   virtual ~LastVector()
+                   {
+                      delete surface[0];
+                      delete [] surface;
+                   }
+                public:
+                   G4ThreeVector   p;
+                   G4ThreeVector   vec;
+                   J4VSurface    **surface;
+              };
+              
+  class       LastValue{                // last G4double value
+                public:
+                   LastValue()
+                   {
+                      p.set(kInfinity,kInfinity,kInfinity);
+                      value = DBL_MAX;
+                   }
+                   virtual ~LastValue(){}
+                public:
+                   G4ThreeVector p;
+                   G4double      value;
+              };
+              
+  class       LastValueWithDoubleVector{ // last G4double value
+                public:
+                   LastValueWithDoubleVector()
+                   {
+                      p.set(kInfinity,kInfinity,kInfinity);
+                      vec.set(kInfinity,kInfinity,kInfinity);
+                      value = DBL_MAX;
+                   }
+                   virtual ~LastValueWithDoubleVector(){}
+                public:
+                   G4ThreeVector p;
+                   G4ThreeVector vec;
+                   G4double      value;
+              };
+              
+  LastState    fLastInside;
+  LastVector   fLastNormal;
+  LastValue    fLastDistanceToIn;
+  LastValue    fLastDistanceToOut;
+  LastValueWithDoubleVector   fLastDistanceToInWithV;
+  LastValueWithDoubleVector   fLastDistanceToOutWithV;
+             
  };
+ 
 
 //=====================================================================
 //---------------------
