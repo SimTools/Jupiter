@@ -48,7 +48,10 @@ J4ITLayer::J4ITLayer(J4VDetectorComponent* parent,
     fRmin     = list->GetLayerInnerR(me);
     fRmax     = list->GetLayerOuterR(me);
     fLen      = list->GetLayerHalfZ(me);
-    fTotalPhi = ((G4Tubs *)parent->GetLV()->GetSolid())->GetDeltaPhiAngle();
+//    fTotalPhi = ((G4Tubs *)parent->GetLV()->GetSolid())->GetDeltaPhiAngle();
+//    This statement won't work.  Put dphi by hand
+    
+    fTotalPhi = list->GetLayerDeltaPhi();
     fOffset   = 0.;
     
 }
