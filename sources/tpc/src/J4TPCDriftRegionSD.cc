@@ -1,6 +1,6 @@
 //*************************************************************************
 //* --------------------
-//* J4TPCLayerSD
+//* J4TPCDriftRegionSD
 //* --------------------
 //* (Description)
 //* 	Class for describing his/her sensitive detector.
@@ -9,8 +9,13 @@
 //*	2004/08/06  A.Yamaguchi	Original version.
 //*************************************************************************
 
-#include "J4TPCLayerSD.hh"
-#include <math.h>
+#include "J4TPCDriftRegionSD.hh"
+#include "J4TPCPostHit.hh"
+#include "J4VTPCDetectorComponent.hh"
+#include "G4VSolid.hh"
+#include "G4RotationMatrix.hh"
+
+G4int J4TPCDriftRegionSD::fgTrackRegID = -1;
  
 //=====================================================================
 //---------------------
@@ -20,22 +25,23 @@
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4TPCLayerSD::J4TPCLayerSD(J4VDetectorComponent* detector)
+J4TPCDriftRegionSD::J4TPCDriftRegionSD(J4VDetectorComponent* detector)
 		   :J4VSD<J4TPCLayerHit>(detector)
 {  
+  SetCurTrackID(INT_MAX);
 }
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
-J4TPCLayerSD::~J4TPCLayerSD()
+J4TPCDriftRegionSD::~J4TPCDriftRegionSD()
 {
 }
 
 //=====================================================================
 //* Initialize --------------------------------------------------------
 
-void J4TPCLayerSD::Initialize(G4HCofThisEvent* HCTE)
+void J4TPCDriftRegionSD::Initialize(G4HCofThisEvent* HCTE)
 {
   //create hit collection(s) and
   //push H.C. to "Hit Collection of This Event"
@@ -47,76 +53,86 @@ void J4TPCLayerSD::Initialize(G4HCofThisEvent* HCTE)
 //=====================================================================
 //* ProcessHits -------------------------------------------------------
 
-G4bool J4TPCLayerSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
+G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
 {
   //In order to use Get function, you must call SetNewStep() at first.
   
   SetNewStep(aStep);
-   
-  //Only when a charged particle has just come into a sensitive detector,
-  //create a new hit
-  
-  if(GetCharge() == 0.) return FALSE;
-  
-      
+
+  const G4ThreeVector    &pos      = GetPostPosition();
+  G4ThreeVector           p        = GetMomentum();
+  J4VComponent*          location  = GetComponent();
+  G4int                  trackID       = GetTrackID();
+#if 1
+  const G4RotationMatrix  *rotp     = GetRotation();
+  G4ThreeVector            localp   = rotp ? rotp->inverse() * p : p;
+  G4ThreeVector            localpos = (rotp ? rotp->inverse()
+                                    * (pos - GetTranslation())
+                                    : (pos - GetTranslation()));
+  G4double                 distance = location->GetSolid()
+                                      ->DistanceToOut(localpos, localp.unit());
+
+  if (distance > kCarTolerance || trackID >= GetCurTrackID()) {
+     return FALSE;
+  }
+
+  SetCurTrackID(trackID);
+#endif
   //Get particle information
 
-  J4VComponent*          location      = GetComponent();
-  G4int                  trackID       = GetTrackID();
   G4int                  mothertrackID = GetMotherTrackID();
   G4ParticleDefinition  *particle      = GetParticle();
   G4double               tof           = GetTof();
-  G4double               edep          = GetEnergyDeposit();
   G4double               etot          = GetTotalEnergy();
-  G4ThreeVector          p             = GetMomentum();
-  const G4ThreeVector   &pre           = GetPrePosition();
-  const G4ThreeVector   &pos           = GetPostPosition();
   
 #if 0  
-  G4cerr << "SDname = " << location->GetName() << " " 
+  G4cerr << "SDname = " << GetComponent()->GetName() << " " 
   	 << "TrackID = " << trackID << " " 
   	 << "ParticleName = " << particle->GetParticleName() << " "
   	 << "PreStepPoint(x,y,z) = " << pre.x() << " " 
-  	 << pre.y() << " " << pre.z() << G4endl; 
+  	 << pre.y() << " " << pre.z() << G4endl 
+         << "PreStepR =  " << pre.perp() << " "
+         << "PostStepR = " << pos.perp() << G4endl;
+#endif
+
+#if 0
+  // write only if hit is not in layer
+  if (static_cast<J4VTPCDetectorComponent *>(GetComponent(-1))->IsLayer()) {
+     return FALSE;
+  }
+  
 #endif
 
   // Create a new hit and push them to "Hit Coleltion"
  
-  J4TPCLayerHit* hit = 
-    new J4TPCLayerHit( location, trackID, mothertrackID, particle,
-    			        tof, edep, etot, p, pre, pos);
+  J4TPCPostHit* hitp = 
+    new J4TPCPostHit(location, trackID, mothertrackID, particle,
+       			        tof, etot, p, pos);
  
-  ((J4TPCLayerHitBuf*)GetHitBuf())->insert(hit);
+  static_cast<J4TPCPostHitBuf *>(GetHitBuf())->insert(hitp);
 
   return TRUE;
-}
+} 
 
 //=====================================================================
 //* EndOfEvent --------------------------------------------------------
 
-void J4TPCLayerSD::EndOfEvent(G4HCofThisEvent *)
+void J4TPCDriftRegionSD::EndOfEvent(G4HCofThisEvent *)
 {			
+  SetCurTrackID(INT_MAX);
 }
-
-//=====================================================================
-//* clear -------------------------------------------------------------
-
 
 //=====================================================================
 //* DrawAll -----------------------------------------------------------
 
-void J4TPCLayerSD::DrawAll()
+void J4TPCDriftRegionSD::DrawAll()
 {
 }
 
 //=====================================================================
 //* PrintAll ----------------------------------------------------------
 
-void J4TPCLayerSD::PrintAll()
+void J4TPCDriftRegionSD::PrintAll()
 {
-  G4int nHit= ((J4TPCLayerHitBuf*)GetHitBuf())-> entries();
-  G4cout << "------------------------------------------" << G4endl
-         << "*** tracker Hit (#hits=" << nHit << ")" << G4endl;
-  ((J4TPCLayerHitBuf*)GetHitBuf())-> PrintAllHits();
 }
 

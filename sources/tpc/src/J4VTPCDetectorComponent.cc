@@ -33,7 +33,7 @@ J4VTPCDetectorComponent::J4VTPCDetectorComponent(
                                 G4int                 copyno ) :
                          J4VDetectorComponent(fSubGroup, name, 
                          		      parent, nclones,	 
-                         		      nbrothers, me, copyno)   
+                         		      nbrothers, me, copyno)
 { 
 }
 

@@ -19,7 +19,7 @@
 // constants (detector parameters)
 //--------------------------------
 
-G4String J4TPCHalf::fFirstName("TPCHalf");
+G4String J4TPCHalf::fFirstName("Half");
 
 //=====================================================================
 //---------------------
@@ -44,13 +44,6 @@ J4TPCHalf::J4TPCHalf(J4VDetectorComponent *parent,
 
 J4TPCHalf::~J4TPCHalf()
 {
-  J4TPCParameterList *list = OpenParameterList(); 
-  if (fLayers){	
-    for (G4int i = 0; i < list->GetNlayers(); i++) {
-      if(Deregister(fLayers[i])) delete fLayers [i];
-    } 
-    if (Deregister(fLayers)) delete [] fLayers;
-  }
 }
 
 //=====================================================================
@@ -76,18 +69,19 @@ void J4TPCHalf::Assemble()
     PaintLV(list->GetTPCVisAtt(), list->GetTPCColor());
   	
     // Install daughter PV //
-    // Install Layer       //
-  		  
-    G4int  nlayers = list->GetNlayers();
-    fLayers = new J4TPCLayer* [nlayers];
-    Register(fLayers);
-    for (G4int i = 0; i < nlayers + 1; i++) {     // "+ 1" <- t0 detector
-      fLayers [i] = new J4TPCLayer(this, 1, nlayers, i);
-      Register(fLayers [i]);
-      fLayers [i]->InstallIn(this);  
-      
-      SetDaughter(fLayers[i]);
-    }  
+    // Install T0 detector       //
+#if 1
+    fLayer = new J4TPCLayer(this, 1, list->GetNlayers(), 0);
+    Register(fLayer);
+    fLayer->InstallIn(this);
+    SetDaughter(fLayer);
+#endif
+    // Install DriftRegion       //
+
+    fDriftRegion = new J4TPCDriftRegion(this);
+    Register(fDriftRegion);
+    fDriftRegion->InstallIn(this);
+    SetDaughter(fDriftRegion);
     
     // Install SupportTub       //
                                                                                 

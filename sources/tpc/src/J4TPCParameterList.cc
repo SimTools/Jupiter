@@ -54,6 +54,7 @@ void J4TPCParameterList::SetMaterials()
    fLayerMaterial           = "P10";
    fPadPlaneMaterial        = "P10";
    fPadRowMaterial          = "P10";
+   fDriftRegionMaterial     = "P10";
    fT0detMaterial           = "Silicon";
    fInnerSupportTubMaterial = "InShellC";
    fCentralMembraneMaterial = "Copper";
@@ -65,6 +66,7 @@ void J4TPCParameterList::SetMaterials()
    fT0detMaterial           = "vacuum";
    fInnerSupportTubMaterial = "vacuum";
    fCentralMembraneMaterial = "vacuum";
+   fDriftRegionMaterial     = "vacuum";
 #endif
    fOuterSupportTubMaterial = "OutShellC";
    fEndcapMaterial          = "EndCu";
@@ -128,6 +130,7 @@ void J4TPCParameterList::SetVisAttributes()
    fPadPlaneVisAtt        = FALSE;
    fPadRowVisAtt          = FALSE;
    fPadVisAtt             = TRUE;
+   fDriftRegionVisAtt     = FALSE;
 }
 
 //=====================================================================
@@ -143,5 +146,6 @@ void J4TPCParameterList::SetColors()
    SetPadPlaneColor(G4Color(1., 1., 1.));
    SetPadRowColor(G4Color(1., 1., 1.));
    SetPadColor(G4Color(1., 0., 0.));
+   SetDriftRegionColor(G4Color(1., 0., 0.));
 }
 

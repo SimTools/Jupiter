@@ -59,6 +59,7 @@ void J4TPCLayer::Assemble()
 
     G4double rmin;
     G4double rmax;
+#if 1
     if(!GetMyID()) {   // T0 detector
       rmin = list->GetT0detInnerR();
       rmax = list->GetT0detOuterR();
@@ -66,7 +67,11 @@ void J4TPCLayer::Assemble()
       rmin = list->GetLayerInnerR(GetMyID() - 1);
       rmax = list->GetLayerOuterR(GetMyID() - 1);
     }
-    G4double len  = list->GetLayerHalfZ();
+#else
+    rmin = list->GetLayerInnerR(GetMyID());
+    rmax = list->GetLayerOuterR(GetMyID());
+#endif
+    G4double len  = list->GetDriftRegionHalfZ();
     G4double dphi = list->GetLayerDeltaPhi();
       
     // MakeSolid ----------//
@@ -107,12 +112,7 @@ void J4TPCLayer::InstallIn(J4VComponent       *,
   
   // Placement function into mother object ... 
   
-  G4double z = - OpenParameterList()->GetCentralMembraneHalfThick() / 2 
-               - OpenParameterList()->GetEndcapHalfThick()
-               - OpenParameterList()->GetPadPlaneHalfThick();
-                                                                                
-  G4ThreeVector tlate(0., 0., z);
-  SetPVPlacement(0, tlate);
+  SetPVPlacement();
 
   if (!GetSD()) Cabling(); 
   

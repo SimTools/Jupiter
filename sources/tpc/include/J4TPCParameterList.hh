@@ -102,7 +102,6 @@ class J4TPCParameterList : public J4VParameterList
 
    //*Layer -------------------------------------------------------------------
    inline G4int    GetNlayers()              const { return fNlayers;         }
-   inline G4double GetLayerHalfZ()           const; 
    inline G4double GetLayerDeltaPhi()        const { return fTPCDeltaPhi;     }
    inline G4double GetLayerPhiOffset()       const { return fTPCPhiOffset;    }
    inline G4double GetLayerInnerR(G4int i)   const; 
@@ -113,6 +112,10 @@ class J4TPCParameterList : public J4VParameterList
    inline G4double GetT0detInnerR()          const;
    inline G4double GetT0detOuterR()          const;
                  
+   //*DriftRegion -----------------------------------------------------------
+   inline G4double GetDriftRegionDeltaPhi()  const { return fTPCDeltaPhi;     }
+   inline G4double GetDriftRegionHalfZ()     const;
+
    //*materials --------------------------------------------------------------
    inline G4String GetTPCMaterial()           const { return fTPCMaterial;     }
    inline G4String GetInnerSupportTubMaterial() const { return fInnerSupportTubMaterial; }
@@ -123,8 +126,9 @@ class J4TPCParameterList : public J4VParameterList
    inline
        G4String GetCentralMembraneMaterial()  const { return fCentralMembraneMaterial;}
    inline G4String GetPadPlaneMaterial()      const { return fPadPlaneMaterial;}
-   inline G4String GetPadRowMaterial()       const { return fPadRowMaterial; }
+   inline G4String GetPadRowMaterial()        const { return fPadRowMaterial; }
    inline G4String GetPadMaterial()           const { return fPadMaterial;     }
+   inline G4String GetDriftRegionMaterial()   const { return fDriftRegionMaterial;     }
 
    //*VisAttributes ----------------------------------------------------------
    inline G4bool GetTPCVisAtt()               const { return fTPCVisAtt;       }
@@ -133,8 +137,9 @@ class J4TPCParameterList : public J4VParameterList
    inline G4bool GetLayerVisAtt()             const { return fLayerVisAtt;     }
    inline G4bool GetCentralMembraneVisAtt()   const { return fCentralMembraneVisAtt;}
    inline G4bool GetPadPlaneVisAtt()          const { return fPadPlaneVisAtt;  }
-   inline G4bool GetPadRowVisAtt()           const { return fPadRowVisAtt;   }
+   inline G4bool GetPadRowVisAtt()            const { return fPadRowVisAtt;   }
    inline G4bool GetPadVisAtt()               const { return fPadVisAtt;       }
+   inline G4bool GetDriftRegionVisAtt()       const { return fPadVisAtt;       }
 
    //*Color ------------------------------------------------------------------
    inline G4Color GetTPCColor()               const { return fTPCColor;        }
@@ -143,8 +148,9 @@ class J4TPCParameterList : public J4VParameterList
    inline G4Color GetLayerColor()             const { return fLayerColor;      }
    inline G4Color GetCentralMembraneColor()   const { return fCentralMembraneColor;}
    inline G4Color GetPadPlaneColor()          const { return fPadPlaneColor;   }
-   inline G4Color GetPadRowColor()           const { return fPadRowColor;    }
+   inline G4Color GetPadRowColor()            const { return fPadRowColor;    }
    inline G4Color GetPadColor()               const { return fPadColor;        }
+   inline G4Color GetDriftRegionColor()       const { return fPadColor;        }
   
    //
    // setters  
@@ -187,6 +193,7 @@ class J4TPCParameterList : public J4VParameterList
    inline void SetPadPlaneMaterial(const G4String &name) { fPadPlaneMaterial = name; }
    inline void SetPadRowMaterial(const G4String &name)  { fPadRowMaterial = name; }
    inline void SetPadMaterial(const G4String &name)   { fPadMaterial = name;   }
+   inline void SetDriftRegionMaterial(const G4String &name)   { fDriftRegionMaterial = name;   }
 
    //*VisAttributes ----------------------------------------------------------
    inline void SetTPCVisAtt(G4bool x)                 { fTPCVisAtt = x;        }
@@ -198,6 +205,7 @@ class J4TPCParameterList : public J4VParameterList
    inline void SetPadPlaneVisAtt(G4bool x)            { fPadPlaneVisAtt = x;   }
    inline void SetPadRowVisAtt(G4bool x)             { fPadRowVisAtt = x;    }
    inline void SetPadVisAtt(G4bool x)                 { fPadVisAtt = x;        }
+   inline void SetDriftRegionVisAtt(G4bool x)         { fPadVisAtt = x;        }
    
    //*Color ------------------------------------------------------------------
    inline void SetTPCColor(const G4Color &c)          { fTPCColor = c;         }
@@ -209,6 +217,7 @@ class J4TPCParameterList : public J4VParameterList
    inline void SetPadPlaneColor(const G4Color &c)     { fPadPlaneColor = c;    }
    inline void SetPadRowColor(const G4Color &c)      { fPadRowColor = c;     }
    inline void SetPadColor(const G4Color &c)          { fPadColor = c;         }
+   inline void SetDriftRegionColor(const G4Color &c)  { fPadColor = c;         }
 
 
  private:
@@ -232,6 +241,7 @@ class J4TPCParameterList : public J4VParameterList
    G4String  fPadPlaneMaterial;
    G4String  fPadRowMaterial;
    G4String  fPadMaterial;
+   G4String  fDriftRegionMaterial;
   
    // VisAttributes
    G4bool    fTPCVisAtt;
@@ -243,6 +253,7 @@ class J4TPCParameterList : public J4VParameterList
    G4bool    fPadPlaneVisAtt;
    G4bool    fPadRowVisAtt;
    G4bool    fPadVisAtt;
+   G4bool    fDriftRegionVisAtt;
    
    // Color
    G4Color   fTPCColor;
@@ -254,6 +265,7 @@ class J4TPCParameterList : public J4VParameterList
    G4Color   fPadPlaneColor;
    G4Color   fPadRowColor;
    G4Color   fPadColor;
+   G4Color   fDriftRegionColor;
    
    // TPC
    G4double  fTPCDeltaPhi;
@@ -371,7 +383,7 @@ G4double J4TPCParameterList::GetLayerOuterR(G4int ilayer) const
    return GetLayerInnerR(ilayer) + fLayerThick;
 } 
 
-G4double J4TPCParameterList::GetLayerHalfZ() const
+G4double J4TPCParameterList::GetDriftRegionHalfZ() const
 {
    return (GetTPCHalfZ() - fCentralMembraneHalfThick - 
            2 * (fEndcapHalfThick + fPadPlaneHalfThick)) / 2;
