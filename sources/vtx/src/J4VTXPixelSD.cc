@@ -92,7 +92,7 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step*              aStep,
   }else{
     const G4VProcess* process = GetTrack()->GetCreatorProcess();
     if ( process == NULL ) procName = "ORIGIN";
-    procName = process->GetProcessName();
+    else procName = process->GetProcessName();
   }
 
 #if 1

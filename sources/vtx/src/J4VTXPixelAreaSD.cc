@@ -92,7 +92,7 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step*              aStep,
   }else{
     const G4VProcess* process = GetTrack()->GetCreatorProcess();  
     if ( process == NULL ) procName = "ORIGIN";
-    procName = process->GetProcessName();
+    else procName = process->GetProcessName();
   }
 
 
@@ -185,6 +185,11 @@ G4ThreeVector J4VTXPixelAreaSD::GlobalToLocalPosition(G4ThreeVector gpIn){
   pv = pv->GetMotherLogical();
   }
 */
+#if 1
+  G4ThreeVector Ot = GetTranslation();
+  G4RotationMatrix Or(*GetRotation());
+  pos = (Or)*(pos-Ot);
+#endif
   return pos;
 }
 
