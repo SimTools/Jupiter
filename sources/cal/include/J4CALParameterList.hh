@@ -24,6 +24,7 @@
 #include "G4Material.hh"
 #include "G4Color.hh"
 #include "J4ParameterList.hh"
+#include "J4CALSubLayerParameterList.hh"
 
 // ====================================================================
 // ----------------
@@ -274,7 +275,7 @@ class J4CALParameterList : public J4VParameterList
    J4CALTowerParamVector  GetTowerParamVector()  const { return fTowerParamVector; }
    J4CALTowerParam       *GetTowerParam(G4int i) const { return fTowerParamVector[i].second; }
 
-#if 0
+#if 1
    // SubParameterList 
    inline J4CALSubLayerParameterList* GetSubLayerParam()
    {
@@ -290,7 +291,7 @@ class J4CALParameterList : public J4VParameterList
    static J4CALParameterList *fgInstance;
    J4CALTowerParamVector      fTowerParamVector;
 
-#if 0
+#if 1
    J4CALSubLayerParameterList* fSubLayerParameterList;
 #endif
 

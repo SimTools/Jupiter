@@ -31,7 +31,7 @@ J4CALParameterList* J4CALParameterList::GetInstance()
 //* protected constructor ---------------------------------------------
 
 J4CALParameterList::J4CALParameterList( const G4String& name )
-  : J4VParameterList(name) 
+  : J4VParameterList(name),  fSubLayerParameterList(0) 
 {
    fgInstance = this;
    

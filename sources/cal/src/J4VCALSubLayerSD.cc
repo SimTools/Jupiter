@@ -44,7 +44,8 @@ std::multimap<G4int,J4CALHit*> J4VCALSubLayerSD::fgCalHits;
 //* constructor -------------------------------------------------------
 J4VCALSubLayerSD::J4VCALSubLayerSD( J4VDetectorComponent* ptrDetector )
   : J4VSD<J4CALHit>( ptrDetector ),
-    fConeID(-1), fTowerID(-1), fMiniConeID(-1), fMiniTowerID(-1), fLayerID(-1), fIsBarrel(-1)
+    fConeID(-1), fTowerID(-1), fMiniConeID(-1), fMiniTowerID(-1), fLayerID(-1), 
+   fSubLayerID(-1), fIsBarrel(-1)
 {
 }
 
@@ -131,6 +132,7 @@ G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
   G4int  miniTowerID = ptrMiniTowerComponent -> GetMyID();
 #endif
   G4int  layerID     = ptrLayerComponent     -> GetMyID();
+  G4int  subLayerID  = ptrSubLayerComponent  -> GetMyID();
 
   // flag for checking Barrel or Endcap -------------------------
   G4bool isBarrel    = ( (J4CALCone *)ptrConeComponent ) -> IsBarrel();
@@ -149,7 +151,7 @@ G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
   G4double  edep  = GetEnergyDeposit();
   const G4ThreeVector&  Xcm   = GetPrePosition() * GetEnergyDeposit(); // energy-weighted position vector
 
-  G4int cellID = J4CALAddress::GetCellID( coneID, towerID, miniConeID, miniTowerID, layerID, isEM );
+  G4int cellID = J4CALAddress::GetCellID( coneID, towerID, miniConeID, miniTowerID, layerID, subLayerID, isEM );
   
   // check if the cell is already hit
   typedef std::multimap< G4int, J4CALHit* >::iterator MI;

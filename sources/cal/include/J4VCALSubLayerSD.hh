@@ -75,6 +75,7 @@ private:
   G4int         fMiniConeID;
   G4int         fMiniTowerID;
   G4int         fLayerID;
+  G4int         fSubLayerID;
   G4bool        fIsBarrel;
 };
 
