@@ -33,7 +33,8 @@ public:
              G4int  layerID, 
              G4int  subLayerID, 
              G4bool isBarrel, 
-             G4bool isEM );
+             G4bool isEM,
+	     G4ThreeVector position );
 
   TVAddress( const TVAddress& rhs );
 
@@ -47,6 +48,7 @@ public:
     fSubLayerID  = rhs.fSubLayerID;
     fIsBarrel    = rhs.fIsBarrel;
     fIsEM        = rhs.fIsEM;
+    fPosition    = rhs.fPosition;
     return *this;
   }
 
@@ -82,6 +84,7 @@ public:
   inline G4int  GetSubLayerID()   const { return fSubLayerID;  }
   inline G4bool IsBarrel()        const { return fIsBarrel;    }
   inline G4bool IsEM()            const { return fIsEM;        }
+  inline G4ThreeVector GetPosition() const { return fPosition; }
   //inline G4int  GetCellID()       const { return fgCellID;     }
 
   inline void SetConeID( G4int n )      { fConeID       = n; }
@@ -92,6 +95,7 @@ public:
   inline void SetSubLayerID( G4int n )  { fSubLayerID   = n; }
   inline void SetIsBarrel( G4bool b )   { fIsBarrel     = b; }
   inline void SetIsEM( G4bool b )       { fIsEM         = b; }
+  inline void SetPosition(G4ThreeVector v) { fPosition  = v; }
   //inline void SetCellID( G4int n )      { fgCellID       = n; }
 
 private:
@@ -104,6 +108,7 @@ private:
   G4bool  fIsBarrel;
   G4bool  fIsEM;
  // static  G4int   fgCellID;
+  G4ThreeVector fPosition;
 
 };
 

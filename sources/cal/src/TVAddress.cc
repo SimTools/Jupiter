@@ -21,7 +21,8 @@
 //* default constructor -----------------------------------------------
 TVAddress::TVAddress() 
 : fConeID(0), fTowerID(0), fMiniConeID(0),fMiniTowerID(0),
-fLayerID(0), fSubLayerID(0), fIsBarrel(0), fIsEM(0)
+  fLayerID(0), fSubLayerID(0), fIsBarrel(0), fIsEM(0),
+  fPosition(G4ThreeVector(0,0,0))
 {
 }
 
@@ -34,9 +35,11 @@ TVAddress::TVAddress(  G4int coneID,
                        G4int layerID, 
                        G4int subLayerID, 
                        G4bool isBarrel, 
-                       G4bool isEM )
+                       G4bool isEM,
+		       G4ThreeVector position)
  : fConeID( coneID ), fTowerID( towerID ), fMiniConeID( miniConeID ), fMiniTowerID( miniTowerID ),
-   fLayerID( layerID ), fSubLayerID( subLayerID ), fIsBarrel( isBarrel ), fIsEM( isEM )
+   fLayerID( layerID ), fSubLayerID( subLayerID ), fIsBarrel( isBarrel ), fIsEM( isEM ),
+   fPosition(position)
 {
 }
 
@@ -52,6 +55,7 @@ TVAddress::TVAddress( const TVAddress& right )
   fSubLayerID  = right.fSubLayerID;
   fIsBarrel    = right.fIsBarrel;
   fIsEM        = right.fIsEM;
+  fPosition    = right.fPosition;
 }
 
 //=====================================================================
@@ -80,5 +84,7 @@ void TVAddress::Print() const
 	    << "Sublayer"  << fSubLayerID  << " "
 	    << "isBarrel"  << fIsBarrel    << " "
 	    << "isEM"      << fIsEM        << " "
+	    << "Position (" << fPosition.x() << ","
+	    << fPosition.y() << "," << fPosition.z() << ")"
 	    << std::endl;
 }
