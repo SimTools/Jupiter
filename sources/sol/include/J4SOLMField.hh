@@ -7,7 +7,7 @@
 //* --------------------
 //* (Description)
 //* 	Derivation class for magnetic field of Solenoid
-//*     Mother class : J4MagneticField
+//*     Mother class : J4VMField
 //*    
 //* (Update Record)
 //*	2002/09/13  T.Aso	Original version.
