@@ -1,0 +1,2 @@
+CXXFLAGS += -D__GLD_V1__
+CPPFLAGS += -D__GLD_V1__
