@@ -57,8 +57,15 @@ void J4TPCLayer::Assemble()
     // define geometry
     J4TPCParameterList * list = OpenParameterList();
 
-    G4double rmin = list->GetLayerInnerR(GetMyID());
-    G4double rmax = list->GetLayerOuterR(GetMyID());
+    G4double rmin;
+    G4double rmax;
+    if(!GetMyID()) {   // T0 detector
+      rmin = list->GetT0detInnerR();
+      rmax = list->GetT0detOuterR();
+    } else {           // other layer
+      rmin = list->GetLayerInnerR(GetMyID() - 1);
+      rmax = list->GetLayerOuterR(GetMyID() - 1);
+    }
     G4double len  = list->GetLayerHalfZ() / 2;
     G4double dphi = list->GetLayerDeltaPhi();
       
@@ -66,8 +73,11 @@ void J4TPCLayer::Assemble()
     OrderNewTubs (rmin, rmax, len, dphi);
     
     // MakeLogicalVolume --//  
-    MakeLVWith(OpenMaterialStore()-> Order(list->GetLayerMaterial()));
-    
+    if(!GetMyID()) {   // T0 detector
+      MakeLVWith(OpenMaterialStore()->Order(list->GetT0detMaterial()));
+    } else {           // other layer
+      MakeLVWith(OpenMaterialStore()->Order(list->GetLayerMaterial()));
+    }
     // SetVisAttribute ----//
     PaintLV(list->GetLayerVisAtt() , list->GetLayerColor());    
         

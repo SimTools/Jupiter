@@ -81,7 +81,7 @@ void J4TPCHalf::Assemble()
     G4int  nlayers = list->GetNlayers();
     fLayers = new J4TPCLayer* [nlayers];
     Register(fLayers);
-    for (G4int i = 0; i < nlayers; i++) {
+    for (G4int i = 0; i < nlayers + 1; i++) {     // "+ 1" <- t0 detector
       fLayers [i] = new J4TPCLayer(this, 1, nlayers, i);
       Register(fLayers [i]);
       fLayers [i]->InstallIn(this);  

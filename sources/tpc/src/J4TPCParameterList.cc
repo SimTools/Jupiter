@@ -48,7 +48,7 @@ J4TPCParameterList::~J4TPCParameterList()
 //* SetMaterials ------------------------------------------------------
 void J4TPCParameterList::SetMaterials()
 {
-#if 1
+#if 0
    fTPCMaterial             = "P10";
    fLayerMaterial           = "P10";
    fPadPlaneMaterial        = "P10";
@@ -58,11 +58,16 @@ void J4TPCParameterList::SetMaterials()
    fLayerMaterial           = "vacuum";
    fPadPlaneMaterial        = "vacuum";
    fPadRowMaterial          = "vacuum";
+   fT0detMaterial           = "Silicon";
 #endif
    fInnerSupportTubMaterial = "InShellC";
    fOuterSupportTubMaterial = "OutShellC";
    fEndcapMaterial          = "EndCu";
+#if 0
    fCentralMembraneMaterial = "Copper";
+#else
+   fCentralMembraneMaterial = "vacuum";
+#endif
    fPadMaterial             = "EndCu";
 }
 
@@ -78,7 +83,7 @@ void J4TPCParameterList::SetParameters()
    fEndcapHalfThick     = 1.*cm;
                                                                                 
    // SupportTub
-   fInnerSupportTubHalfThick = 2.1075*cm;
+   fInnerSupportTubHalfThick = 2.0795*cm;
    fOuterSupportTubHalfThick = 4.1175*cm;
 
    // Layer
@@ -91,6 +96,7 @@ void J4TPCParameterList::SetParameters()
    fLayerThick          = 0.001*mm;
    fFirstLayerInnerR    = 10.*cm;
 #endif
+   fT0detThick          = 0.56*mm;
 
    // CentralMembrane
    fCentralMembraneHalfThick = 0.05*mm;

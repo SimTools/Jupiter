@@ -51,7 +51,7 @@ G4Material* J4TPCMaterialStore::Create(const G4String &name,
     G4String name;
 
     A= 12.011 *g/mole;
-    density = 0.1317 *g/cm3;
+    density = 0.1317 * (4.215 - 0.056) / 4.215 *g/cm3;
     G4Material *InShellC = new G4Material(name="InShellC", Z=6., A, density);
 
     material = InShellC;
