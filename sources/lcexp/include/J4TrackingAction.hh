@@ -51,10 +51,11 @@ class J4TrackingAction : public G4UserTrackingAction
     static G4bool IsNext(G4int &detid)
     { 
        G4int trackid = J4StackingAction::GetTopOfStackID();
-       if (trackid < fCurrentTrackID) return FALSE;
        if (detid < 0) {
           fgRegs.push_back(trackid);
           detid = fgRegs.size() - 1;
+       } else if (fgRegs[detid] < fCurrentTrackID) {
+          return FALSE;
        } else {
           fgRegs[detid] = trackid;
        }
