@@ -28,11 +28,14 @@ class J4SOLParameterList : public J4VParameterList
    J4SOLParameterList(G4double ri   = 375.*cm,
                       G4double ro   = 450.*cm,
                       G4double len    = 340.*cm,
-                      G4double bfield = 3.*tesla)
+                      G4double bfield = 3.*tesla,
+                    // G4double magrad =  160.*cm)
+                      G4double magrad =  400.*cm)
            : fMaterial("Air"),
 	     fMagInnerRadius(ri),
              fMagOuterRadius(ro),
              fMagLength(len),
+             fMagRad(magrad),
              fBField(bfield),
 	     fVisAtt(TRUE),
 	     fColor(0.,0.,0.5) {}
@@ -43,6 +46,7 @@ class J4SOLParameterList : public J4VParameterList
    inline G4double GetIR      () const { return fMagInnerRadius;  }
    inline G4double GetOR      () const { return fMagOuterRadius;  }
    inline G4double GetLength  () const { return fMagLength;       }
+   inline G4double GetMagRad  () const { return fMagRad;          }
    inline G4double GetBField  () const { return fBField;          }
    inline G4bool   GetVisAtt  () const { return fVisAtt;          }
    inline G4Color  GetColor   () const { return fColor;           }
@@ -52,6 +56,7 @@ class J4SOLParameterList : public J4VParameterList
    inline void     SetIR      (G4double x) { fMagInnerRadius = x; }
    inline void     SetOR      (G4double x) { fMagOuterRadius = x; }
    inline void     SetLength  (G4double x) { fMagLength      = x; }
+   inline void     SetMagRad  (G4double x) { fMagRad         = x; }
    inline void     SetBField  (G4double x) { fBField         = x; }
    inline void     SetVisAtt  (G4bool   b) { fVisAtt         = b; }
    inline void     SetColor   (G4Color  c) { fColor          = c; }
@@ -64,6 +69,7 @@ class J4SOLParameterList : public J4VParameterList
    G4double  fMagInnerRadius;
    G4double  fMagOuterRadius;
    G4double  fMagLength;
+   G4double  fMagRad;
 
    G4double  fBField;
 

@@ -25,7 +25,7 @@
 void J4MagneticField::GetFieldValue(const  G4double Point[3], 
 				           G4double* Bfield ) const
 {
-   G4double maxBRad    = fParameterList->GetOR();
+   G4double maxBRad    = fParameterList->GetMagRad();
    G4double maxBZ      = fParameterList->GetLength();
    G4double zBfield    = fParameterList->GetBField();
    G4double maxBRad_sq = maxBRad * maxBRad;
