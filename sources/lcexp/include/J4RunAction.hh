@@ -20,6 +20,7 @@
 #include <fstream>
 #include "G4UserRunAction.hh"
 #include "J4VHit.hh"
+#include "J4RunActionMessenger.hh"
 
 // ====================================================================
 //
@@ -47,6 +48,7 @@ public:
 private:
   G4String        fHitFileName;
   std::ofstream fOfs;
+  J4RunActionMessenger  *fMessenger;
 };
 
 #endif

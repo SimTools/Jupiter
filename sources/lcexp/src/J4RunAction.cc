@@ -9,6 +9,7 @@
 #include "G4Run.hh"
 
 #include "J4RunAction.hh"
+#include "J4RunActionMessenger.hh"
 
 // ====================================================================
 //
@@ -21,6 +22,7 @@ J4RunAction::J4RunAction(const G4String& fname)
   : fHitFileName(fname) 
 ///////////////////////////////////////////////////////////////
 {
+   fMessenger=new J4RunActionMessenger(this);
 }
 
 
