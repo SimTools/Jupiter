@@ -259,7 +259,7 @@ int main(int argc, char** argv)
 #else
     // tcsh-like
     G4UItcsh* tcsh= new 
-      G4UItcsh("[36mJUPITER[33m(%s)[32m[%/][36m[%h][37m:");
+      G4UItcsh("[36mJUPITER[33m(%s)[32m[%/][36m[%h][0m:");
     G4UIterminal* session= new G4UIterminal(tcsh);
     tcsh-> SetLsColor(GREEN, CYAN);
 #endif
