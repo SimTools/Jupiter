@@ -1,5 +1,24 @@
 M... Modified R...Replaced A...Added D...Deleted
 ------------------------------------------------------------------
+2003/02/28 K.Hoshina	 Version 2.3.00
+------------------------------------------------------------------
+Updated kern
+Added base classes for magnetic field
+A J4MFieldMapStore, J4VMField, J4AttMFieldMap 
+A J4Named, J4ParameterListStore
+D J4ExpHall
+A J4EXPHall
+ 
+Updated sol
+Added magnetic field class
+A J4SOLMField
+D J4MagneticField
+ 
+Update cdc
+Added base classes for CDCDriftRegion(axial and stereo)
+A J4VCDCCell, J4VCDCDriftRegion, J4VCDCDriftRegionHit, J4VCDCDriftRegionSD
+
+------------------------------------------------------------------
 2002/11/23 K.Hoshina	 Version 2.2.01
 ------------------------------------------------------------------
 minor update of vtx (by Aso).
