@@ -85,10 +85,4 @@ void J4CALPreHit::Draw()
 
 void J4CALPreHit::Print()
 {
-  std::cout << " charge=" << fParticle->GetPDGCharge()
-            << " energy(GeV)= " << std::setprecision(2)
-            << std::setw(6) << fEdep *(1./GeV) << " "
-            << " TOF(ns)= " << std::setw(4) << std::setprecision(1)
-            << fTof /ns
-            << std::endl;
 }

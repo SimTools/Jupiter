@@ -81,7 +81,6 @@ public:
   G4int                  fPreHitID;
   G4ThreeVector          fInjectionPoint;
   G4ThreeVector          fMomentum;
-  G4double               fEdep;
   G4double               fEnergy;
   G4double               fTof;
   G4int                  fTrackID;
@@ -92,12 +91,6 @@ public:
 //----------------------------------------
 // inline function for J4CALPreHit
 //----------------------------------------
-//----------------------------------------
-// Allocator
-//const J4CALPreHit& J4CALPreHit::operator=( const J4CALPreHit& right )
-//{
-//  return *this;
-//}
 
 void* J4CALPreHit::operator new( size_t )
 {
