@@ -179,7 +179,15 @@ void J4MaterialCatalog::ReadMaterialCatalog()
   G4Material* CarbonFiber;
   CarbonFiber = new G4Material(name="CarbonFiber", Z=6, A, density);
   
-
+  // Acrylic (polymethylmethacrylate or PMMA), [CH2C(CH3)(COOCH3)]n
+  // data from http://pdg.lbl.gov/AtomicNuclearProperties
+  // A.Sanchez, 2004.08.07
+  density=1.190 *g/cm3;
+  G4Material* Acryl = new G4Material(name="Acryl", density, nel=3,
+	                             kStateSolid, expTemp);
+  Acryl-> AddElement(elC, natoms=5);
+  Acryl-> AddElement(elH, natoms=8);
+  Acryl-> AddElement(elO, natoms=2);
 }
 
 
