@@ -134,6 +134,7 @@ void J4ParticleBeam::GeneratePrimaryVertex(G4Event* evt)
       // ------------------------------
       switch (fBeamType) {
          case kEIsotropic: {
+	    G4cerr << "--------ParticleBeam:: Isotropic beamtype-------" << G4endl;
             G4double phi      = RandFlat::shoot(0.,2*M_PI);
             G4double costheta = RandFlat::shoot(fCosThetaRange[0],
                                                 fCosThetaRange[1]);
@@ -173,6 +174,7 @@ void J4ParticleBeam::GeneratePrimaryVertex(G4Event* evt)
 	    break; // end Isotropic case
          }
          case kEGaussian: {
+	    G4cerr << "--------ParticleBeam:: Gaussian beamtype--------" << G4endl;
             G4double mom   = RandGauss::shoot(fMeanMomentum,fMomentumSigma);
             mvx = RandGauss::shoot(0.,fDirectionSigma);
             mvy = RandGauss::shoot(0.,fDirectionSigma);
@@ -189,10 +191,18 @@ void J4ParticleBeam::GeneratePrimaryVertex(G4Event* evt)
 
             G4ThreeVector pv   = particle_position; 
             if (fIsFlatProfile) {
+	       G4cerr << "Position is Flat." << G4endl;
                pv(0) = RandFlat::shoot(fPositionRange[0][0],fPositionRange[0][1]);
                pv(1) = RandFlat::shoot(fPositionRange[1][0],fPositionRange[1][1]);
                pv(2) = RandFlat::shoot(fPositionRange[2][0],fPositionRange[2][1]);
+	       G4cerr << "position : minx = " << fPositionRange[0][0]  
+		      << "  maxx = " << fPositionRange[0][1] << G4endl
+		      << "           miny = " << fPositionRange[1][0] 
+		      << "  maxy = " << fPositionRange[1][1] << G4endl
+		      << "           minz = " << fPositionRange[2][0] 
+		      << "  maxz = " << fPositionRange[2][1] << G4endl;
             } else {
+	       G4cerr << "Position is Gaussian." << G4endl;
                pv(0) = RandGauss::shoot(fMeanPosition.x(),fPositionSigma[0]);
                pv(1) = RandGauss::shoot(fMeanPosition.y(),fPositionSigma[1]);
                pv(2) = RandGauss::shoot(fMeanPosition.z(),fPositionSigma[2]);

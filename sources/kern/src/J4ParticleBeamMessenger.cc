@@ -68,7 +68,7 @@ J4ParticleBeamMessenger::J4ParticleBeamMessenger(J4ParticleBeam * fPtclBeam)
   fFlatPosCmd->SetGuidance("Set beam profile type. 0 or 1.");
   fFlatPosCmd->SetGuidance("0 : Gaussian profile");
   fFlatPosCmd->SetGuidance("1 : Flat profile");
-  fFlatPosCmd->SetParameterName("IsFlatProfile",true); 
+  fFlatPosCmd->SetParameterName("IsFlatProfile",true,true); 
   fFlatPosCmd->SetDefaultValue(false);
 
   fDirectionCmd = new G4UIcmdWith3Vector("/jupiter/beam/direction",this);
@@ -241,6 +241,8 @@ void J4ParticleBeamMessenger::SetNewValue(G4UIcommand * command,G4String newValu
      fParticleBeam->SetBeamType((J4ParticleBeam::EBeamType)fBeamtypeCmd->GetNewIntValue(newValues)); 
   } else if( command==fConvergenceCmd ) {
      fParticleBeam->SetConvergenceMode(fConvergenceCmd->GetNewBoolValue(newValues)); 
+  } else if( command==fFlatPosCmd ) {
+     fParticleBeam->SetBeamProfileType(fFlatPosCmd->GetNewBoolValue(newValues)); 
   } else if( command==fDirectionCmd ) {
      fParticleBeam->SetParticleMomentumDirection(fDirectionCmd->GetNew3VectorValue(newValues)); 
   } else if( command==fEnergyCmd ) { 
