@@ -232,7 +232,6 @@ class J4TwistedTubs : public G4VSolid
                    }
                    virtual ~LastVector()
                    {
-                      delete surface[0];
                       delete [] surface;
                    }
                 public:
