@@ -82,7 +82,7 @@ void J4PrimaryGeneratorAction::Initialize()
    fParticleBeam->SetParticleDefinition(particleTable->FindParticle(particleName="geantino"));
 
    fIsInitialized = TRUE;
-   G4cerr << "J4PrimaryGeneratorAction::Initialize done" << G4endl;
+   std::cerr << "J4PrimaryGeneratorAction::Initialize done" << std::endl;
 }
 
 //=====================================================================

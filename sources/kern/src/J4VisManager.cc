@@ -81,12 +81,12 @@ void J4VisManager::RegisterGraphicsSystems()
 ///////////////////////////////////////////////
 {
 #ifdef G4VIS_USE_DAWN
-  G4cout << "*  Visualizaton Driver: Fukui Renderer" << G4endl;
+  std::cout << "*  Visualizaton Driver: Fukui Renderer" << std::endl;
   RegisterGraphicsSystem(new G4FukuiRenderer);
 #endif
 
 #ifdef G4VIS_USE_DAWNFILE
-  G4cout << "*  Visualizaton Driver: DAWN" << G4endl;
+  std::cout << "*  Visualizaton Driver: DAWN" << std::endl;
   RegisterGraphicsSystem(new G4DAWNFILE);
 #endif
 
@@ -123,22 +123,22 @@ void J4VisManager::RegisterGraphicsSystems()
 #endif
 
 #ifdef G4VIS_USE_VRML
-  G4cout << "*  Visualizaton Driver: VRML1/2" << G4endl;
+  std::cout << "*  Visualizaton Driver: VRML1/2" << std::endl;
   RegisterGraphicsSystem(new G4VRML1);
   RegisterGraphicsSystem(new G4VRML2);
 #endif
 
 #ifdef G4VIS_USE_VRMLFILE
-  G4cout << "*  Visualizaton Driver: VRML1/2 File" << G4endl;
+  std::cout << "*  Visualizaton Driver: VRML1/2 File" << std::endl;
   RegisterGraphicsSystem(new G4VRML1File);
   RegisterGraphicsSystem(new G4VRML2File);
 #endif
 
   if(fVerbose> 0) {
-    G4cout << G4endl 
+    std::cout << std::endl 
 	   << "You have successfully chosen to use "
 	   << "the following graphics systems."
-	   << G4endl;
+	   << std::endl;
     PrintAvailableGraphicsSystems ();
   }
 }

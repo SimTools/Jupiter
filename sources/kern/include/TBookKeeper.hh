@@ -52,7 +52,7 @@ public:
      if (!fgBookKeeper) {
         fgBookKeeper = this;
      } else {
-        G4cerr << " TBookKeeper is singleton. abort. " << G4endl;
+        std::cerr << " TBookKeeper is singleton. abort. " << std::endl;
         abort();
      }
   }		          
@@ -104,9 +104,9 @@ bool TBookKeeper::Deregister(void *child)
        }
    }
 #ifdef __DEBUG__
-   G4cerr << " TBookKeeper::Deregister: The child ("
+   std::cerr << " TBookKeeper::Deregister: The child ("
           << child
-          << ") had already been orphaned !! " << G4endl;
+          << ") had already been orphaned !! " << std::endl;
 #endif
    return false;
 }
@@ -121,9 +121,9 @@ void* TBookKeeper::GetParent(void *child)
        }
    }
 #ifdef __DEBUG__
-   G4cerr << " TBookKeeper::GetParent: You ("
+   std::cerr << " TBookKeeper::GetParent: You ("
           << child
-          << ") had already been orphaned !! " << G4endl;
+          << ") had already been orphaned !! " << std::endl;
 #endif
    return 0;
 }

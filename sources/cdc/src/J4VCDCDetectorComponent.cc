@@ -61,7 +61,7 @@ J4VMaterialStore* J4VCDCDetectorComponent::OpenMaterialStore()
    if(!fMaterialStore) {
    	fMaterialStore = new J4CDCMaterialStore();
         Register(fMaterialStore);
-  	G4cerr << "*** Opend J4CDCMaterialStore ***" << G4endl;
+  	std::cerr << "*** Opend J4CDCMaterialStore ***" << std::endl;
    }
     
    return fMaterialStore;
@@ -73,17 +73,17 @@ J4VMaterialStore* J4VCDCDetectorComponent::OpenMaterialStore()
 G4double J4VCDCDetectorComponent::GetInnerRadius(J4VComponent *cdctubs) const
 {
    if (!(cdctubs->GetLV())) {
-       G4cerr << "J4VCDCDetectorComponent::GetInnerRadius: LV is not exist yet."
+       std::cerr << "J4VCDCDetectorComponent::GetInnerRadius: LV is not exist yet."
               << " Name = "
-              << cdctubs->GetName() << G4endl;
+              << cdctubs->GetName() << std::endl;
        abort();
    } else if (dynamic_cast<G4Tubs *>(cdctubs->GetSolid())) {
        return ((G4Tubs *)cdctubs->GetSolid())->GetRMin();
    } else if (dynamic_cast<J4TwistedTubs *>(cdctubs->GetSolid())) {
        return ((J4TwistedTubs *)cdctubs->GetSolid())->GetEndInnerRadius();
    } else {
-       G4cerr << "J4VCDCDetectorComponent::GetInnerRadius is not be impremented for "
-              << cdctubs->GetName() << G4endl;
+       std::cerr << "J4VCDCDetectorComponent::GetInnerRadius is not be impremented for "
+              << cdctubs->GetName() << std::endl;
        abort();
    }
 } 
@@ -94,17 +94,17 @@ G4double J4VCDCDetectorComponent::GetInnerRadius(J4VComponent *cdctubs) const
 G4double J4VCDCDetectorComponent::GetOuterRadius(J4VComponent *cdctubs) const
 {
    if (!(cdctubs->GetLV())) {
-       G4cerr << "J4VCDCDetectorComponent::GetOuterRadius: LV is not exist yet."
+       std::cerr << "J4VCDCDetectorComponent::GetOuterRadius: LV is not exist yet."
               << " Name = "
-              << cdctubs->GetName() << G4endl;
+              << cdctubs->GetName() << std::endl;
        abort();
    } else if (dynamic_cast<G4Tubs *>(cdctubs->GetSolid())) {
        return ((G4Tubs *)cdctubs->GetSolid())->GetRMax();
    } else if (dynamic_cast<J4TwistedTubs *>(cdctubs->GetSolid())) {
        return ((J4TwistedTubs *)cdctubs->GetSolid())->GetEndOuterRadius();
    } else {
-       G4cerr << "J4VCDCDetectorComponent::GetOuterRadius is not be impremented for "
-              << cdctubs->GetName() << G4endl;
+       std::cerr << "J4VCDCDetectorComponent::GetOuterRadius is not be impremented for "
+              << cdctubs->GetName() << std::endl;
        abort();
    }
 }
@@ -115,17 +115,17 @@ G4double J4VCDCDetectorComponent::GetOuterRadius(J4VComponent *cdctubs) const
 G4double J4VCDCDetectorComponent::GetInnerWeist(J4VComponent *cdctubs) const
 {
    if (!(cdctubs->GetLV())) {
-       G4cerr << "J4VCDCDetectorComponent::GetInnerWeist: LV is not exist yet."
+       std::cerr << "J4VCDCDetectorComponent::GetInnerWeist: LV is not exist yet."
               << " Name = "
-              << cdctubs->GetName() << G4endl;
+              << cdctubs->GetName() << std::endl;
        abort();
    } else if (dynamic_cast<G4Tubs *>(cdctubs->GetSolid())) {
        return ((G4Tubs *)cdctubs->GetSolid())->GetRMin();
    } else if (dynamic_cast<J4TwistedTubs *>(cdctubs->GetSolid())) {
        return ((J4TwistedTubs *)cdctubs->GetSolid())->GetInnerRadius();
    } else {
-       G4cerr << "J4VCDCDetectorComponent::GetInnerWeist is not be impremented for "
-              << cdctubs->GetName() << G4endl;
+       std::cerr << "J4VCDCDetectorComponent::GetInnerWeist is not be impremented for "
+              << cdctubs->GetName() << std::endl;
        abort();
    }
 }
@@ -136,17 +136,17 @@ G4double J4VCDCDetectorComponent::GetInnerWeist(J4VComponent *cdctubs) const
 G4double J4VCDCDetectorComponent::GetOuterWeist(J4VComponent *cdctubs) const
 {
    if (!(cdctubs->GetLV())) {
-       G4cerr << "J4VCDCDetectorComponent::GetOuterWeist: LV is not exist yet."
+       std::cerr << "J4VCDCDetectorComponent::GetOuterWeist: LV is not exist yet."
               << " Name = "
-              << cdctubs->GetName() << G4endl;
+              << cdctubs->GetName() << std::endl;
        abort();
    } else if (dynamic_cast<G4Tubs *>(cdctubs->GetSolid())) {
        return ((G4Tubs *)cdctubs->GetSolid())->GetRMax();
    } else if (dynamic_cast<J4TwistedTubs *>(cdctubs->GetSolid())) {
        return ((J4TwistedTubs *)cdctubs->GetSolid())->GetOuterRadius();
    } else {
-       G4cerr << "J4VCDCDetectorComponent::GetOuterWeist is not be impremented for "
-              << cdctubs->GetName() << G4endl;
+       std::cerr << "J4VCDCDetectorComponent::GetOuterWeist is not be impremented for "
+              << cdctubs->GetName() << std::endl;
        abort();
    }
 } 
@@ -157,17 +157,17 @@ G4double J4VCDCDetectorComponent::GetOuterWeist(J4VComponent *cdctubs) const
 G4double J4VCDCDetectorComponent::GetZHalfLength(J4VComponent *cdctubs) const
 {
    if (!(cdctubs->GetLV())) {
-       G4cerr << "J4VCDCDetectorComponent::GetZHalfLength: LV is not exist yet."
+       std::cerr << "J4VCDCDetectorComponent::GetZHalfLength: LV is not exist yet."
               << " Name = "
-              << cdctubs->GetName() << G4endl;
+              << cdctubs->GetName() << std::endl;
        abort();
    } else if (dynamic_cast<G4Tubs *>(cdctubs->GetSolid())) {
        return ((G4Tubs *)cdctubs->GetSolid())->GetZHalfLength();
    } else if (dynamic_cast<J4TwistedTubs *>(cdctubs->GetSolid())) {
        return ((J4TwistedTubs *)cdctubs->GetSolid())->GetZHalfLength();
    } else {
-       G4cerr << "J4VCDCDetectorComponent::GetZHalfLength is not be impremented for "
-              << cdctubs->GetName() << G4endl;
+       std::cerr << "J4VCDCDetectorComponent::GetZHalfLength is not be impremented for "
+              << cdctubs->GetName() << std::endl;
        abort();
    }
 }
@@ -178,17 +178,17 @@ G4double J4VCDCDetectorComponent::GetZHalfLength(J4VComponent *cdctubs) const
 G4double J4VCDCDetectorComponent::GetDeltaPhi(J4VComponent *cdctubs) const
 {
    if (!(cdctubs->GetLV())) {
-       G4cerr << "J4VCDCDetectorComponent::GetDeltaPhi: LV is not exist yet."
+       std::cerr << "J4VCDCDetectorComponent::GetDeltaPhi: LV is not exist yet."
               << " Name = "
-              << cdctubs->GetName() << G4endl;
+              << cdctubs->GetName() << std::endl;
        abort();
    } else if (dynamic_cast<G4Tubs *>(cdctubs->GetSolid())) {
        return ((G4Tubs *)cdctubs->GetSolid())->GetDeltaPhiAngle();
    } else if (dynamic_cast<J4TwistedTubs *>(cdctubs->GetSolid())) {
        return ((J4TwistedTubs *)cdctubs->GetSolid())->GetDPhi();
    } else {
-       G4cerr << "J4VCDCDetectorComponent::GetDeltaPhi is not be impremented for "
-              << cdctubs->GetName() << G4endl;
+       std::cerr << "J4VCDCDetectorComponent::GetDeltaPhi is not be impremented for "
+              << cdctubs->GetName() << std::endl;
        abort();
    }
 }
@@ -199,17 +199,17 @@ G4double J4VCDCDetectorComponent::GetDeltaPhi(J4VComponent *cdctubs) const
 G4double J4VCDCDetectorComponent::GetPhiOffset(J4VComponent *cdctubs) const
 {
    if (!(cdctubs->GetLV())) {
-       G4cerr << "J4VCDCDetectorComponent::GetPhiOffset: LV is not exist yet."
+       std::cerr << "J4VCDCDetectorComponent::GetPhiOffset: LV is not exist yet."
               << " Name = "
-              << cdctubs->GetName() << G4endl;
+              << cdctubs->GetName() << std::endl;
        abort();
    } else if (dynamic_cast<G4Tubs *>(cdctubs->GetSolid())) {
        return ((G4Tubs *)cdctubs->GetSolid())->GetStartPhiAngle();
    } else if (dynamic_cast<J4TwistedTubs *>(cdctubs->GetSolid())) {
        return 0;
    } else {
-       G4cerr << "J4VCDCDetectorComponent::GetPhiOffset is not be impremented for "
-              << cdctubs->GetName() << G4endl;
+       std::cerr << "J4VCDCDetectorComponent::GetPhiOffset is not be impremented for "
+              << cdctubs->GetName() << std::endl;
        abort();
    }
 }

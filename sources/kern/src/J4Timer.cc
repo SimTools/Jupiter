@@ -13,7 +13,7 @@
 #ifdef __USEISOCXX__
 #include <sstream>
 #else
-#include <strstream>
+#include <sstream>
 #endif
 #include <iomanip>
 
@@ -54,8 +54,8 @@ J4Timer::J4Timer(G4int          &timerid,
       fgTimers.append(timer);
       timerid = fgNtimers;
       fgNtimers ++;
-      G4cerr << "J4Timer::New timer is created! timerID, name = "
-      << timerid << " " << classname << " " << timername << G4endl;
+      std::cerr << "J4Timer::New timer is created! timerID, name = "
+      << timerid << " " << classname << " " << timername << std::endl;
    } 
    
    fCurrentTimer = fgTimers[timerid];
@@ -83,12 +83,12 @@ void J4Timer::ResetAllTimers()
 //* PrintAllAccumulatedTimes ------------------------------------------
 void J4Timer::PrintAllAccumulatedTimes()
 {
-   G4cerr.precision(6);
-   G4cerr << " *********************************************************************************" << G4endl;
-   G4cerr << " * Output of Accumulated Time ****************************************************" << G4endl;
-   G4cerr << " * ---------+---------+---------+---------+---------+---------+---------+---------" << G4endl;
-   G4cerr << " * Timer Name                                   Real[s]   System[s]     User[s]" << G4endl;
-   G4cerr << " * ---------+---------+---------+---------+---------+---------+---------+---------" << G4endl;
+   std::cerr.precision(6);
+   std::cerr << " *********************************************************************************" << std::endl;
+   std::cerr << " * Output of Accumulated Time ****************************************************" << std::endl;
+   std::cerr << " * ---------+---------+---------+---------+---------+---------+---------+---------" << std::endl;
+   std::cerr << " * Timer Name                                   Real[s]   System[s]     User[s]" << std::endl;
+   std::cerr << " * ---------+---------+---------+---------+---------+---------+---------+---------" << std::endl;
    
    for (G4int i=0; i<fgNtimers; i++) {
       if (fgTimers[i]) {
@@ -96,21 +96,21 @@ void J4Timer::PrintAllAccumulatedTimes()
 #ifdef __USEISOCXX__
          std::stringstream name;
          name << timer->GetClassName() << ":" << timer->GetTimerName();
-         G4cerr << " * " << std::setw(40) << name.str()
+         std::cerr << " * " << std::setw(40) << name.str()
                 << std::setw(12) <<  timer->GetAccumulatedRealElapsed()
                 << std::setw(12) <<  timer->GetAccumulatedSystemElapsed()
-                << std::setw(12) <<  timer->GetAccumulatedUserElapsed() << G4endl;
+                << std::setw(12) <<  timer->GetAccumulatedUserElapsed() << std::endl;
 #else
          char buf[1024];
          std::strstream name(buf, 1024);
          name << timer->GetClassName() << ":" << timer->GetTimerName() << std::ends;
-         G4cerr << " * " << std::setw(40) << buf 
+         std::cerr << " * " << std::setw(40) << buf 
                 << std::setw(12) <<  timer->GetAccumulatedRealElapsed()
                 << std::setw(12) <<  timer->GetAccumulatedSystemElapsed()
-                << std::setw(12) <<  timer->GetAccumulatedUserElapsed() << G4endl;
+                << std::setw(12) <<  timer->GetAccumulatedUserElapsed() << std::endl;
 #endif
       }
    }
-   G4cerr << " *********************************************************************************" << G4endl;
+   std::cerr << " *********************************************************************************" << std::endl;
 }
 

@@ -27,7 +27,7 @@ J4VTXPixelAreaSD::J4VTXPixelAreaSD(J4VDetectorComponent* detector)
               fSTrack(-1), fSLayer(-1), fSLadder(-1), fSSensor(-1), 
               fSColNo(0)     
 {
-  G4cout << " ----- PixelAreaSD ----- " << G4endl;
+  std::cout << " ----- PixelAreaSD ----- " << std::endl;
 }
 
 //=====================================================================
@@ -160,8 +160,8 @@ void J4VTXPixelAreaSD::DrawAll()
 void J4VTXPixelAreaSD::PrintAll()
 {
   G4int nHit= ((J4VTXPixelAreaHitBuf*)GetHitBuf())-> entries();
-  G4cout << "------------------------------------------" << G4endl
-         << "*** tracker Hit (#hits=" << nHit << ")" << G4endl;
+  std::cout << "------------------------------------------" << std::endl
+         << "*** tracker Hit (#hits=" << nHit << ")" << std::endl;
   ((J4VTXPixelAreaHitBuf*)GetHitBuf())-> PrintAllHits();
 }
 

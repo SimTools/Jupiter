@@ -104,11 +104,11 @@ void J4SOL::InstallIn(J4VComponent         *mother,
 
 void J4SOL::SetMagField()
 {
-    G4cerr << "-----------------------------------------------" << G4endl;
-    G4cerr << "-----------------------------------------------" << G4endl;
-    G4cerr << "J4DetectorConstruction:: new J4MagneticField!!!" << G4endl;
-    G4cerr << "-----------------------------------------------" << G4endl;
-    G4cerr << "-----------------------------------------------" << G4endl;
+    std::cerr << "-----------------------------------------------" << std::endl;
+    std::cerr << "-----------------------------------------------" << std::endl;
+    std::cerr << "J4DetectorConstruction:: new J4MagneticField!!!" << std::endl;
+    std::cerr << "-----------------------------------------------" << std::endl;
+    std::cerr << "-----------------------------------------------" << std::endl;
 
 
     J4SOLParameterList *list = OpenParameterList(); 

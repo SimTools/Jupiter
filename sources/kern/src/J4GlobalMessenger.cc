@@ -35,7 +35,7 @@ J4GlobalMessenger::J4GlobalMessenger(J4Global * global)
   
   fErrorOutputDeviceIDCmd = new G4UIcmdWithAnInteger("/jupiter/global/ErrorOutputDeviceID",this);
   fErrorOutputDeviceIDCmd->SetGuidance("Set J4cerr output device ID.");
-  fErrorOutputDeviceIDCmd->SetGuidance(" 0: G4cerr, 1: file");
+  fErrorOutputDeviceIDCmd->SetGuidance(" 0: std::cerr, 1: file");
   fErrorOutputDeviceIDCmd->SetGuidance(" (default is 1.)");
   fErrorOutputDeviceIDCmd->SetParameterName("N",true,true);
   fErrorOutputDeviceIDCmd->SetRange("N>-1");

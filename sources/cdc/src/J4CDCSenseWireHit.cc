@@ -68,7 +68,7 @@ G4ThreeVector J4CDCSenseWireHit::GetHitPosition() const
 
 void J4CDCSenseWireHit::Output(G4HCofThisEvent* HCTE)
 {
-   G4cerr << "I am SenseWireHit." << G4endl;	
+   std::cerr << "I am SenseWireHit." << std::endl;	
 	
 }
 
@@ -85,9 +85,9 @@ void J4CDCSenseWireHit::Draw()
 void J4CDCSenseWireHit::Print()
 {
 
-  G4cout << std::setiosflags(std::ios::fixed);
-  G4cout << std::setw(20) << GetComponentName() << " " << G4endl;
-  G4cout << " track#=" << GetTrackID()
+  std::cout << std::setiosflags(std::ios::fixed);
+  std::cout << std::setw(20) << GetComponentName() << " " << std::endl;
+  std::cout << " track#=" << GetTrackID()
          << " charge=" << GetCharge()
          << " position(mm)= " << std::setprecision(2) 
          << std::setw(8) << fHitPosition.x() *(1./mm) << " "
@@ -97,6 +97,6 @@ void J4CDCSenseWireHit::Print()
          << std::setw(6) << GetTotalEnergy() *(1./GeV) << " "
          << " TOF(ns)= " << std::setw(4) << std::setprecision(1) 
          << GetTof() /ns 
-         << G4endl;  
+         << std::endl;  
 }
 

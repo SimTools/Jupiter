@@ -149,8 +149,8 @@ void J4CALEMSD::DrawAll()
 void J4CALEMSD::PrintAll()
 {
   G4int nHit= ((J4CALHitBuf*)GetHitBuf())-> entries();
-  G4cout << "------------------------------------------" << G4endl
-         << "*** tracker Hit (#hits=" << nHit << ")" << G4endl;
+  std::cout << "------------------------------------------" << std::endl
+         << "*** tracker Hit (#hits=" << nHit << ")" << std::endl;
   ((J4CALHitBuf*)GetHitBuf())-> PrintAllHits();
 }
 

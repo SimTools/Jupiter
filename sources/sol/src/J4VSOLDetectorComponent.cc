@@ -55,7 +55,7 @@ J4VMaterialStore* J4VSOLDetectorComponent::OpenMaterialStore()
    if(!fMaterialStore) {
    	fMaterialStore = new J4SOLMaterialStore();
         Register(fMaterialStore);
-  	G4cerr << "*** Opend J4SOLMaterialStore ***" << G4endl;
+  	std::cerr << "*** Opend J4SOLMaterialStore ***" << std::endl;
   }
     
    return fMaterialStore;

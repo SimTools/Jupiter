@@ -59,7 +59,7 @@ J4VMaterialStore* J4VIRAcceleratorComponent::OpenMaterialStore()
    if(!fMaterialStore) {
    	fMaterialStore = new J4IRMaterialStore();
 	Register(fMaterialStore);
-  	G4cerr << "*** Opend J4IRMaterialStore ***" << G4endl;
+  	std::cerr << "*** Opend J4IRMaterialStore ***" << std::endl;
    }
     
    return fMaterialStore;
@@ -117,7 +117,7 @@ J4IRParameterList* J4VIRAcceleratorComponent::OpenParameterList()
   if(!fParameterList) {
     fParameterList = new J4IRParameterList();
     Register(fParameterList);
-    G4cerr << "*** Opend J4IRParameterList ***" << G4endl;
+    std::cerr << "*** Opend J4IRParameterList ***" << std::endl;
   }
 
   return fParameterList;

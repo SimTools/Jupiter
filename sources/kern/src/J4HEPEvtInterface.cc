@@ -56,7 +56,7 @@ void J4HEPEvtInterface::OpenHEPEvtFile(G4String file)
   if (!fInputStream) {
      G4Exception("J4HEPEvtInterface:: check filename and retry. cannot open file " +fFileName );
   } else {
-     G4cout << "HEPEvt input file : " << fFileName << " is opened." << G4endl;
+     std::cout << "HEPEvt input file : " << fFileName << " is opened." << std::endl;
   }
 
   // reset abortion level...
@@ -95,14 +95,14 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
         return;
      }
      
-     G4cerr << "J4HEPEvtInterFace::GeneratePrimaryVertex: Skipped event "
-            << i << G4endl;
+     std::cerr << "J4HEPEvtInterFace::GeneratePrimaryVertex: Skipped event "
+            << i << std::endl;
      
 #ifdef __THEBE__
 #ifdef __DUMPREADDATA__  
      ofs << "J4HEPEvtInterFace::GeneratePrimaryVertex:_Skipped_event_" 
-         << i << "_==========================" << G4endl;
-     ofs << NHEP << G4endl;
+         << i << "_==========================" << std::endl;
+     ofs << NHEP << std::endl;
 #endif
 #endif
 
@@ -122,7 +122,7 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
             << std::setw(16) << PHEP2 
             << std::setw(16) << PHEP3 
             << std::setw(16) << PHEP5 
-            << std::resetiosflags(std::ios::scientific) << G4endl;
+            << std::resetiosflags(std::ios::scientific) << std::endl;
 #endif
 #endif
 
@@ -141,8 +141,8 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 #ifdef __THEBE__
 #ifdef __DUMPREADDATA__
   ofs << "J4HEPEvtInterFace::GeneratePrimaryVertex:_Loaded_event_"
-     << fNskipEvents << "_==========================" << G4endl;
-  ofs << NHEP << G4endl;
+     << fNskipEvents << "_==========================" << std::endl;
+  ofs << NHEP << std::endl;
 #endif
 #endif
 
@@ -160,7 +160,7 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
         << std::setw(16) << PHEP1
         << std::setw(16) << PHEP2
         << std::setw(16) << PHEP3
-        << std::setw(16) << PHEP5 << G4endl;
+        << std::setw(16) << PHEP5 << std::endl;
 #endif
 #endif
      

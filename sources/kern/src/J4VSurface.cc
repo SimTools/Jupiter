@@ -6,7 +6,7 @@
  *  Copyright (c) 2001 __MyCompanyName__. All rights reserved.
  *
  */
-#include <iomanip.h>
+#include <iomanip>
 #include "J4VSurface.hh"
 
 //#define __SOLIDDEBUG__
@@ -566,7 +566,7 @@ void J4VSurface::GetBoundaryParameters(const G4int         &areacode,
    }
 
    J4cerr << "   J4VSurface::GetBoundaryParameters: boundary at areacode "
-      << hex << areacode << dec << " is not be registerd. abort. " << J4endl;
+      << std::hex << areacode << std::dec << " is not be registerd. abort. " << J4endl;
    abort();
 
 }
@@ -766,8 +766,8 @@ void J4VSurface::DebugPrint()
   
    J4cerr << "/* J4VSurface::DebugPrint:---------------------------------" << J4endl;
    J4cerr << "/* NAME = " << fName << J4endl;
-   J4cerr << "/* Axis = " << hex << fAxis[0] << " " << hex << fAxis[1] 
-          << " (0,1,2,3,5 = kXAxis,kYAxis,kZAxis,kRho,kPhi)" << dec << J4endl;
+   J4cerr << "/* Axis = " << std::hex << fAxis[0] << " " << std::hex << fAxis[1] 
+          << " (0,1,2,3,5 = kXAxis,kYAxis,kZAxis,kRho,kPhi)" << std::dec << J4endl;
    J4cerr << "/* BoundaryLimit(in local) fAxis0(min, max) = ("<<fAxisMin[0] 
           << ", " << fAxisMax[0] << ")" << J4endl;
    J4cerr << "/* BoundaryLimit(in local) fAxis1(min, max) = ("<<fAxisMin[1] 

@@ -44,7 +44,7 @@ public:
 #if 0
        G4int nhits = ((J4CDCSenseWireHitBuf*)GetHitBuf())->entries();
        G4int i;
-       G4cerr << "J4CDCSenseWireSD::OutputAll: nhits = " << nhits << G4endl;
+       std::cerr << "J4CDCSenseWireSD::OutputAll: nhits = " << nhits << std::endl;
        for(i=0; i<nhits; i++)
        {
      	J4CDCSenseWireHitBuf* hcp = (J4CDCSenseWireHitBuf*)GetHitBuf();
@@ -57,7 +57,7 @@ public:
      }
      else
      {
-//       G4cerr << "J4CDCSenseWireSD::OutputAll: No HitBuf! " << G4endl;
+//       std::cerr << "J4CDCSenseWireSD::OutputAll: No HitBuf! " << std::endl;
      }
   }
   

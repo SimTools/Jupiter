@@ -60,6 +60,6 @@ void J4RunAction::EndOfRunAction(const G4Run* aRun)
   }  
     
   fOfs.close();
-  G4cout << "#events generated= " << aRun-> GetNumberOfEvent() << G4endl;
+  std::cout << "#events generated= " << aRun-> GetNumberOfEvent() << std::endl;
 }
 

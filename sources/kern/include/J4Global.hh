@@ -21,10 +21,10 @@
 
 #ifdef __THEBE__
 #define J4cerr J4Global::GetErrorOutputStream()
-#define J4endl G4endl; if (J4Global::GetErrorOutputDeviceID()) J4cerr<<std::flush
+#define J4endl std::endl; if (J4Global::GetErrorOutputDeviceID()) J4cerr<<std::flush
 #else 
-#define J4cerr G4cerr
-#define J4endl G4endl
+#define J4cerr std::cerr
+#define J4endl std::endl
 #endif
 
 // ====================================================================
@@ -62,7 +62,7 @@ private:
   static std::ofstream   *fErrorOfs;
   static G4int              fErrorCounter;
   static G4int              fErrorNevents;
-  static G4int              fErrorOutputDeviceID;   // 0: cerr, 1:fileoutput
+  static G4int              fErrorOutputDeviceID;   // 0: std::cerr, 1:fileoutput
   static G4String           fErrorOutputFilename;
   static G4String           fErrorOutputUnit;       // "Run", "Event", "Track"  
   J4GlobalMessenger        *fMessenger;

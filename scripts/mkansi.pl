@@ -50,11 +50,15 @@ foreach $infile (@ARGV) {
       s/std::std::/std::/g;
       s/std::std::std::/std::/g;
 
-      s/(\b)std::/\1G4std::/g;
+      # s/(\b)std::/\1G4std::/g;
+      # s/G4std::endl/G4endl/g;
+      # s/G4std::cout/G4cout/g;
+      # s/G4std::cerr/G4cerr/g;
 
-      s/G4std::endl/G4endl/g;
-      s/G4std::cout/G4cout/g;
-      s/G4std::cerr/G4cerr/g;
+      s/G4endl/std::endl/g;
+      s/G4cout/std::cout/g;
+      s/G4cerr/std::cerr/g;
+      s/g4std/./g;
 
       s/<(\s*)strstream\.h(\s*)>/<\1sstream\2>/;
       s/<(\s*)strstream(\s*)>/<\1sstream\2>/;

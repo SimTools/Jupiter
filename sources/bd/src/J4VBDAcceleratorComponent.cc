@@ -55,7 +55,7 @@ J4VMaterialStore* J4VBDAcceleratorComponent::OpenMaterialStore()
    if (!fMaterialStore) {
       fMaterialStore = new J4BDMaterialStore();
       Register(fMaterialStore);
-      G4cerr << "*** Opend J4BDMaterialStore ***" << G4endl;
+      std::cerr << "*** Opend J4BDMaterialStore ***" << std::endl;
    }
     
    return fMaterialStore;

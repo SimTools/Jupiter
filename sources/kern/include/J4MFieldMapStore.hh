@@ -63,10 +63,10 @@ inline void J4MFieldMapStore::RemoveMField(J4AttMFieldMap* map){
   }
 }
 inline void J4MFieldMapStore::NameList () {
-  G4cout << " ---J4MFieldMapStore:: NameList()--- "<< fcurCount <<G4endl; 
+  std::cout << " ---J4MFieldMapStore:: NameList()--- "<< fcurCount <<std::endl; 
   for ( G4int i = 0; i < fcurCount ; i++){
     G4String* name = fmagCollection[i]->GetMFieldName();
-    G4cout << i <<" "<< *name << G4endl;
+    std::cout << i <<" "<< *name << std::endl;
   }
 };
 #endif

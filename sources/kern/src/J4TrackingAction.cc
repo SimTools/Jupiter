@@ -65,8 +65,8 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
   
       static G4int callNo = 0;
  
-      G4cerr << "***** J4TrackingAction::PreUserTrackingAction:Track_" 
-             << fCurrentTrackID << "_Start ****** "<< G4endl;
+      std::cerr << "***** J4TrackingAction::PreUserTrackingAction:Track_" 
+             << fCurrentTrackID << "_Start ****** "<< std::endl;
 
 
       if (fStoredDebugPrintID == -1 || fStoredDebugPrintID == fCurrentTrackID) {

@@ -27,7 +27,7 @@ J4VTXSensorSD::J4VTXSensorSD(J4VDetectorComponent* detector)
               fSTrack(-1), fSLayer(-1), fSLadder(-1), fSSensor(-1), 
               fSColNo(0)     
 {
-  G4cout << " ------ SensorSD ------ " << G4endl;
+  std::cout << " ------ SensorSD ------ " << std::endl;
 }
 
 //=====================================================================
@@ -156,8 +156,8 @@ void J4VTXSensorSD::DrawAll()
 void J4VTXSensorSD::PrintAll()
 {
   G4int nHit= ((J4VTXSensorHitBuf*)GetHitBuf())-> entries();
-  G4cout << "------------------------------------------" << G4endl
-         << "*** tracker Hit (#hits=" << nHit << ")" << G4endl;
+  std::cout << "------------------------------------------" << std::endl
+         << "*** tracker Hit (#hits=" << nHit << ")" << std::endl;
   ((J4VTXSensorHitBuf*)GetHitBuf())-> PrintAllHits();
 }
 

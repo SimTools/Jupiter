@@ -38,10 +38,10 @@ void J4MFieldMapStore::GetFieldValue(const  G4double  point[3],
   for ( int i = 0; i < fcurCount; i++) {
     if ( fmagCollection[i]&&fmagCollection[i]->IsMValid(point) ) {
       fmagCollection[i]->GetMFieldValue(point,bfc,onlyFlag);
-      //G4cout << " End of GetMFieldValue " 
+      //std::cout << " End of GetMFieldValue " 
       //	   << bfc[0]/tesla << " " 
       //	   << bfc[1]/tesla << " " 
-      //	   << bfc[2]/tesla << " " << i << G4endl;
+      //	   << bfc[2]/tesla << " " << i << std::endl;
       if ( onlyFlag == true ) {
 	bfield[0] = bfc[0];
 	bfield[1] = bfc[1];  
@@ -57,12 +57,12 @@ void J4MFieldMapStore::GetFieldValue(const  G4double  point[3],
 
 #if 0
   if ( bfield[0] != 0 || bfield[1] !=0 || bfield[2] !=0 ){
-    G4cout << "bfield " << bfield[0]/tesla
+    std::cout << "bfield " << bfield[0]/tesla
 	 << " "       << bfield[1]/tesla 
 	 << " "       << bfield[2]/tesla 
 	 << "Position " << point[0]/m
 	 << " "       << point[1]/m 
-	 << " "       << point[2]/m << G4endl;
+	 << " "       << point[2]/m << std::endl;
   }
 #endif
 }

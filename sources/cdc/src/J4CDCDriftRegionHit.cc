@@ -123,30 +123,30 @@ void J4CDCDriftRegionHit::Output(G4HCofThisEvent* HCTE)
          << std::setw(18) << fRwaist << " "
          << std::setiosflags(std::ios::floatfield) 
          << std::setprecision(8)
-         << G4endl;
+         << std::endl;
   }
 
 #if 0
-     G4cerr << "LayerNo   : " << layerNo << G4endl; 
-     G4cerr << "WireNo    : " << wireNo << G4endl; 
-     G4cerr << "CellID    : " << cellID << G4endl;
-     G4cerr << "TrackID   : " << GetTrackID() << G4endl; 
-     G4cerr << "MotherTrackID : " << GetMotherTrackID() << G4endl; 
-     G4cerr << "HitNumber : " << GetHitNumber() << G4endl; 
-     G4cerr << "PDID      : " << pdid << G4endl; 
-     G4cerr << "Charge    : " << GetCharge() << G4endl; 
-     G4cerr << "DPhi      : " << dphi << G4endl; 
-     G4cerr << "SPhi      : " << sphi << G4endl; 
-     G4cerr << "Pre       : " << pre << G4endl; 
-     G4cerr << "Post      : " << post << G4endl; 
-     G4cerr << "Momentum  : " << GetMomentum() << G4endl; 
-     G4cerr << "TotalE    : " << GetTotalEnergy() << G4endl; 
-     G4cerr << "EDep      : " << GetEnergyDeposit() << G4endl; 
-     G4cerr << "Tof       : " << GetTof() << G4endl; 
-     G4cerr << "WireEndm  : " << fWireEnd[0] << G4endl; 
-     G4cerr << "WireEndp  : " << fWireEnd[1] << G4endl; 
-     G4cerr << "TanStereo : " << fTanStereo << G4endl; 
-     G4cerr << "RWaist    : " << fRwaist << G4endl; 
+     std::cerr << "LayerNo   : " << layerNo << std::endl; 
+     std::cerr << "WireNo    : " << wireNo << std::endl; 
+     std::cerr << "CellID    : " << cellID << std::endl;
+     std::cerr << "TrackID   : " << GetTrackID() << std::endl; 
+     std::cerr << "MotherTrackID : " << GetMotherTrackID() << std::endl; 
+     std::cerr << "HitNumber : " << GetHitNumber() << std::endl; 
+     std::cerr << "PDID      : " << pdid << std::endl; 
+     std::cerr << "Charge    : " << GetCharge() << std::endl; 
+     std::cerr << "DPhi      : " << dphi << std::endl; 
+     std::cerr << "SPhi      : " << sphi << std::endl; 
+     std::cerr << "Pre       : " << pre << std::endl; 
+     std::cerr << "Post      : " << post << std::endl; 
+     std::cerr << "Momentum  : " << GetMomentum() << std::endl; 
+     std::cerr << "TotalE    : " << GetTotalEnergy() << std::endl; 
+     std::cerr << "EDep      : " << GetEnergyDeposit() << std::endl; 
+     std::cerr << "Tof       : " << GetTof() << std::endl; 
+     std::cerr << "WireEndm  : " << fWireEnd[0] << std::endl; 
+     std::cerr << "WireEndp  : " << fWireEnd[1] << std::endl; 
+     std::cerr << "TanStereo : " << fTanStereo << std::endl; 
+     std::cerr << "RWaist    : " << fRwaist << std::endl; 
 #endif
 
 }

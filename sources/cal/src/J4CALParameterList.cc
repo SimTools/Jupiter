@@ -179,8 +179,8 @@ void J4CALParameterList::SetTowerParameters(G4double towerheight,
    // ------------------------------------------------------
 
    if (startlambda >= endlambda) {
-      G4cerr << "J4CDCParameterList::SetTowerParameters: endlambda is bigger than startlambda! abort."
-             << G4endl;
+      std::cerr << "J4CDCParameterList::SetTowerParameters: endlambda is bigger than startlambda! abort."
+             << std::endl;
       abort();
    }
 
@@ -247,9 +247,9 @@ void J4CALParameterList::SetTowerParameters(G4double towerheight,
    G4double ddwidth  = 2 * ddr * sin( 0.5 * ddlambda); 
    nominalwidth      += ddwidth;
 
-   G4cerr << "  ntowers = " << ntowers << G4endl;
-   G4cerr << "  nominal tile size is replaced to " 
-          << nominalwidth / cm << " cm. " << G4endl; 
+   std::cerr << "  ntowers = " << ntowers << std::endl;
+   std::cerr << "  nominal tile size is replaced to " 
+          << nominalwidth / cm << " cm. " << std::endl; 
 
    // ------------------------------------------------------
    // set tower parameters 
@@ -316,17 +316,17 @@ void J4CALParameterList::SetTowerParameters(G4double towerheight,
       if (dlambda < 0.5 * nominalwidth / r) {
 
          if (lastlambda == -DBL_MAX) {
-            G4cerr << "J4CDCParameterList::SetTowerParameters:"
+            std::cerr << "J4CDCParameterList::SetTowerParameters:"
                    << " You may set too big nominal tile size. abort."
-                   << G4endl;
+                   << std::endl;
             abort();
          }
 
-         G4cerr << "J4CDCParameterList::SetTowerParameters:"
-                << " delta lambda is too small! " << G4endl;
-         G4cerr << "  i, r, dlambda, rdlambda " 
+         std::cerr << "J4CDCParameterList::SetTowerParameters:"
+                << " delta lambda is too small! " << std::endl;
+         std::cerr << "  i, r, dlambda, rdlambda " 
                 << ntowers << " " << r << " " 
-                << dlambda << " " << r * dlambda << G4endl; 
+                << dlambda << " " << r * dlambda << std::endl; 
         
          // delete formar tower parameter 
          fTowerParamVector.pop_back(); 
@@ -340,10 +340,10 @@ void J4CALParameterList::SetTowerParameters(G4double towerheight,
          r       = lastr;
          width   = 2 * r * sin( 0.5 * dlambda); 
 
-         G4cerr << "  marged formar tower. " << G4endl;
-         G4cerr << "  i, r, dlambda, rdlambda " 
+         std::cerr << "  marged formar tower. " << std::endl;
+         std::cerr << "  i, r, dlambda, rdlambda " 
                 << ntowers << " " << r << " " << dlambda 
-                << " " << r * dlambda << G4endl; 
+                << " " << r * dlambda << std::endl; 
 
       }
             
@@ -508,15 +508,15 @@ G4double J4CALParameterList::CalcNextTowerEdgeAngle(G4double r,
 //* ShowTowerParameters -----------------------------------------------
 void J4CALParameterList::ShowTowerParameters()
 {
-   G4cerr << " ============================================================ " << G4endl;
-   G4cerr << "   Calorimeter Tower Parameters " << G4endl;
-   G4cerr << " ----+---------+---------+---------+---------+---------+---------+---------+---------+---------+ " << G4endl;
-   G4cerr << "       barrel    Radius    Height    Lambda    Dlambda   Wlambda   Nphi      Dphi      Wphi      " << G4endl;
-   G4cerr << " ----+---------+---------+---------+---------+---------+---------+---------+---------+---------+ " << G4endl;
+   std::cerr << " ============================================================ " << std::endl;
+   std::cerr << "   Calorimeter Tower Parameters " << std::endl;
+   std::cerr << " ----+---------+---------+---------+---------+---------+---------+---------+---------+---------+ " << std::endl;
+   std::cerr << "       barrel    Radius    Height    Lambda    Dlambda   Wlambda   Nphi      Dphi      Wphi      " << std::endl;
+   std::cerr << " ----+---------+---------+---------+---------+---------+---------+---------+---------+---------+ " << std::endl;
 
    for (G4int i=0; i < GetNcones(); i++) {
 
-      G4cerr << std::setw(4) << i ;
+      std::cerr << std::setw(4) << i ;
       GetTowerParam(i)->ShowData();
 
    }

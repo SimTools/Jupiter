@@ -28,12 +28,12 @@ G4bool J4Object::Deregister(void * child)
          if (dynamic_cast<J4Named *>(this)) {
             name = ((J4Named *)this)->GetName();
          }
-         G4cerr << " J4Object::Deregister of "
+         std::cerr << " J4Object::Deregister of "
                << name
                << " failed to orphan the child ("
                << child
                << "). The child had already been orphaned !!"
-               << G4endl;
+               << std::endl;
       }
    }
    return false;

@@ -12,7 +12,7 @@
 //*     2002/08/01  K.Hoshina   Original version.
 //*************************************************************************
 
-#include <iomanip.h>
+#include <iomanip>
 
 #include "G4VSolid.hh"
 #include "geomdefs.hh"
@@ -242,8 +242,8 @@ class J4VSurface
                               if (p) {
                                  fLastp = *p;
                               } else {
-                                 G4cerr << "J4VSurface::CurrentStatus::"
-                                        << "SetCurrentStatus: p = 0! " << endl;
+                                 std::cerr << "J4VSurface::CurrentStatus::"
+                                        << "SetCurrentStatus: p = 0! " << std::endl;
                                  abort();
                               }
                               if (v) {
@@ -280,9 +280,9 @@ class J4VSurface
 
       inline void          DebugPrint()
                            {
-                              G4cerr << "CurrentStatus::Dist0,1= " << fDistance[0] 
+                              std::cerr << "CurrentStatus::Dist0,1= " << fDistance[0] 
                               << " " << fDistance[1] << " areacode = " << fAreacode[0] 
-                              << " " << fAreacode[1] << G4endl;
+                              << " " << fAreacode[1] << std::endl;
                            }
 
     private:
@@ -329,7 +329,7 @@ class J4VSurface
          // kAxis0 & kAxisMin, kAxis0 & kAxisMax,
          // kAxis1 & kAxisMin, kAxis1 & kAxisMax
          if ((areacode & kAxis0) && (areacode & kAxis1)) {
-            G4cerr << "J4VSurface::Boundary::GetBoundaryParameters: "
+            std::cerr << "J4VSurface::Boundary::GetBoundaryParameters: "
             << "You are in the "
             << "corner area. This function returns a direction vector of "
             << "a boundary line. abort. areacode = " << areacode << J4endl;
@@ -560,8 +560,8 @@ G4int J4VSurface::GetAxisType(G4int areacode, G4int whichaxis) const
               axiscode == (kAxisPhi & kAxis1)) {
       return kAxisPhi;
    } else {
-      G4cerr << "J4VSurface::GetAxisType: areacode= "
-             << areacode << " is not supported. abort. " << G4endl;
+      std::cerr << "J4VSurface::GetAxisType: areacode= "
+             << areacode << " is not supported. abort. " << std::endl;
       abort();
    }
 }
@@ -625,8 +625,8 @@ G4int J4VSurface::GetNeighbours(G4int areacode, J4VSurface** surfaces)
 G4ThreeVector J4VSurface::GetCorner(G4int areacode) const
 {
    if (!(areacode & kCorner)){
-      G4cerr << "J4VSurface::GetCorner: area code must represents corner. " 
-             << "your areacode = " << areacode << G4endl;
+      std::cerr << "J4VSurface::GetCorner: area code must represents corner. " 
+             << "your areacode = " << areacode << std::endl;
       abort();
    }
    
@@ -639,8 +639,8 @@ G4ThreeVector J4VSurface::GetCorner(G4int areacode) const
    } else if ((areacode & kCorner0Min1Max) == kCorner0Min1Max) { 
       return fCorners[3];
    } else {
-      G4cerr << "J4VSurface::GetCorner: areacode= "
-             << areacode << " is not supported. abort. " << G4endl;
+      std::cerr << "J4VSurface::GetCorner: areacode= "
+             << areacode << " is not supported. abort. " << std::endl;
       abort();
    }
 }

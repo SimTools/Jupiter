@@ -88,8 +88,8 @@ G4int J4CDCLayer::GetNcellsPerLayer() const
    if (dynamic_cast<J4CDCSuperLayer *>(GetMother())) { 
       return ((J4CDCSuperLayer *)GetMother())->GetNcellsPerLayer(); 
    } else {
-      G4cerr << "J4CDCLayer::GetNcellsPerLayer: cast to J4CDCSuperLayer"
-             << " failed. abort. " << G4endl;
+      std::cerr << "J4CDCLayer::GetNcellsPerLayer: cast to J4CDCSuperLayer"
+             << " failed. abort. " << std::endl;
       abort();
    }
 }

@@ -7,7 +7,7 @@
 #ifdef __USEISOCXX__
 #include <sstream>
 #else
-#include <strstream>
+#include <sstream>
 #endif
 #include <fstream>
 #include <iomanip>
@@ -43,13 +43,13 @@
 J4EventAction::J4EventAction()
 ////////////////////////////////////
 {
-   G4cerr << "J4EventAction::constructor called" << G4endl;
+   std::cerr << "J4EventAction::constructor called" << std::endl;
    G4int timerid = -1;
    G4String classname("J4EventAction");
    G4String timername("EventTimer");
-   G4cerr << "J4EventAction::constructor timer new" << G4endl;
+   std::cerr << "J4EventAction::constructor timer new" << std::endl;
    fEventTimer = new J4Timer(timerid, classname, timername);
-   G4cerr << "J4EventAction::constructor timer created" << G4endl;
+   std::cerr << "J4EventAction::constructor timer created" << std::endl;
 }
 
 ////////////////////////////////////
@@ -81,15 +81,15 @@ void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
 #endif
          
 #ifdef __VERBOSE__
-   G4cout << "%%%%%%%% Primary Information %%%%%%%%%" << G4endl;
+   std::cout << "%%%%%%%% Primary Information %%%%%%%%%" << std::endl;
    G4int nVtx= anEvent-> GetNumberOfPrimaryVertex();
    G4int i;
    for(i=0; i< nVtx; i++) {
       const G4PrimaryVertex* primaryVertex= anEvent-> GetPrimaryVertex(i);
       primaryVertex-> Print();  
    }
-   G4cout << "%%%%%%%% Primary Information end EventNo = " 
-          << anEvent->GetEventID() << " %%%%%%%%%" <<G4endl << std::flush;
+   std::cout << "%%%%%%%% Primary Information end EventNo = " 
+          << anEvent->GetEventID() << " %%%%%%%%%" <<std::endl << std::flush;
 #endif  
 
    J4DetectorConstruction::GetEXPHall()->UnlockOutput();
@@ -109,9 +109,9 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
 
      G4int event = anEvent->GetEventID();
 
-     G4cerr << "**********************************************" << G4endl;
-     G4cerr << "*******_event_number_" << event << "_*******" <<G4endl;
-     G4cerr << "**********************************************" << G4endl;
+     std::cerr << "**********************************************" << std::endl;
+     std::cerr << "*******_event_number_" << event << "_*******" <<std::endl;
+     std::cerr << "**********************************************" << std::endl;
 
 
   // ====================================================================  
@@ -121,7 +121,7 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
   
   if(! HCTE) return;  // no hits in this events. nothing to do!
   
-  G4cerr << "EventAction :: HCTE = "<< HCTE->GetNumberOfCollections()<<G4endl;
+  std::cerr << "EventAction :: HCTE = "<< HCTE->GetNumberOfCollections()<<std::endl;
   
   std::ofstream& ofs= ((J4RunAction*)usrRunAction)-> GetOutputFileStream();
   if(! ofs.good()) {
@@ -136,23 +136,23 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
   // =====================================================================
   // 
   
-   ofs << "*******_Start_of_event_" << event << "_*******" <<G4endl;
+   ofs << "*******_Start_of_event_" << event << "_*******" <<std::endl;
      
      
-   ofs << event << G4endl;
+   ofs << event << std::endl;
   
-   G4cerr << "EventAction::EndOfEvent is called " << G4endl;
+   std::cerr << "EventAction::EndOfEvent is called " << std::endl;
      
    J4DetectorConstruction::GetEXPHall()->OutputAll(HCTE, ofs);
      
-   G4cerr << "EventAction::OutputAll finished " << G4endl;
+   std::cerr << "EventAction::OutputAll finished " << std::endl;
   
-   ofs << "*******_End_of_event_" << event << "_*******" <<G4endl;
+   ofs << "*******_End_of_event_" << event << "_*******" <<std::endl;
 
    fEventTimer->Stop();
-   G4cerr << "**********************************************" << G4endl;
-   G4cerr << "*******_event_"<< event << "_finished *******" <<G4endl;
-   G4cerr << "**********************************************" << G4endl;
+   std::cerr << "**********************************************" << std::endl;
+   std::cerr << "*******_event_"<< event << "_finished *******" <<std::endl;
+   std::cerr << "**********************************************" << std::endl;
 
    J4Timer::PrintAllAccumulatedTimes();
    

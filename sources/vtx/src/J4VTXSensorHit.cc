@@ -90,7 +90,7 @@ void J4VTXSensorHit::Output(G4HCofThisEvent* HCTE)
 	 <<  GetEnergyDeposit()/keV << " "
           << GetTrackID() << " " << fLayerID 
 	 <<" " << fLadderID <<" "<< fSensorID << " " 
-         << fInPosition <<" " << fOutPosition << G4endl;  	
+         << fInPosition <<" " << fOutPosition << std::endl;  	
 #else
      G4double dE = GetEnergyDeposit()/keV;
      G4int    trk = GetTrackID();
@@ -129,7 +129,7 @@ void J4VTXSensorHit::Output(G4HCofThisEvent* HCTE)
 	 <<" " <<  xout << " " << yout << " " << zout 
 	 <<" " <<  xLin << " " << yLin << " " << zLin 
 	 <<" " <<  xLout << " " << yLout << " " << zLout 
-	 <<" " <<  procName<< G4endl;
+	 <<" " <<  procName<< std::endl;
 #endif
   }
 }
@@ -148,18 +148,18 @@ void J4VTXSensorHit::Print()
 
   G4ThreeVector fHitPosition=GetHitPosition();
 
-  G4int prec = G4cerr.precision(2);
-  G4cerr << std::setiosflags(std::ios::fixed);
-  G4cerr << " track#=" << GetTrackID()
+  G4int prec = std::cerr.precision(2);
+  std::cerr << std::setiosflags(std::ios::fixed);
+  std::cerr << " track#=" << GetTrackID()
 	 << " position(mm)= " 
 	 << std::setw(8) << fHitPosition.x() *(1./mm) << " "
 	 << std::setw(8) << fHitPosition.y() *(1./mm) << " "
 	 << std::setw(8) << fHitPosition.z() *(1./mm) << " "
 	 << " Edep(keV)= " 
 	 << std::setw(6) << GetEnergyDeposit() *(1./keV) << " "
-         << G4endl;  
+         << std::endl;  
 
-  G4cerr.precision(prec);
+  std::cerr.precision(prec);
 }
 
 

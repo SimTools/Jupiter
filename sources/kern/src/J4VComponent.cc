@@ -21,7 +21,7 @@
 #ifdef __USEISOCXX__
 #include <sstream>
 #else
-#include <strstream>
+#include <sstream>
 #endif
 
 #include "G4Tubs.hh"
@@ -56,10 +56,10 @@ J4VComponent::J4VComponent(const G4String&     groupname,
                       fMyDepth(0)
 {
    if (nclones < 1) {
-      G4cerr<<"J4VComponent::constructor: No of clones must bigger than 0."<<G4endl;
+      std::cerr<<"J4VComponent::constructor: No of clones must bigger than 0."<<std::endl;
    }
    if (nbrothers < 1) {
-      G4cerr<<"J4VComponent::constructor: No of brothers must bigger than 0."<<G4endl;
+      std::cerr<<"J4VComponent::constructor: No of brothers must bigger than 0."<<std::endl;
    }
    if (nclones == 1) {
       // in this case, this component will not be replicated and copied.
@@ -71,8 +71,8 @@ J4VComponent::J4VComponent(const G4String&     groupname,
    SetName( name, fNbrothers, fMyID, fNclones, fCopyNo, fMother);
    
    if (fgFamilyMembers.entries() >= __NMAXFAMILYMEMBERS__) {
-      G4cerr << "J4VComponent::constructor: Too many family members "
-             << __NMAXFAMILYMEMBERS__ << " . abort. " << G4endl;
+      std::cerr << "J4VComponent::constructor: Too many family members "
+             << __NMAXFAMILYMEMBERS__ << " . abort. " << std::endl;
       abort();
    }
  
@@ -213,9 +213,9 @@ void J4VComponent::SetSD(J4VSensitiveDetector* sd)
      G4SDManager::GetSDMpointer()-> AddNewDetector(sd);
      fLV-> SetSensitiveDetector(sd);
   } else if (fCopyNo > 0) {
-     G4cerr << "J4VComponent::SetSD at " << GetName() 
+     std::cerr << "J4VComponent::SetSD at " << GetName() 
             << " SetSD failed because you are not the owner of your LogicalVolume."
-            << "You must delete your sd created by new operator. abort." << G4endl;
+            << "You must delete your sd created by new operator. abort." << std::endl;
      abort();
   } 
 }
@@ -267,7 +267,7 @@ void J4VComponent::SetName(const G4String&       name,
     }
   } 
   J4Named::SetName(newname);
-  G4cerr << " My name is " << GetName() << G4endl;
+  std::cerr << " My name is " << GetName() << std::endl;
 }
 
 //=====================================================================
@@ -277,8 +277,8 @@ void J4VComponent::MakeLVWith( G4Material* material, G4UserLimits* ulp)
 {
   if (!fLV) {
      if (!fSolid) {
-        G4cerr << "J4VComponent::MakeLVWith of " << GetName() 
-             << " Solid does not exist. Create G4VSolid at first. return." << G4endl;
+        std::cerr << "J4VComponent::MakeLVWith of " << GetName() 
+             << " Solid does not exist. Create G4VSolid at first. return." << std::endl;
      }  
 
      fLV = new G4LogicalVolume(fSolid, material, GetName()); 
@@ -287,8 +287,8 @@ void J4VComponent::MakeLVWith( G4Material* material, G4UserLimits* ulp)
      if (ulp) fLV->SetUserLimits(ulp);
 
   } else { 
-        G4cerr << "J4VComponent::MakeLVWith at "  << GetName() 
-             << " LogicalVolume already exists. return." << G4endl;
+        std::cerr << "J4VComponent::MakeLVWith at "  << GetName() 
+             << " LogicalVolume already exists. return." << std::endl;
   }   
 }
 
@@ -309,9 +309,9 @@ void J4VComponent::PaintLV(G4bool visibility, const G4Color& color)
       }
  
    } else {
-      G4cerr << "J4VComponent::PrintLV at "
+      std::cerr << "J4VComponent::PrintLV at "
            << GetName() 
-           << " You must create LogicalVolume first. return" << G4endl; 
+           << " You must create LogicalVolume first. return" << std::endl; 
    }
 }
 
@@ -329,8 +329,8 @@ J4VComponent*
       } 	
    }
 
-   G4cerr << " J4VComponent::GetComonentPtrByName " << G4endl
-          << "      Cannot find object name " << name << G4endl;
+   std::cerr << " J4VComponent::GetComonentPtrByName " << std::endl
+          << "      Cannot find object name " << name << std::endl;
    return 0;
 }
 
@@ -341,13 +341,13 @@ void J4VComponent::SetPVPlacement(G4RotationMatrix *pRot,
                                   const G4ThreeVector &tlate)
 {
   if (fPV) {
-     G4cerr << " J4VComponent::SetPVPlacement at " << GetName() 
-            << " PhysicalVolume already exists. abort." << G4endl;
+     std::cerr << " J4VComponent::SetPVPlacement at " << GetName() 
+            << " PhysicalVolume already exists. abort." << std::endl;
      abort();
   } 
   if (!fLV) {
-     G4cerr << " J4VComponent::SetPVPlacement at " << GetName() 
-            << " LogicalVolume does not exist. abort." << G4endl;
+     std::cerr << " J4VComponent::SetPVPlacement at " << GetName() 
+            << " LogicalVolume does not exist. abort." << std::endl;
      abort();
   } 
       
@@ -372,25 +372,25 @@ void J4VComponent::SetPVReplica(const EAxis pAxis, G4double step,
   			                const G4double offset)
 { 
   if (fPV) {
-     G4cerr << " J4VComponent::SetPVReplica at " << GetName() 
-            << " PhysicalVolume already exists. abort." << G4endl;
+     std::cerr << " J4VComponent::SetPVReplica at " << GetName() 
+            << " PhysicalVolume already exists. abort." << std::endl;
      abort();
   } 
   if (!fLV) {
-     G4cerr << " J4VComponent::SetPVPlacement at " << GetName() 
-            << " LogicalVolume does not exist. abort." << G4endl;
+     std::cerr << " J4VComponent::SetPVPlacement at " << GetName() 
+            << " LogicalVolume does not exist. abort." << std::endl;
      abort();
   } 
 
   if (fNclones < 2) {
-     G4cerr << " J4VComponent::SetPVReplica at " << GetName()
+     std::cerr << " J4VComponent::SetPVReplica at " << GetName()
           << " You shouldn't be replicated because "
           << "fNclones is less than 2. "
-          << "Use SetPVPlacement(). return. " << G4endl;
+          << "Use SetPVPlacement(). return. " << std::endl;
      return;
   } else if (fCopyNo != -1) {
-     G4cerr << "J4VComponent::SetPVReplica at " << GetName()
-          << " You are copied component. Use SetPVPlacement(). return." << G4endl;
+     std::cerr << "J4VComponent::SetPVReplica at " << GetName()
+          << " You are copied component. Use SetPVPlacement(). return." << std::endl;
      return;
   }
 
@@ -425,13 +425,13 @@ void J4VComponent::OrderNewTubs( G4double rmin,
 {
 
   if (fSolid) {
-     G4cerr << " J4VComponent::OrderNewTubs at " << GetName() 
-            << " fSolid already exists. abort." << G4endl;
+     std::cerr << " J4VComponent::OrderNewTubs at " << GetName() 
+            << " fSolid already exists. abort." << std::endl;
      abort();
   } 
   if (fNclones == 0) {
-        G4cerr << " J4VComponent::OrderNewTubs at " << GetName()
-               << " fNclones must be greater than 0 !! " << G4endl;
+        std::cerr << " J4VComponent::OrderNewTubs at " << GetName()
+               << " fNclones must be greater than 0 !! " << std::endl;
         abort();
   }
 
@@ -450,7 +450,7 @@ void J4VComponent::OrderNewTubs( G4double rmin,
     
     if (endcaprmin == DBL_MAX) endcaprmin = rmin;
     
-    G4cerr << "Endcap rmin = " << endcaprmin << G4endl;
+    std::cerr << "Endcap rmin = " << endcaprmin << std::endl;
     
     G4ThreeVector lefttranslation ( 0., 0., halfzlen - endcaphalfthickness);
     G4RotationMatrix rotation;
@@ -458,31 +458,31 @@ void J4VComponent::OrderNewTubs( G4double rmin,
     
     G4String cylindername(GetName());
     cylindername += ".Cylinder";
-    G4cerr << "Make " << cylindername << G4endl;
+    std::cerr << "Make " << cylindername << std::endl;
     G4double cylinderlen = halfzlen - endcaphalfthickness * 2;
     G4Tubs*  cylinder    
         = new G4Tubs( cylindername, rmin, rmax, cylinderlen, sphi, dphi );
 
     G4String leftendcapname(GetName());
     leftendcapname += ".LeftEndcap";
-    G4cerr << "Make " << leftendcapname << G4endl;
+    std::cerr << "Make " << leftendcapname << std::endl;
     G4Tubs* leftendcap 
         = new G4Tubs( leftendcapname, endcaprmin, rmax, endcaphalfthickness, sphi, dphi );
     
     G4String cupname(GetName());
     cupname += ".Cup";
-    G4cerr << "Make " << cupname << G4endl;
+    std::cerr << "Make " << cupname << std::endl;
     J4UnionSolid*  cup = new J4UnionSolid ( cupname, cylinder, leftendcap, lefttransform );
         
     G4String rightendcapname(GetName());
     rightendcapname += ".RightEndcap";
-    G4cerr << "Make " << rightendcapname << G4endl;
+    std::cerr << "Make " << rightendcapname << std::endl;
     G4Tubs* rightendcap 
         = new G4Tubs( rightendcapname, endcaprmin, rmax, endcaphalfthickness, sphi, dphi );
     
     G4ThreeVector    righttranslation ( 0., 0., -(halfzlen - endcaphalfthickness));
     G4Transform3D    righttransform   (rotation, righttranslation);
-    G4cerr << "Make " << GetName() << G4endl;
+    std::cerr << "Make " << GetName() << std::endl;
     fSolid = new J4UnionSolid ( GetName(), cup, rightendcap, righttransform );    
     
   }
@@ -512,20 +512,20 @@ void J4VComponent::OrderNewBox(
   // To get a filled box, set innerrad=0 and innerbox palameters = 0.
 
   if (fSolid) {
-     G4cerr << " J4VComponent::OrderNewBox at " << GetName() 
-            << " fSolid already exists. abort." << G4endl;
+     std::cerr << " J4VComponent::OrderNewBox at " << GetName() 
+            << " fSolid already exists. abort." << std::endl;
      abort();
   } 
 
   // check arguments -------------------------
   if (outerboxhalfx == 0 || outerboxhalfy == 0 || outerboxhalfz == 0) {
-    G4cerr << "J4VComponent::OrderNewBox: "
-         << "argument error! outerbox variables must greater than 0. " << G4endl;
+    std::cerr << "J4VComponent::OrderNewBox: "
+         << "argument error! outerbox variables must greater than 0. " << std::endl;
     abort(); 
   } else if (!(innerboxhalfx == 0 && innerboxhalfy == 0 && innerboxhalfz == 0)
               && innerboxhalfx * innerboxhalfy * innerboxhalfz == 0 ) {
-    G4cerr << "J4VComponent::OrderNewBox: "
-         << "argument error! innerbox must be 3-dimension" << G4endl;
+    std::cerr << "J4VComponent::OrderNewBox: "
+         << "argument error! innerbox must be 3-dimension" << std::endl;
     abort(); 
   }
 
@@ -567,7 +567,7 @@ void J4VComponent::OrderNewBox(
     fSolid = new J4SubtractionSolid( GetName(), outerbox, innerbox, pboxrot, boxtlate );
 
   } else { 
-    G4cerr << " J4VComponent::OrderNewBox: Program inconsistency! check program." << G4endl;
+    std::cerr << " J4VComponent::OrderNewBox: Program inconsistency! check program." << std::endl;
     abort();
   }
 

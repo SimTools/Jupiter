@@ -58,7 +58,7 @@ public:
      G4int                 trackID  = GetTrackID();
      G4int                 mtrackID = GetMotherTrackID();
      G4int                 cloneID  = GetCloneID();
-     G4cerr << " cloneID = " << cloneID << G4endl;
+     std::cerr << " cloneID = " << cloneID << std::endl;
      G4ParticleDefinition *particle = GetParticle();
      G4double              tof      = GetTof();
      G4double              edep     = GetEnergyDeposit();
@@ -78,27 +78,27 @@ public:
      G4ThreeVector         wireAtMZ = rot.inverse()*(wireEndm) - tlate;
 
 #if 1
-     G4cerr << "*J4VCDCDriftRegionSD::ProcessHits -----------------------"
-            << G4endl;
-     G4cerr << "   SDname        : " << locat->GetName() << G4endl;
-     G4cerr << "   TrackID       : " << trackID << G4endl;
-     G4cerr << "   ParticleName  : " << particle->GetParticleName()
-                                     << G4endl;
-     G4cerr << "   PreStepPoint  : " << pre.x() << " " << pre.y() << " "
-                                     << pre.z() << G4endl;
-     G4cerr << "   PostStepPoint : " << pos.x() << " " << pos.y() << " "
-                                     << pos.z() << G4endl;
-     G4cerr << "   wireAtPlusZ   : " << wireAtPZ.x() << " "
+     std::cerr << "*J4VCDCDriftRegionSD::ProcessHits -----------------------"
+            << std::endl;
+     std::cerr << "   SDname        : " << locat->GetName() << std::endl;
+     std::cerr << "   TrackID       : " << trackID << std::endl;
+     std::cerr << "   ParticleName  : " << particle->GetParticleName()
+                                     << std::endl;
+     std::cerr << "   PreStepPoint  : " << pre.x() << " " << pre.y() << " "
+                                     << pre.z() << std::endl;
+     std::cerr << "   PostStepPoint : " << pos.x() << " " << pos.y() << " "
+                                     << pos.z() << std::endl;
+     std::cerr << "   wireAtPlusZ   : " << wireAtPZ.x() << " "
                                      << wireAtPZ.y() << " "
-                                     << wireAtPZ.z() << G4endl;
-     G4cerr << "   wireAtMinusZ  : " << wireAtMZ.x() << " "
+                                     << wireAtPZ.z() << std::endl;
+     std::cerr << "   wireAtMinusZ  : " << wireAtMZ.x() << " "
                                      << wireAtMZ.y() << " "
-                                     << wireAtMZ.z() << G4endl;
-     G4cerr << "   tanstereo     : " << tanstereo << G4endl; 
-     G4cerr << "   rtop          : " << wireEndp.getRho() << G4endl; 
-     G4cerr << "   rwaist        : " << rwaist << G4endl; 
-     G4cerr << "---------------------------------------------------------"
-            << G4endl;
+                                     << wireAtMZ.z() << std::endl;
+     std::cerr << "   tanstereo     : " << tanstereo << std::endl; 
+     std::cerr << "   rtop          : " << wireEndp.getRho() << std::endl; 
+     std::cerr << "   rwaist        : " << rwaist << std::endl; 
+     std::cerr << "---------------------------------------------------------"
+            << std::endl;
 #endif
 
 
@@ -118,15 +118,15 @@ public:
      }
      else
      {
-       G4cerr << "J4VCDCDriftRegionSD::OutputAll: No Hit! " << G4endl;
+       std::cerr << "J4VCDCDriftRegionSD::OutputAll: No Hit! " << std::endl;
      }
   }
 
   virtual void PrintAll() 
   {
      G4int nHit= ((G4THitsCollection<HitType> *)GetHitBuf())-> entries();
-     G4cout << "------------------------------------------" << G4endl
-            << "*** tracker Hit (#hits=" << nHit << ")" << G4endl;
+     std::cout << "------------------------------------------" << std::endl
+            << "*** tracker Hit (#hits=" << nHit << ")" << std::endl;
      GetHitBuf()-> PrintAllHits();
   }
 

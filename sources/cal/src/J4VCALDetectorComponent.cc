@@ -55,7 +55,7 @@ J4VMaterialStore* J4VCALDetectorComponent::OpenMaterialStore()
    if(!fMaterialStore) {
    	fMaterialStore = new J4CALMaterialStore();
         Register(fMaterialStore);
-  	G4cerr << "*** Opend J4CALMaterialStore ***" << G4endl;
+  	std::cerr << "*** Opend J4CALMaterialStore ***" << std::endl;
   }
     
    return fMaterialStore;

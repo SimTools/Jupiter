@@ -185,7 +185,7 @@ class J4CALParameterList : public J4VParameterList
 
         void      ShowData() 
                   {
-                      G4cerr << std::setprecision(5) 
+                      std::cerr << std::setprecision(5) 
                              << std::setw(10) << fIsBarrel
                              << std::setw(10) << fR
                              << std::setw(10) << fHeight
@@ -195,7 +195,7 @@ class J4CALParameterList : public J4VParameterList
                              << std::setw(10) << fNphi
                              << std::setw(10) << fDphi 
                              << std::setw(10) << 2 * fR * sin(0.5 * fDphi)
-                             << G4endl;
+                             << std::endl;
                   }
 
         inline G4bool     IsBarrel()        const { return fIsBarrel;     }

@@ -50,12 +50,12 @@ std::cerr << "J4CDCLayer::LayerPhiOffset = " << fOffset << std::endl;
 
 #if 0   
    G4int superlayerno = GetMother()->GetMyID();
-   G4cerr << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" <<G4endl;
-   G4cerr << "J4CDCLayer::superlayerNo = " << superlayerno << G4endl;
-   G4cerr << "            myid = " << me << G4endl;
-   G4cerr << "            global layerNo = " << globallayerno << G4endl;
-   G4cerr << "            fOffset = " << fOffset << G4endl;
-   G4cerr << "            fTwistedAngle = " << fTwistedAngle << G4endl;
+   std::cerr << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" <<std::endl;
+   std::cerr << "J4CDCLayer::superlayerNo = " << superlayerno << std::endl;
+   std::cerr << "            myid = " << me << std::endl;
+   std::cerr << "            global layerNo = " << globallayerno << std::endl;
+   std::cerr << "            fOffset = " << fOffset << std::endl;
+   std::cerr << "            fTwistedAngle = " << fTwistedAngle << std::endl;
 #endif
 
    G4double motherRmin = GetInnerRadius(parent);
@@ -83,7 +83,7 @@ std::cerr << "J4CDCLayer::LayerPhiOffset = " << fOffset << std::endl;
             fRmax = fRmin + cellthick + fShieldWidth;
             break;
          default :
-            G4cerr << "J4CDCLayer:: wrong ID! abort" << G4endl;
+            std::cerr << "J4CDCLayer:: wrong ID! abort" << std::endl;
             abort();
       }
    } else {         
@@ -108,7 +108,7 @@ std::cerr << "J4CDCLayer::LayerPhiOffset = " << fOffset << std::endl;
             fRmax = motherRmax;
             break;
          default :
-            G4cerr << "J4CDCLayer:: wrong ID! abort" << G4endl;
+            std::cerr << "J4CDCLayer:: wrong ID! abort" << std::endl;
             abort();
       }
    }

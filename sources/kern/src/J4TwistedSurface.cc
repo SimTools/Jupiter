@@ -301,9 +301,9 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
          J4cerr << "         xx[0]       : " << xx[0] << J4endl;
          J4cerr << "         gxx[0]      : " << gxx[0] << J4endl;
          J4cerr << "         dist[0]     : " << distance[0] << J4endl;
-         J4cerr << "         areacode[0] : " << hex << areacode[0] 
+         J4cerr << "         areacode[0] : " << std::hex << areacode[0] 
                 << J4endl;
-         J4cerr << "         isvalid[0]  : " << dec << isvalid[0] 
+         J4cerr << "         isvalid[0]  : " << std::dec << isvalid[0] 
                 << J4endl;
          J4cerr 
          << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
@@ -440,8 +440,8 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
              << J4endl;
       J4cerr << "         dist[0,1]    : " << distance[0] << " , " 
                                            << distance[1] << J4endl;
-      J4cerr << "         areacode[0,1]: " << hex << areacode[0] << " , " 
-                                           << areacode[1] << dec << J4endl;
+      J4cerr << "         areacode[0,1]: " << std::hex << areacode[0] << " , " 
+                                           << areacode[1] << std::dec << J4endl;
       J4cerr << "         isvalid[0,1] : " << isvalid[0] << " , " 
                                            << isvalid[1] << J4endl;
       J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -489,8 +489,8 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
                xxonsurface.set(xx[k].x(), fKappa * fabs(xx[k].x()) * xx[k].z() , xx[k].z());
             }
             if (l == maxcount) {
-               G4cerr << "J4TwistedSurface:DistanceToSurface(p,v): iteration exceeded maxloop count " 
-                      << maxcount << ". abort." << G4endl;
+               std::cerr << "J4TwistedSurface:DistanceToSurface(p,v): iteration exceeded maxloop count " 
+                      << maxcount << ". abort." << std::endl;
                abort(); 
             }
          } 

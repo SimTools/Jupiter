@@ -1,5 +1,12 @@
 M... Modified R...Replaced A...Added D...Deleted
 ------------------------------------------------------------------
+2004/02/03 K.Fujii	 Version 2.5.03
+------------------------------------------------------------------
+M J4AttMFieldMap.cc
+  modified since PV::GetMother vanished in Geant4.6.X.
+M All that use G4std macro since it has been depricated in Geant4.6.X.
+
+------------------------------------------------------------------
 2003/08/21 K.Hoshina	 Version 2.5.02
 ------------------------------------------------------------------
 M J4CAL J4CALEMSD J4PVPlacemen J4PVReplica

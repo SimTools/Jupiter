@@ -24,7 +24,7 @@
 #ifdef __USEISOCXX__
 #include <sstream>
 #else
-#include <strstream>
+#include <sstream>
 #endif
 #include "G4RunManager.hh"
 #include "G4UIterminal.hh"
@@ -81,7 +81,7 @@ int main(int argc, char** argv)
   // Set manager 
   //-------------------------
 
-  G4RunManager* runManager = new G4RunManager;  G4cout << G4endl;
+  G4RunManager* runManager = new G4RunManager;  std::cout << std::endl;
 //  runManager->SetVerboseLevel(2);
 
 #ifdef __INSTALLVTX__
@@ -181,10 +181,10 @@ int main(int argc, char** argv)
   // initialize visualization package
   G4VisManager* visManager= new J4VisManager;
   visManager-> Initialize();
-  G4cerr << " ------------------------------- " << G4endl
-         << " ---- J4VisManager created! ---- " << G4endl
-         << " ------------------------------- " << G4endl;
-  G4cerr << G4endl;
+  std::cerr << " ------------------------------- " << std::endl
+         << " ---- J4VisManager created! ---- " << std::endl
+         << " ------------------------------- " << std::endl;
+  std::cerr << std::endl;
 #endif
 
   //-----------------------
@@ -231,7 +231,7 @@ int main(int argc, char** argv)
         strstream str(tmpst, 1024);
 #endif
         str << "EXPName:CDC:Layer0" << i << ":Cell:DriftRegion"
-            << j << ":SenseWire" << G4std::ends;           
+            << j << ":SenseWire" << std::ends;           
         G4String name;
         str >> name;
         J4VDetectorComponent::GetComponentPtrByName(name)->SwitchOff(); 
@@ -284,7 +284,7 @@ int main(int argc, char** argv)
   delete visManager;
 #endif
 
-  delete runManager;  G4cout << G4endl;
+  delete runManager;  std::cout << std::endl;
   return 0;
 
 }

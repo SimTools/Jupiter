@@ -180,7 +180,7 @@ EInside J4HyperbolicSurface::Inside(const G4ThreeVector &gp)
       } else {
          J4cerr << "      J4HyperbolicSurface::Inside "
                 << "invalid option! name, areacode, distanceToOut = "
-                << GetName() << " " << hex << areacode << dec << " "
+                << GetName() << " " << std::hex << areacode << std::dec << " "
                 << distanceToOut << J4endl;
       }
    }
@@ -359,8 +359,8 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
       J4cerr << "         xx[0]       : " << xx[0] << J4endl;
       J4cerr << "         gxx[0]      : " << gxx[0] << J4endl;
       J4cerr << "         dist[0]     : " << distance[0] << J4endl;
-      J4cerr << "         areacode[0] : " << hex << areacode[0] << J4endl;
-      J4cerr << "         isvalid[0]  : " << dec << isvalid[0] << J4endl;
+      J4cerr << "         areacode[0] : " << std::hex << areacode[0] << J4endl;
+      J4cerr << "         isvalid[0]  : " << std::dec << isvalid[0] << J4endl;
       J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
              << J4endl;
       if (isvalid[0] && GetSolid()->Inside(gxx[0]) != ::kSurface) {
@@ -427,8 +427,8 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
          J4cerr << "         xx[0]       : " << xx[0] << J4endl;
          J4cerr << "         gxx[0]      : " << gxx[0] << J4endl;
          J4cerr << "         dist[0]     : " << distance[0] << J4endl;
-         J4cerr << "         areacode[0] : " << hex << areacode[0] << J4endl;
-         J4cerr << "         isvalid[0]  : " << dec << isvalid[0] << J4endl;
+         J4cerr << "         areacode[0] : " << std::hex << areacode[0] << J4endl;
+         J4cerr << "         isvalid[0]  : " << std::dec << isvalid[0] << J4endl;
          J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 << J4endl;
         if (isvalid[0] && GetSolid()->Inside(gxx[0]) != ::kSurface) {
@@ -528,8 +528,8 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
       J4cerr << "         xx[0,1]      : " << xx[0] << " , " << xx[1] << J4endl;
       J4cerr << "         gxx[0,1]     : " << gxx[0] << " , " << gxx[1] << J4endl;
       J4cerr << "         dist[0,1]    : " << distance[0] << " , " << distance[1] << J4endl;
-      J4cerr << "         areacode[0,1]: " << hex << areacode[0] << " , " 
-                                           << areacode[1] << dec << J4endl;
+      J4cerr << "         areacode[0,1]: " << std::hex << areacode[0] << " , " 
+                                           << areacode[1] << std::dec << J4endl;
       J4cerr << "         isvalid[0,1] : " << isvalid[0] << " , " << isvalid[1] 
                                            << J4endl;
       J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -904,9 +904,9 @@ G4int J4HyperbolicSurface::GetAreaCode(const G4ThreeVector &xx,
                 << J4endl;
          J4cerr << "         //#    NAME     : " << GetName() << J4endl;
          J4cerr << "         //#    xx       : " << xx << J4endl;
-         J4cerr << "         //#    areacode : " << hex << areacode << J4endl;
+         J4cerr << "         //#    areacode : " << std::hex << areacode << J4endl;
          J4cerr << "         =============================================="
-                << dec << J4endl;
+                << std::dec << J4endl;
 #endif
          return areacode;
       

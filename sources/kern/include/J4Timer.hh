@@ -154,8 +154,8 @@ void J4Timer::ResetTimer(G4int id)
    } else if (id < fgNtimers) {
       fgTimers[id]->ResetTimes();
    } else {
-      G4cerr << "J4Timer::ResetTimer: your id exceeds current fgNtimers."
-             << " abort. your id = " << id << G4endl;
+      std::cerr << "J4Timer::ResetTimer: your id exceeds current fgNtimers."
+             << " abort. your id = " << id << std::endl;
       abort();
    }
 }
@@ -167,8 +167,8 @@ G4String J4Timer::GetClassName(G4int id) const
    } else if (id < fgNtimers) {
       return fgTimers[id]->GetClassName();
    } else {
-      G4cerr << "J4Timer::GetClassName: your id exceeds current fgNtimers."
-             << " abort. your id = " << id << G4endl;
+      std::cerr << "J4Timer::GetClassName: your id exceeds current fgNtimers."
+             << " abort. your id = " << id << std::endl;
       abort();
    }
 }
@@ -180,8 +180,8 @@ G4String J4Timer::GetTimerName(G4int id) const
    } else if (id < fgNtimers) {
       return fgTimers[id]->GetTimerName();
    } else {
-      G4cerr << "J4Timer::GetTimerName: your id exceeds current fgNtimers."
-             << " abort. your id = " << id << G4endl;
+      std::cerr << "J4Timer::GetTimerName: your id exceeds current fgNtimers."
+             << " abort. your id = " << id << std::endl;
       abort();
    }
 }
@@ -193,8 +193,8 @@ G4double J4Timer::GetAccumulatedRealElapsed(G4int id) const
    } else if (id < fgNtimers) {
       return fgTimers[id]->GetAccumulatedRealElapsed();
    } else {
-      G4cerr << "J4Timer::GetAccumulatedRealElapsed: your id exceeds"
-             << " current fgNtimers. abort. your id = " << id << G4endl;
+      std::cerr << "J4Timer::GetAccumulatedRealElapsed: your id exceeds"
+             << " current fgNtimers. abort. your id = " << id << std::endl;
       abort();
    }
 }
@@ -206,8 +206,8 @@ G4double J4Timer::GetAccumulatedSystemElapsed(G4int id) const
    } else if (id < fgNtimers) {
       return fgTimers[id]->GetAccumulatedSystemElapsed();
    } else {
-      G4cerr << "J4Timer::GetAccumulatedSystemElapsed: your id exceeds"
-             << " current fgNtimers. abort. your id = " << id << G4endl;
+      std::cerr << "J4Timer::GetAccumulatedSystemElapsed: your id exceeds"
+             << " current fgNtimers. abort. your id = " << id << std::endl;
       abort();
    }
 }
@@ -219,8 +219,8 @@ G4double J4Timer::GetAccumulatedUserElapsed(G4int id) const
    } else if (id < fgNtimers) {
       return fgTimers[id]->GetAccumulatedUserElapsed();
    } else {
-      G4cerr << "J4Timer::GetAccumulatedUserElapsed: your id exceeds"
-             << " current fgNtimers. abort. your id = " << id << G4endl;
+      std::cerr << "J4Timer::GetAccumulatedUserElapsed: your id exceeds"
+             << " current fgNtimers. abort. your id = " << id << std::endl;
       abort();
    }
 }

@@ -384,15 +384,15 @@ void J4ParticleBeamMessenger::IonCommand(G4String newValues)
     G4ParticleDefinition* ion;
     ion =  fParticleTable->GetIon( fAtomicNumber, fAtomicMass, fIonExciteEnergy);
     if (ion==0) {
-    G4cout << "Ion with Z=" << fAtomicNumber;
-    G4cout << " A=" << fAtomicMass << "is not be defined" << G4endl;    
+    std::cout << "Ion with Z=" << fAtomicNumber;
+    std::cout << " A=" << fAtomicMass << "is not be defined" << std::endl;    
     } else {
       fParticleBeam->SetParticleDefinition(ion);
       fParticleBeam->SetParticleCharge(fIonCharge*eplus);
     }
   } else {
-    G4cout << "Set /jupiter/beam/particle to ion before using /jupiter/beam/ion command";
-    G4cout << G4endl; 
+    std::cout << "Set /jupiter/beam/particle to ion before using /jupiter/beam/ion command";
+    std::cout << std::endl; 
   }
 }
 

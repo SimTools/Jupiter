@@ -55,7 +55,7 @@ J4VMaterialStore* J4VITDetectorComponent::OpenMaterialStore()
    if (!fMaterialStore) {
       fMaterialStore = new J4ITMaterialStore();
       Register(fMaterialStore); 
-      G4cerr << "*** Opend J4ITMaterialStore ***" << G4endl;
+      std::cerr << "*** Opend J4ITMaterialStore ***" << std::endl;
    }
     
    return fMaterialStore;

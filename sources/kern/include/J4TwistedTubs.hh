@@ -79,7 +79,7 @@ class J4TwistedTubs : public G4VSolid
                       G4int     dphi)               // Phi angle of a segment??
                      :G4VSolid(pname)
   {
-       G4cerr << "J4VTwistedTubs: dphi must be type G4double. abort." << G4endl;
+       std::cerr << "J4VTwistedTubs: dphi must be type G4double. abort." << std::endl;
        abort();
   }
   J4TwistedTubs(const G4String &pname,              // Name of instance
@@ -91,7 +91,7 @@ class J4TwistedTubs : public G4VSolid
                       G4int     dphi)               // Phi angle of a segment
                      :G4VSolid(pname)
   {
-       G4cerr << "J4VTwistedTubs: dphi must be type G4double. abort." << G4endl;
+       std::cerr << "J4VTwistedTubs: dphi must be type G4double. abort." << std::endl;
        abort();
   }
  // argument miss protection end ------------------------------------------
@@ -334,18 +334,18 @@ void J4TwistedTubs::SetFields(G4double phitwist, G4double innerrad,
    fEndPhi[1]      = atan2(fEndZ[1] * tanHalfTwist, fZHalfLength);
 
 #ifdef __SOLIDDEBUG__
-   G4cerr << "/********* J4TwistedTubs::SetField  Field Parameters ******************* " << G4endl;
-   G4cerr << "/*   fPhiTwist                  : " << fPhiTwist << G4endl;
-   G4cerr << "/*   fEndZ(0, 1)                : " << fEndZ[0] << " , " << fEndZ[1] << G4endl; 
-   G4cerr << "/*   fEndPhi(0, 1)              : " << fEndPhi[0] << " , " << fEndPhi[1] << G4endl; 
-   G4cerr << "/*   fInnerRadius, fOuterRadius : " << fInnerRadius << " , " << fOuterRadius << G4endl; 
-   G4cerr << "/*   fEndInnerRadius(0, 1)      : " << fEndInnerRadius[0] << " , " 
-          << fEndInnerRadius[1] << G4endl; 
-   G4cerr << "/*   fEndOuterRadius(0, 1)      : " << fEndOuterRadius[0] << " , " 
-          << fEndOuterRadius[1] << G4endl; 
-   G4cerr << "/*   fInnerStereo, fOuterStereo : " << fInnerStereo << " , " << fOuterStereo << G4endl; 
-   G4cerr << "/*   tanHalfTwist, fKappa       : " << tanHalfTwist << " , " << fKappa << G4endl; 
-   G4cerr << "/*********************************************************************** " << G4endl;
+   std::cerr << "/********* J4TwistedTubs::SetField  Field Parameters ******************* " << std::endl;
+   std::cerr << "/*   fPhiTwist                  : " << fPhiTwist << std::endl;
+   std::cerr << "/*   fEndZ(0, 1)                : " << fEndZ[0] << " , " << fEndZ[1] << std::endl; 
+   std::cerr << "/*   fEndPhi(0, 1)              : " << fEndPhi[0] << " , " << fEndPhi[1] << std::endl; 
+   std::cerr << "/*   fInnerRadius, fOuterRadius : " << fInnerRadius << " , " << fOuterRadius << std::endl; 
+   std::cerr << "/*   fEndInnerRadius(0, 1)      : " << fEndInnerRadius[0] << " , " 
+          << fEndInnerRadius[1] << std::endl; 
+   std::cerr << "/*   fEndOuterRadius(0, 1)      : " << fEndOuterRadius[0] << " , " 
+          << fEndOuterRadius[1] << std::endl; 
+   std::cerr << "/*   fInnerStereo, fOuterStereo : " << fInnerStereo << " , " << fOuterStereo << std::endl; 
+   std::cerr << "/*   tanHalfTwist, fKappa       : " << tanHalfTwist << " , " << fKappa << std::endl; 
+   std::cerr << "/*********************************************************************** " << std::endl;
 #endif
 }
 

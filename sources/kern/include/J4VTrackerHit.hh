@@ -76,10 +76,10 @@ public:
 
   inline virtual void SetDetectorComponent (J4VComponent* dtc)
                        {
-                         G4cerr << "********************************************" << G4endl;
-                         G4cerr << " J4VTrackerHit::SetDetectorComponent() will vanish " << G4endl;
-                         G4cerr << " at next major update. Use SetComponent(). " << G4endl;
-                         G4cerr << "********************************************" << G4endl;
+                         std::cerr << "********************************************" << std::endl;
+                         std::cerr << " J4VTrackerHit::SetDetectorComponent() will vanish " << std::endl;
+                         std::cerr << " at next major update. Use SetComponent(). " << std::endl;
+                         std::cerr << "********************************************" << std::endl;
                          SetComponent(dtc); 
                        }
 
@@ -103,18 +103,18 @@ public:
   // Get functions
   inline virtual       J4VDetectorComponent* GetDetectorComponent() const 
                        {
-                         G4cerr << "********************************************" << G4endl;
-                         G4cerr << " J4VTrackerHit::GetDetectorComponent() will vanish " << G4endl;
-                         G4cerr << " at next major update. Use GetComponent(). " << G4endl;
-                         G4cerr << "********************************************" << G4endl;
+                         std::cerr << "********************************************" << std::endl;
+                         std::cerr << " J4VTrackerHit::GetDetectorComponent() will vanish " << std::endl;
+                         std::cerr << " at next major update. Use GetComponent(). " << std::endl;
+                         std::cerr << "********************************************" << std::endl;
                          return (J4VDetectorComponent *)GetComponent(); 
                        }
   inline virtual const G4String& GetDetectorComponentName() const 
                        { 
-                         G4cerr << "************************************************" << G4endl;
-                         G4cerr << " J4VTrackerHit::GetDetectorComponentName() will vanish " << G4endl;
-                         G4cerr << " at next major update. Use GetComponentName(). " << G4endl;
-                         G4cerr << "************************************************" << G4endl;
+                         std::cerr << "************************************************" << std::endl;
+                         std::cerr << " J4VTrackerHit::GetDetectorComponentName() will vanish " << std::endl;
+                         std::cerr << " at next major update. Use GetComponentName(). " << std::endl;
+                         std::cerr << "************************************************" << std::endl;
                          return GetComponent()->GetName(); 
                        }
 

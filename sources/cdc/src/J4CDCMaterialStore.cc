@@ -78,7 +78,7 @@ G4Material* J4CDCMaterialStore::Create(const G4String& name)
       
       material = CO2Isobutane;
       
-      G4cerr << "CO2Isobutane is installed" << G4endl;
+      std::cerr << "CO2Isobutane is installed" << std::endl;
   
   }
   

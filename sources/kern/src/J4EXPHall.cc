@@ -98,9 +98,9 @@ void J4EXPHall::OutputAll(G4HCofThisEvent* HCTE, std::ofstream & ofs)
    
    if (GetSD()) {  
       if (IsOn()) {
-          ofs << "*****_EXPHall_output_start_*****" << G4endl;
+          ofs << "*****_EXPHall_output_start_*****" << std::endl;
           GetSD()->OutputAll(HCTE);  
-          ofs << "*****_EXPHall_output_end_*****" << G4endl; 
+          ofs << "*****_EXPHall_output_end_*****" << std::endl; 
       }
    }
 
@@ -110,9 +110,9 @@ void J4EXPHall::OutputAll(G4HCofThisEvent* HCTE, std::ofstream & ofs)
    G4int i;
 
    for( i=0; i<ndaughters; i++) {
-      ofs << "*****_" << daughters[i]->GetName() << "_output_start_*****" << G4endl; 
+      ofs << "*****_" << daughters[i]->GetName() << "_output_start_*****" << std::endl; 
       daughters[i]->OutputAll(HCTE);
-      ofs << "*****_" << daughters[i]->GetName() << "_output_end_*****" << G4endl; 
+      ofs << "*****_" << daughters[i]->GetName() << "_output_end_*****" << std::endl; 
    }
 }
 

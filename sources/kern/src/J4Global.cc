@@ -41,7 +41,7 @@ J4Global::J4Global()
       fGlobal = this;
       fMessenger = new J4GlobalMessenger(this);
    } else {
-      G4cerr << "J4Global::constructor: fGlobal is singleton!" << G4endl;
+      std::cerr << "J4Global::constructor: fGlobal is singleton!" << std::endl;
    }
 }
 
@@ -57,18 +57,18 @@ std::ostream& J4Global::GetErrorOutputStream()
 {
    switch (fErrorOutputDeviceID) {
       case 0:
-         return G4cerr;
+         return std::cerr;
          break;
       case 1:
          if (fErrorOfs) {
             return *fErrorOfs;
          } else {
-            return G4cerr;
+            return std::cerr;
          }
          break;
       default:
-         G4cerr << "J4Global::GetErrorOutputStream:"
-                << " invalid device ID!" << G4endl;
+         std::cerr << "J4Global::GetErrorOutputStream:"
+                << " invalid device ID!" << std::endl;
          abort();
    }
 }
@@ -79,18 +79,18 @@ std::ostream& J4Global::GetEndl(std::ostream& outs)
 {
    switch (fErrorOutputDeviceID) {
       case 0:
-         return (outs << G4endl);
+         return (outs << std::endl);
          break;
       case 1:
          if (fErrorOfs && fErrorOfs->is_open()) {
-            return (outs << G4endl << std::flush);
+            return (outs << std::endl << std::flush);
          } else {
-            return (outs << G4endl);
+            return (outs << std::endl);
          }
          break;
       default:
-         G4cerr << "J4Global::GetEndl:"
-         << " invalid device ID!" << G4endl;
+         std::cerr << "J4Global::GetEndl:"
+         << " invalid device ID!" << std::endl;
          abort();
    }
 }

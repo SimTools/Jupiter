@@ -59,7 +59,7 @@ class J4VSD : public J4VSensitiveDetector
   virtual void MakeHitBuf(G4HCofThisEvent* HCTE)
   { 
   
-//    G4cerr << "J4VSD::MakeHitBuf is called " << G4endl;  
+//    std::cerr << "J4VSD::MakeHitBuf is called " << std::endl;  
 
     G4THitsCollection<HitType>* hitbuf; 
     hitbuf = new G4THitsCollection<HitType>(SensitiveDetectorName, collectionName[0]) ;
@@ -67,7 +67,7 @@ class J4VSD : public J4VSensitiveDetector
     G4int hcID = GetCollectionID(0); 
     HCTE->AddHitsCollection(hcID, GetHitBuf());
    
-//    G4cerr << " ***hcID = " << hcID << G4endl;
+//    std::cerr << " ***hcID = " << hcID << std::endl;
      
   }  
   
@@ -81,10 +81,10 @@ class J4VSD : public J4VSensitiveDetector
            G4THitsCollection<HitType>* hcp = (G4THitsCollection<HitType>*)GetHitBuf();
 
            if (nhits) {
-              G4cerr << "J4VSD::OutputAll: nhits = " << nhits 
-               << " for SDName " << ((J4VHit*)hcp->operator[](0))->GetComponentName()<< G4endl;
+              std::cerr << "J4VSD::OutputAll: nhits = " << nhits 
+               << " for SDName " << ((J4VHit*)hcp->operator[](0))->GetComponentName()<< std::endl;
            } else {
-              G4cerr << "*****J4VSD::OutputAll: No Hit! " << G4endl;
+              std::cerr << "*****J4VSD::OutputAll: No Hit! " << std::endl;
            }
        
            for(i=0; i<nhits; i++)
@@ -96,7 +96,7 @@ class J4VSD : public J4VSensitiveDetector
      }
      else
      {
-         G4cerr << "*****J4VSD::OutputAll: No HitBuf! " << G4endl;
+         std::cerr << "*****J4VSD::OutputAll: No HitBuf! " << std::endl;
      }
   }
   

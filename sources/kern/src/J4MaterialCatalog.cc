@@ -19,8 +19,8 @@ J4MaterialCatalog::J4MaterialCatalog()
   ReadMaterialCatalog();
   
   // list elements/materials
-  G4cout << *fElementTable << G4endl;
-  G4cout << *fMaterialTable << G4endl;
+  std::cout << *fElementTable << std::endl;
+  std::cout << *fMaterialTable << std::endl;
 
 }
 

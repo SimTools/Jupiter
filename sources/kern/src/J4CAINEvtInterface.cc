@@ -16,7 +16,7 @@
 #ifdef __USEISOCXX__
 #include <sstream>
 #else
-#include <strstream>
+#include <sstream>
 #endif
 
 #include "G4ios.hh"
@@ -73,7 +73,7 @@ void J4CAINEvtInterface::OpenCainFile(G4String evfile)
   if (!fInputStream) {
      G4Exception("G4CAINEvtInterface:: check filename and retry. cannot open file "+fFileName);
   } else {
-     G4cout << "CAIN input file : " << fFileName << " is opened." << G4endl;
+     std::cout << "CAIN input file : " << fFileName << " is opened." << std::endl;
   }
 
   // reset abortion level...
@@ -137,7 +137,7 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 #ifdef __USEISOCXX__
       std::istringstream sin(input);
 #else
-      std::istrstream sin(input);
+      std::istringstream sin(input);
 #endif
       sin >>  id >> kgen >> weight >> ct >> cx >> cy >> cs >> 
 	   ce >> cpx >> cpy >> cps >> csx >> csy >> css ;
@@ -156,9 +156,9 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
   ce*= eV ; cpx *= eV ; cpy *= eV ; cps *= eV;
 
   if( fVerboseLevel > 0 ) {
-    G4cout << "CAIN event generated: id=" << id;
-    G4cout << "(px,py,pz)=(" << cpx/GeV << "," ;
-    G4cout << cpy/GeV << "," << cps/GeV << ") (GeV) " << G4endl ;
+    std::cout << "CAIN event generated: id=" << id;
+    std::cout << "(px,py,pz)=(" << cpx/GeV << "," ;
+    std::cout << cpy/GeV << "," << cps/GeV << ") (GeV) " << std::endl ;
   }
 
   // create a new vertex
@@ -183,7 +183,7 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
     std::stringstream sout;
 #else
     char tmpstr[1024];
-    std::ostrstream sout(tmpstr, 1024);
+    std::ostringstream sout(tmpstr, 1024);
 #endif
     sout << "Error: Undefined particle id " << id << " is obtained" << std::ends;
 #ifdef __USEISOCXX__

@@ -50,17 +50,17 @@ J4DetectorConstruction::~J4DetectorConstruction()
 
 G4VPhysicalVolume* J4DetectorConstruction::Construct()
 {
-    G4cerr << G4endl
-           << "##------------------------------------------------##" << G4endl
-           << "## ============================================== ##" << G4endl
-           << "##   J4DetectorConstruction::Construct()          ##" << G4endl
-           << "## ============================================== ##" << G4endl
-           << "##                                                ##" << G4endl
-           << "##    Start installing all of the components      ##" << G4endl
-           << "##          into Experimental Hall...             ##" << G4endl
-           << "##                                                ##" << G4endl
-           << "##------------------------------------------------##" << G4endl
-           << G4endl;
+    std::cerr << std::endl
+           << "##------------------------------------------------##" << std::endl
+           << "## ============================================== ##" << std::endl
+           << "##   J4DetectorConstruction::Construct()          ##" << std::endl
+           << "## ============================================== ##" << std::endl
+           << "##                                                ##" << std::endl
+           << "##    Start installing all of the components      ##" << std::endl
+           << "##          into Experimental Hall...             ##" << std::endl
+           << "##                                                ##" << std::endl
+           << "##------------------------------------------------##" << std::endl
+           << std::endl;
   
     G4int ncomponents = fComponents.entries();
     
@@ -73,16 +73,16 @@ G4VPhysicalVolume* J4DetectorConstruction::Construct()
     	
     }  
 
-    G4cerr << G4endl
-           << "##------------------------------------------------##" << G4endl
-           << "## ============================================== ##" << G4endl
-           << "##   J4DetectorConstruction::Construct()          ##" << G4endl
-           << "## ============================================== ##" << G4endl
-           << "##                                                ##" << G4endl
-           << "##    Finished installation of the components!    ##" << G4endl
-           << "##                                                ##" << G4endl
-           << "##------------------------------------------------##" << G4endl
-           << G4endl;
+    std::cerr << std::endl
+           << "##------------------------------------------------##" << std::endl
+           << "## ============================================== ##" << std::endl
+           << "##   J4DetectorConstruction::Construct()          ##" << std::endl
+           << "## ============================================== ##" << std::endl
+           << "##                                                ##" << std::endl
+           << "##    Finished installation of the components!    ##" << std::endl
+           << "##                                                ##" << std::endl
+           << "##------------------------------------------------##" << std::endl
+           << std::endl;
 
   // ==============================================================
   // return PV of the world volume

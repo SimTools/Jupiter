@@ -26,7 +26,7 @@ J4VTXPixelSD::J4VTXPixelSD(J4VDetectorComponent* detector)
               fSTrack(-1), fSLayer(-1), fSLadder(-1), fSSensor(-1), 
               fSTpixel(-1), fSPpixel(-1), fSColNo(0)     
 {
-  G4cout << " ----- PixelSD ----- " << G4endl;
+  std::cout << " ----- PixelSD ----- " << std::endl;
 }
 
 //=====================================================================
@@ -167,8 +167,8 @@ void J4VTXPixelSD::DrawAll()
 void J4VTXPixelSD::PrintAll()
 {
   G4int nHit= ((J4VTXPixelHitBuf*)GetHitBuf())-> entries();
-  G4cout << "------------------------------------------" << G4endl
-         << "*** tracker Hit (#hits=" << nHit << ")" << G4endl;
+  std::cout << "------------------------------------------" << std::endl
+         << "*** tracker Hit (#hits=" << nHit << ")" << std::endl;
   ((J4VTXPixelHitBuf*)GetHitBuf())-> PrintAllHits();
 }
 

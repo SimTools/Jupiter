@@ -59,11 +59,11 @@ J4VDetectorComponent::~J4VDetectorComponent()
 J4VDetectorComponent* 
 	J4VDetectorComponent::GetDCPtrByName(const G4String& name) 
 {
-   G4cerr << "******************************************************" << G4endl;
-   G4cerr << " J4VDetectorComponent::GetDCPtrByName()               " << G4endl;
-   G4cerr << " This method will be removed in next major upgrade.   " << G4endl;
-   G4cerr << " Use new method J4VComponent::GetComponentPtrByName() " << G4endl;
-   G4cerr << "******************************************************" << G4endl;
+   std::cerr << "******************************************************" << std::endl;
+   std::cerr << " J4VDetectorComponent::GetDCPtrByName()               " << std::endl;
+   std::cerr << " This method will be removed in next major upgrade.   " << std::endl;
+   std::cerr << " Use new method J4VComponent::GetComponentPtrByName() " << std::endl;
+   std::cerr << "******************************************************" << std::endl;
 
    J4ComponentArray familymembers = GetFamilyMembers();
    G4int n = familymembers.entries();
@@ -74,8 +74,8 @@ J4VDetectorComponent*
       } 	
    }
 
-   G4cerr << " J4VDetectorComponent::GetDCPtrByName " << G4endl
-          << "      Cannot find object name " << name << G4endl;
+   std::cerr << " J4VDetectorComponent::GetDCPtrByName " << std::endl
+          << "      Cannot find object name " << name << std::endl;
    return 0;
 }
 

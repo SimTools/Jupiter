@@ -22,11 +22,11 @@ J4VParameterList::J4VParameterList()
    J4ObjArray paramlists = J4ParameterListStore::GetParameterLists(); 
 
    if (paramlists.entries() >= paramlists.capacity()) {
-      G4cerr << "J4VParameterLists::constructor:  " << G4endl;
-      G4cerr << "   entries  : " << paramlists.entries() << G4endl;
-      G4cerr << "   capacity : " << paramlists.capacity() << G4endl;
-      G4cerr << "J4VParameterLists::constructor: Too many parameter lists "
-             << " . abort. " << G4endl;
+      std::cerr << "J4VParameterLists::constructor:  " << std::endl;
+      std::cerr << "   entries  : " << paramlists.entries() << std::endl;
+      std::cerr << "   capacity : " << paramlists.capacity() << std::endl;
+      std::cerr << "J4VParameterLists::constructor: Too many parameter lists "
+             << " . abort. " << std::endl;
       abort();
    }
 
@@ -41,11 +41,11 @@ J4VParameterList::J4VParameterList(const G4String &name)
    J4ObjArray paramlists = J4ParameterListStore::GetParameterLists(); 
 
    if (paramlists.entries() >= paramlists.capacity()) {
-      G4cerr << "J4VParameterLists::constructor:  " << G4endl;
-      G4cerr << "   entries  : " << paramlists.entries() << G4endl;
-      G4cerr << "   capacity : " << paramlists.capacity() << G4endl;
-      G4cerr << "J4VParameterLists::constructor: Too many parameter lists "
-             << " . abort. " << G4endl;
+      std::cerr << "J4VParameterLists::constructor:  " << std::endl;
+      std::cerr << "   entries  : " << paramlists.entries() << std::endl;
+      std::cerr << "   capacity : " << paramlists.capacity() << std::endl;
+      std::cerr << "J4VParameterLists::constructor: Too many parameter lists "
+             << " . abort. " << std::endl;
       abort();
    }
 

@@ -69,16 +69,16 @@ class J4TrackingAction : public G4UserTrackingAction
 void J4TrackingAction::SetStoredTrajectoryID(G4int id) 
 { 
    fStoredTrajectoryID = id;
-   G4cerr << " J4TrackingAction::StoredTracjectoryID is " 
-          << fStoredTrajectoryID << G4endl;
+   std::cerr << " J4TrackingAction::StoredTracjectoryID is " 
+          << fStoredTrajectoryID << std::endl;
 }
 
 #ifdef __THEBE__
 void J4TrackingAction::SetStoredDebugPrintID(G4int id) 
 {  
    fStoredDebugPrintID = id;
-   G4cerr << " J4TrackingAction::StoredDebugPrintID is " 
-          << fStoredDebugPrintID << G4endl;
+   std::cerr << " J4TrackingAction::StoredDebugPrintID is " 
+          << fStoredDebugPrintID << std::endl;
 }
 #endif
 

@@ -124,7 +124,7 @@ void J4CDCStereoDriftRegionHit::Output(G4HCofThisEvent* HCTE)
      << std::setw(18) << fRwaist << " "
      << std::setiosflags(std::ios::floatfield) 
      << std::setprecision(8)
-     << G4endl;
+     << std::endl;
   }
 
 }  

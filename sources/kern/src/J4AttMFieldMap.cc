@@ -37,7 +37,7 @@ void J4AttMFieldMap::InstallMField(J4VComponent* component)
   G4VPhysicalVolume* pv = component->GetPV();
   G4String mname = pv->GetName();
   fMFname = new G4String(mname);
-  G4cout << "==ATTM===== PV Name " << mname << G4endl;
+  std::cout << "==ATTM===== PV Name " << mname << std::endl;
   G4ThreeVector xOOt(0.,0.,0.);
   G4RotationMatrix xOOr;
   
@@ -63,9 +63,9 @@ void J4AttMFieldMap::InstallMField(J4VComponent* component)
  
  if ( xOOt == xOOtOrigin && xOOr == xOOrOrigin ) {
     fIsOrigin = true;
-    G4cout << "xxxxxxx Is Origin xxxxx " << mname << G4endl;
+    std::cout << "xxxxxxx Is Origin xxxxx " << mname << std::endl;
   }
- G4cout << "Translation " << xOOt << G4endl;
+ std::cout << "Translation " << xOOt << std::endl;
 
   fRot = xOOr;
   fRotInverse = xOOr.inverse();
@@ -108,7 +108,7 @@ void J4AttMFieldMap::DefineGlobalMValidBox(){
     corner[7] = new G4ThreeVector();
     corner[7]->set(-lpos[0],-lpos[1],-lpos[2]);
 
-    G4cout << " corner X" << G4endl;
+    std::cout << " corner X" << std::endl;
     for ( G4int i = 0; i < 8 ; i++){
       G4ThreeVector co(corner[i]->x(),corner[i]->y(),corner[i]->z());
       G4ThreeVector gcorner = fRot*co+fTrans;
@@ -128,9 +128,9 @@ void J4AttMFieldMap::DefineGlobalMValidBox(){
 	if ( gcorner.z() > fMValidZ[1] ) fMValidZ[1] = gcorner.z();
       } 
     }
-    G4cout << " X0 " << fMValidX[0] << " X1 " << fMValidX[1] << G4endl;
-    G4cout << " Y0 " << fMValidY[0] << " Y1 " << fMValidY[1] << G4endl;
-    G4cout << " Z0 " << fMValidZ[0] << " Z1 " << fMValidZ[1] << G4endl;
+    std::cout << " X0 " << fMValidX[0] << " X1 " << fMValidX[1] << std::endl;
+    std::cout << " Y0 " << fMValidY[0] << " Y1 " << fMValidY[1] << std::endl;
+    std::cout << " Z0 " << fMValidZ[0] << " Z1 " << fMValidZ[1] << std::endl;
   }
 }
 

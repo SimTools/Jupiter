@@ -111,8 +111,8 @@ void J4ParticleBeam::SetParticleMomentum(G4ParticleMomentum aMomentum)
 {
   if (particle_definition==0)
   {
-     G4cout <<"Particle Deinition not deined yet for J4ParticleBeam"<< G4endl;
-     G4cout <<"Zero Mass is assumed"<<G4endl;
+     std::cout <<"Particle Deinition not deined yet for J4ParticleBeam"<< std::endl;
+     std::cout <<"Zero Mass is assumed"<<std::endl;
      particle_momentum_direction =  aMomentum.unit();
      particle_energy = aMomentum.mag();
   } 
@@ -122,13 +122,13 @@ void J4ParticleBeam::SetParticleMomentum(G4ParticleMomentum aMomentum)
      G4double p = aMomentum.mag();
      particle_momentum_direction =  aMomentum.unit();
      if ((particle_energy>0.0)&&(abs(particle_energy+mass-sqrt(p*p+mass*mass))>keV)) {
-        G4cout << "J4ParticleBeam::" << particle_definition->GetParticleName() << G4endl;
-        G4cout << "  KineticEnergy and Momentum could be inconsistent" << G4endl;
-        G4cout << " (Momentum:" << p/GeV << " GeV/c";
-        G4cout << "  Mass:" << mass/GeV << " GeV/c/c)" << G4endl;
-        G4cout << "  KineticEnergy is overwritten!! ";
-        G4cout << particle_energy/GeV << "->";
-        G4cout << (sqrt(p*p+mass*mass)-mass)/GeV << "GeV" << G4endl;
+        std::cout << "J4ParticleBeam::" << particle_definition->GetParticleName() << std::endl;
+        std::cout << "  KineticEnergy and Momentum could be inconsistent" << std::endl;
+        std::cout << " (Momentum:" << p/GeV << " GeV/c";
+        std::cout << "  Mass:" << mass/GeV << " GeV/c/c)" << std::endl;
+        std::cout << "  KineticEnergy is overwritten!! ";
+        std::cout << particle_energy/GeV << "->";
+        std::cout << (sqrt(p*p+mass*mass)-mass)/GeV << "GeV" << std::endl;
      }
      particle_energy = sqrt(p*p+mass*mass)-mass;
   }
@@ -138,17 +138,17 @@ void J4ParticleBeam::SetParticleMomentum(G4ParticleMomentum aMomentum)
 //* GenerateIsotopicBeam ----------------------------------------------
 void J4ParticleBeam::GenerateIsotopicBeam(G4Event* evt)
 {
- 	G4cerr << "--------ParticleBeam:: Isotropic beamtype-------" << G4endl;
+ 	std::cerr << "--------ParticleBeam:: Isotropic beamtype-------" << std::endl;
 	G4double phi      = RandFlat::shoot(0.,2*M_PI);
 	G4double costheta = RandFlat::shoot(fCosThetaRange[0],
                                        fCosThetaRange[1]);
    // G4double costheta = cos((2 * G4UniformRand() -1.) * M_PI);
    if (fIsFlatProfile) {
-	   G4cerr << "beam profile  : phi = " << phi 
-             << " rad, flat position " << G4endl;
+	   std::cerr << "beam profile  : phi = " << phi 
+             << " rad, flat position " << std::endl;
    } else {
-	   G4cerr << "beam profile  : phi = " << phi 
-             << " rad, gaussian position " << G4endl;
+	   std::cerr << "beam profile  : phi = " << phi 
+             << " rad, gaussian position " << std::endl;
    }
 
 	G4double sintheta = sqrt((1-costheta)*(1+costheta));
@@ -202,8 +202,8 @@ void J4ParticleBeam::GenerateIsotopicBeam(G4Event* evt)
                                 particle_polarization.z());
       vertex->SetPrimary( particle );
       evt->AddPrimaryVertex( vertex );
-      G4cerr << "J4ParticleBeam::GenerateIsotopicBeam: No., startp, momentum = " 
-             << i << " , " << pv << " , " << lastmv << G4endl;
+      std::cerr << "J4ParticleBeam::GenerateIsotopicBeam: No., startp, momentum = " 
+             << i << " , " << pv << " , " << lastmv << std::endl;
    }
 }
 
@@ -211,7 +211,7 @@ void J4ParticleBeam::GenerateIsotopicBeam(G4Event* evt)
 //* GenerateIsotopicBeam ----------------------------------------------
 void J4ParticleBeam::GenerateGaussianBeam(G4Event* evt)
 {
-	G4cerr << "--------ParticleBeam:: Gaussian beamtype--------" << G4endl;
+	std::cerr << "--------ParticleBeam:: Gaussian beamtype--------" << std::endl;
    
 	for (G4int i=0; i<fNParticlesPerVertex; i++) {
  		// define momentam
@@ -232,12 +232,12 @@ void J4ParticleBeam::GenerateGaussianBeam(G4Event* evt)
          pv(0) = RandFlat::shoot(fPositionRange[0][0],fPositionRange[0][1]);
          pv(1) = RandFlat::shoot(fPositionRange[1][0],fPositionRange[1][1]);
          pv(2) = RandFlat::shoot(fPositionRange[2][0],fPositionRange[2][1]);
-         G4cerr << "Flat beam position : minx = " << fPositionRange[0][0]  
-                  << "  maxx = " << fPositionRange[0][1] << G4endl
+         std::cerr << "Flat beam position : minx = " << fPositionRange[0][0]  
+                  << "  maxx = " << fPositionRange[0][1] << std::endl
                   << "           miny = " << fPositionRange[1][0] 
-                  << "  maxy = " << fPositionRange[1][1] << G4endl
+                  << "  maxy = " << fPositionRange[1][1] << std::endl
                   << "           minz = " << fPositionRange[2][0] 
-                  << "  maxz = " << fPositionRange[2][1] << G4endl;
+                  << "  maxz = " << fPositionRange[2][1] << std::endl;
       } else {
          // gaussian profile
          pv(0) = RandGauss::shoot(fMeanPosition.x(),fPositionSigma[0]);
@@ -258,8 +258,8 @@ void J4ParticleBeam::GenerateGaussianBeam(G4Event* evt)
                                 particle_polarization.z());
       vertex->SetPrimary( particle );
       evt->AddPrimaryVertex( vertex );
-      G4cerr << "J4ParticleBeam::GenerateGaussianBeam: No., startp, momentum = " 
-             << i << " , " << pv << " , " << lastmv << G4endl;
+      std::cerr << "J4ParticleBeam::GenerateGaussianBeam: No., startp, momentum = " 
+             << i << " , " << pv << " , " << lastmv << std::endl;
    }
 }
 // ====================================================================

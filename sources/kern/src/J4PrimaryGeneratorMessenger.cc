@@ -62,8 +62,8 @@ G4String J4PrimaryGeneratorMessenger::GetCurrentValue(G4UIcommand * command)
             cv = "ParticleBeam";
             break;
          default:
-            G4cerr << " J4PrimaryGeneratorMessenger::GetCurrrentValue:Generator is not "
-                 << "prepared. break." << G4endl;  
+            std::cerr << " J4PrimaryGeneratorMessenger::GetCurrrentValue:Generator is not "
+                 << "prepared. break." << std::endl;  
             break;
      }
   }

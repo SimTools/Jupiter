@@ -36,12 +36,12 @@ G4Material* J4VMaterialStore::Order(const G4String& name)
   
   if(!material) {
   	
-  	G4cerr << "*** Your orderd material " << name << " is not in catalog! ***" << G4endl;
+  	std::cerr << "*** Your orderd material " << name << " is not in catalog! ***" << std::endl;
   	
   	material = Create(name);
   	
   	if(!material) {
-  	   G4cerr << "*** You couldnot get new material" << name << " ! ***" << G4endl;
+  	   std::cerr << "*** You couldnot get new material" << name << " ! ***" << std::endl;
   	}	
   }
   return material;
@@ -51,9 +51,9 @@ G4Material* J4VMaterialStore::Order(const G4String& name)
 G4Material* J4VMaterialStore::Create(const G4String& name) 
 /////////////////////////////////////////////////////////////////////////
 {  
-  	   G4cerr << "*********************************************" << G4endl;
-  	   G4cerr << "*** You called J4VMaterialStore::Create() ***" << G4endl;
-  	   G4cerr << "*********************************************" << G4endl;
+  	   std::cerr << "*********************************************" << std::endl;
+  	   std::cerr << "*** You called J4VMaterialStore::Create() ***" << std::endl;
+  	   std::cerr << "*********************************************" << std::endl;
     return 0;
 }
 

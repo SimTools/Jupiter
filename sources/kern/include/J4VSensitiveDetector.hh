@@ -57,11 +57,11 @@ class J4VSensitiveDetector : public G4VSensitiveDetector, public J4Object
    
   inline virtual       J4VComponent *GetDetectorComponent() const
   {
-    G4cerr << "********************************************" << G4endl;
-    G4cerr << " J4VSensitiveDetector::GetDetectorComponent " << G4endl;
-    G4cerr << " this method will vanish at next major update." << G4endl;
-    G4cerr << " Use GetComponent(). " << G4endl;
-    G4cerr << "********************************************" << G4endl;
+    std::cerr << "********************************************" << std::endl;
+    std::cerr << " J4VSensitiveDetector::GetDetectorComponent " << std::endl;
+    std::cerr << " this method will vanish at next major update." << std::endl;
+    std::cerr << " Use GetComponent(). " << std::endl;
+    std::cerr << "********************************************" << std::endl;
     return GetComponent(0);
   }
   
@@ -126,12 +126,12 @@ inline J4VComponent* J4VSensitiveDetector::GetComponent(G4int depth) const
      } else if (dynamic_cast<J4PVReplica *>(pv)) {
         return ((J4PVReplica *)pv)->GetComponent();
      } else {
-        G4cerr << "J4VSensitiveDetector::GetComponent: unsupported physicalvolume. abort." << G4endl;
+        std::cerr << "J4VSensitiveDetector::GetComponent: unsupported physicalvolume. abort." << std::endl;
         abort();
      }
    } else {
-      G4cerr << "J4VSensitiveDetector::GetComponent: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetComponent: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
    }
 }
@@ -141,8 +141,8 @@ inline G4VPhysicalVolume* J4VSensitiveDetector::GetPVfromTrack(G4int depth) cons
    if (fNewStep) {
       return fNewStep->GetTrack()->GetTouchable()->GetVolume(depth);
    } else {
-      G4cerr << "J4VSensitiveDetector::GetPVfromTrack: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetPVfromTrack: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
    }
 }
@@ -153,8 +153,8 @@ inline G4StepPoint* J4VSensitiveDetector::GetPreStepPoint() const
    if (fNewStep) {
       return fNewStep->GetPreStepPoint();
    } else {
-      G4cerr << "J4VSensitiveDetector::GetPreStepPosition: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetPreStepPosition: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
    } 
 }
@@ -164,8 +164,8 @@ inline G4StepPoint* J4VSensitiveDetector::GetPostStepPoint() const
   if (fNewStep) {
       return fNewStep->GetPostStepPoint();
   } else {
-      G4cerr << "J4VSensitiveDetector::GetPostStepPosition: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetPostStepPosition: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
   }
 }
@@ -175,8 +175,8 @@ inline G4Track* J4VSensitiveDetector::GetTrack() const
   if (fNewStep) {
       return fNewStep->GetTrack(); 
   } else {
-      G4cerr << "J4VSensitiveDetector::GetTrack: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetTrack: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
   }
 } 
@@ -186,8 +186,8 @@ inline G4int J4VSensitiveDetector::GetTrackID() const
   if (fNewStep) {
       return fNewStep->GetTrack()->GetTrackID(); 
   } else {
-      G4cerr << "J4VSensitiveDetector::GetTrackID: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetTrackID: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
   }
 }
@@ -197,8 +197,8 @@ inline G4int J4VSensitiveDetector::GetMotherTrackID() const
   if (fNewStep) {
       return fNewStep->GetTrack()->GetParentID(); 
   } else {
-      G4cerr << "J4VSensitiveDetector::GetMotherTrackID: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetMotherTrackID: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
   }
 }
@@ -208,8 +208,8 @@ inline const G4String& J4VSensitiveDetector::GetParticleName() const
   if (fNewStep) {
      return fNewStep->GetTrack()->GetDefinition()->GetParticleName();  
   } else {
-      G4cerr << "J4VSensitiveDetector::GetParticleName: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetParticleName: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
   }
 }
@@ -220,8 +220,8 @@ inline G4double J4VSensitiveDetector::GetCharge() const
   if (fNewStep) {
       return fNewStep->GetTrack()->GetDefinition()->GetPDGCharge();
   } else {
-      G4cerr << "J4VSensitiveDetector::GetCharge: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetCharge: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
   }
 }
@@ -231,8 +231,8 @@ inline G4double J4VSensitiveDetector::GetMass() const
   if (fNewStep) {
       return fNewStep->GetTrack()->GetDefinition()->GetPDGMass(); 
   } else {
-      G4cerr << "J4VSensitiveDetector::GetMass: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetMass: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
   }
 }
@@ -243,8 +243,8 @@ inline G4double J4VSensitiveDetector::GetTof () const
   if (fNewStep) {
       return fNewStep->GetPreStepPoint()->GetGlobalTime();
   } else {
-      G4cerr << "J4VSensitiveDetector::GetTof: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetTof: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
   }
 }
@@ -255,8 +255,8 @@ inline G4double J4VSensitiveDetector::GetEnergyDeposit () const
   if (fNewStep) {
       return fNewStep->GetTotalEnergyDeposit(); 
   } else {
-      G4cerr << "J4VSensitiveDetector::GetEnergyDeposit: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetEnergyDeposit: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
   }
 }
@@ -267,8 +267,8 @@ inline G4double J4VSensitiveDetector::GetKineticEnergy () const
   if (fNewStep) {
      return fNewStep->GetTrack()->GetKineticEnergy(); 
   } else {
-      G4cerr << "J4VSensitiveDetector::GetKineticDeposit: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetKineticDeposit: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
   }
 }
@@ -279,8 +279,8 @@ inline G4double J4VSensitiveDetector::GetTotalEnergy () const
   if (fNewStep) {
       return fNewStep->GetTrack()->GetTotalEnergy(); 
   } else {
-      G4cerr << "J4VSensitiveDetector::GetTotalEnergy: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetTotalEnergy: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
   }
 }
@@ -291,8 +291,8 @@ inline G4ThreeVector J4VSensitiveDetector::GetMomentum () const
   if (fNewStep) {
      return fNewStep->GetPreStepPoint()->GetMomentum(); 
   } else {
-     G4cerr << "J4VSensitiveDetector::GetMomentum: fNewStep is empty! "
-          << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+     std::cerr << "J4VSensitiveDetector::GetMomentum: fNewStep is empty! "
+          << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
      abort();
   }
 }
@@ -302,8 +302,8 @@ inline const G4ThreeVector& J4VSensitiveDetector::GetPrePosition() const
   if (fNewStep) {
      return fNewStep->GetPreStepPoint()->GetPosition(); 
   } else {
-     G4cerr << "J4VSensitiveDetector::GetPrePosition: fNewStep is empty! "
-          << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+     std::cerr << "J4VSensitiveDetector::GetPrePosition: fNewStep is empty! "
+          << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
      abort();
   }
 } 
@@ -314,8 +314,8 @@ inline const G4ThreeVector& J4VSensitiveDetector::GetPostPosition() const
   if (fNewStep) {
      return fNewStep->GetPostStepPoint()->GetPosition(); 
   } else {
-     G4cerr << "J4VSensitiveDetector::GetPostPosition: fNewStep is empty! "
-          << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+     std::cerr << "J4VSensitiveDetector::GetPostPosition: fNewStep is empty! "
+          << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
      abort();
   }
 }
@@ -326,8 +326,8 @@ inline G4ParticleDefinition* J4VSensitiveDetector::GetParticle () const
   if (fNewStep) {
      return fNewStep->GetTrack()->GetDefinition();  
   } else {
-     G4cerr << "J4VSensitiveDetector::GetParticle: fNewStep is empty! "
-          << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+     std::cerr << "J4VSensitiveDetector::GetParticle: fNewStep is empty! "
+          << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
      abort();
   }
 }
@@ -337,8 +337,8 @@ inline G4double J4VSensitiveDetector::GetWeight() const
   if (fNewStep) {
      return fNewStep->GetPreStepPoint()->GetWeight();
   } else {
-     G4cerr << "J4VSensitiveDetector::GetWeight: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+     std::cerr << "J4VSensitiveDetector::GetWeight: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
      abort();
   }
 }
@@ -365,8 +365,8 @@ inline G4int J4VSensitiveDetector::GetCloneID(J4VComponent *cptr) const
          }      
       }
    } else {
-      G4cerr << "J4VSensitiveDetector::GetCloneID: fNewStep is empty! "
-           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+      std::cerr << "J4VSensitiveDetector::GetCloneID: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
       abort();
    }
    return -9999;
@@ -390,9 +390,9 @@ inline const  G4ThreeVector& J4VSensitiveDetector::GetTranslation (J4VComponent 
      } 
 
   } else {
-     G4cerr << "J4VSensitiveDetector::GetTranslation: both fROHist and fNewStep are empty! "
+     std::cerr << "J4VSensitiveDetector::GetTranslation: both fROHist and fNewStep are empty! "
           << "Call SetNewStep(aStep) or, if you have ROgeometry, call SetROHist(rohist) "
-          << "at ProcessHit() in your SensitiveDetector." << G4endl;
+          << "at ProcessHit() in your SensitiveDetector." << std::endl;
         abort();
   }
 }
@@ -414,9 +414,9 @@ inline const G4RotationMatrix* J4VSensitiveDetector::GetRotation (J4VComponent *
         return fNewStep->GetPreStepPoint()->GetTouchable()->GetRotation(depth);
      } 
   } else {
-     G4cerr << "J4VSensitiveDetector::GetRotation: both fROHist and fNewStep are empty! "
+     std::cerr << "J4VSensitiveDetector::GetRotation: both fROHist and fNewStep are empty! "
           << "Call SetNewStep(aStep) or, if you have ROgeometry, call SetROHist(rohist) "
-          << "at ProcessHit() in your SensitiveDetector." << G4endl;
+          << "at ProcessHit() in your SensitiveDetector." << std::endl;
         abort();
   }
 }

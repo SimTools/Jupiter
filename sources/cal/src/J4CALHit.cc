@@ -82,7 +82,7 @@ void J4CALHit::Output(G4HCofThisEvent* HCTE)
          << std::setw(18) << fInjectionPoint.z() << " "
          << std::setiosflags(std::ios::floatfield) 
          << std::setprecision(8)
-         << G4endl;
+         << std::endl;
   }
 
 	
@@ -101,14 +101,14 @@ void J4CALHit::Draw()
 void J4CALHit::Print()
 {
 
-  G4cout << std::setiosflags(std::ios::fixed);
-  G4cout << std::setw(20) << GetComponentName() << " " << G4endl;
-  G4cout << " track#=" << fTrackID
+  std::cout << std::setiosflags(std::ios::fixed);
+  std::cout << std::setw(20) << GetComponentName() << " " << std::endl;
+  std::cout << " track#=" << fTrackID
          << " charge=" << fParticle->GetPDGCharge()
          << " energy(GeV)= " << std::setprecision(2) 
          << std::setw(6) << fEnergyDep *(1./GeV) << " "
          << " TOF(ns)= " << std::setw(4) << std::setprecision(1) 
          << fTof /ns 
-         << G4endl;  
+         << std::endl;  
 }
 

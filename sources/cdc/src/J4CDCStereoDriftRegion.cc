@@ -41,16 +41,16 @@ J4CDCStereoDriftRegion::J4CDCStereoDriftRegion(J4VDetectorComponent *parent,
                                            nbrothers, me, copyno ) 
 {
 #if 0
-   G4cerr << "J4CDCStereoDriftRegion:: -----------------------------" << G4endl;
-   G4cerr << " motherendrmin = " << GetInnerRadius(parent) << G4endl;
-   G4cerr << " motherendrmax = " << GetOuterRadius(parent) << G4endl;
-   G4cerr << " motherendr    = " << 0.5*(GetInnerRadius(parent)
-                           + GetOuterRadius(parent)) << G4endl;
-   G4cerr << " motherhalflen = " << GetZHalfLength(parent) << G4endl;
-   G4cerr << " motherrmin    = " << GetInnerWeist(parent) << G4endl;
-   G4cerr << " motherrmax    = " << GetOuterWeist(parent) << G4endl;
-   G4cerr << " motherwirer   = " << 0.5*(GetInnerWeist(parent)
-                            + GetOuterWeist(parent)) << G4endl;
+   std::cerr << "J4CDCStereoDriftRegion:: -----------------------------" << std::endl;
+   std::cerr << " motherendrmin = " << GetInnerRadius(parent) << std::endl;
+   std::cerr << " motherendrmax = " << GetOuterRadius(parent) << std::endl;
+   std::cerr << " motherendr    = " << 0.5*(GetInnerRadius(parent)
+                           + GetOuterRadius(parent)) << std::endl;
+   std::cerr << " motherhalflen = " << GetZHalfLength(parent) << std::endl;
+   std::cerr << " motherrmin    = " << GetInnerWeist(parent) << std::endl;
+   std::cerr << " motherrmax    = " << GetOuterWeist(parent) << std::endl;
+   std::cerr << " motherwirer   = " << 0.5*(GetInnerWeist(parent)
+                            + GetOuterWeist(parent)) << std::endl;
 #endif
 }
 
@@ -97,11 +97,11 @@ void J4CDCStereoDriftRegion::Assemble()
      fRwaist      = CalcWaist(fTanStereo, centerradius, halfzlen);
 
 #if 0
-     G4cerr << "J4CDCStereoDriftRegion::Assemble -----------------------------" << G4endl;
-     G4cerr << " motherendrmin = " << motherRmin << G4endl;
-     G4cerr << " endinnerradius= " << endinnerradius << G4endl;
-     G4cerr << " endouterradius= " << endinnerradius << G4endl;
-     G4cerr << " motherdphi    = " << motherdphi << G4endl;
+     std::cerr << "J4CDCStereoDriftRegion::Assemble -----------------------------" << std::endl;
+     std::cerr << " motherendrmin = " << motherRmin << std::endl;
+     std::cerr << " endinnerradius= " << endinnerradius << std::endl;
+     std::cerr << " endouterradius= " << endinnerradius << std::endl;
+     std::cerr << " motherdphi    = " << motherdphi << std::endl;
 #endif
      
     // MakeSolid ----------//
