@@ -12,17 +12,17 @@
 //                                K.Hoshina , 2001
 // ====================================================================
 
-//#define __INSTALLIR__  
-//#define __INSTALLBD__  
-//#define __INSTALLVTX__  
-//#define __INSTALLIT__  
-#if 0
+#define __INSTALLIR__  
+#define __INSTALLBD__  
+#define __INSTALLVTX__  
+#define __INSTALLIT__  
+#if 1
 #define __INSTALLCDC__  
 #else
 #define __INSTALLTPC__
 #endif
-//#define __INSTALLCAL__  
-//#define __INSTALLSOL__  
+#define __INSTALLCAL__  
+#define __INSTALLSOL__  
 
 
 #ifdef __USEISOCXX__
