@@ -39,7 +39,7 @@ public:
 
   J4CALHit( J4VComponent* ptrDetector,
 	    G4int         preHitID,
-	    G4int         preTrkID,
+	    G4int         pdgCode,
 	    G4int         cellID,
 	    G4bool        isEM,
             G4bool        isBarrel,
@@ -58,9 +58,9 @@ public:
   virtual void Print();
 
   // getter/setter
-
+         
   inline G4int         GetPreHitID() const { return fPreHitID; }
-  inline G4int         GetPreTrkID() const { return fPreTrkID; }
+  inline G4int         GetPDGCode()  const { return fPDGCode; }
   inline G4int         GetCellID()   const { return fCellID;   }   
   inline G4bool        IsEM()        const { return fIsEM;     }
   inline G4bool        IsBarrel()    const { return fIsBarrel; }
@@ -70,7 +70,7 @@ public:
   inline G4ThreeVector GetXcm()      const { return fXcm;      } // note: this returns energy * position vector
  
   inline void SetPreHitID( G4int id )    { fPreHitID = id;}
-  inline void SetPreTrkID( G4int id )    { fPreTrkID = id;}
+  inline void SetPDGCode( G4int id )     { fPDGCode  = id;}
   inline void SetCellID( G4int id )      { fCellID   = id;}
   inline void SetEM( G4bool  b )         { fIsEM     = b; }
   inline void SetBarrel( G4bool  b )     { fIsBarrel = b; }
@@ -88,7 +88,7 @@ public:
   
 private:
   G4int           fPreHitID;
-  G4int           fPreTrkID;
+  G4int           fPDGCode;
   G4int           fCellID;
   G4bool          fIsEM;
   G4bool          fIsBarrel;
