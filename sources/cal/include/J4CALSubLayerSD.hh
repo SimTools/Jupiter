@@ -56,38 +56,12 @@ public:
     return *this;
   }
 
-  inline void InitCellID() {
-    fConeID = -1; fTowerID = -1; fMiniConeID = -1; fMiniTowerID = -1; fLayerID = -1; fSubLayerID = -1; /* fIsBarrel = -1; fIsEM = -1; */
-  }
-  
-  inline void SetCellID( TVAddress* address ) {
-    fConeID      = address -> GetConeID();
-    fTowerID     = address -> GetTowerID();
-    fMiniConeID  = address -> GetMiniConeID();
-    fMiniTowerID = address -> GetMiniTowerID();
-    fLayerID     = address -> GetLayerID();
-    fSubLayerID  = address -> GetSubLayerID();
-//    fIsBarrel    = address -> IsBarrel();
-//    fIsEM        = address -> IsEM();
-  }
-
-  inline void SetCellID(G4int cone, G4int tower,
-			G4int mcone, G4int mtower,
-			G4int layer, G4int sublyr) {
-    fConeID      = cone;
-    fTowerID     = tower;
-    fMiniConeID  = mcone;
-    fMiniTowerID = mtower;
-    fLayerID     = layer;
-    fSubLayerID  = sublyr;
-  }
-
   inline static void SetHCID( G4int i ) { fgLastHCID = i; }
   
 private:
   static G4int fgLastHCID;
   static G4int fgCurrentPreHitID;
-  static std::multimap<G4int, J4CALHit*> fgCalHits; // multimap<cellid, map<prehitid, calhit*>>
+  static std::multimap< G4int, J4CALHit* > fgCalHits; // multimap<cellid, map<prehitid, calhit*>>
   G4int         fNTowers;
 
   G4int         fCellID;
