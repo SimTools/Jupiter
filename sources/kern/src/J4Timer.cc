@@ -10,7 +10,11 @@
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
 
+#ifdef __USEISOCXX__
+#include <sstream>
+#else
 #include <strstream>
+#endif
 #include <iomanip>
 
 #include "J4Timer.hh"
@@ -88,13 +92,22 @@ void J4Timer::PrintAllAccumulatedTimes()
    for (G4int i=0; i<fgNtimers; i++) {
       if (fgTimers[i]) {
          AccumulatedTime *timer = fgTimers[i];
+#ifdef __USEISOCXX__
+         G4std::stringstream name;
+         name << timer->GetClassName() << ":" << timer->GetTimerName() << G4std::ends;
+         G4cerr << " * " << G4std::setw(40) << name.str()
+                << G4std::setw(12) <<  timer->GetAccumulatedRealElapsed()
+                << G4std::setw(12) <<  timer->GetAccumulatedSystemElapsed()
+                << G4std::setw(12) <<  timer->GetAccumulatedUserElapsed() << G4endl;
+#else
          char buf[1024];
-         strstream name(buf, 1024);
+         G4std::strstream name(buf, 1024);
          name << timer->GetClassName() << ":" << timer->GetTimerName() << G4std::ends;
          G4cerr << " * " << G4std::setw(40) << buf 
                 << G4std::setw(12) <<  timer->GetAccumulatedRealElapsed()
                 << G4std::setw(12) <<  timer->GetAccumulatedSystemElapsed()
                 << G4std::setw(12) <<  timer->GetAccumulatedUserElapsed() << G4endl;
+#endif
       }
    }
    G4cerr << " *********************************************************************************" << G4endl;

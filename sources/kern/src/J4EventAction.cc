@@ -163,7 +163,7 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
    G4std::stringstream tmpstr;
    tmpstr << "seeds/seed.evt." << G4std::setw(5) << G4std::setfill('0')
       << event << G4std::ends;
-   HepRandom::saveEngineStatus(tmpstr.str());
+   HepRandom::saveEngineStatus(tmpstr.str().data());
 #else
    char tmpchar[1024];
    G4std::strstream tmpstr(tmpchar, 1024);

@@ -19,8 +19,8 @@
 // constants (detector parameters)
 //--------------------------------
 
-J4Global* J4Global::fGlobal = 0;
-ofstream* J4Global::fErrorOfs = 0;
+J4Global*        J4Global::fGlobal   = 0;
+G4std::ofstream* J4Global::fErrorOfs = 0;
 G4int     J4Global::fErrorCounter = 0;
 G4int     J4Global::fErrorNevents = 1;
 G4int     J4Global::fErrorOutputDeviceID = 1;
@@ -52,7 +52,7 @@ J4Global::~J4Global()
 
 // ====================================================================
 //* GetErrrorOutputStream   -------------------------------------------
-ostream& J4Global::GetErrorOutputStream()
+G4std::ostream& J4Global::GetErrorOutputStream()
 {
    switch (fErrorOutputDeviceID) {
       case 0:
@@ -74,7 +74,7 @@ ostream& J4Global::GetErrorOutputStream()
 
 // ====================================================================
 //* GetEndl   ---------------------------------------------------------
-ostream& J4Global::GetEndl(ostream& outs)
+G4std::ostream& J4Global::GetEndl(G4std::ostream& outs)
 {
    switch (fErrorOutputDeviceID) {
       case 0:

@@ -12,7 +12,7 @@
 //*	2001/03/27  K.Hoshina	Original version.
 //*************************************************************************
 
-#include <fstream.h>
+#include <fstream>
 #include "G4ios.hh"
 #include "G4String.hh"
 
@@ -36,32 +36,32 @@ public:
   J4Global();
   virtual ~J4Global();
   
-  static J4Global* GetGlobal()               { return fGlobal;      }    
+  static J4Global*        GetGlobal()               { return fGlobal;      }    
   
-  static ostream&  GetErrorOutputStream();
-  static ostream&  GetEndl(ostream& outs);
-  static G4int     GetErrorCounter()        { return fErrorCounter; }
-  static G4int     GetErrorNevents()        { return fErrorNevents; }
-  static G4int     GetErrorOutputDeviceID() { return fErrorOutputDeviceID; }
-  static G4String  GetErrorOutputFilename() { return fErrorOutputFilename; }
+  static G4std::ostream&  GetErrorOutputStream();
+  static G4std::ostream&  GetEndl(G4std::ostream& outs);
+  static G4int            GetErrorCounter()        { return fErrorCounter; }
+  static G4int            GetErrorNevents()        { return fErrorNevents; }
+  static G4int            GetErrorOutputDeviceID() { return fErrorOutputDeviceID; }
+  static G4String         GetErrorOutputFilename() { return fErrorOutputFilename; }
        
-  static void      SetErrorOutputStream(ofstream& ofs) 
-                                            { fErrorOfs = &ofs;     }
-  static void      SetErrorNevents(G4int n) { fErrorNevents = n;    }
-  static void      SetErrorOutputDeviceID(G4int i)
-                                            { fErrorOutputDeviceID = i; }
-  static void      SetErrorOutputFilename(G4String s)
-                                            { fErrorOutputFilename = s; }
-  void             CloseErrorOutputStream();
+  static void             SetErrorOutputStream(G4std::ofstream& ofs) 
+                                                   { fErrorOfs = &ofs;     }
+  static void             SetErrorNevents(G4int n) { fErrorNevents = n;    }
+  static void             SetErrorOutputDeviceID(G4int i)
+                                                   { fErrorOutputDeviceID = i; }
+  static void             SetErrorOutputFilename(G4String s)
+                                                   { fErrorOutputFilename = s; }
+  void                    CloseErrorOutputStream();
   
 private:
-  static J4Global   *fGlobal;
-  static ofstream   *fErrorOfs;
-  static G4int       fErrorCounter;
-  static G4int       fErrorNevents;
-  static G4int       fErrorOutputDeviceID;   // 0: cerr, 1:fileoutput
-  static G4String    fErrorOutputFilename;
-  J4GlobalMessenger *fMessenger;
+  static J4Global          *fGlobal;
+  static G4std::ofstream   *fErrorOfs;
+  static G4int              fErrorCounter;
+  static G4int              fErrorNevents;
+  static G4int              fErrorOutputDeviceID;   // 0: cerr, 1:fileoutput
+  static G4String           fErrorOutputFilename;
+  J4GlobalMessenger        *fMessenger;
 };
 
 #endif
