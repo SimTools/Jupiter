@@ -22,8 +22,9 @@ SHELL	= `which bash`
 MFLAGS	=
 CURRDIR	= .
 
-#SUBDIRS	= kern ir bd cal cdc it vtx sol main
-SUBDIRS	= kern ir bd cal cdc it sol lcexp vtx ct main
+#SUBDIRS = kern ir bd cal cdc it vtx sol main
+#SUBDIRS = kern ir bd cal cdc it sol lcexp vtx ct main
+SUBDIRS = kern ir bd cal cdc tpc it sol lcexp vtx ct main
 
 CPPFLAGS += -D__HOSHINA__
 
