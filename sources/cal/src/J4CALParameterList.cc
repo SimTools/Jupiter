@@ -115,14 +115,10 @@ void J4CALParameterList::SetParameters()
 
 #if defined(__GLD_V1__)
    // default: __GLD_V1__
-   fTowerHeight                 = 141.*cm;  // Tower height
-   
    fBarrelTowerFrontRho = 210.*cm; // Towers must be placed in a CAL volume completely.  
    fEndcapTowerFrontZ   = 270.*cm; // Check kern/J4ParameterList.cc and 
                                    // see CalcNextTowerEdgeAngle().
 #else
-   fTowerHeight                 = 190.*cm;  // Tower height
-   
    fBarrelTowerFrontRho = 160.*cm; // Towers must be placed in a CAL volume completely.  
    fEndcapTowerFrontZ   = 190.*cm; // Check kern/J4ParameterList.cc and 
                                    // see CalcNextTowerEdgeAngle().
@@ -144,7 +140,7 @@ void J4CALParameterList::SetParameters()
    fHDNLayers          = 130;
    fHDMiniTowerNClones = 1;
    fHDMiniConeNClones  = 1;
-      
+
    // SubLeyars -----------
    fNSubLayers = 2;
 
@@ -168,15 +164,13 @@ void J4CALParameterList::SetParameters()
    // ==== Calculate Tower parameters =============================== 
    G4double startlambda = 0;
 
-   SetTowerParameters( fTowerHeight, 
-                        startlambda,fBarrelCoverageAngle, 
+   SetTowerParameters(  startlambda,fBarrelCoverageAngle, 
                         fBarrelTowerFrontRho,
                         fNominalBarrelTowerFrontSize, TRUE );  
 
    startlambda = atan2( fEndcapInnerR, fEndcapTowerFrontZ );
 
-   SetTowerParameters( fTowerHeight, 
-                       startlambda, 0.5 * M_PI - fBarrelCoverageAngle, 
+   SetTowerParameters( startlambda, 0.5 * M_PI - fBarrelCoverageAngle, 
                        fEndcapTowerFrontZ,
                        fNominalEndcapTowerFrontSize, FALSE );  
 
@@ -187,8 +181,7 @@ void J4CALParameterList::SetParameters()
 
 //=====================================================================
 //* SetTowerParameters ------------------------------------------------
-void J4CALParameterList::SetTowerParameters( G4double towerheight,
-                                             G4double startlambda,
+void J4CALParameterList::SetTowerParameters( G4double startlambda,
                                              G4double endlambda,
                                              G4double length,
                                              G4double nominalwidth, 
@@ -215,7 +208,6 @@ void J4CALParameterList::SetTowerParameters( G4double towerheight,
    //
    //
    //    ntowers          : number of towers in AFEB or DEBC
-   //    towerheight      : height of tower
    //    width            : width of tile at front face of tower)
    //    isbarrel         : (0, 1) = (barrel, endcap)
    //    lambda           : angAOX(barrel) or angGOX(endcap)
@@ -326,7 +318,6 @@ void J4CALParameterList::SetTowerParameters( G4double towerheight,
       r            /= cos(0.5 * dlambda);
  
       paramright = new J4CALTowerParam(r, 
-                                       towerheight, 
                                        centerlambda,
                                        dlambda,
                                        width, 
@@ -399,13 +390,11 @@ void J4CALParameterList::SetTowerParameters( G4double towerheight,
       if (!isbarrel) centerlambda = 0.5 * M_PI - centerlambda;
 
       paramright = new J4CALTowerParam( r, 
-                                        towerheight, 
                                         centerlambda,
                                         dlambda,
                                         nominalwidth, 
                                         isbarrel      );
       paramleft  = new J4CALTowerParam( r, 
-                                        towerheight, 
                                         - centerlambda,
                                         dlambda,
                                         nominalwidth,
@@ -580,9 +569,9 @@ void J4CALParameterList::ShowTowerParameters()
 {
    std::cerr << " ============================================================ " << std::endl;
    std::cerr << "   Calorimeter Tower Parameters " << std::endl;
-   std::cerr << " ----+---------+---------+---------+---------+---------+---------+---------+---------+---------+ " << std::endl;
-   std::cerr << "       barrel    Radius    Height    Lambda    Dlambda   Wlambda   Nphi      Dphi      Wphi      " << std::endl;
-   std::cerr << " ----+---------+---------+---------+---------+---------+---------+---------+---------+---------+ " << std::endl;
+   std::cerr << " ----+---------+---------+---------+---------+---------+---------+---------+---------+ " << std::endl;
+   std::cerr << "       barrel    Radius    Lambda    Dlambda   Wlambda   Nphi      Dphi      Wphi      " << std::endl;
+   std::cerr << " ----+---------+---------+---------+---------+---------+---------+---------+---------+ " << std::endl;
 
    for (G4int i=0; i < GetNcones(); i++) {
 
