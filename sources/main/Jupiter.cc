@@ -12,18 +12,18 @@
 //                                K.Hoshina , 2001
 // ====================================================================
 
-#define __INSTALLIR__  
+//#define __INSTALLIR__  
 //#define __INSTALLBD__  
-#define __INSTALLVTX__  
-#define __INSTALLIT__  
+//#define __INSTALLVTX__  
+//#define __INSTALLIT__  
 #if 0
  #define __INSTALLCDC__  
 #else
- #define __INSTALLTPC__
+//#define __INSTALLTPC__
 #endif
 #define __INSTALLCAL__  
-#define __INSTALLSOL__  
-#define __INSTALLMUD__  
+//#define __INSTALLSOL__  
+//#define __INSTALLMUD__  
 
 
 #ifdef __USEISOCXX__
@@ -59,6 +59,13 @@
 #include "J4CAL.hh"
 #include "J4SOL.hh"
 #include "J4MUD.hh"
+
+// temporary, for installation CAL without TPC
+#ifdef __INSTALLCAL__
+#ifndef __INSTALLTPC__
+#include "J4TPCPostHit.hh"
+#endif
+#endif
 
 TBookKeeper* TBookKeeper::fgBookKeeper = new TBookKeeper(); 
 
@@ -137,6 +144,11 @@ int main(int argc, char** argv)
   //* calorimeter 
     
 #ifdef __INSTALLCAL__  
+// temporary, for installation CAL without TPC
+#ifndef __INSTALLTPC__
+  J4TPCPostHit::GetCurPostHitID();
+#endif
+
   J4CAL *calptr = new J4CAL();
   calptr->SetMother(dtcptr->GetEXPHall());
   dtcptr->AddComponent(calptr);
