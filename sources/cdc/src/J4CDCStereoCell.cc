@@ -108,6 +108,9 @@ void J4CDCStereoCell::Assemble()
      // MakeLogicalVolume --//
      G4String material = list->GetCDCMaterial();
      MakeLVWith(OpenMaterialStore()->Order(material));
+
+     // TwistedTubs MUST NOT OPTIMIZED !!
+     GetLV()->SetOptimisation(FALSE);
     
      // SetVisAttribute ----//
      PaintLV(list->GetStereoCellVisAtt(), 

@@ -107,6 +107,9 @@ void J4CDCStereoDriftRegion::Assemble()
      G4String material = list->GetDriftRegionMaterial();
      MakeLVWith(OpenMaterialStore()->Order(material));
     
+     // TwistedTubs MUST NOT OPTIMIZE !!
+     GetLV()->SetOptimisation(FALSE);
+
      // SetVisAttribute ----//
      PaintLV(list->GetDriftRegionVisAtt(),
              list->GetDriftRegionColor());   
