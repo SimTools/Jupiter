@@ -54,10 +54,6 @@ public:
      return *this;
   }
 
-  // set/get functions
-  static G4int GetCurTrackID()       { return J4TrackingAction::GetCurTrackID(fgTrackRegID); }
-  static void  SetCurTrackID(G4int id) { J4TrackingAction::SetCurTrackID(fgTrackRegID, id); }
-   
 private:
   G4bool IsExiting(const G4ThreeVector &pos, const G4ThreeVector &p) const; 
 private:

@@ -31,7 +31,6 @@ G4int J4TPCDriftRegionSD::fgTrackRegID = -1;
 J4TPCDriftRegionSD::J4TPCDriftRegionSD(J4VDetectorComponent* detector)
 		   :J4VSD<J4TPCLayerHit>(detector)
 {  
-  SetCurTrackID(INT_MAX);
 }
 
 //=====================================================================
@@ -71,21 +70,11 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   G4ThreeVector            localpos = (rotp ? rotp->inverse()
                                     * (pos - GetTranslation())
                                     : (pos - GetTranslation()));
-#if 0
-  G4double                 distance = location->GetSolid()
-                                      ->DistanceToOut(localpos, localp.unit());
 
-  if (distance > kCarTolerance || trackID == GetCurTrackID()
-     || localp.x() * localpos.x() + localp.y() * localpos.y() < 0.) {
-     return FALSE;
-  }
-#else
-  if (!IsExiting(localpos, localp) || trackID == GetCurTrackID()) {
+  if (!IsExiting(localpos, localp) || !J4TrackingAction::IsNext(fgTrackRegID)) {
     return FALSE;
   }
-#endif
 
-  SetCurTrackID(trackID);
   //Get particle information
 
   G4int                  mothertrackID = GetMotherTrackID();
@@ -133,7 +122,6 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
 
 void J4TPCDriftRegionSD::EndOfEvent(G4HCofThisEvent *)
 {			
-  SetCurTrackID(INT_MAX);
 }
 
 //=====================================================================
@@ -151,7 +139,7 @@ void J4TPCDriftRegionSD::PrintAll()
 }
 
 //=====================================================================
-//* IsOnSurface -------------------------------------------------------
+//* IsExiting ---------------------------------------------------------
 
 G4bool J4TPCDriftRegionSD::IsExiting(const G4ThreeVector &pos,
                                      const G4ThreeVector &p) const

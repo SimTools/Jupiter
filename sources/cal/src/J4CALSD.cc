@@ -33,7 +33,6 @@ G4int J4CALSD::fgTrackRegID      = -1;
 J4CALSD::J4CALSD( J4VDetectorComponent* detector )
                   :J4VSD<J4CALPreHit>( detector )
 {
-  SetCurrentTrackID( INT_MAX );
 }
 
 //=====================================================================
@@ -88,10 +87,9 @@ G4bool J4CALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ )
   G4ParticleDefinition* particle = GetParticle(); 
   
   // Create new hit
-  if ( trackID < GetCurrentTrackID() ) { 
+  if ( J4TrackingAction::IsNext(fgTrackRegID) ) { 
 
      fgCurrentPreHitID++;
-     SetCurrentTrackID( trackID );
      // create new hit!
 
      fCurrentPreHitPtr = new J4CALPreHit( ptrCAL, postHitID, fgCurrentPreHitID, pre, momentum, 
@@ -110,7 +108,6 @@ void J4CALSD::EndOfEvent( G4HCofThisEvent* /* PreHCTE */ )
 {			
   SetCurrentPreHitPtr(0);
   SetCurrentPreHitID(-1);
-  SetCurrentTrackID( INT_MAX );
 }
 
 //=====================================================================
