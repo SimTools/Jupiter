@@ -57,15 +57,14 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
   // Create trajectory only for charged particles
 
   fCurrentTrackID = aTrack->GetTrackID();
-
   if (fCurrentTrackID > fTrackCounter) fTrackCounter = fCurrentTrackID;
 
-  // Reset current track ID for PreHit makeing upon starting of a new track
+  // Reset current track ID for PreHit making upon starting of a new track
 
   using namespace std;
   vector<Pair>::iterator iter;
   for (iter = fRegs.begin(); iter != fRegs.end(); iter++) {
-    if ((*iter).fSecond != INT_MAX && fCurrentTrackID <= (*iter).fSecond) {
+    if ((*iter).fSecond != INT_MAX && fCurrentTrackID < (*iter).fSecond) {
         (*iter).fSecond = INT_MAX;
     }
   }
@@ -158,7 +157,7 @@ void J4TrackingAction::PostUserTrackingAction(const G4Track* /* aTrack */)
 G4bool J4TrackingAction::IsNext(G4int &detid)
 { 
    G4int n2nds   = GetTrackingManager()->GimmeSecondaries()->size();
-   G4int trackid = n2nds ? fTrackCounter + n2nds : fCurrentTrackID - 1;
+   G4int trackid = n2nds ? fTrackCounter + n2nds + 1 : fCurrentTrackID;
    if (detid < 0) {
       fRegs.push_back(Pair(fCurrentTrackID, trackid));
       detid = fRegs.size() - 1;
