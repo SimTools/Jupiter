@@ -40,9 +40,11 @@ public:
   G4RotationMatrix* GetRotation();
   G4ThreeVector&  GetTranslation();
 
+#if 0
   void  InstallIn(J4VIRAcceleratorComponent *mother,
                           G4RotationMatrix     *prot  = 0,
                           const G4ThreeVector  &tlate = 0 );
+#endif
 
 private:
   void 	Assemble();    

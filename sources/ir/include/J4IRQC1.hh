@@ -48,9 +48,9 @@ public:
   G4RotationMatrix* GetRotation();
   G4ThreeVector&  GetTranslation();
 
-  void  InstallIn(J4VIRAcceleratorComponent *mother,
-                          G4RotationMatrix     *prot  = 0,
-                          const G4ThreeVector  &tlate = 0 );
+  void  InstallIn(J4VComponent *mother,
+                  G4RotationMatrix     *prot  = 0,
+                  const G4ThreeVector  &tlate = 0 );
 
 private:
   void 	Assemble();    
