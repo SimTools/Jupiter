@@ -13,9 +13,10 @@
 #include "globals.hh"
 #include "J4SOL.hh"
 #include "G4FieldManager.hh"
+#include "J4MFieldMapStore.hh"
 #include "G4TransportationManager.hh"
 #include "G4ChordFinder.hh"
-
+#include "J4SOLMField.hh"
 
 // ====================================================================
 //--------------------------------
@@ -38,7 +39,8 @@ J4SOL::J4SOL(J4VDetectorComponent *parent,
                             G4int  me,
                             G4int  copyno ) :
        J4VSOLDetectorComponent(fFirstName, parent, nclones,
-                               nbrothers, me, copyno)
+                               nbrothers, me, copyno),
+       J4AttMFieldMap()
 {   
 }
 
@@ -47,7 +49,6 @@ J4SOL::J4SOL(J4VDetectorComponent *parent,
 
 J4SOL::~J4SOL()
 {
-   if (Deregister(fMagField)) delete fMagField;
 }
 
 //=====================================================================
@@ -102,19 +103,26 @@ void J4SOL::InstallIn(J4VComponent         *mother,
 
 void J4SOL::SetMagField()
 {
-   G4cerr << "-----------------------------------------------" << G4endl;
-   G4cerr << "-----------------------------------------------" << G4endl;
-   G4cerr << "J4DetectorConstruction:: new J4MagneticField!!!" << G4endl;
-   G4cerr << "-----------------------------------------------" << G4endl;
-   G4cerr << "-----------------------------------------------" << G4endl;
-   G4FieldManager* fieldManager 
-     = G4TransportationManager::GetTransportationManager()->GetFieldManager();
+    G4cerr << "-----------------------------------------------" << G4endl;
+    G4cerr << "-----------------------------------------------" << G4endl;
+    G4cerr << "J4DetectorConstruction:: new J4MagneticField!!!" << G4endl;
+    G4cerr << "-----------------------------------------------" << G4endl;
+    G4cerr << "-----------------------------------------------" << G4endl;
+    
+    if (GetParameterList()->GetBField() != 0) {
+       SetMField(new J4SOLMField(OpenParameterList())); 
 
-   fMagField= new J4MagneticField(OpenParameterList());
-   Register(fMagField);
-   fieldManager-> SetDetectorField(fMagField);
-   fieldManager-> CreateChordFinder(fMagField);
-   fieldManager-> GetChordFinder()-> SetDeltaChord(3.*mm);  // if you need
+       G4FieldManager* fieldManager= 
+       G4TransportationManager::GetTransportationManager()-> GetFieldManager();
+    
+       J4MFieldMapStore* mfManager = J4MFieldMapStore::GetInstance();
+       mfManager->NameList();
+       Register(mfManager);
+       fieldManager-> SetDetectorField(mfManager);
+       fieldManager-> CreateChordFinder(mfManager);
+       fieldManager-> GetChordFinder()-> SetDeltaChord(3.*mm); // if you need
+       InstallMField(this);
+   }
 }
 
 //* Draw  --------------------------------------------------------
