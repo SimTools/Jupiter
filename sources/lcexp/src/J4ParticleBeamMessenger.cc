@@ -102,6 +102,14 @@ J4ParticleBeamMessenger::J4ParticleBeamMessenger(J4ParticleBeam * fPtclBeam)
   fCosThetaMaxCmd->SetGuidance("Set maximum costheta.");
   fCosThetaMaxCmd->SetParameterName("CosThetaMax" ,true,true);
 
+  fPhiMinCmd = new G4UIcmdWithADouble("/jupiter/beam/minphi",this);
+  fPhiMinCmd->SetGuidance("Set minimum phi.");
+  fPhiMinCmd->SetParameterName("PhiMin" ,true,true);
+
+  fPhiMaxCmd = new G4UIcmdWithADouble("/jupiter/beam/maxphi",this);
+  fPhiMaxCmd->SetGuidance("Set maximum phi.");
+  fPhiMaxCmd->SetParameterName("PhiMax" ,true,true);
+
   fXMinCmd = new G4UIcmdWithADoubleAndUnit("/jupiter/beam/minx",this);
   fXMinCmd->SetGuidance("Set minimum x-position.");
   fXMinCmd->SetParameterName("XMin" ,true,true);
@@ -261,6 +269,12 @@ void J4ParticleBeamMessenger::SetNewValue(G4UIcommand * command,G4String newValu
      fParticleBeam->fCosThetaRange[0] = fCosThetaMinCmd->GetNewDoubleValue(newValues); 
   } else if( command==fCosThetaMaxCmd ) { 
      fParticleBeam->fCosThetaRange[1] = fCosThetaMaxCmd->GetNewDoubleValue(newValues); 
+
+  } else if( command==fPhiMinCmd ) { 
+     fParticleBeam->fPhiRange[0] = fPhiMinCmd->GetNewDoubleValue(newValues); 
+  } else if( command==fPhiMaxCmd ) { 
+     fParticleBeam->fPhiRange[1] = fPhiMaxCmd->GetNewDoubleValue(newValues); 
+
   } else if( command==fXMinCmd ) { 
      fParticleBeam->fPositionRange[0][0] = fXMinCmd->GetNewDoubleValue(newValues); 
   } else if( command==fXMaxCmd ) { 

@@ -139,7 +139,11 @@ void J4ParticleBeam::SetParticleMomentum(G4ParticleMomentum aMomentum)
 void J4ParticleBeam::GenerateIsotopicBeam(G4Event* evt)
 {
  	std::cerr << "--------ParticleBeam:: Isotropic beamtype-------" << std::endl;
+#if 0
 	G4double phi      = RandFlat::shoot(0.,2*M_PI);
+#else
+	G4double phi      = RandFlat::shoot(fPhiRange[0], fPhiRange[1]);
+#endif
 	G4double costheta = RandFlat::shoot(fCosThetaRange[0],
                                        fCosThetaRange[1]);
    // G4double costheta = cos((2 * G4UniformRand() -1.) * M_PI);

@@ -58,6 +58,8 @@ class J4ParticleBeamMessenger: public G4UImessenger
     G4UIcmdWithADoubleAndUnit * fMomentumMaxCmd;
     G4UIcmdWithADouble        * fCosThetaMinCmd;
     G4UIcmdWithADouble        * fCosThetaMaxCmd;
+    G4UIcmdWithADouble        * fPhiMinCmd;
+    G4UIcmdWithADouble        * fPhiMaxCmd;
     G4UIcmdWithADoubleAndUnit * fXMinCmd;
     G4UIcmdWithADoubleAndUnit * fXMaxCmd;
     G4UIcmdWithADoubleAndUnit * fYMinCmd;

@@ -111,6 +111,7 @@ class J4ParticleBeam : public G4ParticleGun
      G4bool                fIsFlatProfile;
      G4double              fMomentumRange[2];
      G4double              fCosThetaRange[2];
+     G4double              fPhiRange[2];
      G4double              fPositionRange[3][2];
      G4double              fMeanMomentum;
      G4double              fMomentumSigma;
