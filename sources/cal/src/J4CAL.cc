@@ -9,8 +9,8 @@
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
-
-#include "J4CAL.hh"
+#include "J4CAL.hh" 
+#include "J4CALSD.hh"
 #include "J4CALCone.hh"
 #include "J4Timer.hh"
 
@@ -29,11 +29,11 @@ const G4String& J4CAL::fFirstName( "CAL" );
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CAL::J4CAL(J4VDetectorComponent *parent,
-                            G4int  nclones,
-                            G4int  nbrothers, 
-                            G4int  me,
-                            G4int  copyno )
+J4CAL::J4CAL( J4VDetectorComponent *parent,
+                             G4int  nclones,
+                             G4int  nbrothers, 
+                             G4int  me,
+                             G4int  copyno )
 : J4VCALDetectorComponent( fFirstName, parent, nclones,
                                        nbrothers, me, copyno )
 {
@@ -44,10 +44,11 @@ J4CAL::J4CAL(J4VDetectorComponent *parent,
 
 J4CAL::~J4CAL()
 {
+#if 0
  static G4int timerID = -1;
  J4Timer timer( timerID, "J4CAL", "Destructor" );
  timer.Start();
-
+#endif
 #ifndef __GEANT452__
    if ( fCones ) {
       J4CALParameterList *ptrList = OpenParameterList(); 
@@ -57,7 +58,9 @@ J4CAL::~J4CAL()
       if (Deregister(fCones)) delete [] fCones;
    }
 #endif
+#if 0
  timer.Stop();
+#endif
 }
 
 //=====================================================================
@@ -66,6 +69,7 @@ J4CAL::~J4CAL()
 void J4CAL::Assemble() 
 {   
    if ( !GetLV() ) {
+
       J4CALParameterList *ptrList = OpenParameterList(); 
 
       G4double rmin        = ptrList -> GetCALInnerR();
@@ -73,7 +77,7 @@ void J4CAL::Assemble()
       G4double len         = ptrList -> GetCALOuterHalfZ();
       G4double dphi        = ptrList -> GetCALDeltaPhi();
       G4double endcaprmin  = ptrList -> GetEndcapInnerR();
-      G4double endcaphalfz = 0.5 * (len - ptrList->GetCALInnerHalfZ());
+      G4double endcaphalfz = 0.5 * ( len - ptrList->GetCALInnerHalfZ() );
   	
       // MakeSolid ----------//
       OrderNewTubs( rmin, rmax, len, dphi, endcaphalfz, endcaprmin );
@@ -82,7 +86,7 @@ void J4CAL::Assemble()
       MakeLVWith( OpenMaterialStore()->Order(ptrList->GetCALMaterial()) );
     
       // SetVisAttribute ----//
-      PaintLV(ptrList->GetCALVisAtt(), ptrList->GetCALColor());
+      PaintLV( ptrList->GetCALVisAtt(), ptrList->GetCALColor() );
   	
       // Install daughter PV //
       //////////////////////////////////////////////////////////////////////
@@ -107,11 +111,11 @@ void J4CAL::Assemble()
 
 void J4CAL::Cabling()
 {
-  //if ( !GetSD() ) {
-   // J4CALSD* sd = new J4CALSD(this);
-   // Register(sd);
-   // SetSD(sd);
-  //}
+  if ( !GetSD() ) {
+    J4CALSD* sd = new J4CALSD( this );
+    Register( sd );
+    SetSD( sd );
+  }
 }
 
 //=====================================================================
@@ -129,8 +133,10 @@ void J4CAL::InstallIn( J4VComponent*         /* mother */,
   
   // Placement function into mother object...
   SetPVPlacement();
+  
+  // Cabling function to install SD
+  Cabling();
 
-  //Cabling();
   timer.Stop();
 }
 
