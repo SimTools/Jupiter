@@ -33,9 +33,7 @@
 // static datamember's initialize
 G4int J4CALSubLayerSD::fgLastHCID=-1;
 G4int J4CALSubLayerSD::fgCurrentPreHitID = -1;
-//std::vector<J4CALHit*> J4CALSubLayerSD::fgCalHits;
 std::multimap<G4int,J4CALHit*> J4CALSubLayerSD::fgCalHits;
-
 
 //=====================================================================
 //---------------------
@@ -48,16 +46,13 @@ J4CALSubLayerSD::J4CALSubLayerSD( J4VDetectorComponent* ptrDetector )
   : J4VSD<J4CALHit>( ptrDetector ),
     fConeID(-1), fTowerID(-1), fMiniConeID(-1), fMiniTowerID(-1), fLayerID(-1), fSubLayerID(-1),
     fIsBarrel(-1), fIsEM(-1)
-{
-
-}
+{ }
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
 J4CALSubLayerSD::~J4CALSubLayerSD()
-{
-}
+{ }
 
 //=====================================================================
 //* Initialize --------------------------------------------------------
@@ -101,7 +96,7 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
   //In order to use Get function, you must call SetNewStep() at first.
   SetNewStep( aStep );
 
-  if(GetEnergyDeposit()<=0) return FALSE; // don't process this hit if Edep=0
+  if( GetEnergyDeposit() <= 0 ) return FALSE; // don't process this hit if Edep=0
 
   ////////////////////////////////////////////////////////////////
   // Calorimeter sub structure and depth-------------------------
@@ -127,7 +122,7 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
   G4int  towerID     = GetCloneID( ptrTowerComponent );
   G4int  miniConeID  = ptrMiniConeComponent  -> GetMyID();
   G4int  miniTowerID = ptrMiniTowerComponent -> GetMyID();
-  //G4int  miniTowerID = GetCloneID( ptrMiniTowerComponent );
+  //G4int  miniTowerID = GetCloneID( ptrMiniTowerComponent );  // double replica problem
   G4int  layerID     = ptrLayerComponent     -> GetMyID();
   G4int  subLayerID  = ptrSubLayerComponent  -> GetMyID();
 
@@ -148,39 +143,38 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
   G4double  edep  = GetEnergyDeposit();
   const G4ThreeVector&  Xcm   = GetPrePosition() * GetEnergyDeposit(); // energy-weighted position vector
 
-  TVAddress* ptrAddress = new TVAddress( coneID, towerID, miniConeID, miniTowerID, layerID, subLayerID /* , isBarrel, isEM */ );
-  G4int cellID = ptrAddress -> TVAddress::GetCellID( isEM );
-
+  G4int cellID = TVAddress::GetCellID( coneID, towerID, miniConeID, miniTowerID, layerID, subLayerID, isEM );
+  
   // check if the cell is already hit
-  typedef std::multimap<G4int,J4CALHit*>::iterator MI;
-  std::pair<MI,MI> itr_range = fgCalHits.equal_range(cellID);
+  typedef std::multimap< G4int, J4CALHit* >::iterator MI;
+  std::pair< MI, MI > itr_range = fgCalHits.equal_range( cellID );
 
-  if(itr_range.first==fgCalHits.end()) {
+  if ( itr_range.first == fgCalHits.end() ) {
     // cell is not yet hit.
     // make new hit for that cell and insert to hit buffer.
-    J4CALHit *aHit = new J4CALHit(ptrSubLayerComponent,preHitID,trackID,cellID,isEM,isBarrel,edep,tof,Xcm);
-    fgCalHits.insert(std::make_pair(cellID,aHit));
-    ((J4CALHitBuf*)GetHitBuf())->insert(aHit);
+    J4CALHit *aHit = new J4CALHit( ptrSubLayerComponent, preHitID, trackID, cellID, isEM, isBarrel, edep, tof, Xcm );
+    fgCalHits.insert( std::make_pair( cellID, aHit ) );
+    ((J4CALHitBuf*)GetHitBuf())->insert( aHit );
   }
   else {
     // loop over hits in a cell, look for the same prehitID
     // if found, update existing hit. else, make a new cell hit.
     G4bool makeNewHit = TRUE;
-    for(MI p=itr_range.first; p!=itr_range.second; ++p) {
-      J4CALHit *aHit = (J4CALHit*)(p->second);
+    for ( MI p = itr_range.first; p!=itr_range.second; ++p ) {
+      J4CALHit *aHit = (J4CALHit*)( p -> second );
       G4int aPreHitID = aHit->GetPreHitID();
-      if(aPreHitID==preHitID) {
-	aHit->AddEdep(edep);
-	aHit->AddXcm(Xcm);
-	if(tof<aHit->GetTof()) aHit->SetTof(tof);
+      if ( aPreHitID == preHitID ) {
+	aHit->AddEdep( edep );
+	aHit->AddXcm( Xcm );
+	if ( tof < aHit->GetTof() ) aHit->SetTof( tof );
 	makeNewHit = FALSE;
 	break;
       }
     }
-    if(makeNewHit) {
-      J4CALHit *aHit = new J4CALHit(ptrSubLayerComponent,preHitID,trackID,cellID,isEM,isBarrel,edep,tof,Xcm); 
-      fgCalHits.insert(std::make_pair(cellID,aHit));
-      ((J4CALHitBuf*)GetHitBuf())->insert(aHit);
+    if ( makeNewHit ) {
+      J4CALHit *aHit = new J4CALHit( ptrSubLayerComponent, preHitID, trackID, cellID, isEM, isBarrel, edep, tof, Xcm ); 
+      fgCalHits.insert( std::make_pair( cellID, aHit ) );
+      ((J4CALHitBuf*)GetHitBuf())->insert( aHit );
     }
   }
   
@@ -204,14 +198,11 @@ void J4CALSubLayerSD::EndOfEvent( G4HCofThisEvent* /* HCTE */ )
 
 //=====================================================================
 //* DrawAll -----------------------------------------------------------
-
 void J4CALSubLayerSD::DrawAll()
-{
-}
+{ }
 
 //=====================================================================
 //* PrintAll ----------------------------------------------------------
-
 void J4CALSubLayerSD::PrintAll()
 {
   G4int nHit= ( (J4CALHitBuf*)GetHitBuf() ) -> entries();
