@@ -16,13 +16,15 @@
 #include "G4Track.hh"
 #include "J4Global.hh"
 
-std::vector<J4TrackingAction::Pair> J4TrackingAction::fgRegs;
-G4int                               J4TrackingAction::fCurrentTrackID;
 J4TrackingAction                   *J4TrackingAction::fgInstance = 0;
 //=====================================================================
 //* Constructor -------------------------------------------------------
 J4TrackingAction::J4TrackingAction()
-                : fStoredTrajectoryID(1) 
+                : fCurrentTrackID(INT_MAX),
+                  fStoredTrajectoryID(1),
+                  fMessenger(0),
+                  fRegs(2),
+                  fTrackCounter(INT_MIN) 
 {
    if (fgInstance) {
       G4cerr << ">>>>>>> Error in J4TrackingAction::J4TrackingAction" << G4endl
@@ -56,11 +58,13 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 
   fCurrentTrackID = aTrack->GetTrackID();
 
+  if (fCurrentTrackID > fTrackCounter) fTrackCounter = fCurrentTrackID;
+
   // Reset current track ID for PreHit makeing upon starting of a new track
 
   using namespace std;
   vector<Pair>::iterator iter;
-  for (iter = fgRegs.begin(); iter != fgRegs.end(); iter++) {
+  for (iter = fRegs.begin(); iter != fRegs.end(); iter++) {
     if ((*iter).fSecond != INT_MAX && fCurrentTrackID <= (*iter).fSecond) {
         (*iter).fSecond = INT_MAX;
     }
@@ -154,16 +158,17 @@ void J4TrackingAction::PostUserTrackingAction(const G4Track* /* aTrack */)
 G4bool J4TrackingAction::IsNext(G4int &detid)
 { 
    G4int n2nds   = GetTrackingManager()->GimmeSecondaries()->size();
-   G4int trackid = fCurrentTrackID + (n2nds ? n2nds : -1);
+   G4int trackid = fTrackCounter + (n2nds ? n2nds : -1);
    if (detid < 0) {
-      fgRegs.push_back(Pair(fCurrentTrackID, trackid));
-      detid = fgRegs.size() - 1;
-   } else if (fgRegs[detid].fFirst == fCurrentTrackID ||
-              fgRegs[detid].fSecond <= fCurrentTrackID) {
+      fRegs.push_back(Pair(fCurrentTrackID, trackid));
+      detid = fRegs.size() - 1;
+   } else if (fRegs[detid].fFirst == fCurrentTrackID ||
+              fRegs[detid].fSecond <= fCurrentTrackID) {
       return FALSE;
    } else {
-      fgRegs[detid] = Pair(fCurrentTrackID, trackid);
+      fRegs[detid] = Pair(fCurrentTrackID, trackid);
    }
    return TRUE;
 }
+
 

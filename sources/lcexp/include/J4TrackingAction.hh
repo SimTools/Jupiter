@@ -30,56 +30,55 @@ class J4TrackingActionMessenger;
 class J4TrackingAction : public G4UserTrackingAction 
 {
 
-  public:
-    J4TrackingAction();
-    virtual ~J4TrackingAction();
+public:
+  J4TrackingAction();
+  virtual ~J4TrackingAction();
    
-    virtual void    PreUserTrackingAction(const G4Track* aTrack);
-    virtual void    PostUserTrackingAction(const G4Track* aTrack);
-    inline  virtual G4TrackingManager* GetTrackingManager() const
-                    { return fpTrackingManager; }
-    inline  G4int   GetCurrentTrackID() const { return fCurrentTrackID; }
+  virtual void    PreUserTrackingAction(const G4Track* aTrack);
+  virtual void    PostUserTrackingAction(const G4Track* aTrack);
+  inline  virtual G4TrackingManager* GetTrackingManager() const
+                  { return fpTrackingManager; }
+  inline  G4int   GetCurrentTrackID() const { return fCurrentTrackID; }
 
-    inline void     SetStoredTrajectoryID(G4int id);
-    inline G4int    GetStoredTrajectoryID() const { return fStoredTrajectoryID; }
+  inline void     SetStoredTrajectoryID(G4int id);
+  inline G4int    GetStoredTrajectoryID() const { return fStoredTrajectoryID; }
 
 #ifdef __THEBE__
-    inline void     SetStoredDebugPrintID(G4int id);
-    inline G4int    GetStoredDebugPrintID() const { return fStoredDebugPrintID; }
+  inline void     SetStoredDebugPrintID(G4int id);
+  inline G4int    GetStoredDebugPrintID() const { return fStoredDebugPrintID; }
 #endif
 
-    G4bool   IsNext(G4int &detid);
-    void     ResetTrackIDReg(G4int detid)
-    {
-       fgRegs[detid].fFirst  = INT_MAX; 
-       fgRegs[detid].fSecond = INT_MAX; 
-    }
+  G4bool   IsNext(G4int &detid);
+  void     ResetTrackIDReg(G4int detid)
+  {
+     fRegs[detid].fFirst  = INT_MAX; 
+     fRegs[detid].fSecond = INT_MAX; 
+  }
 
-    static   J4TrackingAction *GetInstance() { return fgInstance ? fgInstance : (fgInstance = new J4TrackingAction()); }
+  static   J4TrackingAction *GetInstance() { return fgInstance ? fgInstance : (fgInstance = new J4TrackingAction()); }
 
-  private:
+private:
+  struct Pair {
+     Pair(G4int first = INT_MAX, G4int second = INT_MAX)
+        : fFirst(first), fSecond(second) { }
+     G4int fFirst;
+     G4int fSecond;
+  };
 
-    static G4int     fCurrentTrackID;        // 1 : charged particle only 
-    G4int            fStoredTrajectoryID;    // 1 : charged particle only 
-                                             // 2 : all particles
-    struct Pair {
-       Pair(G4int first, G4int second) : fFirst(first), fSecond(second) { }
-       G4int fFirst;
-       G4int fSecond;
-    };
+private:
+  G4int     fCurrentTrackID;        // 1 : charged particle only 
+  G4int     fStoredTrajectoryID;    // 1 : charged particle only 
+                                    // 2 : all particles
+  J4TrackingActionMessenger *fMessenger;
+  std::vector<Pair>          fRegs;
+  G4int                      fTrackCounter;
+  static J4TrackingAction   *fgInstance;
 #ifdef __THEBE__
-    std::ofstream  fErrorOfs;              // for debugprint 
-    G4int            fStoredDebugPrintID;    // -2 : no output
-                                             // -1 : output last track
-                                             // N  : output Nth track 
+  std::ofstream  fErrorOfs;              // for debugprint 
+  G4int          fStoredDebugPrintID;    // -2 : no output
+                                         // -1 : output last track
+                                         // N  : output Nth track 
 #endif
-
-    J4TrackingActionMessenger *fMessenger;
-
-    static std::vector<Pair>   fgRegs;
-
-    static J4TrackingAction *fgInstance;
-
 };
 
 //=====================================================
