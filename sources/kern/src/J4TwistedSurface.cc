@@ -43,7 +43,7 @@ J4TwistedSurface::J4TwistedSurface(const G4String         &name,
 J4TwistedSurface::J4TwistedSurface(const G4String      &name,
                                          J4TwistedTubs *solid, 
                                          G4int          handedness)
-                 :J4VSurface(name)
+                 :J4VSurface(name, solid)
 {  
    fHandedness = handedness;   // +z = +ve, -z = -ve
    fAxis[0]    = kXAxis; // in local coordinate system
@@ -80,10 +80,9 @@ G4ThreeVector J4TwistedSurface::GetNormal(const G4ThreeVector &tmpxx,
    //
    G4ThreeVector xx;
    if (isGlobal) {
-      xx = fRot.inverse()*tmpxx - fTrans;
+      xx = ComputeLocalPoint(tmpxx);
       if ((xx - fCurrentNormal.p).mag() < 0.5 * kCarTolerance) {
-         fCurrentNormal.p = xx;
-         return fCurrentNormal.normal;
+         return ComputeGlobalDirection(fCurrentNormal.normal);
       }
    } else {
       xx = tmpxx;
@@ -97,7 +96,7 @@ G4ThreeVector J4TwistedSurface::GetNormal(const G4ThreeVector &tmpxx,
    G4ThreeVector normal = fHandedness*(er.cross(ez));
 
    if (isGlobal) {
-      fCurrentNormal.normal = fRot*(normal.unit());
+      fCurrentNormal.normal = ComputeGlobalDirection(normal.unit());
    } else {
       fCurrentNormal.normal = normal.unit();
    }
@@ -180,8 +179,8 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
       }
    }
 
-   G4ThreeVector p = fRot.inverse()*gp - fTrans;
-   G4ThreeVector v = fRot.inverse()*gv;
+   G4ThreeVector p = ComputeLocalPoint(gp);
+   G4ThreeVector v = ComputeLocalDirection(gv);
    G4ThreeVector xx[2]; 
 
 #ifdef __SOLIDDEBUG__
@@ -243,7 +242,6 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
           << J4endl;
 #endif 
 
-
    if (fabs(a) < DBL_MIN) {
       if (fabs(b) > DBL_MIN) { 
 
@@ -251,16 +249,16 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
 
          distance[0] = - c / b;
          xx[0]       = p + distance[0]*v;
-         gxx[0]      = fRot*xx[0] + fTrans;
+         gxx[0]      = ComputeGlobalPoint(xx[0]);
 
          if (validate == kValidateWithTol) {
             areacode[0] = GetAreaCode(xx[0]);
-            if ((areacode[0] & kAreaMask) != kOutside) {
+            if (!IsOutside(areacode[0])) {
                if (distance[0] >= 0) isvalid[0] = TRUE;
             }
          } else if (validate == kValidateWithoutTol) {
             areacode[0] = GetAreaCode(xx[0], FALSE);
-            if ((areacode[0] & kAreaMask) == kInside) {
+            if (IsInside(areacode[0])) {
                if (distance[0] >= 0) isvalid[0] = TRUE;
             }
          } else { // kDontValidate                       
@@ -310,6 +308,11 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
          J4cerr 
          << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ "
                 << J4endl;
+         if (isvalid[0] && GetSolid()->Inside(gxx[0]) != ::kSurface) {
+            J4cerr << "      ~~~~~ J4TwistedSurface:DistanceToSurface(p,v)" << J4endl;
+            J4cerr << "      valid return value is not on surface! abort." << J4endl; 
+            abort();
+         } 
 #endif
 
          return 1;
@@ -357,19 +360,30 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
       G4int i;
 
       for (i=0; i<2; i++) {
-         tmpdist[i] = factor*(-b - D);
+         G4double bminusD = - b - D;
+
+         // protection against round off error  
+         //G4double protection = 1.0e-6;
+         G4double protection = 0;
+         if ( b * D < 0 && fabs(bminusD / D) < protection ) {
+            G4double acovbb = (a*c)/(b*b);
+            tmpdist[i] = - c/b * ( 1 - acovbb * (1 + 2*acovbb));
+         } else { 
+            tmpdist[i] = factor * bminusD;
+         }
+
          D = -D;
          tmpxx[i] = p + tmpdist[i]*v;
          
          if (validate == kValidateWithTol) {
             tmpareacode[i] = GetAreaCode(tmpxx[i]);
-            if ((tmpareacode[i] & kAreaMask) != kOutside) {
+            if (!IsOutside(tmpareacode[i])) {
                if (tmpdist[i] >= 0) tmpisvalid[i] = TRUE;
                continue;
             }
          } else if (validate == kValidateWithoutTol) {
             tmpareacode[i] = GetAreaCode(tmpxx[i], FALSE);
-            if ((tmpareacode[i] & kAreaMask) == kInside) {
+            if (IsInside(tmpareacode[i])) {
                if (tmpdist[i] >= 0) tmpisvalid[i] = TRUE;
                continue;
             }
@@ -391,8 +405,8 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
          distance[1] = tmpdist[1];
          xx[0]       = tmpxx[0];
          xx[1]       = tmpxx[1];
-         gxx[0]      = fRot*tmpxx[0] + fTrans;
-         gxx[1]      = fRot*tmpxx[1] + fTrans;
+         gxx[0]      = ComputeGlobalPoint(tmpxx[0]);
+         gxx[1]      = ComputeGlobalPoint(tmpxx[1]);
          areacode[0] = tmpareacode[0];
          areacode[1] = tmpareacode[1];
          isvalid[0]  = tmpisvalid[0];
@@ -402,8 +416,8 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
          distance[1] = tmpdist[0];
          xx[0]       = tmpxx[1];
          xx[1]       = tmpxx[0];
-         gxx[0]      = fRot*tmpxx[1] + fTrans;
-         gxx[1]      = fRot*tmpxx[0] + fTrans;
+         gxx[0]      = ComputeGlobalPoint(tmpxx[1]);
+         gxx[1]      = ComputeGlobalPoint(tmpxx[0]);
          areacode[0] = tmpareacode[1];
          areacode[1] = tmpareacode[0];
          isvalid[0]  = tmpisvalid[1];
@@ -434,6 +448,54 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
              << J4endl;
 #endif
 
+      // protection against roundoff error
+
+      for (G4int k=0; k<2; k++) {
+         if (!isvalid[k]) continue;
+         if (GetSolid()->Inside(gxx[k]) != ::kSurface) {
+
+            G4ThreeVector xxonsurface(xx[k].x(), fKappa * fabs(xx[k].x()) * xx[k].z() , xx[k].z());
+            G4double      deltaY  =  (xx[k] - xxonsurface).mag();
+
+#ifdef __SOLIDDEBUG__
+            J4cerr << "      ~~~~~ J4TwistedSurface:DistanceToSurface(p,v)" << J4endl;
+            J4cerr << "      valid return value is not on surface! abort. k=" << k << J4endl; 
+            J4cerr << " xxonsurface: " << xxonsurface << J4endl; 
+            J4cerr << " deltaY     : " << deltaY << J4endl; 
+#endif
+
+            G4int maxcount = 10;
+            G4int l;
+            G4double      lastdeltaY = deltaY; 
+            G4ThreeVector last = deltaY; 
+            for (l=0; l<maxcount; l++) {
+               G4ThreeVector surfacenormal = GetNormal(xxonsurface); 
+               distance[k] = DistanceToPlaneWithV(p, v, xxonsurface, surfacenormal, xx[k]);
+               deltaY      = (xx[k] - xxonsurface).mag();
+               if (deltaY > lastdeltaY) {
+               
+               }
+               gxx[k]      = ComputeGlobalPoint(xx[k]);
+               J4cerr << " loop count, deltaY, xxonsurface, xx : " << l << " " << deltaY << " " 
+                      << xxonsurface << " " << xx[k] << J4endl; 
+#if 0
+               if (GetSolid()->Inside(gxx[k])) {
+#else
+               if (deltaY <= 0.5*kCarTolerance) {
+#endif
+                  J4cerr << " gxx & distance replaced : gxx, distance " << gxx[k] << " " << distance[k] << J4endl; 
+                  break;
+               }
+               xxonsurface.set(xx[k].x(), fKappa * fabs(xx[k].x()) * xx[k].z() , xx[k].z());
+            }
+            if (l == maxcount) {
+               G4cerr << "J4TwistedSurface:DistanceToSurface(p,v): iteration exceeded maxloop count " 
+                      << maxcount << ". abort." << G4endl;
+               abort(); 
+            }
+         } 
+      } 
+
       return 2;
       
    } else {
@@ -446,8 +508,8 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
 #ifdef __SOLIDDEBUG__
       J4cerr << "      ~~~~~ J4TwistedSurface:DistanceToSurface(p,v):return"
              << J4endl;
-      J4cerr << "         paralell to the surface or on surface but flying "
-             <<           "away opposit direction. return 0. " << J4endl; 
+      J4cerr << "         no solution or just grazing the surface. "
+             <<           "return 0. " << J4endl; 
       J4cerr << "         NAME     : " << GetName() << J4endl;
       J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
              << J4endl;
@@ -489,7 +551,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
    
    static const G4double halftol = 0.5 * kCarTolerance; 
 
-   G4ThreeVector  p       = fRot.inverse()*gp - fTrans;
+   G4ThreeVector  p       = ComputeLocalPoint(gp);
    G4ThreeVector  xx;
    G4int          parity  = (fKappa >= 0 ? 1 : -1);
 
@@ -517,23 +579,29 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
       distfromlast[i] = (gp - lastgxx[i]).mag();
    } 
 
-   if ((gp - lastgxx[0]).mag() <= halftol || (gp - lastgxx[1]).mag() <= halftol) { 
+   if ((gp - lastgxx[0]).mag() < halftol || (gp - lastgxx[1]).mag() < halftol) { 
       // last winner, or last poststep point is on the surface.
       xx = p;
+      distance[0] = 0;
+      gxx[0] = gp;
+
+#ifdef __BOUNDARYCHECK__     
       areacode[0] = GetAreaCode(xx, FALSE);
-      if ((areacode[0] & kInside) == kInside) {
+      if (IsInside(areacode[0])) {
          distance[0] = 0;
          gxx[0] = gp;
       } else {
          // xx is out of boundary or corner
-         if ((areacode[0] & kCorner) == kCorner) {
+         if (IsCorner(areacode[0])) {
             xx = GetCorner(areacode[0]);
             distance[0] = (xx - p).mag();
          } else {
             distance[0] = DistanceToBoundary(areacode[0], xx, p);
          }
-         gxx[0] = fRot * xx + fTrans;
+         gxx[0] = ComputeGlobalPoint(xx);
       }
+#endif
+
       G4bool isvalid = TRUE;
       fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                              isvalid, 1, kDontValidate, &gp);
@@ -568,7 +636,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
          distance[0] = 0;
          xx.set(0., 0., 0.);
       }
-      gxx[0] = fRot * xx + fTrans;
+      gxx[0] = ComputeGlobalPoint(xx);
       fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                                 isvalid, 0, kDontValidate, &gp);
 #ifdef __SOLIDDEBUG__
@@ -645,20 +713,26 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
       if (pside == 0) {
          // p is on surface.
          xx = p;
+         distance[0] = 0;
+         gxx[0] = gp;
+
+#ifdef __BOUNDARYCHECK__     
          areacode[0] = GetAreaCode(xx, FALSE);
-         if ((areacode[0] & kInside) == kInside) {
+         if (IsInside(areacode[0])) {
             distance[0] = 0;
             gxx[0] = gp;
          } else {
             // xx is out of boundary or corner
-            if ((areacode[0] & kCorner) == kCorner) {
+            if (IsCorner(areacode[0])) {
                xx = GetCorner(areacode[0]);
                distance[0] = (xx - p).mag();
             } else {
                distance[0] = DistanceToBoundary(areacode[0], xx, p);
             }
-            gxx[0] = fRot * xx + fTrans;
+            gxx[0] = ComputeGlobalPoint(xx);
          }
+#endif
+
          G4bool isvalid = TRUE;
          fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                                 isvalid, 1, kDontValidate, &gp);
@@ -681,7 +755,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
          d[0] = C - A;
          distance[0] = DistanceToLine(p, A, d[0], xx);
          areacode[0] = kInside;
-         gxx[0] = fRot * xx + fTrans;
+         gxx[0] = ComputeGlobalPoint(xx);
          G4bool isvalid = TRUE;
          fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                                 isvalid, 1, kDontValidate, &gp);
@@ -734,7 +808,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
    if (fabs(distToACB) <= halftol || fabs(distToCAD) <= halftol) {
       xx = (fabs(distToACB) < fabs(distToCAD) ? xxacb : xxcad); 
       areacode[0] = kInside;
-      gxx[0] = fRot * xx + fTrans;
+      gxx[0] = ComputeGlobalPoint(xx);
       distance[0] = 0;
       G4bool isvalid = TRUE;
       fCurStat.SetCurrentStatus(0, gxx[0], distance[0] , areacode[0],
@@ -823,7 +897,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
       
    }
    areacode[0] = kInside;
-   gxx[0]      = fRot * xx + fTrans;
+   gxx[0]      = ComputeGlobalPoint(xx);
    G4bool isvalid = TRUE;
    fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                              isvalid, 1, kDontValidate, &gp);
@@ -914,7 +988,7 @@ G4int J4TwistedSurface::GetAreaCode(const G4ThreeVector &xx,
    // See the description of DistanceToSurface(p,v).
    
    static const G4double ctol = 0.5 * kCarTolerance;
-   G4int areacode = 0;
+   G4int areacode = kInside;
    
    if (fAxis[0] == kXAxis && fAxis[1] == kZAxis) {
       G4int xaxis = 0;
@@ -932,61 +1006,51 @@ G4int J4TwistedSurface::GetAreaCode(const G4ThreeVector &xx,
 #endif
       
       if (withTol) {
-         
-         // inside or outside
-         if (xx.x() >= fAxisMin[xaxis] + ctol 
-             && xx.x() <= fAxisMax[xaxis] - ctol 
-             && xx.z() >= fAxisMin[zaxis] + ctol 
-             && xx.z() <= fAxisMax[zaxis] - ctol) {
-            areacode |= (kAxis0 & kAxisX) | (kAxis1 & kAxisZ) | kInside;
-            return areacode;
-         } else if (xx.x() <= fAxisMin[xaxis] - ctol 
-                    || xx.x() >= fAxisMax[xaxis] + ctol
-                    || xx.z() <= fAxisMin[zaxis] - ctol 
-                    || xx.z() >= fAxisMax[zaxis] + ctol) {
-            areacode |= (kAxis0 & kAxisX) | (kAxis1 & kAxisZ) | kOutside;
-            return areacode;
-         }
-         
-         // Now, xx is out of boundary. Which boundary?
-         // boundary of x-axis
+
+         G4bool isoutside   = FALSE;
+
+         // test boundary of xaxis
+
          if (xx.x() < fAxisMin[xaxis] + ctol) {
             areacode |= (kAxis0 & (kAxisX | kAxisMin)) | kBoundary; 
+            if (xx.x() <= fAxisMin[xaxis] - ctol) isoutside = TRUE;
+
          } else if (xx.x() > fAxisMax[xaxis] - ctol) {
             areacode |= (kAxis0 & (kAxisX | kAxisMax)) | kBoundary;
+            if (xx.x() >= fAxisMin[xaxis] + ctol)  isoutside = TRUE;
          }
-         
-         // boundary of z-axis
+
+         // test boundary of z-axis
+
          if (xx.z() < fAxisMin[zaxis] + ctol) {
             areacode |= (kAxis1 & (kAxisZ | kAxisMin)); 
-            if (areacode & kBoundary) {
-                areacode |= kCorner;  // xx is on the corner.
-            } else {
-                areacode |= kBoundary;
-            } 
+
+            if   (areacode & kBoundary) areacode |= kCorner;  // xx is on the corner.
+            else                        areacode |= kBoundary;
+            if (xx.z() <= fAxisMin[zaxis] - ctol) isoutside = TRUE;
+
          } else if (xx.z() > fAxisMax[zaxis] - ctol) {
             areacode |= (kAxis1 & (kAxisZ | kAxisMax));
-            if (areacode & kBoundary) {
-                areacode |= kCorner;  // xx is on the corner.
-            } else {
-                areacode |= kBoundary; 
-            }
+
+            if   (areacode & kBoundary) areacode |= kCorner;  // xx is on the corner.
+            else                        areacode |= kBoundary; 
+            if (xx.z() >= fAxisMax[zaxis] + ctol) isoutside = TRUE;
          }
-         return areacode;
+
+         // if isoutside = TRUE, clear inside bit.             
+         // if not on boundary, add axis information.             
+         
+         if (isoutside) {
+            G4int tmpareacode = areacode & (~kInside);
+            areacode = tmpareacode;
+         } else if ((areacode & kBoundary) != kBoundary) {
+            areacode |= (kAxis0 & kAxisX) | (kAxis1 & kAxisZ);
+         }           
          
       } else {
-      
-         // inside
-         if (xx.x() >= fAxisMin[xaxis]
-             && xx.x() <= fAxisMax[xaxis]
-             && xx.z() >= fAxisMin[zaxis] 
-             && xx.z() <= fAxisMax[zaxis]) {
-            areacode |= (kAxis0 & kAxisX) | (kAxis1 & kAxisZ) | kInside;
-            return areacode;
-         }
-         
-         // Now, xx is out of boundary. Which boundary?
+
          // boundary of x-axis
+
          if (xx.x() < fAxisMin[xaxis] ) {
             areacode |= (kAxis0 & (kAxisX | kAxisMin)) | kBoundary;
          } else if (xx.x() > fAxisMax[xaxis]) {
@@ -994,23 +1058,25 @@ G4int J4TwistedSurface::GetAreaCode(const G4ThreeVector &xx,
          }
          
          // boundary of z-axis
+
          if (xx.z() < fAxisMin[zaxis]) {
             areacode |= (kAxis1 & (kAxisZ | kAxisMin));
-            if (areacode & kBoundary) {
-                areacode |= kCorner;  // xx is on the corner.
-            } else {
-                areacode |= kBoundary; 
-            }
+            if   (areacode & kBoundary) areacode |= kCorner;  // xx is on the corner.
+            else                        areacode |= kBoundary; 
+           
          } else if (xx.z() > fAxisMax[zaxis]) {
             areacode |= (kAxis1 & (kAxisZ | kAxisMax)) ;
-            if (areacode & kBoundary) {
-                areacode |= kCorner;  // xx is on the corner.
-            } else {
-                areacode |= kBoundary; 
-            }
+            if   (areacode & kBoundary) areacode |= kCorner;  // xx is on the corner.
+            else                        areacode |= kBoundary; 
          }
-         return areacode;
+
+         if ((areacode & kBoundary) != kBoundary) {
+            areacode |= (kAxis0 & kAxisX) | (kAxis1 & kAxisZ);
+         }           
       }
+
+      return areacode;
+
    } else {
 
       J4cerr << "          J4FlatSurface::GetAreaCode fAxis[0] = " << fAxis[0]

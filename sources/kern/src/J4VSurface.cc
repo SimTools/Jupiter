@@ -37,8 +37,8 @@ const G4int  J4VSurface::kAreaMask       = 0XF0000000;
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4VSurface::J4VSurface(const G4String &name)
-           :fName(name)
+J4VSurface::J4VSurface(const G4String &name, G4VSolid *solid)
+           :fName(name), fSolid(solid)
 {
 
    fAxis[0]    = kUndefined;
@@ -251,8 +251,12 @@ G4double J4VSurface::DistanceToIn(const G4ThreeVector &gp,
    G4int         nxx = DistanceToSurface(gp, gv, gxx, distance, areacode, 
                                          isvalid, kValidateWithTol);
 
-   G4int i;
-   for (i=0; i< nxx; i++) {
+   for (G4int i=0; i< nxx; i++) {
+
+      // skip this intersection if:
+      //   - invalid intersection
+      //   - particle goes outword the surface
+
       if (!isvalid[i]) {
          // xx[i] is kOutside or distance[i] < 0
          continue;      
@@ -261,7 +265,7 @@ G4double J4VSurface::DistanceToIn(const G4ThreeVector &gp,
       G4ThreeVector normal = GetNormal(gxx[i], TRUE);
 
       if ((normal * gv) >= 0) {
-         // particle goes outword the surface
+
 #ifdef __SOLIDDEBUG__
          J4cerr << "   J4VSurface:DistanceToIn(p,v): "
                 << "particle goes outword the surface " << J4endl;
@@ -269,26 +273,34 @@ G4double J4VSurface::DistanceToIn(const G4ThreeVector &gp,
          continue; 
       }
       
-      if ((areacode[i] & kAreaMask) == kInside) {
-         // accept this intersection
+      //
+      // accept this intersection if the intersection is inside.
+      //
+
+      if (IsInside(areacode[i])) {
          if (distance[i] < bestdistance) {
             bestdistance = distance[i];
             bestgxx = gxx[i];
             besti   = i;
+
 #ifdef __SOLIDDEBUG__
             J4cerr << "   J4VSurface:DistanceToIn(p,v): "
                    << " areacode kInside name, distance = "
                    << fName <<  " "<< bestdistance << J4endl;
 #endif 
          }
+
+      //
+      // else, the intersection is on boundary or corner.
+      //
+
       } else {
-         // intersection is on boundary or corner.
-         J4VSurface* neighbours[2];
-         G4int       nneighbours = GetNeighbours(areacode[i], neighbours);
-         G4bool      isaccepted = FALSE;
-         G4int j;
+
+         J4VSurface *neighbours[2];
+         G4bool      isaccepted[2] = {FALSE, FALSE};
+         G4int       nneighbours   = GetNeighbours(areacode[i], neighbours);
             
-         for (j=0; j< nneighbours; j++) {
+         for (G4int j=0; j< nneighbours; j++) {
             // if on corner, nneighbours = 2.
             // if on boundary, nneighbours = 1.
             G4ThreeVector tmpgxx[2];
@@ -301,54 +313,65 @@ G4double J4VSurface::DistanceToIn(const G4ThreeVector &gp,
                                           tmpareacode, tmpisvalid,
                                           kValidateWithTol);
             G4ThreeVector neighbournormal;
-            G4int k;
-            G4int boundarycount = 0;
-            for (k=0; k< tmpnxx; k++) {
-               if ((tmpareacode[k] & kAreaMask) == kInside) {
-                  // tmpxx[k] is valid, so the final winner must
-                  // be neighbour surface. continue.
+
+            for (G4int k=0; k< tmpnxx; k++) {
+
+               //  
+               // if tmpxx[k] is valid && kInside, the final winner must
+               // be neighbour surface. return kInfinity. 
+               // else , choose tmpxx on same boundary of xx, then check normal 
+               //  
+
+               if (IsInside(tmpareacode[k])) {
+
 #ifdef __SOLIDDEBUG__
-            J4cerr << "   J4VSurface:DistanceToIn(p,v): "
-                   << " intersection "<< tmpgxx[k] 
-                   << " is inside of neighbour surface of " << fName 
-                   << " . continue. " << J4endl;
+                  J4cerr << "   J4VSurface:DistanceToIn(p,v): "
+                         << " intersection "<< tmpgxx[k] 
+                         << " is inside of neighbour surface of " << fName 
+                         << " . return kInfinity." << J4endl;
+                  J4cerr <<"   ..... J4VSurface:DistanceToIn(p,v) : return .." << J4endl;
+                  J4cerr <<"      No intersections " << J4endl; 
+                  J4cerr <<"      NAME : " << fName << J4endl; 
+                  J4cerr <<"   .............................................." << J4endl;
 #endif 
+                  if (tmpisvalid[k])  return kInfinity;
                   continue;
-               } else { 
-                  // tmpxx[k] is on boundary (or corner).
-                  // If both intersections are separated into both side of 
-                  // neighboursurface[j], skip farther one
-                  // (because the farther one is not on this surface).
-                  if (boundarycount) continue;
-                  boundarycount++;
-                  
+
+               //  
+               // if tmpxx[k] is valid && kInside, the final winner must
+               // be neighbour surface. return .  
+               //
+
+               } else if (IsSameBoundary(this,areacode[i], neighbours[j], tmpareacode[k])) { 
+                  // tmpxx[k] is same boundary (or corner) of xx.
+                 
                   neighbournormal = neighbours[j]->GetNormal(tmpgxx[k], TRUE);
-                  if (neighbournormal * gv < 0) {
-                     // if xx is on corner, wait result of other neighbour.
-                     if (nneighbours > 1 && isaccepted == FALSE) {
-                        isaccepted = TRUE;
-                        continue;
-                     }
-                     // now, we can accept xx intersection
-                     if (distance[i] < bestdistance) {
-                        bestdistance = distance[i];
-                        gxxbest = gxx[i];
-                        besti   = i;
-#ifdef __SOLIDDEBUG__
-                     J4cerr << "   J4VSurface:DistanceToIn(p,v): "
-                            << " areacode kBoundary & kBoundary distance = "
-                            << fName  << " " << distance[i] << J4endl;
-#endif 
-                     }
-                  } else {
-                     // particle doesn't come into from the point.
-                     // go next tmpintersection.
-                     continue;
-                  }
+                  if (neighbournormal * gv < 0) isaccepted[1] = TRUE;
                }
-            } // tmpintersection loop end
+            } 
+
+            // if nneighbours = 1, chabge isaccepted[1] before exiting neighboursurface loop.  
+
+            if (nneighbours == 1) isaccepted[1] = TRUE;
+
          } // neighboursurface loop end
-      }
+
+         // now, we can accept xx intersection
+
+         if (isaccepted[0] == TRUE && isaccepted[1] == TRUE) {
+            if (distance[i] < bestdistance) {
+                bestdistance = distance[i];
+                gxxbest = gxx[i];
+                besti   = i;
+#ifdef __SOLIDDEBUG__
+               J4cerr << "   J4VSurface:DistanceToIn(p,v): "
+                      << " areacode kBoundary & kBoundary distance = "
+                      << fName  << " " << distance[i] << J4endl;
+#endif 
+            }
+         }
+
+      } // else end
    } // intersection loop end
 
    gxxbest = bestgxx;
@@ -467,6 +490,60 @@ G4double J4VSurface::DistanceTo(const G4ThreeVector &gp,
 #endif
 
    return distance[0];
+}
+
+//=====================================================================
+//* IsSameBoundary ----------------------------------------------------
+G4bool J4VSurface::IsSameBoundary(J4VSurface *surface1, G4int areacode1,
+                                  J4VSurface *surface2, G4int areacode2 ) const
+{
+   //
+   // IsSameBoundary
+   //
+   // checking tool whether two boundaries on different surfaces are same or not.
+   //
+
+   G4bool testbitmode = TRUE;
+   G4bool iscorner[2] = {IsCorner(areacode1, testbitmode), 
+                         IsCorner(areacode2, testbitmode)};
+
+   if (iscorner[0] && iscorner[1]) {
+      // on corner 
+      G4ThreeVector corner1 = 
+           surface1->ComputeGlobalPoint(surface1->GetCorner(areacode1));
+      G4ThreeVector corner2 = 
+           surface2->ComputeGlobalPoint(surface2->GetCorner(areacode2));
+
+      if ((corner1 - corner2).mag() < kCarTolerance) {
+         return TRUE;
+      } else {
+         return FALSE;
+      }
+    
+   } else if ((IsBoundary(areacode1, testbitmode) && (!iscorner[0])) &&
+              (IsBoundary(areacode2, testbitmode) && (!iscorner[1]))) {
+      // on boundary  
+      G4ThreeVector d1, d2, ld1, ld2;
+      G4ThreeVector x01, x02, lx01, lx02;
+      G4int         type1, type2;
+      surface1->GetBoundaryParameters(areacode1, ld1, lx01, type1);
+      surface2->GetBoundaryParameters(areacode2, ld2, lx02, type2);
+
+      x01 = surface1->ComputeGlobalPoint(lx01);
+      x02 = surface2->ComputeGlobalPoint(lx02);
+      d1  = surface1->ComputeGlobalDirection(ld1);
+      d2  = surface2->ComputeGlobalDirection(ld2);
+
+      if ((x01 - x02).mag() < kCarTolerance &&
+          (d1 - d2).mag() < kCarTolerance) {
+        return TRUE;
+      } else {
+        return FALSE;
+      }
+
+   } else {
+      return FALSE;
+   }
 }
 
 //=====================================================================

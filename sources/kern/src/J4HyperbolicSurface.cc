@@ -52,7 +52,7 @@ J4HyperbolicSurface::J4HyperbolicSurface(const G4String         &name,
 J4HyperbolicSurface::J4HyperbolicSurface(const G4String      &name,
                                                J4TwistedTubs *solid,
                                                G4int          handedness)
-                    :J4VSurface(name)
+                    :J4VSurface(name, solid)
 {
 
    fHandedness = handedness;   // +z = +ve, -z = -ve
@@ -102,10 +102,9 @@ G4ThreeVector J4HyperbolicSurface::GetNormal(const G4ThreeVector &tmpxx,
    
    G4ThreeVector xx;
    if (isGlobal) {
-      xx = fRot.inverse()*tmpxx - fTrans;
+      xx = ComputeLocalPoint(tmpxx);
       if ((xx - fCurrentNormal.p).mag() < 0.5 * kCarTolerance) {
-         fCurrentNormal.p = xx;
-         return fCurrentNormal.normal;
+         return ComputeGlobalDirection(fCurrentNormal.normal);
       }
    } else {
       xx = tmpxx;
@@ -121,7 +120,7 @@ G4ThreeVector J4HyperbolicSurface::GetNormal(const G4ThreeVector &tmpxx,
    normal = normal.unit();
 
    if (isGlobal) {
-      fCurrentNormal.normal = fRot * normal ;
+      fCurrentNormal.normal = ComputeLocalDirection(normal);
    } else {
       fCurrentNormal.normal = normal;
    }
@@ -140,7 +139,7 @@ EInside J4HyperbolicSurface::Inside(const G4ThreeVector &gp)
    }
    fInside.gp = gp;
    
-   G4ThreeVector p = fRot.inverse()*gp - fTrans;
+   G4ThreeVector p = ComputeLocalPoint(gp);
    
 #ifdef __SOLIDDEBUG__
    J4cerr << "      ~~~~~ J4HyperblicSurface:Inside(gp) start~~~~~~~~~"
@@ -168,11 +167,11 @@ EInside J4HyperbolicSurface::Inside(const G4ThreeVector &gp)
       fInside.inside = ::kOutside;
    } else {
       G4int areacode = GetAreaCode(p);
-      if ((areacode & kAreaMask) == kOutside) {
+      if (IsOutside(areacode)) {
          fInside.inside = ::kOutside;
-      } else if ((areacode & kBoundary) == kBoundary) {
+      } else if (IsBoundary(areacode)) {
          fInside.inside = ::kSurface;
-      } else if ((areacode & kInside) == kInside) {
+      } else if (IsInside(areacode)) {
          if (distanceToOut <= halftol) {
             fInside.inside = ::kSurface;
          } else {
@@ -269,8 +268,8 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
       }
    }
    
-   G4ThreeVector p = fRot.inverse() * gp - fTrans;
-   G4ThreeVector v = fRot.inverse() * gv;
+   G4ThreeVector p = ComputeLocalPoint(gp);
+   G4ThreeVector v = ComputeLocalDirection(gv);
    G4ThreeVector xx[2]; 
 
 #ifdef __SOLIDDEBUG__
@@ -333,16 +332,16 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
          xx[0].set(v.x()*fR0, v.y()*fR0, 0);  // v is a unit vector.
       }
       distance[0] = xx[0].mag();
-      gxx[0]      = fRot*xx[0] + fTrans;
+      gxx[0]      = ComputeGlobalPoint(xx[0]);
 
       if (validate == kValidateWithTol) {
          areacode[0] = GetAreaCode(xx[0]);
-         if ((areacode[0] & kAreaMask) != kOutside) {
+         if (!IsOutside(areacode[0])) {
             if (distance[0] >= 0) isvalid[0] = TRUE;
          }
       } else if (validate == kValidateWithoutTol) {
          areacode[0] = GetAreaCode(xx[0], FALSE);
-         if ((areacode[0] & kAreaMask) == kInside) {
+         if (IsInside(areacode[0])) {
             if (distance[0] >= 0) isvalid[0] = TRUE;
          }
       } else { // kDontValidate                       
@@ -364,6 +363,11 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
       J4cerr << "         isvalid[0]  : " << dec << isvalid[0] << J4endl;
       J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
              << J4endl;
+      if (isvalid[0] && GetSolid()->Inside(gxx[0]) != ::kSurface) {
+         J4cerr << " valid return value is not on surface! abort." << J4endl;
+         abort();
+      } 
+
 #endif
 
       return 1;
@@ -396,16 +400,16 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
 
          distance[0] = -c/b;
          xx[0] = p + distance[0]*v;
-         gxx[0] = fRot*xx[0] + fTrans;
+         gxx[0] = ComputeGlobalPoint(xx[0]);
 
          if (validate == kValidateWithTol) {
             areacode[0] = GetAreaCode(xx[0]);
-            if ((areacode[0] & kAreaMask) != kOutside) {
+            if (!IsOutside(areacode[0])) {
                if (distance[0] >= 0) isvalid[0] = TRUE;
             }
          } else if (validate == kValidateWithoutTol) {
             areacode[0] = GetAreaCode(xx[0], FALSE);
-            if ((areacode[0] & kAreaMask) == kInside) {
+            if (IsInside(areacode[0])) {
                if (distance[0] >= 0) isvalid[0] = TRUE;
             }
          } else { // kDontValidate                       
@@ -415,7 +419,6 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
                  
          fCurStatWithV.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                                         isvalid[0], 1, validate, &gp, &gv);
-         fCurStatWithV.DebugPrint();
 #ifdef __SOLIDDEBUG__
          J4cerr << "      ~~~~~ J4HyperblicSurface:DistanceToSurface(p,v):return~"
                 << J4endl;
@@ -428,6 +431,10 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
          J4cerr << "         isvalid[0]  : " << dec << isvalid[0] << J4endl;
          J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 << J4endl;
+        if (isvalid[0] && GetSolid()->Inside(gxx[0]) != ::kSurface) {
+           J4cerr << " valid return value is not on surface! abort." << J4endl;
+           abort();
+        } 
 #endif
          return 1;
          
@@ -469,13 +476,13 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
         
          if (validate == kValidateWithTol) {
             tmpareacode[i] = GetAreaCode(tmpxx[i]);
-            if ((tmpareacode[i] & kAreaMask) != kOutside) {
+            if (!IsOutside(tmpareacode[i])) {
                if (tmpdist[i] >= 0) tmpisvalid[i] = TRUE;
                continue;
             }
          } else if (validate == kValidateWithoutTol) {
             tmpareacode[i] = GetAreaCode(tmpxx[i], FALSE);
-            if ((tmpareacode[i] & kAreaMask) == kInside) {
+            if (IsInside(tmpareacode[i])) {
                if (tmpdist[i] >= 0) tmpisvalid[i] = TRUE;
                continue;
             }
@@ -491,8 +498,8 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
           distance[1] = tmpdist[1];
           xx[0]       = tmpxx[0];
           xx[1]       = tmpxx[1];
-          gxx[0]      = fRot*tmpxx[0] + fTrans;
-          gxx[1]      = fRot*tmpxx[1] + fTrans;
+          gxx[0]      = ComputeGlobalPoint(tmpxx[0]);
+          gxx[1]      = ComputeGlobalPoint(tmpxx[1]);
           areacode[0] = tmpareacode[0];
           areacode[1] = tmpareacode[1];
           isvalid[0]  = tmpisvalid[0];
@@ -502,8 +509,8 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
           distance[1] = tmpdist[0];
           xx[0]       = tmpxx[1];
           xx[1]       = tmpxx[0];
-          gxx[0]      = fRot*tmpxx[1] + fTrans;
-          gxx[1]      = fRot*tmpxx[0] + fTrans;
+          gxx[0]      = ComputeGlobalPoint(tmpxx[1]);
+          gxx[1]      = ComputeGlobalPoint(tmpxx[0]);
           areacode[0] = tmpareacode[1];
           areacode[1] = tmpareacode[0];
           isvalid[0]  = tmpisvalid[1];
@@ -527,6 +534,16 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
                                            << J4endl;
       J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
              << J4endl;
+
+      for (G4int k=0; k<2; k++) {
+         if (isvalid[k] && GetSolid()->Inside(gxx[k]) != ::kSurface) {
+            J4cerr << " valid return value is not on surface! abort. k="
+                   << k << J4endl;
+            G4ThreeVector pp = gxx[k];
+            return DistanceToSurface(pp, gv, gxx, distance, areacode, isvalid, validate); 
+            //abort();
+         }
+      }
 #endif
       return 2;
       
@@ -592,7 +609,7 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
    }
    
 
-   G4ThreeVector p = fRot.inverse() * gp - fTrans;
+   G4ThreeVector p = ComputeLocalPoint(gp);
    G4ThreeVector xx;
 
 #ifdef __SOLIDDEBUG__
@@ -616,23 +633,29 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
       distfromlast[i] = (gp - lastgxx[i]).mag();
    }
 
-   if ((gp - lastgxx[0]).mag() <= halftol || (gp - lastgxx[1]).mag() <= halftol) {
+   if ((gp - lastgxx[0]).mag() < halftol || (gp - lastgxx[1]).mag() < halftol) {
       // last winner, or last poststep point is on the surface.
       xx = p;             
+      gxx[0] = gp;
+      distance[0] = 0;      
+
+#ifdef __BOUNDARYCHECK__
       areacode[0] = GetAreaCode(xx, FALSE);
-      if ((areacode[0] & kInside) == kInside) {
+      if (IsInside(areacode[0])) {
          distance[0] = 0;      
          gxx[0] = gp;
       } else {
          // xx is out of boundary or corner
-         if ((areacode[0] & kCorner) == kCorner) {
+         if (IsCorner(areacode[0])) {
             xx = GetCorner(areacode[0]);
             distance[0] = (xx - p).mag();
          } else {
             distance[0] = DistanceToBoundary(areacode[0], xx, p);
          }
-         gxx[0] = fRot * xx + fTrans;
+         gxx[0] = ComputeGlobalPoint(xx);
       }
+#endif
+
       G4bool isvalid = TRUE;
       fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
                                 isvalid, 1, kDontValidate, &gp);
@@ -777,10 +800,10 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
 
 #ifdef __BOUNDARYCHECK__
    areacode[0] = GetAreaCode(xx, FALSE);
-   if ((areacode[0] & kInside) != kInside) {
+   if (!IsInside(areacode[0])) {
       // xx is out of boundary or corner.
       // return distance to boundary or corner.
-      if ((areacode[0] & kCorner) == kCorner) {
+      if (IsCorner(areacode[0])) {
          xx = GetCorner(areacode[0]);
          distance[0] = (xx - p).mag();
       } else {
@@ -796,7 +819,7 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
    }
 #endif
        
-   gxx[0] = fRot*xx + fTrans;
+   gxx[0] = ComputeGlobalPoint(xx);
    areacode[0]    = kInside;
    G4bool isvalid = TRUE;
    fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
@@ -820,55 +843,62 @@ G4int J4HyperbolicSurface::GetAreaCode(const G4ThreeVector &xx,
                                              G4bool         withTol)
 {
    static const G4double ctol = 0.5 * kCarTolerance;
-   G4int areacode = 0;
-   
-   //special case! if xx = 0, return kOutside.
-   if (xx.mag() < DBL_MIN) {
-      areacode |= (kAxis0 & kAxisPhi) | (kAxis1 & kAxisZ) | kOutside;
-   }
+   G4int areacode = kInside;
 
    if ((fAxis[0] == kPhi && fAxis[1] == kZAxis))  {
+      //G4int phiaxis = 0;
       G4int zaxis   = 1;
       
       if (withTol) {
-         G4int phiareacode = GetAreaCodeInPhi(xx);
 
-         // inside or outside
-         if (xx.z() >= fAxisMin[zaxis] + ctol 
-                    && xx.z() <= fAxisMax[zaxis] - ctol
-                    && phiareacode == kInside) {
-            areacode |= (kAxis0 & kAxisPhi) | (kAxis1 & kAxisZ) | kInside;
-            return areacode;
-         } else if (xx.z() <= fAxisMin[zaxis] - ctol 
-                    || xx.z() >= fAxisMax[zaxis] + ctol
-                    || phiareacode == kOutside) {
-            areacode |= (kAxis0 & kAxisPhi) | (kAxis1 & kAxisZ) | kOutside;
-            return areacode;
+         G4bool isoutside      = FALSE;
+         G4int  phiareacode    = GetAreaCodeInPhi(xx);
+         G4bool isoutsideinphi = IsOutside(phiareacode);
+
+         // test boundary of phiaxis
+
+         if ((phiareacode & kAxisMin) == kAxisMin) {
+
+            areacode |= (kAxis0 & (kAxisPhi | kAxisMin)) | kBoundary;
+            if (isoutsideinphi) isoutside = TRUE;
+
+         } else if ((phiareacode & kAxisMax)  == kAxisMax) {
+
+            areacode |= (kAxis0 & (kAxisPhi | kAxisMax)) | kBoundary;
+            if (isoutsideinphi) isoutside = TRUE;
+
          }
-      
-         // Now, xx is on boundary. Which boundary?
-         // on boundary of z-axis
+
+         // test boundary of zaxis
+
          if (xx.z() < fAxisMin[zaxis] + ctol) {
-            areacode |= (kAxis1 & (kAxisZ | kAxisMin)) | kBoundary;
+
+            areacode |= (kAxis1 & (kAxisZ | kAxisMin));
+            if   (areacode & kBoundary) areacode |= kCorner;  // xx is on the corner.
+            else                        areacode |= kBoundary;
+
+            if (xx.z() <= fAxisMin[zaxis] - ctol) isoutside = TRUE;
+
          } else if (xx.z() > fAxisMax[zaxis] - ctol) {
-            areacode |= (kAxis1 & (kAxisZ | kAxisMax)) | kBoundary;
+
+            areacode |= (kAxis1 & (kAxisZ | kAxisMax));
+            if   (areacode & kBoundary) areacode |= kCorner;  // xx is on the corner.
+            else                        areacode |= kBoundary;
+
+            if (xx.z() >= fAxisMax[zaxis] + ctol) isoutside = TRUE;
          }
-         // boundary of phi-axis
-         if (phiareacode == kAxisMin) {
-            areacode |= (kAxis0 & (kAxisPhi | kAxisMin));
-            if (areacode & kBoundary) {
-               areacode |= kCorner;  // xx is on the corner.
-            } else {
-               areacode |= kBoundary;
-            } 
-         } else if (phiareacode == kAxisMax) {
-            areacode |= (kAxis0 & (kAxisPhi | kAxisMax));
-            if (areacode & kBoundary) {
-               areacode |= kCorner;  // xx is on the corner.
-            } else {
-               areacode |= kBoundary;
-            } 
+
+         // if isoutside = TRUE, clear kInside bit.
+         // if not on boundary, add boundary information. 
+
+         if (isoutside) {
+            G4int tmpareacode = areacode & (~kInside);
+            areacode = tmpareacode;
+         } else if ((areacode & kBoundary) != kBoundary) {
+            areacode |= (kAxis0 & kAxisPhi) | (kAxis1 & kAxisZ);
          }
+
+
 #ifdef __SOLIDDEBUGAREACODE__
          J4cerr << "         === J4HyperbolicSurface::GetAreaCode ========="
                 << J4endl;
@@ -881,41 +911,47 @@ G4int J4HyperbolicSurface::GetAreaCode(const G4ThreeVector &xx,
          return areacode;
       
       } else {
+
          G4int phiareacode = GetAreaCodeInPhi(xx, FALSE);
          
-         // inside
-         if (xx.z() >= fAxisMin[zaxis]
-             && xx.z() <= fAxisMax[zaxis]
-             && phiareacode == kInside) {
-            areacode |= (kAxis0 & kAxisPhi) | (kAxis1 & kAxisZ) | kInside;
-            return (G4int)kInside;
-         } 
-                    
-         // Now, xx is on boundary. Which boundary?
-         // on boundary of z-axis
+         // test boundary of z-axis
+
          if (xx.z() < fAxisMin[zaxis]) {
+
             areacode |= (kAxis1 & (kAxisZ | kAxisMin)) | kBoundary;
+
          } else if (xx.z() > fAxisMax[zaxis]) {
+
             areacode |= (kAxis1 & (kAxisZ | kAxisMax)) | kBoundary;
+
          }
+
          // boundary of phi-axis
+
          if (phiareacode == kAxisMin) {
+
             areacode |= (kAxis0 & (kAxisPhi | kAxisMin));
-            if (areacode & kBoundary) {
-               areacode |= kCorner;  // xx is on the corner.
-            } else {
-               areacode |= kBoundary; 
-            } 
+            if   (areacode & kBoundary) areacode |= kCorner;  // xx is on the corner.
+            else                        areacode |= kBoundary; 
+             
          } else if (phiareacode == kAxisMax) {
+
             areacode |= (kAxis0 & (kAxisPhi | kAxisMax));
-            if (areacode & kBoundary) {
-               areacode |= kCorner;  // xx is on the corner.
-            } else {
-               areacode |= kBoundary; 
-            } 
+            if   (areacode & kBoundary) areacode |= kCorner;  // xx is on the corner.
+            else                        areacode |= kBoundary; 
+           
          }
+
+         // if not on boundary, add boundary information. 
+
+         if ((areacode & kBoundary) != kBoundary) {
+            areacode |= (kAxis0 & kAxisPhi) | (kAxis1 & kAxisZ);
+         }
+
          return areacode;
+
       }
+
    } else {
       J4cerr << "         J4HyperbolicSurface::GetAreaCode fAxis[0] = " 
              << fAxis[0] << " fAxis[1] = " << fAxis[1]
@@ -946,50 +982,39 @@ G4int J4HyperbolicSurface::GetAreaCodeInPhi(const G4ThreeVector &xx,
           << J4endl;
  
 #endif
+
+   G4int  areacode  = kInside;
+   G4bool isoutside = FALSE; 
    
    if (withTol) {
          
-      if ((AmIOnLeftSide(xx, lowerlimit) < 0)        // xx is rightside of ..
-           && (AmIOnLeftSide(xx, upperlimit) > 0)) { // xx is leftside of ...
-         return (G4int)kInside;
-      } else if ((AmIOnLeftSide(xx, lowerlimit) > 0) // xx is leftside of ... 
-           || (AmIOnLeftSide(xx, upperlimit) < 0)) { // xx is rightside of ..
-         return (G4int)kOutside;
+      if (AmIOnLeftSide(xx, lowerlimit) >= 0) {        // xx is on lowerlimit
+         areacode |= (kAxisMin | kBoundary);
+         if (AmIOnLeftSide(xx, lowerlimit) > 0) isoutside = TRUE; 
+
+      } else if (AmIOnLeftSide(xx, upperlimit) <= 0) { // xx is on upperlimit
+         areacode |= (kAxisMax | kBoundary);
+         if (AmIOnLeftSide(xx, upperlimit) < 0) isoutside = TRUE; 
       }
-   
-      // Now, xx is on boundary. Which boundary?
-      if (AmIOnLeftSide(xx, lowerlimit) == 0) {        // xx is on lowerlimit
-         return kAxisMin;
-      } else if (AmIOnLeftSide(xx, upperlimit) == 0) { // xx is on upperlimit
-         return kAxisMax;
-      } else {
-         J4cerr << "         J4HyperbolicSurface::GetAreaInPhi: "
-                << "illeagal condition. abort. "
-                << J4endl;
-         abort();
+
+      // if isoutside = TRUE, clear inside bit.
+
+      if (isoutside) {
+         G4int tmpareacode = areacode & (~kInside);
+         areacode = tmpareacode;
       }
 
 
    } else {
    
-      if ((AmIOnLeftSide(xx, lowerlimit, FALSE) < 0) 
-          && (AmIOnLeftSide(xx, upperlimit, FALSE) > 0) ) { 
-
-         return (G4int)kInside;
-      } 
-            
-      // Now, xx is on boundary. Which boundary?
       if (AmIOnLeftSide(xx, lowerlimit, FALSE) >= 0) {
-         return kAxisMin;
+         areacode |= (kAxisMin | kBoundary);
       } else if (AmIOnLeftSide(xx, upperlimit, FALSE) <= 0) {
-         return kAxisMax;
-      } else {
-         J4cerr << "         J4HyperbolicSurface::GetAreaInPhi:"
-                << " illeagal condition. abort. "
-                << J4endl;
-         abort();
+         areacode |= (kAxisMax | kBoundary);
       }
    }
+
+   return areacode;
    
 }
 

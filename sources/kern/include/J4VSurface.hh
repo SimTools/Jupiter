@@ -14,6 +14,7 @@
 
 #include <iomanip.h>
 
+#include "G4VSolid.hh"
 #include "geomdefs.hh"
 #include "J4Global.hh"
 
@@ -31,7 +32,7 @@ class J4VSurface
  // member functions ----------------------------------------------------------
  public:
 
-   J4VSurface (const G4String &name);
+   J4VSurface (const G4String &name, G4VSolid *solid);
    J4VSurface (const G4String &name,
                const G4RotationMatrix &rot,
                const G4ThreeVector    &tlate,
@@ -88,6 +89,17 @@ class J4VSurface
                                                G4int         &boundarytype) const;
    virtual G4ThreeVector GetBoundaryAtPZ(G4int areacode,
                                          const G4ThreeVector &p) const;
+
+   inline  G4double      DistanceToPlaneWithV(const G4ThreeVector &p,
+                                              const G4ThreeVector &v,
+                                              const G4ThreeVector &x0,
+                                              const G4ThreeVector &n0,
+                                                    G4ThreeVector &xx);
+
+   inline  G4double      DistanceToPlane(const G4ThreeVector &p,
+                                         const G4ThreeVector &x0,
+                                         const G4ThreeVector &n0,
+                                               G4ThreeVector &xx);
    
    inline  G4double      DistanceToPlane(const G4ThreeVector &p,
                                          const G4ThreeVector &x0,
@@ -95,26 +107,38 @@ class J4VSurface
                                          const G4ThreeVector &t2,
                                                G4ThreeVector &xx,
                                                G4ThreeVector &n);
-                                               
+
    inline  G4double      DistanceToLine (const G4ThreeVector &p,
                                          const G4ThreeVector &x0,
                                          const G4ThreeVector &d,
                                                G4ThreeVector &xx);
                                                
-   inline  G4bool        IsAxis0(G4int areacode) const;
-   inline  G4bool        IsAxis1(G4int areacode) const;
-   inline  G4int         GetAxisType(G4int areacode, G4int whichaxis) const;
-   inline  G4bool        IsValidNorm() const { return fIsValidNorm; }
+   inline  G4bool        IsAxis0        (G4int areacode) const;
+   inline  G4bool        IsAxis1        (G4int areacode) const;
+   inline  G4bool        IsOutside      (G4int areacode) const;
+   inline  G4bool        IsInside       (G4int areacode, G4bool testbitmode = FALSE) const;
+   inline  G4bool        IsBoundary     (G4int areacode, G4bool testbitmode = FALSE) const; 
+   inline  G4bool        IsCorner       (G4int areacode, G4bool testbitmode = FALSE) const; 
+   inline  G4bool        IsValidNorm    () const { return fIsValidNorm; }
+           G4bool        IsSameBoundary (J4VSurface *surface1, G4int areacode1,
+                                         J4VSurface *surface2, G4int areacode2 ) const;
+   inline  G4int         GetAxisType    (G4int areacode, G4int whichaxis) const;
+
+   inline  G4ThreeVector ComputeGlobalPoint     (const G4ThreeVector &lp) const;
+   inline  G4ThreeVector ComputeLocalPoint      (const G4ThreeVector &gp) const;
+   inline  G4ThreeVector ComputeGlobalDirection (const G4ThreeVector &lp) const;
+   inline  G4ThreeVector ComputeLocalDirection  (const G4ThreeVector &gp) const;
   
    // set method
    inline void           SetAxis(G4int i, const EAxis axis)  { fAxis[i] = axis; }
    inline void           SetNeighbours(J4VSurface* axis0min, J4VSurface* axis1min, 
                                        J4VSurface* axis0max, J4VSurface* axis1max);
-   
+   inline void           SetSolid       (G4VSolid *solid)  { fSolid = solid; }
 
  protected:
  
    // get method
+   inline  G4VSolid*     GetSolid()                 { return fSolid; } 
    inline  J4VSurface**  GetNeighbours()            { return fNeighbours; } 
    inline  G4int         GetNeighbours(G4int areacode, J4VSurface* surfaces[]); 
    inline  G4ThreeVector GetCorner(G4int areacode) const;
@@ -305,7 +329,7 @@ class J4VSurface
          // kAxis0 & kAxisMin, kAxis0 & kAxisMax,
          // kAxis1 & kAxisMin, kAxis1 & kAxisMax
          if ((areacode & kAxis0) && (areacode & kAxis1)) {
-            J4cerr << "J4VSurface::Boundary::GetBoundaryParameters: "
+            G4cerr << "J4VSurface::Boundary::GetBoundaryParameters: "
             << "You are in the "
             << "corner area. This function returns a direction vector of "
             << "a boundary line. abort. areacode = " << areacode << J4endl;
@@ -358,18 +382,29 @@ class J4VSurface
                            G4bool        withTol;
                            G4int         amIOnLeftSide;
                        } fAmIOnLeftSide ;
+
+   G4VSolid           *fSolid; 
 };
 
 //========================================================
 // inline function
 //========================================================
 
+G4double J4VSurface::DistanceToPlaneWithV(const G4ThreeVector &p,
+                                          const G4ThreeVector &v,
+                                          const G4ThreeVector &x0,
+                                          const G4ThreeVector &n0,
+                                                G4ThreeVector &xx)
+{
+   G4double t = (n0 * (x0 - p)) / (n0 * v);
+   xx = p + t * v;
+   return t;
+}
+
 G4double J4VSurface::DistanceToPlane(const G4ThreeVector &p,
                                      const G4ThreeVector &x0,
-                                     const G4ThreeVector &t1,
-                                     const G4ThreeVector &t2,
-                                           G4ThreeVector &xx,
-                                           G4ThreeVector &n)
+                                     const G4ThreeVector &n0,
+                                           G4ThreeVector &xx)
 {
    // DistanceToPlane :
    // Calculate distance to plane in local coordinate,
@@ -377,8 +412,6 @@ G4double J4VSurface::DistanceToPlane(const G4ThreeVector &p,
    //
    // p          - location of flying particle   
    // x0         - reference point of surface
-   // t1         - 1st. vector lying on the plane 
-   // t2         - 2nd. vector lying on the plane
    // xx         - a foot of perpendicular line from p to the plane 
    // t          - distance from xx to p
    // n          - a unit normal of this plane from plane to p. 
@@ -392,13 +425,28 @@ G4double J4VSurface::DistanceToPlane(const G4ThreeVector &p,
    //         where
    //         t = n * (p - x0) / abs(n)
    //
-
    G4double t;
-   n = t1.cross(t2);
-   n = n.unit();
+   G4ThreeVector n = n0.unit();
    t = n * (p - x0);
    xx = p - t * n;
    return t;
+}
+                                               
+G4double J4VSurface::DistanceToPlane(const G4ThreeVector &p,
+                                     const G4ThreeVector &x0,
+                                     const G4ThreeVector &t1,
+                                     const G4ThreeVector &t2,
+                                           G4ThreeVector &xx,
+                                           G4ThreeVector &n)
+{
+   // DistanceToPlane :
+   // Calculate distance to plane in local coordinate,
+   // then return distance and global intersection points.
+   // t1         - 1st. vector lying on the plane 
+   // t2         - 2nd. vector lying on the plane
+
+   n = (t1.cross(t2)).unit();
+   return DistanceToPlane(p, x0, n, xx); 
 }
 
 G4double J4VSurface::DistanceToLine(const G4ThreeVector &p,
@@ -450,6 +498,48 @@ G4bool J4VSurface::IsAxis1(G4int areacode) const
    return FALSE;
 }
 
+G4bool J4VSurface::IsOutside(G4int areacode) const 
+{
+   if (areacode & kInside) return FALSE;
+   return TRUE;
+}
+
+G4bool J4VSurface::IsInside(G4int areacode, G4bool testbitmode) const 
+{
+   if (areacode & kInside) {
+      if (testbitmode) {
+         return TRUE;
+      } else {
+       if (!((areacode & kBoundary) || (areacode & kCorner))) return TRUE;
+      }
+   }
+   return FALSE;
+}
+
+G4bool J4VSurface::IsBoundary(G4int areacode, G4bool testbitmode) const 
+{
+   if ((areacode & kBoundary) == kBoundary) {
+      if (testbitmode) {
+         return TRUE; 
+      } else {
+         if ((areacode & kInside) == kInside) return TRUE;
+      }
+   }
+   return FALSE;
+}
+
+G4bool J4VSurface::IsCorner(G4int areacode, G4bool testbitmode) const 
+{
+   if ((areacode & kCorner) == kCorner) {
+      if (testbitmode) {
+         return TRUE;
+      } else {
+         if ((areacode & kInside) == kInside) return TRUE;
+      }
+   }
+   return FALSE;
+}
+
 G4int J4VSurface::GetAxisType(G4int areacode, G4int whichaxis) const
 {
    G4int axiscode = areacode & kAxisMask & whichaxis;
@@ -474,6 +564,26 @@ G4int J4VSurface::GetAxisType(G4int areacode, G4int whichaxis) const
              << areacode << " is not supported. abort. " << G4endl;
       abort();
    }
+}
+
+G4ThreeVector J4VSurface::ComputeGlobalPoint(const G4ThreeVector &lp) const
+{
+   return fRot * G4ThreeVector(lp) + fTrans;
+}
+
+G4ThreeVector J4VSurface::ComputeLocalPoint(const G4ThreeVector &gp) const
+{
+   return fRot.inverse() * G4ThreeVector(gp) - fTrans;
+}
+
+G4ThreeVector J4VSurface::ComputeGlobalDirection(const G4ThreeVector &lp) const
+{
+   return fRot * G4ThreeVector(lp); 
+}
+
+G4ThreeVector J4VSurface::ComputeLocalDirection(const G4ThreeVector &gp) const
+{
+   return fRot.inverse() * G4ThreeVector(gp);
 }
 
 void J4VSurface::SetNeighbours(J4VSurface* axis0min, J4VSurface* axis1min, 

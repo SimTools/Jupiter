@@ -44,7 +44,7 @@ J4FlatSurface::J4FlatSurface(const G4String         &name,
 J4FlatSurface::J4FlatSurface(const G4String      &name,
                                    J4TwistedTubs *solid,
                                    G4int          handedness) 
-              :J4VSurface(name)
+              :J4VSurface(name, solid)
 {   
    fHandedness = handedness;   // +z = +ve, -z = -ve
    fAxis[0]    = kRho;         // in local coordinate system
@@ -76,7 +76,7 @@ G4ThreeVector J4FlatSurface::GetNormal(const G4ThreeVector &xx,
                                              G4bool isGlobal)
 {
    if (isGlobal) {
-      return fRot*fCurrentNormal.normal;
+      return ComputeGlobalDirection(fCurrentNormal.normal);
    } else {
       return fCurrentNormal.normal;
    }
@@ -114,8 +114,8 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
       }
    }
 
-   G4ThreeVector p = fRot.inverse()*gp - fTrans;
-   G4ThreeVector v = fRot.inverse()*gv;
+   G4ThreeVector p = ComputeLocalPoint(gp);
+   G4ThreeVector v = ComputeLocalDirection(gv);
 
 #ifdef __SOLIDDEBUG__
    J4cerr << "      ~~~~~ J4FlatSurface:DistanceToSurface(p,v) : Start" 
@@ -137,16 +137,16 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
    if (fabs(p.z()) == 0.) {   // if p is on the plane
       distance[0] = 0;
       G4ThreeVector xx = p;
-      gxx[0] = fRot*xx + fTrans;
+      gxx[0] = ComputeGlobalPoint(xx);
       
       if (validate == kValidateWithTol) {
          areacode[0] = GetAreaCode(xx);
-         if ((areacode[0] & kAreaMask) != kOutside) {
+         if (!IsOutside(areacode[0])) {
             isvalid[0] = TRUE;
          }
       } else if (validate == kValidateWithoutTol) {
          areacode[0] = GetAreaCode(xx, FALSE);
-         if ((areacode[0] & kAreaMask) == kInside) {
+         if (IsInside(areacode[0])) {
             isvalid[0] = TRUE;
          }
       } else { // kDontValidate
@@ -166,6 +166,10 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
       J4cerr << "         isvalid[0]  : " << isvalid[0]  << J4endl;
       J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
              << J4endl;
+      if (isvalid[0] && GetSolid()->Inside(gxx[0]) != ::kSurface) {
+         J4cerr << " valid return value is not on surface! abort." << J4endl;
+         abort();
+      }
 #endif
 
       return 1;
@@ -197,16 +201,16 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
    distance[0] = - (p.z() / v.z());
       
    G4ThreeVector xx = p + distance[0]*v;
-   gxx[0] = fRot*xx + fTrans;
+   gxx[0] = ComputeGlobalPoint(xx);
 
    if (validate == kValidateWithTol) {
       areacode[0] = GetAreaCode(xx);
-      if ((areacode[0] & kAreaMask) != kOutside) {
+      if (!IsOutside(areacode[0])) {
          if (distance[0] >= 0) isvalid[0] = TRUE;
       }
    } else if (validate == kValidateWithoutTol) {
       areacode[0] = GetAreaCode(xx, FALSE);
-      if ((areacode[0] & kAreaMask) == kInside) {
+      if (IsInside(areacode[0])) {
          if (distance[0] >= 0) isvalid[0] = TRUE;
       }
    } else { // kDontValidate
@@ -228,6 +232,10 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
    J4cerr <<"         isvalid[0]  : " << isvalid[0]  << J4endl;
    J4cerr <<"      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
           << J4endl;
+   if (isvalid[0] && GetSolid()->Inside(gxx[0]) != ::kSurface) {
+      J4cerr << " valid return value is not on surface! abort." << J4endl;
+      abort();
+   }
 #endif
 
    return 1;
@@ -265,7 +273,7 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
       }
    }
    
-   G4ThreeVector p = fRot.inverse()*gp - fTrans;
+   G4ThreeVector p = ComputeLocalPoint(gp);
    G4ThreeVector xx;
 
    // The plane is placed on origin with making its normal 
@@ -280,10 +288,10 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
 
 #ifdef __BOUNDARYCHECK__
    areacode[0] = GetAreaCode(xx, FALSE);
-   if ((areacode[0] & kInside) != kInside) {
+   if (!IsInside(areacode[0])) {
       // xx is out of boundary. 
       // return distance to boundary or corner.
-      if ((areacode[0] & kCorner) == kCorner) {
+      if (IsCorner(areacode[0])) {
          xx = GetCorner(areacode[0]);
          distance[0] = (xx - p).mag();
       } else {
@@ -292,7 +300,7 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
    }
 #endif
 
-   gxx[0] = fRot*xx + fTrans;
+   gxx[0] = ComputeGlobalPoint(xx);
    areacode[0] = kInside;
    G4bool isvalid = TRUE;
    fCurStat.SetCurrentStatus(0, gxx[0], distance[0], areacode[0],
@@ -309,10 +317,11 @@ G4int J4FlatSurface::GetAreaCode(const G4ThreeVector &xx,
 
    static const G4double rtol = 0.5*kRadTolerance;
    
-   G4int areacode = 0;
+   G4int areacode = kInside;
 
    if (fAxis[0] == kRho && fAxis[1] == kPhi) {
       G4int rhoaxis = 0;
+     // G4int phiaxis = 0;
 
       G4ThreeVector dphimin;   // direction of phi-minimum boundary
       G4ThreeVector dphimax;   // direction of phi-maximum boundary
@@ -320,60 +329,57 @@ G4int J4FlatSurface::GetAreaCode(const G4ThreeVector &xx,
       dphimax = GetCorner(kCorner0Max1Max);   
       
       if (withTol) {
-         
-         // inside or outside
-         if (xx.getRho() >= fAxisMin[rhoaxis] + rtol 
-                    && xx.getRho() <= fAxisMax[rhoaxis] - rtol
-                    && (AmIOnLeftSide(xx, dphimin) < 0)    // xx is rightside of dphimin
-                    && (AmIOnLeftSide(xx, dphimax) > 0)) { // xx is leftside of dphimax
-            areacode |= (kAxis0 & kAxisRho) | (kAxis1 & kAxisPhi) | kInside;
-            return areacode;
-         } else if (xx.getRho() <= fAxisMin[rhoaxis] - rtol 
-                    || xx.getRho() >= fAxisMax[rhoaxis] + rtol
-                    || (AmIOnLeftSide(xx, dphimin) > 0)    // xx is leftside of dphimin
-                    || (AmIOnLeftSide(xx, dphimax) < 0)) { // xx is rightside of dphimax
-            areacode |= (kAxis0 & kAxisRho) | (kAxis1 & kAxisPhi) | kOutside;
-            return areacode;
-         }
-         
-         // Now, xx is on boundary. Which boundary?
-         // on boundary of rho-axis
+
+         G4bool isoutside = FALSE;
+
+         // test boundary of rho-axis
+
          if (xx.getRho() <= fAxisMin[rhoaxis] + rtol) {
+
             areacode |= (kAxis0 & (kAxisRho | kAxisMin)) | kBoundary; // rho-min
+            if (xx.getRho() < fAxisMin[rhoaxis] - rtol) isoutside = TRUE; 
+            
          } else if (xx.getRho() >= fAxisMax[rhoaxis] - rtol) {
+
             areacode |= (kAxis0 & (kAxisRho | kAxisMax)) | kBoundary; // rho-max
+            if (xx.getRho() > fAxisMax[rhoaxis] + rtol) isoutside = TRUE; 
+
          }         
-         // on boundary of phi-axis
-         if (AmIOnLeftSide(xx, dphimin) == 0) {           // xx is on dphimin
+         
+         // test boundary of phi-axis
+
+         if (AmIOnLeftSide(xx, dphimin) >= 0) {           // xx is on dphimin
+
             areacode |= (kAxis1 & (kAxisPhi | kAxisMin)); 
-            if (areacode & kBoundary) {
-               areacode |= kCorner;  // xx is on the corner.
-            } else {
-               areacode |= kBoundary;
-            }
-         } else if (AmIOnLeftSide(xx, dphimax) == 0) {    // xx is on dphimax
+            if   (areacode & kBoundary) areacode |= kCorner;  // xx is on the corner.
+            else                        areacode |= kBoundary;
+
+            if (AmIOnLeftSide(xx, dphimin) > 0) isoutside = TRUE; 
+
+         } else if (AmIOnLeftSide(xx, dphimax) <= 0) {    // xx is on dphimax
+
             areacode |= (kAxis1 & (kAxisPhi | kAxisMax)); 
-            if (areacode & kBoundary) {
-               areacode |= kCorner;  // xx is on the corner.
-            } else {
-               areacode |= kBoundary;
-            }
+            if   (areacode & kBoundary) areacode |= kCorner;  // xx is on the corner.
+            else                        areacode |= kBoundary;
+
+            if (AmIOnLeftSide(xx, dphimax) < 0) isoutside = TRUE; 
+
          }
-         return areacode;
+         
+         // if isoutside = TRUE, clear inside bit.
+         // if not on boundary, add axis information. 
+
+         if (isoutside) {
+            G4int tmpareacode = areacode & (~kInside);
+            areacode = tmpareacode;
+         } else if ((areacode & kBoundary) != kBoundary) {
+            areacode |= (kAxis0 & kAxisRho) | (kAxis1 & kAxisPhi);
+         }
 
       } else {
 
-         // inside
-         if (xx.getRho() >= fAxisMin[rhoaxis]
-             && xx.getRho() <= fAxisMax[rhoaxis]
-             && (AmIOnLeftSide(xx, dphimin, FALSE) < 0)    // xx is rightside of dphimin
-             && (AmIOnLeftSide(xx, dphimax, FALSE) > 0)) { // xx is leftside of dphimax
-            areacode |= (kAxis0 & kAxisRho) | (kAxis1 & kAxisPhi) | kInside;
-            return areacode;
-         }
-         
-         // Now, xx is out of boundary. Which boundary?
          // out of boundary of rho-axis
+
          if (xx.getRho() < fAxisMin[rhoaxis]) {
             areacode |= (kAxis0 & (kAxisRho | kAxisMin)) | kBoundary;
          } else if (xx.getRho() > fAxisMax[rhoaxis]) {
@@ -381,23 +387,27 @@ G4int J4FlatSurface::GetAreaCode(const G4ThreeVector &xx,
          }
          
          // out of boundary of phi-axis
+
          if (AmIOnLeftSide(xx, dphimin, FALSE) >= 0) {       // xx is leftside or
             areacode |= (kAxis1 & (kAxisPhi | kAxisMin)) ;   // boundary of dphimin
-            if (areacode & kBoundary) {
-               areacode |= kCorner;  // xx is on the corner.
-            } else {
-               areacode |= kBoundary;
-            }
+            if   (areacode & kBoundary) areacode |= kCorner;  // xx is on the corner.
+            else                        areacode |= kBoundary;
+
          } else if (AmIOnLeftSide(xx, dphimax, FALSE) <= 0) { // xx is rightside or
             areacode |= (kAxis1 & (kAxisPhi | kAxisMax)) ;    // boundary of dphimax
-            if (areacode & kBoundary) {
-               areacode |= kCorner;  // xx is on the corner.
-            } else {
-               areacode |= kBoundary;
-            }
+            if   (areacode & kBoundary) areacode |= kCorner;  // xx is on the corner.
+            else                        areacode |= kBoundary;
+           
          }
-         return areacode;
+
+         if ((areacode & kBoundary) != kBoundary) {
+            areacode |= (kAxis0 & kAxisRho) | (kAxis1 & kAxisPhi);
+         }
+
       }
+
+      return areacode;
+
    } else {
 
       J4cerr << "      J4FlatSurface::GetAreaCode(withTol) fAxis[0] = " << fAxis[0]

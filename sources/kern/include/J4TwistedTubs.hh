@@ -158,6 +158,10 @@ class J4TwistedTubs : public G4VSolid
   
   G4VisExtent            GetExtent    () const;
   inline G4GeometryType  GetEntityType() const;
+
+#ifdef __SOLIDDEBUG__
+  J4VSurface * GetOuterHype() const { return fOuterHype; }
+#endif
   
  private:
  

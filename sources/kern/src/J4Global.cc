@@ -104,7 +104,5 @@ void J4Global::CloseErrorOutputStream()
    } else {
       fErrorCounter = 1;
       fErrorOfs->close();
-      G4cerr << "J4Global::CloseErrorOutputStream fErrorOfs is closed " 
-             << G4endl; 
    }
 }

@@ -724,6 +724,12 @@ G4double J4TwistedTubs::DistanceToIn (const G4ThreeVector& p,
       J4cerr <<"   bestdist    : " << distance << J4endl;
       J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
    }
+
+   if (besti >= 0 && Inside(bestxx) != kSurface) {
+      G4cerr << "J4TwistedTubs:DistanceToIn(p,v) last return value is not kSurface!"
+             << " abort. " << G4endl;
+      abort();
+   }
 #endif
 
    *tmpdist = distance;
@@ -1001,6 +1007,11 @@ G4double J4TwistedTubs::DistanceToOut( const G4ThreeVector& p,
       J4cerr <<"   bestxx      : " << bestxx << J4endl;
       J4cerr <<"   bestdist    : " << distance << J4endl;
       J4cerr <<">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << J4endl;
+   }
+   if (besti >= 0 && Inside(bestxx) != kSurface) {
+      G4cerr << "J4TwistedTubs:DistanceToOut(p,v) last return value is not kSurface!"
+             << " abort. " << G4endl;
+             abort();
    }
 #endif
 
