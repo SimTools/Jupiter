@@ -61,6 +61,8 @@ J4IR::~J4IR()
   if(Deregister(fAlDrumL)) delete fAlDrumL;  
   if(Deregister(fAlBeamPipeR)) delete fAlBeamPipeR;
   if(Deregister(fAlBeamPipeL)) delete fAlBeamPipeL;
+  if(Deregister(fVacuumBeamPipeR)) delete fVacuumBeamPipeR;
+  if(Deregister(fVacuumBeamPipeL)) delete fVacuumBeamPipeL;
   if(Deregister(fQC1R)) delete fQC1R;
   if(Deregister(fQC1L)) delete fQC1L;
   if(Deregister(fSD0R)) delete fSD0R;
@@ -77,8 +79,9 @@ J4IR::~J4IR()
   if(Deregister(fWSC1L)) delete fWSC1L;
   if(Deregister(fWSC2R)) delete fWSC2R;
   if(Deregister(fWSC2L)) delete fWSC2L;
-  //if(Deregister(fPMNR)) delete fPMNR;
-  //if(Deregister(fPMNL)) delete fPMNL;
+  if(Deregister(fPMNR)) delete fPMNR;
+  if(Deregister(fPMNL)) delete fPMNL;
+
 }
 
 //=====================================================================
@@ -104,6 +107,7 @@ void J4IR::Assemble()
     G4double cylinderglobalz    = list->GetIRDrumZPosition();
     G4double boxglobalz         = list->GetIRBoxZPosition();
 
+    G4cout << "XX Beampipe Outer " << outerbeampiperad/mm << G4endl;
     // MakeSolid ---------------
     
     G4String beampipename( GetName() );
@@ -164,7 +168,8 @@ void J4IR::Assemble()
     MakeLVWith(OpenMaterialStore()->Order(list->GetIRMaterial()));
     
     // SetVisAttribute ---------------
-    PaintLV(list->GetIRVisAtt(),list->GetIRColor());
+    //PaintLV(list->GetIRVisAtt(),list->GetIRColor());
+    PaintLV(FALSE,list->GetIRColor());
   	
     // Install daughter PV -----------
 #if 1
@@ -191,19 +196,37 @@ void J4IR::Assemble()
     SetDaughter(fAlDrumR);
     SetDaughter(fAlDrumL);
 
-    fAlBeamPipeR = new J4IRBPAlTube(this,1,2,0,-1,FALSE);
-    fAlBeamPipeL = new J4IRBPAlTube(this,1,2,1,-1,TRUE);
-    Register(fAlBeamPipeR);
-    Register(fAlBeamPipeL);
-    fAlBeamPipeR->InstallIn(this);
-    fAlBeamPipeL->InstallIn(this);
-    SetDaughter(fAlBeamPipeR);
-    SetDaughter(fAlBeamPipeL);
+    if ( ! list->IsCompact() ){
+      fAlBeamPipeR = new J4IRBPAlTube(this,1,2,0,-1,FALSE);
+      fAlBeamPipeL = new J4IRBPAlTube(this,1,2,1,-1,TRUE);
+      Register(fAlBeamPipeR);
+      Register(fAlBeamPipeL);
+      fAlBeamPipeR->InstallIn(this);
+      fAlBeamPipeL->InstallIn(this);
+      SetDaughter(fAlBeamPipeR);
+      SetDaughter(fAlBeamPipeL);
+    }else{
+      fVacuumBeamPipeR = new J4IRBPVacuumTube(this,1,2,0,-1,FALSE);
+      fVacuumBeamPipeL = new J4IRBPVacuumTube(this,1,2,1,-1,TRUE);
+      Register(fVacuumBeamPipeR);
+      Register(fVacuumBeamPipeL);
+      fVacuumBeamPipeR->InstallIn(this);
+      fVacuumBeamPipeL->InstallIn(this);
+      SetDaughter(fVacuumBeamPipeR);
+      SetDaughter(fVacuumBeamPipeL);
+    }
 #endif
 
 #if 1
-    J4IRQC1MField* qc1fielde = new J4IRQC1MField(250.*GeV,-0.1295329270206);
-    J4IRQC1MField* qc1fieldp = new J4IRQC1MField(250.*GeV,+0.1295329270206);
+    J4IRQC1MField* qc1fielde;
+    J4IRQC1MField* qc1fieldp;
+    if ( !list->IsCompact() ){
+      qc1fielde = new J4IRQC1MField(250.*GeV,-64.35*tesla/meter,"Grad");
+      qc1fieldp = new J4IRQC1MField(250.*GeV,+64.35*tesla/meter,"Grad");
+    }else{
+      qc1fielde = new J4IRQC1MField(250.*GeV,-114.*tesla/meter,"Grad");
+      qc1fieldp = new J4IRQC1MField(250.*GeV,+114.*tesla/meter,"Grad");
+    }
 
     fQC1R = new J4IRQC1(this,1,2,0,-1);
     fQC1R->SetMField(qc1fielde);
@@ -250,14 +273,31 @@ void J4IR::Assemble()
 #endif
 
 #if 1
-    fCH2MR = new J4IRCH2Mask(this,1,2,0,-1);
-    fCH2ML = new J4IRCH2Mask(this,1,2,1,-1,true);
-    Register(fCH2MR);
-    Register(fCH2ML);
-    fCH2MR->InstallIn(this);
-    fCH2ML->InstallIn(this);
-    SetDaughter(fCH2MR);
-    SetDaughter(fCH2ML);
+    if ( list->IsCompact() ){
+      fCH2MR = new J4IRCH2MaskCompact(this,1,2,0,-1);
+      fCH2ML = new J4IRCH2MaskCompact(this,1,2,1,-1,true);
+      fCH2MR->InstallIn(this);
+      fCH2ML->InstallIn(this);
+      SetDaughter(fCH2MR);
+      SetDaughter(fCH2ML);
+      fBMExitR = new J4IRBeamExit(this,1,2,0,-1);
+      fBMExitL = new J4IRBeamExit(this,1,2,0,-1,true);
+      Register(fBMExitR);
+      Register(fBMExitL);
+      fBMExitR->InstallIn(this);
+      fBMExitL->InstallIn(this);
+      SetDaughter(fBMExitR);
+      SetDaughter(fBMExitL);
+    }else{
+      fCH2MR = new J4IRCH2Mask(this,1,2,0,-1);
+      fCH2ML = new J4IRCH2Mask(this,1,2,1,-1,true);
+      Register(fCH2MR);
+      Register(fCH2ML);
+      fCH2MR->InstallIn(this);
+      fCH2ML->InstallIn(this);
+      SetDaughter(fCH2MR);
+      SetDaughter(fCH2ML);
+   }
 #endif
 
 
@@ -284,14 +324,16 @@ void J4IR::Assemble()
 #endif
 
 #if 0
-    fPMNR = new J4IRPairMonitor(this,1,2,0,-1);
-    fPMNL = new J4IRPairMonitor(this,1,2,1,-1,true);
-    Register(fPMNR);
-    Register(fPMNL);
-    fPMNR->InstallIn(this);
-    fPMNL->InstallIn(this);
-    SetDaughter(fPMNR);
-    SetDaughter(fPMNL);
+    if (  list->IsCompact() ){
+      fPMNR = new J4IRPairMonitorCompactSP(this,1,2,0,-1);
+      fPMNL = new J4IRPairMonitorCompactSP(this,1,2,1,-1,true);
+      Register(fPMNR);
+      Register(fPMNL);
+      fPMNR->InstallIn(this);
+      fPMNL->InstallIn(this);
+      SetDaughter(fPMNR);
+      SetDaughter(fPMNL);
+    }
 #endif
 
 #if 1

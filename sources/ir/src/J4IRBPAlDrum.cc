@@ -85,10 +85,12 @@ void J4IRBPAlDrum::Assemble()
     Register(fdrumPipe);
     fdrumPipe->InstallIn(this);
     SetDaughter(fdrumPipe);
-    fdrumCap = new J4IRBPAlDrumCap(this,1,1,1,-1);
-    Register(fdrumCap);
-    fdrumCap->InstallIn(this);
-    SetDaughter(fdrumCap);
+    if (! OpenParameterList()->IsCompact() ){
+      fdrumCap = new J4IRBPAlDrumCap(this,1,1,1,-1);
+      Register(fdrumCap);
+      fdrumCap->InstallIn(this);
+      SetDaughter(fdrumCap);
+    }
   }     
 }
 

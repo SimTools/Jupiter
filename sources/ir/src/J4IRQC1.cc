@@ -15,6 +15,8 @@
 #include "G4Tubs.hh"
 #include <math.h>
 
+#include "J4IRQC1ParameterList.hh"
+
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
@@ -59,23 +61,33 @@ void J4IRQC1::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
+  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  G4double qc1InnerRadius = qc1List->GetQC1Radius();
+  G4double qc1Thickness   = qc1List->GetQC1Thick();
+  G4double qc1ZLength     = qc1List->GetQC1ZLength();
+  G4String qc1Material    = qc1List->GetQC1Material();
   	
    // MakeSolid ---------------
     G4String qc1name( GetName() );
     qc1name += ".master";
+    //G4VSolid *qc1tube = new G4Tubs( qc1name,
+    //				    0.,
+    //				   _QC1INRADIUS_+_QC1THICK_,
+    //                                     _QC1ZLEN_/2.+0.1*cm, 0, 2*M_PI);  
     G4VSolid *qc1tube = new G4Tubs( qc1name,
-				    0.,
-				   _QC1INRADIUS_+_QC1THICK_,
-                                     _QC1ZLEN_/2.+0.1*cm, 0, 2*M_PI);  
+    				    0.,
+    				   qc1InnerRadius+qc1Thickness,
+                                         qc1ZLength/2.+0.1*cm, 0, 2*M_PI);  
                                        
     Register(qc1tube);
     SetSolid(qc1tube);	// Don't forgat call it!
 
     // MakeLogicalVolume -------------
-    MakeLVWith(OpenMaterialStore()->Order(_QC1MAT_));
+    //MakeLVWith(OpenMaterialStore()->Order(_QC1MAT_));
+    MakeLVWith(OpenMaterialStore()->Order(qc1Material));
     
     // SetVisAttribute ---------------
-    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(1, 0, 0));
+    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(0, 0, 0));
 
     // Install daughter PV -----------
     fsus = new J4IRQC1SUS(this,1,1,0,-1);
@@ -115,10 +127,13 @@ G4RotationMatrix* J4IRQC1::GetRotation(){
 //=====================================================================
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRQC1::GetTranslation(){
+  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  G4double qc1ZLength     = qc1List->GetQC1ZLength();
   G4ThreeVector* position= new G4ThreeVector; 
   J4IRParameterList* list = OpenParameterList();
   G4double angle = list->GetCrossAngle();
-  G4double zpos  = list->GetLStar()+_QC1ZLEN_/2.;
+  //G4double zpos  = list->GetLStar()+_QC1ZLEN_/2.;
+  G4double zpos  = list->GetLStar()+qc1ZLength/2.;
   position->setX(-zpos*sin(angle));
   position->setZ( zpos*cos(angle));
   //position->setX(-(_QC1ZPOS_+_QC1ZLEN_/2.)*sin(_IRCROS_));

@@ -58,7 +58,11 @@ void J4IRBPParameterList::SetDefaults()
   //SetBPRadiusSmall(1.8*cm);   // moved to IRParameterList
   //SetBPBeThick(0.05*cm);      // moved to IRParameterList
   SetBPIPZPosition(0.*cm);
+#ifdef __GLD_V1__
+  SetBPIPZLength(14*cm);
+#else
   SetBPIPZLength(10*cm);
+#endif
 
   // Al BP Pipe
   SetBPRadiusLarge(7.3*cm);

@@ -52,8 +52,44 @@ void J4IRQC1ParameterList::SetMaterials()
 //* SetParameters ------------------------------------------------------
 void J4IRQC1ParameterList::SetParameters()
 {
-  SetDefaults();
+  if ( fList->IsCompact() )  SetCompact();  // New
+  else                       SetDefaults(); //
   BuildParameters();
+}
+//=====================================================================
+//* SetParameters ------------------------------------------------------
+void J4IRQC1ParameterList::SetCompact()
+{
+// Shape of QC1
+  SetQC1NCollar(4);
+// Master volume (Tube) for QC1
+  SetQC1Radius(10*mm);
+  SetQC1Thick(45*mm);  // Rout = 55mm
+  SetQC1ZLength(1.67640*2*m);
+// Only PI/4 part is defined.
+// Iron.
+  SetQC1SUSRadius(40.*mm);
+  SetQC1SUSThick(15*mm);
+// Collar
+  SetQC1CollarRadius(15*mm);
+  SetQC1CollarThick(25*mm);
+  SetQC1CollarPhi(pi/4);
+  SetQC1CollarDPhi(pi/14); // +-10degree=total 20degree 
+// S-Magnet 4Layer
+  SetQC1NCoil(4);
+  SetQC1CoilPhi(0.);
+  SetQC1CoilDPhi(pi);  // minus avoid intersection
+// He Vessel
+  SetQC1HeVesselThick(1.*mm);
+// He
+  SetQC1HeThick(1.*mm);
+//Thermal Vessel
+  SetQC1ThermalVesselThick(1.*mm);
+// Thermal
+  SetQC1ThermalThick(1.*mm);
+// Vessel
+    SetQC1VacuumVesselThick( 1.*mm);
+
 }
 //=====================================================================
 //* SetParameters ------------------------------------------------------

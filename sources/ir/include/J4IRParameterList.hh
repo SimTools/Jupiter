@@ -40,6 +40,14 @@ public:
   //*
   //* Set/GetFunctions
   //*
+
+  inline G4bool IsCompact() 
+  { // G4cout << "ASOASO " << GetCrossAngle()/mrad << G4endl;  
+    return ( abs(GetCrossAngle()) > 9.*mrad ? TRUE : FALSE);}
+  inline G4bool IsPairMonitorSD()
+  { return fPairMonSD; }
+  inline void SetPairMonitorSD(G4bool log){ fPairMonSD = log; }
+
   // Materials
   inline void SetIRMaterial(G4String mat) {fIRMaterial=mat;}
   inline G4String GetIRMaterial() const { return fIRMaterial;}
@@ -109,6 +117,7 @@ private:
   virtual void SetMaterials();
   virtual void SetVisAttributes();
   virtual void SetColors();
+  virtual void SetSensitiveDetector();
   virtual void SetParameters();
   virtual void SetDefaults();
   virtual void BuildParameters();
@@ -133,6 +142,9 @@ private:
 
   G4ThreeVector fDxyzMargin;
   G4double      fDrMargin;
+
+  // PairMonitorSD
+  G4bool   fPairMonSD;
 
   //   Crossing Angle
   G4double fCrossAngle; 

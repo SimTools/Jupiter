@@ -148,6 +148,8 @@ private:
   virtual void SetDefaults();
   virtual void BuildParameters();
 
+  void SetCompact();
+
 private:
   // IRParameterList
   J4IRParameterList* fList;

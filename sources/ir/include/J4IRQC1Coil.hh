@@ -14,7 +14,7 @@
 //*************************************************************************
 
 #include "J4VIRAcceleratorComponent.hh"
-#include "J4IRQC1Parameter.hh"
+//#include "J4IRQC1Parameter.hh"
 
 #include "J4IRQC1Collar.hh"
 //#include "J4IRQC1QLayer.hh"

@@ -20,17 +20,20 @@
 #include "J4IRBPCone.hh"
 #include "J4IRBPAlDrum.hh"
 #include "J4IRBPAlTube.hh"
+#include "J4IRBPVacuumTube.hh"
 
 #include "J4IRQC1.hh"
 #include "J4IRSD0.hh"
 #include "J4IRQC2.hh"
 #include "J4IRCH2Mask.hh"
+#include "J4IRCH2MaskCompact.hh"
+#include "J4IRBeamExit.hh"
 
 #include "J4IRWSiCAL1.hh"
 #include "J4IRWSiCAL2.hh"
 #include "J4IRWMask1.hh"
 #include "J4IRWMask2.hh"
-//#include "J4IRPairMonitor.hh"
+#include "J4IRPairMonitorCompactSP.hh"
 
 //=====================================================================
 //---------------------
@@ -65,14 +68,20 @@ private:
   J4IRBPAlDrum* fAlDrumL; 
   J4IRBPAlTube* fAlBeamPipeR;
   J4IRBPAlTube* fAlBeamPipeL;
+  J4IRBPVacuumTube* fVacuumBeamPipeR;
+  J4IRBPVacuumTube* fVacuumBeamPipeL;
   J4IRQC1* fQC1R;
   J4IRQC1* fQC1L;
   J4IRSD0* fSD0R;
   J4IRSD0* fSD0L;
   J4IRQC2* fQC2R;
   J4IRQC2* fQC2L;
-  J4IRCH2Mask* fCH2MR;
-  J4IRCH2Mask* fCH2ML;
+  //J4IRCH2Mask* fCH2MR;
+  //J4IRCH2Mask* fCH2ML;
+  J4VIRAcceleratorComponent* fCH2MR;
+  J4VIRAcceleratorComponent* fCH2ML;
+  J4IRBeamExit* fBMExitR;
+  J4IRBeamExit* fBMExitL;
   J4IRWMask1* fWM1R;
   J4IRWMask1* fWM1L;
   J4IRWMask2* fWM2R;
@@ -81,8 +90,8 @@ private:
   J4IRWSiCAL1* fWSC1L;
   J4IRWSiCAL2* fWSC2R;
   J4IRWSiCAL2* fWSC2L;
-  //  J4IRPairMonitor* fPMNR;
-  //  J4IRPairMonitor* fPMNL;
+  J4VDetectorComponent* fPMNR;
+  J4VDetectorComponent* fPMNL;
 };
 
 #endif

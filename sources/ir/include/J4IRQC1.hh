@@ -19,7 +19,7 @@
 
 #include "J4VIRAcceleratorComponent.hh"
 #include "J4AttMFieldMap.hh"
-#include "J4IRQC1Parameter.hh"
+//#include "J4IRQC1Parameter.hh"
 
 
 #include "J4IRQC1SUS.hh"

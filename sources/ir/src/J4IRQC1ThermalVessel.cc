@@ -14,7 +14,7 @@
 
 #include "G4Tubs.hh"
 #include <math.h>
-
+#include "J4IRQC1ParameterList.hh"
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
@@ -54,6 +54,12 @@ void J4IRQC1ThermalVessel::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
+  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  G4double qc1InnerRadius = qc1List->GetQC1CoolingRadius();
+  G4double qc1ThermalVesselRadius = qc1List->GetQC1ThermalVesselRadius();
+  G4double qc1ThermalVesselThickness=qc1List->GetQC1ThermalVesselThick();
+  G4double qc1ZLength     = qc1List->GetQC1ZLength();
+  G4String qc1Material    = qc1List->GetQC1ThermalVesselMaterial();
   	
     // MakeSolid ---------------
     G4String name( GetName() );
@@ -64,17 +70,24 @@ void J4IRQC1ThermalVessel::Assemble()
     //		_QC1INRADIUS_THERMALVESSEL_+_QC1THICK_THERMALVESSEL_,
     //            _QC1ZLEN_/2., 
     //		0, twopi);  
+    //     G4VSolid *qc1 = new G4Tubs( name, 
+    //    		_QC1INRADIUS_COOLING_,
+    //    		_QC1INRADIUS_THERMALVESSEL_+_QC1THICK_THERMALVESSEL_,
+    //                _QC1ZLEN_/2., 
+    //    		0, twopi);  
      G4VSolid *qc1 = new G4Tubs( name, 
-    		_QC1INRADIUS_COOLING_,
-    		_QC1INRADIUS_THERMALVESSEL_+_QC1THICK_THERMALVESSEL_,
-                _QC1ZLEN_/2., 
+    		qc1InnerRadius,
+    		qc1ThermalVesselRadius+qc1ThermalVesselThickness,
+                qc1ZLength/2., 
     		0, twopi);  
+
                                        
     SetSolid(qc1);	// Don't forgat call it!
     Register(qc1);
 
     // MakeLogicalVolume -------------
-    MakeLVWith(OpenMaterialStore()->Order(_QC1MAT_THERMALVESSEL_));
+    //    MakeLVWith(OpenMaterialStore()->Order(_QC1MAT_THERMALVESSEL_));
+     MakeLVWith(OpenMaterialStore()->Order(qc1Material));
     // SetVisAttribute ---------------
     PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(0, 0, 1));
 

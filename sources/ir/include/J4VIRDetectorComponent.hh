@@ -14,6 +14,7 @@
 
 #include "J4VDetectorComponent.hh"
 #include "J4IRMaterialStore.hh"
+#include "J4IRParameterList.hh"
 
 //=====================================================================
 //---------------------
@@ -30,19 +31,33 @@ public:
                            G4int                 nclones   = 1,
                            G4int                 nbrothers = 1, 
                            G4int                 me        = 0,
-                           G4int                 copyno    = -1 );
+                           G4int                 copyno    = -1,
+			     G4bool  reflection=FALSE);
 
   J4VIRDetectorComponent( const J4VIRDetectorComponent &orig, 
                                         G4int                    copyno);
 
   virtual ~J4VIRDetectorComponent();
+  virtual void  InstallIn(J4VComponent *mother,
+                          G4RotationMatrix     *prot  = 0,
+                          const G4ThreeVector  &tlate = 0 );
+
+  virtual G4RotationMatrix* GetRotation();
+  virtual G4ThreeVector&  GetTranslation();
 
 protected:    
   J4VMaterialStore* 	 OpenMaterialStore();
+  J4IRParameterList*     OpenParameterList() { return J4IRParameterList::GetInstance(); }
   
 private:
   static J4IRMaterialStore* fMaterialStore;
   static G4String fSubGroup;
+  static J4IRParameterList*  fParameterList;
+  G4bool fReflection   ;
+
+private:
+  virtual void Assemble()=0;
+  virtual void Cabling()=0;
 
 };
 

@@ -15,7 +15,7 @@
 //*************************************************************************
 
 #include "J4VMField.hh"
-#include "J4IRQC1Parameter.hh"
+//#include "J4IRQC1Parameter.hh"
 
 //=====================================================================
 //---------------------
@@ -26,6 +26,7 @@ class J4IRQC1MField : public J4VMField {
 
 public:
   J4IRQC1MField(G4double beamE, G4double k);
+  J4IRQC1MField(G4double beamE, G4double grad, G4String tag);
   virtual ~J4IRQC1MField();
 
   void GetLocalFieldValue(G4ThreeVector& lpos,
@@ -33,7 +34,9 @@ public:
   void GetLocalValidBox(G4double* Lpos);
 
 private:  
-
+  G4double fqc1ZLength;
+  G4double fqc1InnerRadius;
+  G4double fqc1Thickness;
   G4double fGradient;
 
 };

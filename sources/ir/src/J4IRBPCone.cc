@@ -64,6 +64,18 @@ void J4IRBPCone::Assemble()
     G4double rmax2 = bpList->GetBPDrumRadius()+bpList->GetBPDrumThick();
     G4double zlen  = bpList->GetBPDrumZPosition()-bpList->GetBPIPZLength();
   	
+    std::cout << " J4IRBPCone. " << std::endl;
+    std::cout << " IPRadius=" << bpList->GetBPIPRadius() ;
+    std::cout << " IPThick=" << bpList->GetBPIPThick();
+    std::cout << " DrumRadius=" << bpList->GetBPDrumRadius() ;
+    std::cout << " DrumThick=" << bpList->GetBPDrumThick();
+    std::cout << std::endl;
+    std::cout << " DrumZPosition=" << bpList->GetBPDrumZPosition() ;
+    std::cout << " IPZLength=" << bpList->GetBPIPZLength();
+    std::cout << std::endl;
+    std::cout << " rmax=" << rmax1 << " rmax2=" << rmax2 ;
+    std::cout << " zlen=" << zlen << std::endl;
+
     // MakeSolid ---------------
     G4String ipconename( GetName() );
     ipconename += ".ipcone";

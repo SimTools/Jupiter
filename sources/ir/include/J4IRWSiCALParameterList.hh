@@ -58,9 +58,11 @@ public:
   inline G4double GetWSiCAL1Radius() const 
   { return fbpList->GetBPDrumRadius()+fbpList->GetBPDrumThick(); }
   inline G4double GetWSiCAL1Thick() const
-  { return GetWSiCAL1Radius()/tan(50.*mrad)*tan(200.*mrad)-GetWSiCAL1Radius();}
+  { return GetWSiCAL1Radius()/
+    tan(50.*mrad)*tan(fList->GetIRThetaMax())-GetWSiCAL1Radius();}
   inline G4double GetWSiCAL1ZLength() const
-  { return fList->GetIRSupportInnerRadius()/tan(200.*mrad)
+  { return fList->GetIRSupportInnerRadius()/
+    tan(fList->GetIRThetaMax())
       -GetWSiCAL1Radius()/tan(50.*mrad); }
   inline G4double GetWSiCAL1ZPosition() const
   { return GetWSiCAL1Radius()/tan(50.*mrad); }
