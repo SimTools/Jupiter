@@ -25,7 +25,7 @@
 #include "J4CALSD.hh"
 #include "G4Sphere.hh"
 #include "J4Timer.hh"
-#include "TVAddress.hh"
+#include "J4CALAddress.hh"
 #include "J4CALParameterList.hh"
 #include <utility>
 
@@ -148,7 +148,7 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
   G4double  edep  = GetEnergyDeposit();
   const G4ThreeVector&  Xcm   = GetPrePosition() * GetEnergyDeposit(); // energy-weighted position vector
 
-  G4int cellID = TVAddress::GetCellID( coneID, towerID, miniConeID, miniTowerID, layerID, subLayerID, isEM );
+  G4int cellID = J4CALAddress::GetCellID( coneID, towerID, miniConeID, miniTowerID, layerID, subLayerID, isEM );
   
   // check if the cell is already hit
   typedef std::multimap< G4int, J4CALHit* >::iterator MI;
