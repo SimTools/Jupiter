@@ -131,7 +131,7 @@ G4int J4CALAddress::GetCellLayerID( G4int cellID, G4bool isEM )
   if ( isEM ) {
     layerID  = ( cellID / nCones / nTowers / nIsEM / nEMMiniCones / nEMMiniTowers ) % nEMLayers;
   } else {
-    layerID  = ( cellID / nCones / nTowers / nIsEM / nHDMiniCones / nHDMiniTowers ) % nHDLayers - nEMLayers;
+    layerID  = ( cellID / nCones / nTowers / nIsEM / nHDMiniCones / nHDMiniTowers ) % nHDLayers;
   }
   return layerID;
 }
