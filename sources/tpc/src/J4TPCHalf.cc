@@ -78,7 +78,11 @@ void J4TPCHalf::Assemble()
 #if 1
     fLayer = new J4TPCLayer(this, 1, list->GetNlayers(), 0);
     Register(fLayer);
-    fLayer->InstallIn(this);
+    G4ThreeVector tlate(0., 0., list->GetCentralMembraneHalfThick() / 2
+                              - list->GetEndcapHalfThick()
+                              - list->GetPadPlaneHalfThick());
+
+    fLayer->InstallIn(this, 0, tlate);
     SetDaughter(fLayer);
 #endif
     // Install DriftRegion       //

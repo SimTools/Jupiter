@@ -105,14 +105,13 @@ void J4TPCLayer::Cabling()
 
 void J4TPCLayer::InstallIn(J4VComponent       *,
                           G4RotationMatrix    *,
-                          const G4ThreeVector &) 
+                          const G4ThreeVector &tlate) 
 { 
   Assemble();			// You MUST call Assemble(); at first.
   				// 
   
   // Placement function into mother object ... 
-  
-  SetPVPlacement();
+    SetPVPlacement(0, tlate);
 
   if (!GetSD()) Cabling(); 
   

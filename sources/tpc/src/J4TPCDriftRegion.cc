@@ -88,8 +88,9 @@ void J4TPCDriftRegion::Assemble()
 #else
       fLayers [i] = new J4TPCLayer(this, 1, nlayers, i);
 #endif
+      G4ThreeVector tlate(0., 0., 0.);
       Register(fLayers [i]);
-      fLayers [i]->InstallIn(this);  
+      fLayers [i]->InstallIn(this, 0, tlate);  
       
       SetDaughter(fLayers[i]);
     }  
