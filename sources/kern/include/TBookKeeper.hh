@@ -10,9 +10,13 @@
 //*     
 //* (Update Record)
 //*	2001/03/27  K.Hoshina	Original version.
+//*	2004/06/14  K.Fujii	Rewritten with stl.
 //*************************************************************************
 
-#include "./vector"
+#include <vector>
+#include <utility>
+#include <algorithm>
+#include <functional>
 #include "G4ios.hh"
 
 
@@ -21,31 +25,19 @@
 // class definition
 //---------------------
 
-class TBookKeeper 
-{	// abstruct class
-
+class TBookKeeper {	// abstruct class
 private:
+  typedef std::pair<void *, void *> TPair;
 
-  class TPair 
-  { 
-   public:
-     TPair(void *parent, void *child) 
-           :fParent(parent), fChild(child) {}
-     virtual ~TPair(){}
-
-     inline void SetPair (void *parent, void *child) 
-                        {
-                           fParent = parent;
-                           fChild  = child;
-                        }
-   public:
-     void *fParent;
-     void *fChild;    
-  };   
+  struct EqualTo : public std::binary_function<TPair, void *, bool> {
+     bool operator()(TPair pair, void *child) const
+     {
+        return (pair.second == child);
+     }
+  };
 
 public:
-
-  typedef std::vector<TBookKeeper::TPair* > TBook;
+  typedef std::vector<TPair> TBook;
 
   TBookKeeper()
   {
@@ -79,30 +71,20 @@ private:
 void TBookKeeper::Register(void *parent, void *child) 
 {
    TPair* pair = new TPair(parent, child);
-   fBook.push_back(pair); 
+   fBook.push_back(*pair); 
 }
 
 bool TBookKeeper::Deregister(void *child) 
 {
    if (!child) return false;
 
-   unsigned int i;
-   for (i=0; i<fBook.size();i++) {
-       if (fBook[i]) {
-           if (fBook[i]->fChild != child) continue;
-           delete fBook[i]; 
-#if 0
-           unsigned int j;
-           for (j=i; j<fBook.size()-1; j++) {
-               fBook[j] = fBook[j+1];
-           } 
-#else
-           fBook[i] = 0;
-#endif
-	   return true;
-
-       }
+   TBook::iterator ret = std::find_if(fBook.begin(), fBook.end(), 
+                                   std::bind2nd(EqualTo(), child));
+   if (ret != fBook.end()) {
+      fBook.erase(ret);
+      return true;
    }
+   
 #ifdef __DEBUG__
    std::cerr << " TBookKeeper::Deregister: The child ("
           << child
@@ -113,13 +95,9 @@ bool TBookKeeper::Deregister(void *child)
 
 void* TBookKeeper::GetParent(void *child) 
 {
-   unsigned int i;
-   for (i=0; i<fBook.size(); i++) {
-       if (fBook[i]) {
-           if (fBook[i]->fChild != child) continue;
-           return fBook[i]->fParent;
-       }
-   }
+   TBook::iterator ret = std::find_if(fBook.begin(), fBook.end(), 
+                                   std::bind2nd(EqualTo(), child));
+   if (ret != fBook.end()) return ret->first;
 #ifdef __DEBUG__
    std::cerr << " TBookKeeper::GetParent: You ("
           << child
@@ -129,5 +107,3 @@ void* TBookKeeper::GetParent(void *child)
 }
 
 #endif
-
-
