@@ -1,0 +1,66 @@
+# ===========================================================
+#   set beam line parameters
+# ===========================================================
+
+# // set beam 
+/jupiter/generator ParticleBeam 
+
+# // set particle
+#/jupiter/beam/particle geantino 
+/jupiter/beam/particle mu-
+
+# // Multiple scattering 
+#/process/inactivate msc
+#/process/activate msc
+
+# // set momentum
+#/jupiter/beam/energy 100 GeV
+/jupiter/beam/energy 250 GeV
+#
+# // set momentum resolution in dp/p
+#/jupiter/beam/resolution 0.02
+#
+# // set max azimuthal angle
+#/jupiter/beam/theta 0.001 mrad
+
+# // set beamtype 
+# // 0 = isotropic mode 
+# // 1 = gaussian mode 
+#/jupiter/beam/beamtype 1 
+/jupiter/beam/beamtype 0 
+
+# // set convergence mode 
+# // 0 = divergence mode 
+# // 1 = injected from surrounding sphare to beam position 
+/jupiter/beam/convergence 0
+
+# // set range of costheta 
+/jupiter/beam/mincostheta -0.7
+/jupiter/beam/maxcostheta 0.7
+
+# // set beam position profile 
+# // 0 = gaussian profile 
+# // 1 = flat profile 
+/jupiter/beam/flatpos 0 
+
+# // set beam position 
+/jupiter/beam/position 0. 0. 0. m
+
+# // set beam position sigma 
+/jupiter/beam/xpossig 0. cm
+/jupiter/beam/ypossig 0. cm
+/jupiter/beam/zpossig 0. cm
+
+# // set beam direction 
+#/jupiter/beam/direction 1. -0.002 0. 
+
+# // set beam direction sigma 
+#/jupiter/beam/directionsig 0.004
+#/jupiter/beam/directionsig 0
+
+# // number of vertices (jet)
+/jupiter/beam/numberOfVertices 1
+
+# // number of particles in a vertices (jet)
+/jupiter/beam/numberOfParticles 1 
+
