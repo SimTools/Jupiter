@@ -24,7 +24,7 @@ CURRDIR	= .
 
 #SUBDIRS = kern ir bd cal cdc it vtx sol main
 #SUBDIRS = kern ir bd cal cdc it sol lcexp vtx ct main
-SUBDIRS = kern ir bd cal cdc tpc it sol lcexp vtx ct mud main
+SUBDIRS = kern lcexp ir bd cal cdc tpc it sol vtx ct mud main
 
 CPPFLAGS += -D__HOSHINA__
 
