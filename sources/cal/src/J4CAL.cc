@@ -116,9 +116,10 @@ void J4CAL::InstallIn( J4VComponent         *mother,
                        G4RotationMatrix     *prot, 
                        const G4ThreeVector  &tlate )
 { 
-  G4int clockID = -1;
-  J4Timer timer( clockID, "J4CAL", "InstallIn()" );
+  static G4int timerID = -1;
+  J4Timer timer( timerID, "J4CAL", "InstallIn()" );
   timer.Start(); 
+
   Assemble();			// You MUST call Assemble(); at first.
   
   // Placement function into mother object...
