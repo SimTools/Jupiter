@@ -1150,6 +1150,37 @@ G4double J4TwistedTubs::DistanceToOut( const G4ThreeVector& p ) const
 }
 
 //=====================================================================
+//* StreamInfo --------------------------------------------------------
+
+G4std::ostream& J4TwistedTubs::StreamInfo(G4std::ostream& os) const
+{
+  //
+  // Stream object contents to an output stream
+  //
+  os << "-----------------------------------------------------------\n"
+     << "    *** Dump for solid - " << GetName() << " ***\n"
+     << "    ===================================================\n"
+     << " Solid type: J4TwistedTubs\n"
+     << " Parameters: \n"
+     << "    -ve end Z              : " << fEndZ[0]/mm << " mm \n"
+     << "    +ve end Z              : " << fEndZ[1]/mm << " mm \n"
+     << "    inner end radius(-ve z): " << fEndInnerRadius[0]/mm << " mm \n"
+     << "    inner end radius(+ve z): " << fEndInnerRadius[1]/mm << " mm \n"
+     << "    outer end radius(-ve z): " << fEndOuterRadius[0]/mm << " mm \n"
+     << "    outer end radius(+ve z): " << fEndOuterRadius[1]/mm << " mm \n"
+     << "    inner radius (z=0)     : " << fInnerRadius/mm << " mm \n"
+     << "    outer radius (z=0)     : " << fOuterRadius/mm << " mm \n"
+     << "    twisted angle          : " << fPhiTwist/degree << " degrees \n"
+     << "    inner stereo angle     : " << fInnerStereo/degree << " degrees \n"
+     << "    outer stereo angle     : " << fOuterStereo/degree << " degrees \n"
+     << "    phi-width of a piece   : " << fDPhi/degree << " degrees \n"
+     << "-----------------------------------------------------------\n";
+
+  return os;
+}
+
+
+//=====================================================================
 //* DiscribeYourselfTo ------------------------------------------------
 
 void J4TwistedTubs::DescribeYourselfTo (G4VGraphicsScene& scene) const 
