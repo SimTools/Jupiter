@@ -11,6 +11,16 @@
 //
 //                                K.Hoshina , 2001
 // ====================================================================
+
+//#define __INSTALLIR__  
+//#define __INSTALLBD__  
+//#define __INSTALLVTX__  
+//#define __INSTALLIT__  
+#define __INSTALLCDC__  
+//#define __INSTALLCAL__  
+#define __INSTALLSOL__  
+
+
 #ifdef __USEISOCXX__
 #include <sstream>
 #else
@@ -28,7 +38,7 @@
 #include "J4TrackingAction.hh"
 #include "TBookKeeper.hh"
 
-#if 0
+#ifdef __INSTALLVTX__
 #include "J4ParameterListStore.hh"
 #include "J4ParameterList.hh"
 #include "J4VTXParameterList.hh"
@@ -50,14 +60,6 @@
 #include "J4CDC.hh"
 #include "J4CAL.hh"
 #include "J4SOL.hh"
-
-//#define __INSTALLIR__  
-//#define __INSTALLBD__  
-//#define __INSTALLVTX__  
-//#define __INSTALLIT__  
-#define __INSTALLCDC__  
-//#define __INSTALLCAL__  
-#define __INSTALLSOL__  
 
 TBookKeeper* TBookKeeper::fgBookKeeper = new TBookKeeper(); 
 
@@ -82,7 +84,7 @@ int main(int argc, char** argv)
   G4RunManager* runManager = new G4RunManager;  G4cout << G4endl;
 //  runManager->SetVerboseLevel(2);
 
-#if 0
+#ifdef __INSTALLVTX__
   J4ParameterListStore *paramlistStore = new J4ParameterListStore();
 
   //---------------------------------------------
