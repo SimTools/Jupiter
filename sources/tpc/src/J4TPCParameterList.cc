@@ -48,14 +48,22 @@ J4TPCParameterList::~J4TPCParameterList()
 //* SetMaterials ------------------------------------------------------
 void J4TPCParameterList::SetMaterials()
 {
+#if 1
    fTPCMaterial             = "P10";
    fLayerMaterial           = "P10";
-   fSupportTubMaterial      = "CarbonFiber";
-   fEndcapMaterial          = "CarbonFiber";
-   fCentralMembraneMaterial = "Copper";
    fPadPlaneMaterial        = "P10";
    fPadRowMaterial          = "P10";
-   fPadMaterial             = "Copper";
+#else
+   fTPCMaterial             = "vacuum";
+   fLayerMaterial           = "vacuum";
+   fPadPlaneMaterial        = "vacuum";
+   fPadRowMaterial          = "vacuum";
+#endif
+   fInnerSupportTubMaterial = "InShellC";
+   fOuterSupportTubMaterial = "OutShellC";
+   fEndcapMaterial          = "EndCu";
+   fCentralMembraneMaterial = "Copper";
+   fPadMaterial             = "EndCu";
 }
 
 //=====================================================================
@@ -70,29 +78,28 @@ void J4TPCParameterList::SetParameters()
    fEndcapHalfThick     = 1.*cm;
                                                                                 
    // SupportTub
-   fSupportTubHalfThick = 0.25*cm;
+   fInnerSupportTubHalfThick = 2.1075*cm;
+   fOuterSupportTubHalfThick = 4.1175*cm;
 
    // Layer
 #if 1  
    fNlayers             = 200;
    fLayerThick          = 0.001*mm;
-   fLayerRspacing       = 5.6*mm;
-   fFirstLayerInnerR    = 4.9*mm;
+   fFirstLayerInnerR    = 5.0*mm;
 #else
    fNlayers             = 5;
    fLayerThick          = 0.001*mm;
-   fLayerRspacing       = 20*cm;
    fFirstLayerInnerR    = 10.*cm;
 #endif
 
    // CentralMembrane
-   fCentralMembraneHalfThick = 0.15*mm;
+   fCentralMembraneHalfThick = 0.05*mm;
 
    // PadPlane 
-   fPadPlaneHalfThick   = 1.*cm;
+   fPadPlaneHalfThick   = 1.5*cm;
 
    // PadRow
-   fNpadRows           = 2;
+   fNpadRows            = 2;
 
    // Pad
    fNfirstPads          = 6;
@@ -109,8 +116,8 @@ void J4TPCParameterList::SetVisAttributes()
    fEndcapVisAtt          = TRUE;
    fSupportTubVisAtt      = TRUE;
    fCentralMembraneVisAtt = TRUE;
-   fPadPlaneVisAtt        = FALSE;
-   fPadRowVisAtt          = FALSE;
+   fPadPlaneVisAtt        = TRUE;
+   fPadRowVisAtt          = TRUE;
    fPadVisAtt             = TRUE;
 }
 

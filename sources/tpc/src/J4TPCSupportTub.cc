@@ -53,22 +53,24 @@ J4TPCSupportTub::~J4TPCSupportTub()
 
 void J4TPCSupportTub::Assemble() 
 {   
-   if(!GetLV()){
-      J4TPCParameterList *list = OpenParameterList();
-      // MakeSolid ----------//
-      OrderNewTubs (fRmin, fRmax, fLen, fTotalPhi);
-    
-      // MakeLogicalVolume --//
-      G4String material = list->GetSupportTubMaterial();
-      MakeLVWith(OpenMaterialStore()->Order(material));
-    
-       // SetVisAttribute ----//
-      PaintLV(list->GetSupportTubVisAtt(), 
-              list->GetSupportTubColor());
-  	
-      // Install daughter PV //
+  if(!GetLV()){
+    J4TPCParameterList *list = OpenParameterList();
+    // MakeSolid ----------//
+    OrderNewTubs (fRmin, fRmax, fLen, fTotalPhi);
+   
+    // MakeLogicalVolume --//
+    G4String material = GetMyID() ?  list->GetInnerSupportTubMaterial() : 
+                                     list->GetOuterSupportTubMaterial() ; 
 
-      // * No Daughter!! 
+    MakeLVWith(OpenMaterialStore()->Order(material));
+    
+    // SetVisAttribute ----//
+    PaintLV(list->GetSupportTubVisAtt(), 
+            list->GetSupportTubColor());
+  	
+   // Install daughter PV //
+
+   // * No Daughter!! 
        
   }
 }

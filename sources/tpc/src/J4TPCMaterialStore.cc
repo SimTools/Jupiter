@@ -44,6 +44,29 @@ G4Material* J4TPCMaterialStore::Create(const G4String &name,
     //  const G4double expTemp= STP_Temperature+20.*kelvin; 
 #endif  
   }
+                                                                                
+  
+  if (name == "InShellC") {
+    G4double A, Z, density;
+    G4String name;
+
+    A= 12.011 *g/mole;
+    density = 13.17 *g/cm3;
+    G4Material *InShellC = new G4Material(name="InShellC", Z=6., A, density);
+
+    material = InShellC;
+  }
+
+  if (name == "OutShellC") {
+    G4double A, Z, density;
+    G4String name;
+
+    A= 12.011 *g/mole;
+    density = 8.815 *g/cm3;
+    G4Material *OutShellC = new G4Material(name="OutShellC", Z=6., A, density);
+
+    material = OutShellC;
+  }
 
   if (name == "Copper") {
     G4double A, Z, density;
@@ -54,6 +77,18 @@ G4Material* J4TPCMaterialStore::Create(const G4String &name,
     G4Material *Copper = new G4Material(name="Copper", Z=29., A, density);
 
     material = Copper;
+  }   
+
+
+  if (name == "EndCu") {
+    G4double A, Z, density;
+    G4String name;
+
+    A = 63.546 *g/mole;
+    density = 7.716 *g/cm3;
+    G4Material *EndCu = new G4Material(name="EndCu", Z=29., A, density);
+
+    material = EndCu;
   }   
 
 

@@ -56,7 +56,8 @@ class J4TPCParameterList : public J4VParameterList
    inline G4double GetEndcapDeltaPhi()        const { return fTPCDeltaPhi;     }
                                                                                 
    //*SupportTub -------------------------------------------------------------
-   inline G4double GetSupportTubHalfThick()   const { return fSupportTubHalfThick;}
+   inline G4double GetInnerSupportTubHalfThick()   const { return fInnerSupportTubHalfThick;}
+   inline G4double GetOuterSupportTubHalfThick()   const { return fOuterSupportTubHalfThick;}
    inline G4double GetOuterSupportTubInnerR() const;
    inline G4double GetOuterSupportTubOuterR() const;
    inline G4double GetInnerSupportTubInnerR() const;
@@ -107,12 +108,13 @@ class J4TPCParameterList : public J4VParameterList
    inline G4double GetLayerInnerR(G4int i)    const; 
    inline G4double GetLayerOuterR(G4int i)    const; 
    inline G4double GetLayerThick()            const { return fLayerThick;      }
-   inline G4double GetLayerRspacing()         const { return fLayerRspacing;   }
+   inline G4double GetLayerRspacing()         const;
    inline G4double GetFirstLayerInnerR()      const { return fFirstLayerInnerR;}
                  
    //*materials --------------------------------------------------------------
    inline G4String GetTPCMaterial()           const { return fTPCMaterial;     }
-   inline G4String GetSupportTubMaterial()    const { return fSupportTubMaterial; }
+   inline G4String GetInnerSupportTubMaterial() const { return fInnerSupportTubMaterial; }
+   inline G4String GetOuterSupportTubMaterial() const { return fOuterSupportTubMaterial; }
    inline G4String GetEndcapMaterial()        const { return fEndcapMaterial;  }
    inline G4String GetLayerMaterial()         const { return fLayerMaterial;   }
    inline
@@ -152,13 +154,13 @@ class J4TPCParameterList : public J4VParameterList
    //*Layer -------------------------------------------------------------------
    inline void SetNlayers(G4int n)                    { fNlayers = n;          }
    inline void SetLayerThick(G4double x)              { fLayerThick = x;       }
-   inline void SetLayerRspacing(G4double x)           { fLayerRspacing = x;    }
    inline void SetFirstLayerInnerR(G4double x)        { fFirstLayerInnerR = x; } 
    //*Endcap -----------------------------------------------------------------
    inline void SetEndcapHalfThick(G4double x)         { fEndcapHalfThick = x;  }
                                                                                 
    //*SupportTub -------------------------------------------------------------
-   inline void SetSupportTubHalfThick(G4double x)     { fSupportTubHalfThick = x; }
+   inline void SetOuterSupportTubHalfThick(G4double x)     { fOuterSupportTubHalfThick = x; }
+   inline void SetInnerSupportTubHalfThick(G4double x)     { fInnerSupportTubHalfThick = x; }
     
    //*CentralMembrane --------------------------------------------------------
    inline void SetCentralMembraneHalfThick(G4double x){ fCentralMembraneHalfThick = x;  }
@@ -175,7 +177,8 @@ class J4TPCParameterList : public J4VParameterList
    //*Materials --------------------------------------------------------------
    inline void SetTPCMaterial(const G4String &name)   { fTPCMaterial = name;   }
    inline void SetLayerMaterial(const G4String &name) { fLayerMaterial = name; }
-   inline void SetSupportTubMaterial(const G4String &name) { fSupportTubMaterial = name; }
+   inline void SetInnerSupportTubMaterial(const G4String &name) { fInnerSupportTubMaterial = name; }
+   inline void SetOuterSupportTubMaterial(const G4String &name) { fOuterSupportTubMaterial = name; }
    inline void SetEndcapMaterial(const G4String &name){ fEndcapMaterial = name;}
    inline void SetCentralMembraneMaterial(const G4String &name) { fCentralMembraneMaterial = name; }
    inline void SetPadPlaneMaterial(const G4String &name) { fPadPlaneMaterial = name; }
@@ -218,7 +221,8 @@ class J4TPCParameterList : public J4VParameterList
    // material
    G4String  fTPCMaterial;
    G4String  fLayerMaterial;
-   G4String  fSupportTubMaterial;
+   G4String  fInnerSupportTubMaterial;
+   G4String  fOuterSupportTubMaterial;
    G4String  fEndcapMaterial;
    G4String  fCentralMembraneMaterial;
    G4String  fPadPlaneMaterial;
@@ -255,7 +259,8 @@ class J4TPCParameterList : public J4VParameterList
    G4double  fEndcapHalfThick;
                                                                                 
    // SupportTub
-   G4double  fSupportTubHalfThick;
+   G4double  fInnerSupportTubHalfThick;
+   G4double  fOuterSupportTubHalfThick;
 
    // CentralMembrane
    G4double  fCentralMembraneHalfThick;
@@ -272,7 +277,6 @@ class J4TPCParameterList : public J4VParameterList
    // Layer
    G4int     fNlayers;
    G4double  fLayerThick;
-   G4double  fLayerRspacing;
    G4double  fFirstLayerInnerR;
    
 };
@@ -312,7 +316,7 @@ G4double J4TPCParameterList::GetEndcapOuterR() const
                                                                                 
 G4double J4TPCParameterList::GetOuterSupportTubInnerR() const
 {
-   return GetTPCOuterR() - 2 * fSupportTubHalfThick;
+   return GetTPCOuterR() - 2 * fOuterSupportTubHalfThick;
 }
                                                                                 
 G4double J4TPCParameterList::GetOuterSupportTubOuterR() const
@@ -327,7 +331,7 @@ G4double J4TPCParameterList::GetInnerSupportTubInnerR() const
                                                                                 
 G4double J4TPCParameterList::GetInnerSupportTubOuterR() const
 {
-   return GetTPCInnerR() + 2 * fSupportTubHalfThick;
+   return GetTPCInnerR() + 2 * fInnerSupportTubHalfThick;
 }
 
 G4double J4TPCParameterList::GetSupportTubHalfZ() const
@@ -345,10 +349,16 @@ G4double J4TPCParameterList::GetCentralMembraneOuterR() const
    return GetOuterSupportTubInnerR();
 }
                                                                                 
+G4double J4TPCParameterList::GetLayerRspacing() const
+{
+   return (GetOuterSupportTubInnerR() - GetInnerSupportTubOuterR() 
+           - fFirstLayerInnerR) / fNlayers;
+}
+
 G4double J4TPCParameterList::GetLayerInnerR(G4int ilayer) const
 {
-   return GetTPCInnerR() + GetSupportTubHalfThick() * 2 +
-          ilayer * fLayerRspacing + fFirstLayerInnerR;
+   return GetInnerSupportTubOuterR() +
+          ilayer * GetLayerRspacing() + fFirstLayerInnerR;
 } 
 
 G4double J4TPCParameterList::GetLayerOuterR(G4int ilayer) const
