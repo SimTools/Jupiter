@@ -96,15 +96,15 @@ J4VComponent::J4VComponent(const G4String&     groupname,
 J4VComponent::~J4VComponent()
 {
 #if 0
-G4cerr << "J4VComponent::destructor called for ("
-     << (void *)this
-     << ") "
-     << GetName() << G4endl;
-#endif
-  if (Deregister(fSolid))  delete fSolid;
-  if (Deregister(fPV))     delete fPV;
-  if (Deregister(fLV->GetSensitiveDetector()))  delete fLV->GetSensitiveDetector();
-  if (Deregister(fLV))     delete fLV;
+   if (Deregister(fSolid))  delete fSolid;
+   if (Deregister(fPV))     delete fPV;
+   if (fLV->GetSensitiveDetector()) { 
+      if (Deregister(fLV->GetSensitiveDetector())) {
+          delete fLV->GetSensitiveDetector();
+      }
+   }
+   if (Deregister(fLV))     delete fLV;
+#endif 
 }
 
 
