@@ -89,6 +89,11 @@ void J4CTParameterList::SetParameters()
    fFirstLayerRadius    = 45.0*cm;
    fLastLayerRadius     = 155.0*cm;
 
+#ifdef __GLD_V1__
+   fFirstLayerRadius    = 40.0*cm;
+   fLastLayerRadius     = 205.0*cm;
+#endif
+
    fLayerRspacing       = (fLastLayerRadius- fFirstLayerRadius)/(G4double)fNlayers;
 
 }

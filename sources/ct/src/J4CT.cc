@@ -45,7 +45,6 @@ J4CT::J4CT(J4VDetectorComponent *parent,
 
 J4CT::~J4CT()
 {
-  G4cout << " J4CT destructor was called...." << G4endl;
 
   if (Deregister(fSupportTub)) delete fSupportTub;
   if (Deregister(fOuterCylinder)) delete fOuterCylinder;
@@ -73,8 +72,6 @@ J4CT::~J4CT()
 
 void J4CT::Assemble() 
 {   
-  G4cout << " J4CT::Assemble was called " << G4endl; 
-
   if(!GetLV()){
   	
     J4CTParameterList *list = OpenParameterList(); 
