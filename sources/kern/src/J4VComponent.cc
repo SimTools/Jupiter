@@ -29,6 +29,7 @@
 #include "J4SubtractionSolid.hh"
 #include "G4Box.hh"
 #include "J4Timer.hh"
+#include "J4CommandArguments.hh"
 
 #define __NMAXFAMILYMEMBERS__  500000
 
@@ -277,7 +278,21 @@ void J4VComponent::SetName(const G4String&       name,
   } 
   J4Named::SetName(newname);
 #if 1
-  std::cerr << " My name is " << GetName() << std::endl;
+  if ( J4CommandArguments::VerboseLevel() > 10 ) {
+    std::cerr << " My name is " << GetName() << std::endl;
+  }
+  else if ( J4CommandArguments::VerboseLevel() > 5 ) {
+    const char *name=GetName().data();
+    int ncol=0;
+    for(int k=0; k<strlen(name);k++) {
+       if ( name[k] == '/' ) {
+          ncol++;
+       }          
+    }  
+    if ( ncol < J4CommandArguments::VerboseLevel() - 4 ) { 
+      std::cerr << " My name is " << GetName() << std::endl;
+    }
+  }
 #endif
 }
 
@@ -663,7 +678,8 @@ G4String J4VComponent::GetNewName(const G4String &middlename, // component class
   char tmpstr[1024];
   std::strstream ost(tmpstr, 1024);
 #endif
-  if (parentname) ost << *parentname << ":";
+//  if (parentname) ost << *parentname << ":";
+  if (parentname) ost << *parentname << "/";
   ost << middlename;
   if (width1) ost << std::setw(width1) << std::setfill('0') << myID;
   if (width2) ost << "_" 

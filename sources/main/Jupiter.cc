@@ -12,18 +12,18 @@
 //                                K.Hoshina , 2001
 // ====================================================================
 
-//#define __INSTALLIR__  
-//#define __INSTALLBD__  
-//#define __INSTALLVTX__  
-//#define __INSTALLIT__  
+#define __INSTALLIR__  
+#define __INSTALLBD__  
+#define __INSTALLVTX__  
+#define __INSTALLIT__  
 #if 0
- #define __INSTALLCDC__  
+#define __INSTALLCDC__  
 #else
-//#define __INSTALLTPC__
+#define __INSTALLTPC__
 #endif
 #define __INSTALLCAL__  
-//#define __INSTALLSOL__  
-//#define __INSTALLMUD__  
+#define __INSTALLSOL__  
+#define __INSTALLMUD__  
 
 
 #ifdef __USEISOCXX__
@@ -43,6 +43,8 @@
 #include "J4TrackingAction.hh"
 #include "J4StackingAction.hh"
 #include "TBookKeeper.hh"
+
+#include "J4Timer.hh"
 
 #ifdef G4VIS_USE
 #include "J4VisManager.hh"
@@ -67,10 +69,18 @@
 #endif
 #endif
 
+#include "J4CommandArguments.hh"
+
 TBookKeeper* TBookKeeper::fgBookKeeper = new TBookKeeper(); 
 
 int main(int argc, char** argv) 
 {
+
+  if( ! J4CommandArguments::ParseArguments(argc, argv) ) {
+	exit(-1);
+  }
+
+  std::cerr << "Verbose level=" << J4CommandArguments::VerboseLevel() << std::endl;
 
   //-------------------------
   // Set random engine....
@@ -277,7 +287,7 @@ int main(int argc, char** argv)
   //*--------------------------------------------
   
     
-  if (argc==1) { 		// interactive session, if no arguments given
+  if (!J4CommandArguments::HasMacroFile()) { 		// interactive session, if no arguments given
 
 #ifdef USE_CSH_TERMINAL    
     // csh-like
@@ -298,7 +308,7 @@ int main(int argc, char** argv)
 
     G4UImanager* UImanager= G4UImanager::GetUIpointer();
     G4String command = "/control/execute ";
-    G4String fileName = argv[1];
+    G4String fileName = J4CommandArguments::GetMacroFileName();
     UImanager-> ApplyCommand(command+fileName);
 
   }
@@ -306,6 +316,8 @@ int main(int argc, char** argv)
   //-----------------------
   // terminating...
   //-----------------------
+  J4Timer::PrintAllAccumulatedTimes();
+
 
 #ifdef G4VIS_USE
   delete visManager;
