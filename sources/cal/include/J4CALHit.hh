@@ -11,8 +11,8 @@
 //*     
 //* (Update Record)
 //*	2001/02/18  K.Hoshina	Original version.
+//*     2004/08/30  Ono Hiroaki  Add J4CALHitlet class inside of J4CALHit
 //*************************************************************************
-
 #include "J4VHit.hh"
 #include "J4Output.hh"
 #include "G4THitsCollection.hh"
@@ -21,8 +21,9 @@
 
 //=========================================================================
 // TypeDef
-
+class TVAddress;
 class J4CALHit;
+class J4CALHitlet;
 typedef G4Allocator<J4CALHit> J4CALHitAllocator;
 typedef G4THitsCollection<J4CALHit> J4CALHitBuf;
 
@@ -36,115 +37,160 @@ class J4CALHit : public J4VHit {
 public:
   J4CALHit();
 
-  J4CALHit(
-           J4VComponent         *detector,
-           G4int                 ConeID,
-           G4int                 TowerID,
-           G4int                 MiniConeID,
-           G4int                 MiniTowerID,
-           G4int                 LayerID,
-           G4int                 SubLayerID,
-           G4bool                isBarrel,
-           G4bool                isEM,
-           G4double              edep,
-           G4double              tof,
-           const G4ThreeVector  &pre,
-           G4int                 mothertrackID,
-           G4int                 trackID,
-           G4ParticleDefinition *particle);
-
+  J4CALHit( J4VComponent* ptrDetector,
+	    //    G4int         preHitID,
+	    TVAddress*    ptrAddress,
+            G4double      edep,
+            G4double      tof,
+	    const G4ThreeVector& xcm );
+  
   virtual ~J4CALHit();
 
-  //inline J4CALHit(const J4CALHit& right){};
-  
-  //inline const J4CALHit& 
-  //     operator=(const J4CALHit& right);
+  inline void* operator new    ( size_t );
+  inline void  operator delete ( void* aHit );
 
-  inline void* operator new    (size_t);
-  inline void  operator delete (void* aHit);
-
-  virtual void Output(G4HCofThisEvent* HCTE);
+  virtual void Output( G4HCofThisEvent* HCTE );
   virtual void Draw();
   virtual void Print();
 
-  // getters
-  inline G4int  GetConeID()          const { return fConeID;        }
-  inline G4int  GetTowerID()         const { return fTowerID;       }
-  inline G4int  GetMiniConeID()      const { return fMiniConeID;    }
-  inline G4int  GetMiniTowerID()     const { return fMiniTowerID;   }
-  inline G4int  GetLayerID()         const { return fLayerID;       }
-  inline G4int  GetSubLayerID()      const { return fSubLayerID;    }
-  inline G4int  GetMotherTrackID()   const { return fMotherTrackID; }
-  inline G4int  GetTrackID()         const { return fTrackID;       }
-  inline G4bool IsBarrel()           const { return fIsBarrel;      }
-  inline G4bool IsEM()               const { return fIsEM;          }
-  inline G4double GetEnergyDeposit() const { return fEnergyDep;     }
-  inline G4double GetTof()           const { return fTof;           }
-  inline G4ThreeVector GetInjectionPoint() const { return fInjectionPoint; }
-  inline G4ParticleDefinition * GetParticle() const { return fParticle; }
+  // getter/setter
 
-  // setters 
-  inline void SetConeID(G4int n)           { fConeID        = n; }
-  inline void SetTowerID(G4int n)          { fTowerID       = n; }
-  inline void SetMiniConeID(G4int n)       { fMiniConeID    = n; }
-  inline void SetMiniTowerID(G4int n)      { fMiniTowerID   = n; }
-  inline void SetLayerID(G4int n)          { fLayerID       = n; }
-  inline void SetSubLayerID(G4int n)       { fSubLayerID    = n; }
-  inline void SetMotherTrackID(G4int n)    { fMotherTrackID = n; }
-  inline void SetTrackID(G4int n)          { fTrackID       = n; }
-  inline void SetEnergyDeposit(G4double x) { fEnergyDep     = x; }
-  inline void SetTof(G4double x)           { fTof           = x; }
-  inline void SetInjectionPoint(G4ThreeVector p) { fInjectionPoint = p; }
-  inline void SetParticle(G4ParticleDefinition *p) { fParticle     = p; }
-  inline void AccumulateEdep(G4double ed)  { fEnergyDep += ed; }
-  static void SetOutput(J4Output *output)  { fOutput=output; } 
-    
-private: 
-
-  static J4CALHitAllocator  fHitAllocator;
-  static J4Output          *fOutput;       // Pointer to Output Module
-
-  G4int          fConeID; 
-  G4int          fTowerID; 
-  G4int          fMiniConeID; 
-  G4int          fMiniTowerID; 
-  G4int          fLayerID; 
-  G4int          fSubLayerID; 
-  G4bool         fIsBarrel;
-  G4bool         fIsEM;
-  G4double       fEnergyDep;
-  G4double       fTof;
-  G4ThreeVector  fInjectionPoint;
-  G4int          fMotherTrackID;
-  G4int          fTrackID;
-  G4ParticleDefinition     *fParticle;
   
+  //  inline G4int         GetPreHitID()      const { return fPreHitID; }
+  //  inline TVAddress*    GetAddress()       const { return fAddress;  }
+  inline G4double      GetCellEdep() const { return fCellEdep; }
+  inline G4double      GetCellTof()  const { return fCellTof;  }
+  inline G4ThreeVector GetCellXcm()  const { return fCellXcm;  }
+ 
+  inline void SetAddress( TVAddress* a )     { fAddress   = a; }
+  inline void SetCellEdep( G4double x )      { fCellEdep  = x; }
+  inline void SetCellTof( G4double x )       { fCellTof   = x; }
+  inline void SetCellXcm( G4ThreeVector v )  { fCellXcm   = v; }
+
+  inline void AccumulateCellEdep( G4double ed )    { fCellEdep += ed; }
+  inline void AccumulateCellXcm( G4ThreeVector v ) { fCellXcm  += v;  }
+  static void SetOutput( J4Output* output )    { fgOutput = output; } 
+    
+  static J4CALHitAllocator  fgHitAllocator;
+  static J4Output*          fgOutput;       // Pointer to Output Module
+
+  class J4CALHitlet
+  {
+  public:
+    J4CALHitlet()
+      : fPreHitID(0), fAddress(0), fEdep(0), fTof(0), fXcm(0)
+    { }
+    
+    J4CALHitlet( G4int         preHitID,
+	      	 TVAddress*    ptrAddress,
+		 G4double      edep,
+                 G4double      tof,
+                 const G4ThreeVector& xcm )
+      : fPreHitID( preHitID ), fAddress( ptrAddress ), fEdep( edep ), fTof( tof ), fXcm( xcm )
+    { }
+    
+    ~J4CALHitlet() { }
+    //    inline void* operator new    ( size_t );
+    //    inline void  operator delete ( void* aHit );
+    //    virtual void Draw();                                         
+    //    virtual void Print();
+
+    // getter/setter
+    inline G4int         GetPreHitID()      const { return fPreHitID; }
+    //    inline TVAddress*    GetAddress()       const { return fAddress; }
+    inline G4double      GetEnergyDeposit() const { return fEdep; }
+    inline G4double      GetTof()           const { return fTof; }
+    inline G4ThreeVector GetXcm()           const { return fXcm; }
+
+    inline void SetPreHitID( G4int n )         { fPreHitID   = n; }
+    //  inline void SetAddress( TVAddress* a )     { fAddress    = a; }
+    inline void SetEnergyDeposit( G4double x ) { fEdep       = x; }
+    inline void SetXcm( G4ThreeVector v )      { fXcm        = v; }
+
+    inline void AccumulateEdep( G4double ed )    { fEdep   += ed; }
+    inline void AccumulateXcm( G4ThreeVector v ) { fXcm    += v;  }
+    inline void SetTof( G4double tof ) {
+      if ( fTof > tof ) fTof = tof;
+    }
+    
+  private:
+    G4int         fPreHitID;
+    TVAddress*    fAddress;
+    G4double      fEdep;
+    G4double      fTof;
+    G4ThreeVector fXcm;
+  };
+  
+  inline void AddHitlet( G4int         preHitID,
+      		         TVAddress*    ptrAddress,
+			 G4double      edep,
+			 G4double      tof,
+			 const G4ThreeVector& xcm )
+  {
+    fCellEdep += edep;
+    fCellXcm  += xcm;
+    J4CALHitlet* hitlet = new J4CALHitlet( preHitID, ptrAddress, edep, tof, xcm );
+    fHitlets.push_back( hitlet );
+  }
+  
+  inline void AddEdep( G4double edep )
+  {
+    fCellEdep += edep;
+    G4int lastHitlet = fHitlets.size() -1;
+    fHitlets[lastHitlet] -> J4CALHitlet::AccumulateEdep( edep );
+  }
+  
+  inline void AddXcm( G4ThreeVector xcm )
+  {
+    fCellXcm += xcm;
+    G4int lastHitlet = fHitlets.size() -1;
+    fHitlets[lastHitlet] -> J4CALHitlet::AccumulateXcm( xcm );
+  }
+
+  inline void SetHitletTof( G4double tof ) {
+    G4int lastHitlet = fHitlets.size() -1;
+    fHitlets[lastHitlet] -> J4CALHitlet::SetTof( tof );
+  }
+
+  inline G4int GetPreHitID( G4int hlID )       { return fHitlets[hlID] -> J4CALHitlet::GetPreHitID();   }
+  inline G4double GetHitletEdep( G4int hlID )  { return fHitlets[hlID] -> J4CALHitlet::GetEnergyDeposit(); }
+  inline G4double GetHitletTof( G4int hlID )      { return fHitlets[hlID] -> J4CALHitlet::GetTof(); }
+  
+  inline G4ThreeVector GetHitletXcm( G4int hlID ) {
+    if ( fHitlets[hlID] -> J4CALHitlet::GetEnergyDeposit() <= 0 )
+      return fHitlets[hlID] -> J4CALHitlet::GetXcm();
+    else
+      return  ( fHitlets[hlID] -> J4CALHitlet::GetXcm() ) / ( fHitlets[hlID] -> J4CALHitlet::GetEnergyDeposit() ) ;
+  }
+  
+  inline J4CALHitlet* GetHitlet( G4int hlID ) { return fHitlets[hlID]; }
+  inline G4int GetNHitlets()                   { return (G4int)fHitlets.size(); }
+  
+  //inline void ClearHitlets() {
+  //  fHitlets.clear();
+  // }
+  
+private:
+  TVAddress*      fAddress;
+  G4double        fCellEdep;
+  G4double        fCellTof;
+  G4ThreeVector   fCellXcm;
+  std::vector<J4CALHitlet*> fHitlets;
 };
 
-//=====================================================================
-//----------------------------------------
-// inline function for J4CALHit
-//----------------------------------------
-  
 //----------------------------------------
 // Allocator
 
-//const J4CALHit& 
-//       J4CALHit::operator=(const J4CALHit& right)
-//{
-//  return *this;
-//}
-
-void* J4CALHit::operator new(size_t)
+void* J4CALHit::operator new( size_t )
 {
   void* aHit;
-  aHit = (void*)fHitAllocator.MallocSingle();
+  aHit = (void*)fgHitAllocator.MallocSingle();
   return aHit;
 }
 
-void J4CALHit::operator delete(void* aHit)
+void J4CALHit::operator delete( void* aHit )
 {
-  fHitAllocator.FreeSingle((J4CALHit*) aHit);
+  fgHitAllocator.FreeSingle((J4CALHit*) aHit);
 }
 
 #endif
