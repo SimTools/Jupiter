@@ -22,17 +22,30 @@
 # // set max azimuthal angle
 #/jupiter/beam/theta 0.001 mrad
 
-# // set randomize
-# // 1 = Random divergence 
-/jupiter/beam/beamtype 1 
+# // set beamtype 
+# // 0 = isotropic mode 
+# // 1 = gaussian mode 
+/jupiter/beam/beamtype 0 
 
 # // set convergence mode 
-# // 1 = convergence mode 
+# // 0 = divergence mode 
+# // 1 = injected from surrounding sphare to beam position 
 /jupiter/beam/convergence 0
 
-# // set convergence mode 
+# // set range of costheta 
+/jupiter/beam/mincostheta -0.7
+/jupiter/beam/maxcostheta 0.7
+
+# // set beam position profile 
+# // 0 = gaussian profile 
+# // 1 = flat profile 
+/jupiter/beam/flatpos 0 
+
 # // set beam position 
 /jupiter/beam/position 0. 0. 0. m
-#/jupiter/beam/position 0.75 0. 0. m
-#/jupiter/beam/position 288.675 -500. -1000. mm #// A1
+
+# // set beam position sigma 
+/jupiter/beam/xpossig 0. cm
+/jupiter/beam/ypossig 0. cm
+/jupiter/beam/zpossig 0. cm
 
