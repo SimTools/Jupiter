@@ -94,9 +94,7 @@ void J4SOL::InstallIn(J4VComponent         *mother,
 
    // Set Magnetic field
    
-#if 0
    SetMagField(); 
-#endif
 }
 
 //=====================================================================
@@ -130,8 +128,3 @@ void J4SOL::Draw()
 void J4SOL::Print() const
 {
 }
-
-	
-	
-
-
