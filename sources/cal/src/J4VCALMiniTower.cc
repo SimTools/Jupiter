@@ -45,11 +45,13 @@ J4VCALMiniTower::J4VCALMiniTower( const G4String       &name,
 
 J4VCALMiniTower::~J4VCALMiniTower()
 {
-#if 0
   for ( G4int i = 0; i < (G4int)fLayers.size(); i++ ){
+#if 0
     if ( Deregister( fLayers[i] ) ) delete fLayers[i];
-  }
+#else
+    delete fLayers[i];
 #endif
+  }
 }
 
 //=====================================================================

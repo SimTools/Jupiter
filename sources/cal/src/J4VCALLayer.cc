@@ -49,6 +49,9 @@ J4VCALLayer::~J4VCALLayer()
 #if 0
   if ( Deregister(fAbsLayer) ) delete fAbsLayer;
   if ( Deregister(fActiveLayer) ) delete fActiveLayer;
+#else
+  delete fAbsLayer;
+  delete fActiveLayer;
 #endif
 }
 
