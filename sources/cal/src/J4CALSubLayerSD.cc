@@ -156,7 +156,17 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
   G4double  edep  = GetEnergyDeposit();
   const G4ThreeVector&  Xcm   = GetPrePosition() * GetEnergyDeposit();
 
-  TVAddress* ptrAddress = new TVAddress( coneID, towerID, miniConeID, miniTowerID, layerID, subLayerID, isBarrel, isEM );
+  // front center position of sublayer
+  G4Sphere *cellSphere = (G4Sphere*)(ptrSubLayerComponent->GetSolid());
+  G4double cellRho = cellSphere->GetInsideRadius();
+  G4double cellTheta = cellSphere->GetStartThetaAngle() + 0.5*cellSphere->GetDeltaThetaAngle();
+  G4double cellPhi = cellSphere->GetStartPhiAngle() + 0.5*cellSphere->GetDeltaPhiAngle();
+  G4ThreeVector cellPos;
+  cellPos.setMag(cellRho);
+  cellPos.setTheta(cellTheta);
+  cellPos.setPhi(cellPhi);
+
+  TVAddress* ptrAddress = new TVAddress( coneID, towerID, miniConeID, miniTowerID, layerID, subLayerID, isBarrel, isEM, cellPos);
   G4int cellID = GetCellID( ptrAddress );
   
   if ( fgCalHits[cellID] == 0 ) {
