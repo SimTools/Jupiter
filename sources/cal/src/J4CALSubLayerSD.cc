@@ -10,6 +10,7 @@
 //*	2000/12/08  K.Hoshina	Original version.
 //*     2004/08/30  Ono Hiroaki  Add Pre hit data, hitlet data
 //*************************************************************************
+#include <cmath>
 #include "J4CALCone.hh"
 #include "J4CALTower.hh"
 #include "J4CALBlock.hh"
@@ -161,10 +162,13 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
   G4double cellRho = cellSphere->GetInsideRadius();
   G4double cellTheta = cellSphere->GetStartThetaAngle() + 0.5*cellSphere->GetDeltaThetaAngle();
   G4double cellPhi = cellSphere->GetStartPhiAngle() + 0.5*cellSphere->GetDeltaPhiAngle();
-  G4ThreeVector cellPos;
-  cellPos.setMag(cellRho);
-  cellPos.setTheta(cellTheta);
-  cellPos.setPhi(cellPhi);
+  G4double cellX = cellRho * sin(cellTheta) * cos(cellPhi);
+  G4double cellY = cellRho * sin(cellTheta) * sin(cellPhi);
+  G4double cellZ = cellRho * cos(cellTheta);
+  G4ThreeVector cellPos(cellX, cellY, cellZ);
+  //cellPos.setMag(cellRho);
+  //cellPos.setTheta(cellTheta);
+  //cellPos.setPhi(cellPhi);
 
   TVAddress* ptrAddress = new TVAddress( coneID, towerID, miniConeID, miniTowerID, layerID, subLayerID, isBarrel, isEM, cellPos);
   G4int cellID = GetCellID( ptrAddress );
