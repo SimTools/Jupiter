@@ -41,6 +41,7 @@
 #include "J4RunAction.hh"
 #include "J4EventAction.hh"
 #include "J4TrackingAction.hh"
+#include "J4StackingAction.hh"
 #include "TBookKeeper.hh"
 
 #ifdef G4VIS_USE
@@ -179,6 +180,7 @@ int main(int argc, char** argv)
   runManager-> SetUserAction(new J4RunAction);
   runManager-> SetUserAction(new J4EventAction);
   runManager-> SetUserAction(new J4TrackingAction);
+  runManager-> SetUserAction(new J4StackingAction);
 
 #ifdef G4VIS_USE
   // initialize visualization package
