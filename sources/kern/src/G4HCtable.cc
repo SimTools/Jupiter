@@ -41,7 +41,7 @@ G4int G4HCtable::Registor(G4String SDname,G4String HCname)
   return HClist.size();
 }
 
-#if __G4VERSION__ >= 62
+#if __G4VERSION__ >= 61
 G4int G4HCtable::GetCollectionID(G4String HCname) const
 #else
 G4int G4HCtable::GetCollectionID(G4String HCname) 
@@ -76,7 +76,7 @@ G4int G4HCtable::GetCollectionID(G4String HCname)
   return i;
 }
 
-#if __G4VERSION__ >= 62
+#if __G4VERSION__ >= 61
 G4int G4HCtable::GetCollectionID(G4VSensitiveDetector* aSD) const
 {
   if(aSD->GetNumberOfCollections()<1)
