@@ -59,7 +59,7 @@ private:
   J4MUDEndcapAbs**          fEndcapAbs;
   J4MUDBarrelAbs**          fBarrelAbs;
   J4MUDBarrelActive**       fBarrelActive;
-#ifdef __FRONTENDCAP__
+#ifdef __GLD_V1__
   J4MUDFrontEndcapActive**  fFrontEndcapActive;
   J4MUDFrontEndcapAbs**     fFrontEndcapAbs;
 #endif

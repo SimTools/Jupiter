@@ -43,11 +43,7 @@ private:
 private:  
   static G4String      fFirstName;
 
-#ifdef __MUDREPLICA__
-  J4MUDBlock*          fBlocks;
-#else
   J4MUDBlock**         fBlocks;
-#endif
 };
 
 #endif
