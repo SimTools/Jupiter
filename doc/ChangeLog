@@ -1,5 +1,22 @@
 M... Modified R...Replaced A...Added D...Deleted
 ------------------------------------------------------------------
+2004/06/08 A.Miyamoto	 Version 2.6.0
+------------------------------------------------------------------
+  Based on a sample source, Jupiter 2.5.04 used for C++/Jupiter lecture
+  held on June 3 to June 10, 2004, CVS are updated.
+  Changes are,
+    (1) lcexp and ct directories are created in source directory.
+    (2) Interface change for J4MatericalStore::Create
+    (3) jsfj4 interface to CT are included.
+    (4) Remove Deregister in destructor, mostly those enclosed
+	by __GEANT52__, to avoid segmentation violation at the end of job.
+    (5) VTX latters are commentted out since they cause segmentation error
+	at run end.
+    (6) Output functions for JSF are included to IT, and CAL
+  Too many files are modified. See list by following CVS command.
+	 cvs history -c -a -z JST -p Jupiter -D 2004/06/08
+	
+------------------------------------------------------------------
 2004/02/03 K.Fujii	 Version 2.5.03
 ------------------------------------------------------------------
 M J4AttMFieldMap.cc
