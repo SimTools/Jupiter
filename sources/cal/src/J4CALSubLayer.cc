@@ -183,5 +183,4 @@ void J4CALSubLayer::Draw()
 	
 //* Print  --------------------------------------------------------
 void J4CALSubLayer::Print() const
-{
-}
+{ }

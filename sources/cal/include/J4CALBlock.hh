@@ -12,7 +12,6 @@
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
-
 #include "J4VCALDetectorComponent.hh"
 #include "J4CALHit.hh"
 
@@ -20,7 +19,6 @@
 //---------------------
 // class definition
 //---------------------
-
 class J4CALBlock : public J4VCALDetectorComponent {	
 
 public:
@@ -39,7 +37,14 @@ public:
   virtual void	Draw(); 
   virtual void	Print() const ;
 
-  inline const G4String&  GetFirstName()   { return fFirstName;  }  
+  inline const G4String&  GetFirstName()   { return fFirstName;  }
+  inline G4bool IsEM()
+  {
+    if ( fFirstName == "EM" )
+      return true;
+    else
+      return false;
+  }
 
 protected:
   void 	Assemble();    

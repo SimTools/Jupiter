@@ -83,6 +83,7 @@ class J4CALParameterList : public J4VParameterList
    inline G4double GetBarrelTowerFrontRho() const { return fBarrelTowerFrontRho; }
    inline G4double GetEndcapTowerFrontZ()   const { return fEndcapTowerFrontZ;   }
    inline G4double GetTowerHeight()         const { return fTowerHeight;         }
+   inline G4int    GetConstNTowers()        const { return fConstNTowers;        }
 
    //*EM ----------------------------------------------------------------
    inline G4double GetEMThickness()       const { return fEMThickness;    }
@@ -90,8 +91,14 @@ class J4CALParameterList : public J4VParameterList
    //*HD ---------------------------------------------------------
    inline G4double GetHDThickness()       const { return fHDThickness;    }
 
+   //*IsBarrel
+   inline G4int   GetNIsBarrel()          const { return fNIsBarrel; }
+  
+   //*IsEM
+   inline G4int   GetNIsEM()              const { return fNIsEM; }
+
    //*MiniCone --------------------------------------------------
-   inline G4int    GetNMiniCones()            const; 
+//   inline G4int    GetNMiniCones()            const; 
 
   //*MiniCone and MiniTower (# of clones) ---------------------------------
    inline G4int GetEMMiniConeNClones()  const { return fEMMiniConeNClones; }
@@ -158,7 +165,6 @@ class J4CALParameterList : public J4VParameterList
    inline void SetMiniTowerColor(const G4Color &c) { fMiniTowerColor = c; }
    inline void SetLayerColor    (const G4Color &c) { fLayerColor        = c; }
    inline void SetSubLayerColor (const G4Color &c) { fSubLayerColor     = c; }
-    
 
  private:
 
@@ -336,12 +342,19 @@ class J4CALParameterList : public J4VParameterList
    G4double  fBarrelTowerFrontRho;
    G4double  fEndcapTowerFrontZ;
    G4double  fTowerHeight;
+   G4int     fConstNTowers;
 
    // EM
    G4double  fEMThickness;
 
    // HD
    G4double  fHDThickness;
+
+   // Barrel, endcap types for isBarrel
+   G4int     fNIsBarrel;
+  
+   // EM HD types for isEM
+   G4int     fNIsEM;
 
    // MiniCone
    G4int     fEMMiniConeNClones;

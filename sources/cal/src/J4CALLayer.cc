@@ -8,6 +8,7 @@
 //*     
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
+//*     2004/10/07  H.Ono       Parametrized
 //*************************************************************************
 
 #include "J4VCALDetectorComponent.hh"
@@ -42,8 +43,7 @@ J4CALLayer::J4CALLayer( J4VDetectorComponent *parent,
                                        G4int  copyno )
  : J4VCALDetectorComponent( fFirstName, parent, nclones,
                                   nbrothers, me, copyno ) 
-{   
-}
+{ }
 
 //=====================================================================
 //* destructor --------------------------------------------------------

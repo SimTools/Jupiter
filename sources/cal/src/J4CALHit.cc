@@ -9,13 +9,11 @@
 //*     
 //* (Update Record)
 //*	2001/02/18  K.Hoshina	Original version.
+//*     2004/10/12  A.Sanchez   Make J4CALHit behave like J4CALHitlet.
 //*************************************************************************
-
 #include <iomanip>
 #include "J4CALHit.hh"
 #include "TVAddress.hh"
-//#include "J4CALHitlet.hh"
-//#include "J4CALPreHit.hh"
 
 //=========================================================================
 //---------------------
@@ -27,26 +25,26 @@ J4Output*         J4CALHit::fgOutput = 0;
 //=========================================================================
 //* constructor -----------------------------------------------------------
 J4CALHit::J4CALHit()
-  : J4VHit(0), /*fPreHitID(0),*/ fAddress(0), fCellEdep(0), fCellTof(0), fCellXcm(0)
-{
-}
+  : J4VHit(0), fPreHitID(0), fCellID(0), fIsEM(0), fIsBarrel(0), fEdep(0), fTof(0), fXcm(0)
+{ }
 
 J4CALHit::J4CALHit( J4VComponent* ptrDetector,    // He is in "location" now
-		    //	    G4int         preHitID,       // pre Hit ID
-      		    TVAddress*    ptrAddress,     // ptr to cell address
+		    G4int         preHitID,       // pre Hit ID
+		    G4int         preTrkID,       // preHit Track ID
+      		    G4int         cellID,         // cell address id
+		    G4bool        isEM,           // ( 0, 1 ) = ( HD, EM )
+		    G4bool        isBarrel,       // ( 0, 1 ) = ( Endcap, barrel )
                     G4double      edep,           // Energy Deposit
                     G4double      tof,            // TOF
 		    const G4ThreeVector& Xcm  )		    
-  : J4VHit( ptrDetector ), /* fPreHitID( preHitID ),*/ fAddress( ptrAddress ),
-    fCellEdep( edep ), fCellTof( tof ), fCellXcm( Xcm )
-{
-}
+  : J4VHit( ptrDetector ), fPreHitID( preHitID ), fPreTrkID( preTrkID ), fCellID( cellID ),
+    fIsEM( isEM ), fIsBarrel( isBarrel ), fEdep( edep ), fTof( tof ), fXcm( Xcm )
+{ }
 
 //=========================================================================
 //* destructor -----------------------------------------------------------
 J4CALHit::~J4CALHit()
-{
-}
+{ }
 
 //=========================================================================
 //* Output ------------------------------------------------------------------
@@ -61,41 +59,23 @@ void J4CALHit::Output( G4HCofThisEvent* /* HCTE */ )
     const G4String& errorMessage = "J4CALHit::Output(): write error.";
     G4cerr << errorMessage << G4endl;
   } else {
-
-    for ( G4int i = 0; i < GetNHitlets(); i++ ) {
-      ofs << std::setw(3) << "cell: "
-	  //<< std::setw(i+2) << GetNHitlets() << " "
-	  << std::setw(i+2) << GetPreHitID(i) << " "
-	  << std::setw(3) << fAddress -> GetConeID() << " "
-	  << std::setw(3) << fAddress -> GetTowerID() << " "
-	  << std::setw(3) << fAddress -> GetMiniConeID() << " "
-	  << std::setw(3) << fAddress -> GetMiniTowerID() << " "
-	  << std::setw(3) << fAddress -> GetLayerID() << " "
-	  << std::setw(3) << fAddress -> GetSubLayerID() << " "
-	  << std::setw(3) << fAddress -> IsBarrel() << " "
-	  << std::setw(3) << fAddress -> IsEM() << " "
-	  << std::setw(12) << GetHitletEdep(i) << " "
-	  << std::setw(12) << GetHitletTof(i) << " "
-	  << std::setw(12) << GetHitletXcm(i).x()  << " "
-	  << std::setw(12) << GetHitletXcm(i).y()  << " "
-	  << std::setw(12) << GetHitletXcm(i).z()  << " "
-	  << std::endl;
-    }
-    //    ofs /* << std::setw(3) << fPreHitID << " " */
-//	<< std::setw(3) << fAddress -> GetConeID() << " "
-//        << std::setw(3) << fAddress -> GetTowerID() << " "
-//        << std::setw(3) << fAddress -> GetMiniConeID() << " "
-//        << std::setw(3) << fAddress -> GetMiniTowerID() << " "
-//	<< std::setw(3) << fAddress -> GetLayerID() << " "
-//	<< std::setw(3) << fAddress -> GetSubLayerID() << " "
-//	<< std::setw(3) << fAddress -> IsBarrel() << " "
-//	<< std::setw(3) << fAddress -> IsEM() << " "
-//        << std::setw(12) << fCellEdep << " " 
-//        << std::setw(12) << fCellTof << " "
-//	<< std::setw(12) << fCellXcm.x() << " "
-//	<< std::setw(12) << fCellXcm.y() << " "
-//	<< std::setw(12) << fCellXcm.z() << " "
-//        << std::endl;
+    ofs << "iPiTiCiTMcMtiLiSiEiBETXYZ: "
+	<< std::setw(3) << fPreHitID << " "
+	<< std::setw(5) << fPreTrkID << " "
+	<< std::setw(3) << TVAddress::GetCellConeID( fCellID ) << " "
+	<< std::setw(3) << TVAddress::GetCellTowerID( fCellID ) << " "
+	<< std::setw(3) << TVAddress::GetCellMiniConeID( fCellID, fIsEM ) << " "
+	<< std::setw(3) << TVAddress::GetCellMiniTowerID( fCellID, fIsEM ) << " "
+	<< std::setw(3) << TVAddress::GetCellLayerID( fCellID, fIsEM ) << " "
+	<< std::setw(3) << TVAddress::GetCellSubLayerID( fCellID, fIsEM ) << " "
+	<< std::setw(2) << (G4int)fIsEM << " "
+	<< std::setw(2) << (G4int)fIsBarrel << " "
+	<< std::setw(12) << fEdep << " "
+	<< std::setw(12) << fTof << " "
+	<< std::setw(12) << GetXcm().x()  << " "
+	<< std::setw(12) << GetXcm().y()  << " "
+	<< std::setw(12) << GetXcm().z()  << " "
+	<< std::endl;
   }
 }
 
@@ -103,18 +83,12 @@ void J4CALHit::Output( G4HCofThisEvent* /* HCTE */ )
 //* Draw ------------------------------------------------------------------
 
 void J4CALHit::Draw()
-{
-}
+{ }
 
 //=========================================================================
 //* Print -----------------------------------------------------------------
 
 void J4CALHit::Print()
 {
-  std::cout << std::setw(20) << GetComponentName() << " "
-            << "energy(GeV)= " << std::setprecision(2)
-            << std::setw(6) << fCellEdep *(1./GeV) << " "
-            << "TOF(ns)= " << std::setw(4) << std::setprecision(1) 
-            << fCellTof /ns 
-            << std::endl;  
+
 }
