@@ -24,9 +24,9 @@
 #define _EXPHALLHALFY_  40*m
 #define _EXPHALLHALFZ_  4000*m
 #else 
-#define _EXPHALLHALFX_  4*m
-#define _EXPHALLHALFY_  4*m
-#define _EXPHALLHALFZ_  4*m
+#define _EXPHALLHALFX_  5*m
+#define _EXPHALLHALFY_  5*m
+#define _EXPHALLHALFZ_  5*m
 #endif
  
 #endif
