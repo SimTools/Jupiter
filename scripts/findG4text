@@ -7,7 +7,7 @@
 # (Function)
 #    find files containing a text string under Geant4 directory.
 # (Upate Record)
-#   200?/??/??  K.Hoshina       Original version.
+#   200?/??/??  K.Hoshina       Modified to avoid making temp files.	
 #   2002/10/27  K.Fujii         Modified to avoid making temp files.	
 # 
 #------------------------------------------------------------------------------
@@ -65,8 +65,8 @@ echo "Going to check $dirlist"
 #  Loop over directories and find the target text string.
 #--
 for dir in $dirlist; do
-   for pat in '*.cc' '*.hh' '*.icc' '*.cxx' '*.h' '*.ixx'; do
-      for i in `find $dir -name $pat`; do
+   for ext in 'cc' 'hh' 'icc' 'cxx' 'h' 'ixx'; do
+      for i in `find $dir -name '*'.$ext`; do
          if [ `grep -c $target $i` != 0 ]; then
             echo -n "----------------------------------------"
             echo    "----------------------------------------"
