@@ -270,7 +270,7 @@ void J4VComponent::SetName(const G4String&       name,
     }
   } 
   J4Named::SetName(newname);
-  std::cerr << (void *)this << " My name is " << GetName() << std::endl;
+  std::cerr << " My name is " << GetName() << std::endl;
 }
 
 //=====================================================================
