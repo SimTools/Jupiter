@@ -22,6 +22,7 @@
 //---------------------
 
 class J4CALSD : public J4VSD<J4CALPreHit>{
+friend class J4TrackingAction;
   
 public:
 

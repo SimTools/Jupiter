@@ -8,3 +8,4 @@ name     := J4lcexp
 
 include $(JUPITERROOT)/config/common.gmk
 
+CPPFLAGS += -I$(JUPITERROOT)/sources/cal/include
