@@ -481,7 +481,7 @@ void J4VComponent::OrderNewTubs( G4double rmin,
     } else {
 
       leftendcap 
-          = new G4Cons( leftendcapname, leftrmin, rmax, endcaprmin, rmax, endcaphalfthickness, sphi, dphi );
+          = new G4Cons( leftendcapname, endcaprmin, rmax, leftrmin, rmax, endcaphalfthickness, sphi, dphi );
 
     }
     
@@ -504,7 +504,7 @@ void J4VComponent::OrderNewTubs( G4double rmin,
     } else {
 
       rightendcap
-          = new G4Cons( rightendcapname, endcaprmin, rmax, rightrmin, rmax, endcaphalfthickness, sphi, dphi );
+          = new G4Cons( rightendcapname, rightrmin, rmax, endcaprmin, rmax, endcaphalfthickness, sphi, dphi );
 
     }
 
