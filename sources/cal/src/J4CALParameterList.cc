@@ -101,7 +101,7 @@ void J4CALParameterList::SetParameters()
    fBarrelTowerFrontRho = 160.*cm; // Towers must be placed in a CAL volume completely.  
    fEndcapTowerFrontZ   = 190.*cm; // Check kern/J4ParameterList.cc and 
                                    // see CalcNextTowerEdgeAngle().
-   fConstNTowers        = 500;    // Temporary number of towers to check cellID.
+   fConstNTowers        = 1500;    // Temporary number of towers to check cellID.
 
    fBarrelCoverageAngle = atan2(fEndcapTowerFrontZ, fBarrelTowerFrontRho);
    // as a dip angle(lambda)
