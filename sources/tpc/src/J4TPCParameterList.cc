@@ -48,7 +48,7 @@ J4TPCParameterList::~J4TPCParameterList()
 //* SetMaterials ------------------------------------------------------
 void J4TPCParameterList::SetMaterials()
 {
-#if 0
+#if 1
    fTPCMaterial             = "P10";
    fLayerMaterial           = "P10";
    fPadPlaneMaterial        = "P10";
@@ -90,6 +90,10 @@ void J4TPCParameterList::SetParameters()
    fNlayers             = 200;
    fLayerThick          = 0.001*mm;
    fFirstLayerInnerR    = 5.0*mm;
+#elif 1
+   fNlayers             = 50;
+   fLayerThick          = 0.001*mm;
+   fFirstLayerInnerR    = 5.0*mm;
 #else
    fNlayers             = 5;
    fLayerThick          = 0.001*mm;
@@ -115,14 +119,14 @@ void J4TPCParameterList::SetParameters()
 //* SetVisAttributes --------------------------------------------------
 void J4TPCParameterList::SetVisAttributes()
 {
-   fTPCVisAtt             = TRUE;
-   fTPCHalfVisAtt         = TRUE;
+   fTPCVisAtt             = FALSE;
+   fTPCHalfVisAtt         = FALSE;
    fLayerVisAtt           = TRUE;
    fEndcapVisAtt          = TRUE;
    fSupportTubVisAtt      = TRUE;
    fCentralMembraneVisAtt = TRUE;
-   fPadPlaneVisAtt        = TRUE;
-   fPadRowVisAtt          = TRUE;
+   fPadPlaneVisAtt        = FALSE;
+   fPadRowVisAtt          = FALSE;
    fPadVisAtt             = TRUE;
 }
 

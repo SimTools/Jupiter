@@ -59,7 +59,7 @@ void J4TPCSupportTub::Assemble()
     OrderNewTubs (fRmin, fRmax, fLen, fTotalPhi);
    
     // MakeLogicalVolume --//
-    G4String material = GetMyID() ?  list->GetInnerSupportTubMaterial() : 
+    G4String material = !GetMyID() ? list->GetInnerSupportTubMaterial() : 
                                      list->GetOuterSupportTubMaterial() ; 
 
     MakeLVWith(OpenMaterialStore()->Order(material));
@@ -93,8 +93,10 @@ void J4TPCSupportTub::InstallIn(J4VComponent        *,
   				// 
   
   // Placement function into mother object...
-  
-  SetPVPlacement();
+  G4double z = OpenParameterList()->GetEndcapHalfThick();
+                                                                                
+  G4ThreeVector tlate(0., 0., -z ) ;
+  SetPVPlacement(0, tlate);
   
 }
 

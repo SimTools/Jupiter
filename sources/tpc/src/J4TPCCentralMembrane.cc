@@ -53,7 +53,7 @@ void J4TPCCentralMembrane::Assemble()
      
      G4double rmin = list->GetCentralMembraneInnerR();
      G4double rmax = list->GetCentralMembraneOuterR();
-     G4double len  = list->GetCentralMembraneHalfThick();
+     G4double len  = list->GetCentralMembraneHalfThick() / 2;
      G4double dphi = list->GetCentralMembraneDeltaPhi();
   	
     // MakeSolid ----------//
