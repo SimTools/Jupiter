@@ -57,7 +57,8 @@ void J4ParameterList::SetParameters()
    fBPMargin         = 0.05*cm;                // Margin between beampipe and IR
    fIRThetaMax       = 150*mrad;               // Theta Max of IR region
    fIRBoxFrontZ      = 500*cm;                 // Front-z of IR box
-   fIRBoxEndZ        = 700*cm;                 // End-z of IR box
+//   fIRBoxEndZ        = 700*cm;                 // End-z of IR box
+   fIRBoxEndZ        = 850*cm;                 // End-z of IR box
 
    fSupportTubInnerR = 38.0*cm;                  // InnerR of Support Tub
    fSupportTubOuterR = 39.5*cm;                  // OuterR of Support Tub
