@@ -1,7 +1,7 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* TVAddress
+//* J4CALAddress
 //* --------------------
 //* (Description)
 //*   Address information descripter	
@@ -10,7 +10,7 @@
 //*	2004/08/03  ONO Hiroaki Original version.
 //*************************************************************************
 #include "G4Types.hh"
-#include "TVAddress.hh"
+#include "J4CALAddress.hh"
 #include "J4CALParameterList.hh"
 #include "J4CALSubLayerParameterList.hh"
 
