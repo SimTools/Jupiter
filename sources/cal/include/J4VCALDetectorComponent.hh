@@ -32,13 +32,16 @@ public:
                            G4int                 nbrothers = 1, 
                            G4int                 me        = 0,
                            G4int                 copyno    = -1 );
-  J4VCALDetectorComponent(J4VCALDetectorComponent& right);
 
   virtual ~J4VCALDetectorComponent();
 
+#if 0
+  J4VCALDetectorComponent(J4VCALDetectorComponent& right);
+
   virtual const J4VCALDetectorComponent& 
   		operator=(const J4VCALDetectorComponent& right);    
-      
+#endif
+
 protected:    
   J4VMaterialStore* 	 OpenMaterialStore();
   J4CALParameterList* 	 OpenParameterList() { return J4CALParameterList::GetInstance(); }
@@ -49,6 +52,7 @@ private:
        
 };
 
+#if 0
 //=====================================================================
 //---------------------
 // inline function
@@ -64,7 +68,10 @@ inline J4VCALDetectorComponent::J4VCALDetectorComponent(J4VCALDetectorComponent&
 inline const J4VCALDetectorComponent& 
 J4VCALDetectorComponent::operator=(const J4VCALDetectorComponent& right)
 {
+  J4VDetectorComponent::operator=(right);
   return *this;
 }
+
+#endif
 
 #endif

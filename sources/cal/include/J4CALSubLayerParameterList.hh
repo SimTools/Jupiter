@@ -154,7 +154,8 @@ class J4CALSubLayerParameterList
 
          G4double totalLayerSize = 0.;
          
-         for( size_t layerOrder = 0; layerOrder < refLayerParamsVector.size(); layerOrder++ ) {
+         //for( size_t layerOrder = 0; layerOrder < refLayerParamsVector.size(); layerOrder++ ) {
+         for( G4int layerOrder = 0; layerOrder < (G4int)refLayerParamsVector.size(); layerOrder++ ) {
             totalLayerSize += refLayerParamsVector[layerOrder].GetLayerSize();
          }
          return totalLayerSize;
@@ -168,7 +169,8 @@ class J4CALSubLayerParameterList
      
          G4double layerFront = 0;
 
-         for( size_t i = 0; i < layerOrder; i++ ) {
+         //for( size_t i = 0; i < layerOrder; i++ ) {
+         for( G4int i = 0; i < layerOrder; i++ ) {
             layerFront += GetLayerSize(blockName, layerOrder);
          }
          
@@ -252,7 +254,7 @@ class J4CALSubLayerParameterList
 
       inline void checkLayerBoundary(const BlockName& blockName, const G4int& layerOrder) const
       {
-         if( layerOrder >= GetLayerParamsVector(blockName).size() ) {
+         if( layerOrder >= (G4int)GetLayerParamsVector(blockName).size() ) {
             std::cerr << " Error in " << blockName << ": layerOrder >= nLayers " << G4endl;
             exit(EXIT_FAILURE);
          }

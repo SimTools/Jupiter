@@ -46,7 +46,13 @@ public:
        G4cerr << "J4CALSubLayerSD::OutputAll: No HitBuf! " << G4endl;
      }
   }
-  
+ 
+ inline virtual const J4CALSubLayerSD& operator=( const J4VSD<J4CALHit> &right )
+ {
+   J4VSD<J4CALHit>::operator=( right );
+   return *this;
+ } 
+ 
   // set/get functions
    
 private:
