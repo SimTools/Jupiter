@@ -32,9 +32,9 @@ G4String J4VTX::fFirstName("VTX");
 //* constructor -------------------------------------------------------
 
 J4VTX::J4VTX(J4VDetectorComponent *parent ,
-                            G4int  nclones,
-                            G4int  nbrothers, 
-                            G4int  me,
+                            G4int  /* nclones   */,
+                            G4int  /* nbrothers */, 
+                            G4int  /* me        */,
                             G4int  copyno ) :
        J4VVTXDetectorComponent( fFirstName, parent, 1,1,0,copyno)
 {   
@@ -134,9 +134,9 @@ void J4VTX::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4VTX::InstallIn(J4VComponent         *mother,
-                      G4RotationMatrix     *prot, 
-                      const G4ThreeVector  &tlate ) 
+void J4VTX::InstallIn(J4VComponent         * /* mother */,
+                      G4RotationMatrix     * /* prot   */, 
+                      const G4ThreeVector  & /* tlate  */) 
 { 
   Assemble();			// You MUST call Assemble(); at first.
   				// 

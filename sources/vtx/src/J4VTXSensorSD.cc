@@ -52,7 +52,8 @@ void J4VTXSensorSD::Initialize(G4HCofThisEvent* HCTE)
 //=====================================================================
 //* ProcessHits -------------------------------------------------------
 
-G4bool J4VTXSensorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
+G4bool J4VTXSensorSD::ProcessHits(G4Step*              aStep, 
+                                  G4TouchableHistory* /* ROhist */)
 {
   //In order to use Get function of J4VSensitiveDetector,
   // you must call SetNewStep() at first.
@@ -64,11 +65,13 @@ G4bool J4VTXSensorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
       
   //Get particle information
   G4int                 trackID         = GetTrackID();
+#if 0
   G4int                 mothertrackID   = GetMotherTrackID();
   G4ParticleDefinition *particle        = GetParticle();
   G4double             weight           = GetWeight(); 
 
   const G4ThreeVector &origin = GetTrack()->GetVertexPosition();
+#endif
   G4double orgkinE = GetTrack()->GetVertexKineticEnergy();
   G4ThreeVector  origP;
   if (orgkinE > 0 ){
@@ -92,10 +95,11 @@ G4bool J4VTXSensorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
     procName = process->GetProcessName();
   }
 
+#if 0
   J4VComponent  *sensor      = GetComponent();
   J4VComponent  *ladder      = sensor->GetMother();
   J4VComponent  *layer       = ladder->GetMother();
-#if 0
+
   G4VPhysicalVolume* sensorPV = sensor->GetPV();
   G4VPhysicalVolume* ladderPV = sensorPV->GetMother();
 
@@ -139,7 +143,7 @@ G4bool J4VTXSensorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
 //=====================================================================
 //* EndOfEvent --------------------------------------------------------
 
-void J4VTXSensorSD::EndOfEvent(G4HCofThisEvent* HCTE)
+void J4VTXSensorSD::EndOfEvent(G4HCofThisEvent* /* HCTE */)
 {
 }
 

@@ -45,7 +45,8 @@ void J4VTXLayerSD::Initialize(G4HCofThisEvent* HCTE)
 //=====================================================================
 //* ProcessHits -------------------------------------------------------
 
-G4bool J4VTXLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
+G4bool J4VTXLayerSD::ProcessHits(G4Step*              aStep, 
+                                 G4TouchableHistory* /* ROhist */)
 {
   //In order to use Get function of J4VSensitiveDetector,
   // you must call SetNewStep() at first.
@@ -76,7 +77,8 @@ G4bool J4VTXLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
 			       layerID,
                                edep, trkP, trkE, tof,
                                inPos,outPos);
-     G4int SColNo = ((J4VTXLayerHitBuf*)GetHitBuf())-> insert(hit);
+     G4int SColNo;
+     SColNo = ((J4VTXLayerHitBuf*)GetHitBuf())-> insert(hit);
 
   return TRUE;
 }
@@ -84,7 +86,7 @@ G4bool J4VTXLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
 //=====================================================================
 //* EndOfEvent --------------------------------------------------------
 
-void J4VTXLayerSD::EndOfEvent(G4HCofThisEvent* HCTE)
+void J4VTXLayerSD::EndOfEvent(G4HCofThisEvent* /* HCTE */)
 {
 }
 

@@ -52,7 +52,9 @@ J4VTXPixelHit::J4VTXPixelHit(
 				     const G4ThreeVector  &localoutPos )
               :J4VHit(component, trackID, mothertrackID,
                       particle, tof, edep, energy, momentum),
-           fOrigin(origin),  fOriginP(origP),fProcess(process),fWeight(weight),
+               fOrigin(origin),  fOriginP(origP),
+               fWeight(weight),
+               fProcess(process),
                fLayerID(layerID),fLadderID(ladderID),
                fSensorID(sensorID),fPixThetaID(pixthetaID),
                fPixPhiID(pixphiID),fPixPosition(pixPos),
@@ -80,7 +82,7 @@ G4ThreeVector J4VTXPixelHit::GetHitPosition(){
 }
 //=========================================================================
 //* Output ------------------------------------------------------------------
-void J4VTXPixelHit::Output(G4HCofThisEvent* HCTE)
+void J4VTXPixelHit::Output(G4HCofThisEvent* /* HCTE */)
 {
   if (fOutput) fOutput->Output(this);
 	

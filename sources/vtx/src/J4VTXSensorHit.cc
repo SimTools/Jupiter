@@ -47,7 +47,9 @@ J4VTXSensorHit::J4VTXSensorHit(
 				     const G4ThreeVector  &localoutPos )
   :J4VHit(component, trackID, mothertrackID,
                       particle, tof, edep, energy, momentum),
-  fOrigin(origin),  fOriginP(origP),fProcess(process),fWeight(weight),
+  fOrigin(origin),  fOriginP(origP),
+  fWeight(weight),
+  fProcess(process),
   fLayerID(layerID),fLadderID(ladderID),
   fSensorID(sensorID),
   fInPosition(inPos),fOutPosition(outPos),
@@ -73,7 +75,7 @@ G4ThreeVector J4VTXSensorHit::GetHitPosition(){
 }
 //=========================================================================
 //* Output ------------------------------------------------------------------
-void J4VTXSensorHit::Output(G4HCofThisEvent* HCTE)
+void J4VTXSensorHit::Output(G4HCofThisEvent* /* HCTE */)
 {
 	
   // output hitdata to output file ....

@@ -63,7 +63,7 @@ G4ThreeVector J4VTXLayerHit::GetHitPosition(){
 }
 //=========================================================================
 //* Output ------------------------------------------------------------------
-void J4VTXLayerHit::Output(G4HCofThisEvent* HCTE)
+void J4VTXLayerHit::Output(G4HCofThisEvent* /* HCTE */)
 {
   if (fOutput) {
     fOutput->Output(this);

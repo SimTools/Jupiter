@@ -23,7 +23,7 @@
 
 
 G4Material* J4VTXMaterialStore::Create(const G4String& name,
-	        G4MaterialPropertiesTable *mtable)
+	        G4MaterialPropertiesTable * /* mtable */)
 {  	
 
   G4Material* material= 0;

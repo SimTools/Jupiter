@@ -51,7 +51,8 @@ void J4VTXPixelSD::Initialize(G4HCofThisEvent* HCTE)
 //=====================================================================
 //* ProcessHits -------------------------------------------------------
 
-G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
+G4bool J4VTXPixelSD::ProcessHits(G4Step*              aStep, 
+                                 G4TouchableHistory* /* ROhist */)
 {
   //In order to use Get function of J4VSensitiveDetector,
   // you must call SetNewStep() at first.
@@ -64,11 +65,13 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
       
   //Get perticle information
   G4int                 trackID         = GetTrackID();
+#if 0
   G4int                 mothertrackID   = GetMotherTrackID();
   G4ParticleDefinition *particle        = GetParticle();
   G4double             weight           = GetWeight();
 
   const G4ThreeVector &origin = GetTrack()->GetVertexPosition();
+#endif
   G4double orgkinE = GetTrack()->GetVertexKineticEnergy();
   G4ThreeVector  origP;
   if (orgkinE > 0 ){
@@ -91,6 +94,7 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
     procName = process->GetProcessName();
   }
 
+#if 0
   J4VComponent  *pixel       = GetComponent();
   J4VComponent  *pixelarray  = pixel->GetMother();
   J4VComponent  *pixelarea   = pixelarray->GetMother();
@@ -99,7 +103,6 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   J4VComponent  *ladder      = sensor->GetMother();
   J4VComponent  *layer       = ladder->GetMother();
 
-#if 0
   // Pixel -> PixelArray -> PixelArea -> Epitaxial -> Sensor -> Ladder
   G4VPhysicalVolume* pixelPV = pixel->GetPV();
   G4VPhysicalVolume* pixelarrayPV = pixelPV->GetMother();
@@ -153,7 +156,7 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
 //=====================================================================
 //* EndOfEvent --------------------------------------------------------
 
-void J4VTXPixelSD::EndOfEvent(G4HCofThisEvent* HCTE)
+void J4VTXPixelSD::EndOfEvent(G4HCofThisEvent* /* HCTE */)
 {
 }
 

@@ -99,9 +99,9 @@ void J4VTXPixelArea::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4VTXPixelArea::InstallIn(J4VComponent         *mother,
-                               G4RotationMatrix     *prot, 
-                               const G4ThreeVector  &tlate ) 
+void J4VTXPixelArea::InstallIn(J4VComponent         * /* mother */,
+                               G4RotationMatrix     * prot, 
+                               const G4ThreeVector  & /* tlate  */) 
 { 
   Assemble();			// You MUST call Assemble(); at first.
   				// 

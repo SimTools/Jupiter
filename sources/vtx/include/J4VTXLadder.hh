@@ -41,7 +41,7 @@ public:
                           const G4ThreeVector  &tlate = 0 );
   virtual void	Draw()      ;
   virtual void	Print() const ;
-  virtual G4int GetMyID(){ return -1; } 
+  virtual G4int GetMyID() const { return -1; } 
   
 private:
   void 	Assemble();    

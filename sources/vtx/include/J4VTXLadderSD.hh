@@ -31,6 +31,14 @@ public:
   J4VTXLadderSD(J4VDetectorComponent* detector);
   ~J4VTXLadderSD();
 
+#if 1
+  virtual const J4VSD<J4VTXLadderHit> &
+          operator=(const J4VSD<J4VTXLadderHit> &r)
+  {
+     return J4VSD<J4VTXLadderHit>::operator=(r);
+  }
+#endif
+
   virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist);
   virtual void   Initialize (G4HCofThisEvent* HCTE);
   virtual void   EndOfEvent (G4HCofThisEvent* HCTE);

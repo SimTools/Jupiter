@@ -84,9 +84,9 @@ void J4VTXSubstrate::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4VTXSubstrate::InstallIn(J4VComponent         *mother,
+void J4VTXSubstrate::InstallIn(J4VComponent         * /* mother */,
                                G4RotationMatrix     *prot, 
-                               const G4ThreeVector  &tlate ) 
+                               const G4ThreeVector  & /* tlate  */) 
 { 
   Assemble();			// You MUST call Assemble(); at first.
   				// 

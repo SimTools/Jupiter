@@ -117,9 +117,9 @@ void J4VTXSensor::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4VTXSensor::InstallIn(J4VComponent         *mother,
+void J4VTXSensor::InstallIn(J4VComponent         * /* mother */,
                             G4RotationMatrix     *prot, 
-                            const G4ThreeVector  &tlate ) 
+                            const G4ThreeVector  & /* tlate  */) 
 { 
    Assemble();			// You MUST call Assemble(); at first.
    G4int layerID        = GetMother()->GetMother()->GetMyID();

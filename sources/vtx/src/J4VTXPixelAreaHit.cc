@@ -48,7 +48,9 @@ J4VTXPixelAreaHit::J4VTXPixelAreaHit(
   :J4VHit(component, trackID, mothertrackID,
                       particle, tof, edep, energy, momentum),
   fOrigin(origin),
-  fOriginP(origP),fProcess(process),fWeight(weight),
+  fOriginP(origP),
+  fWeight(weight),
+  fProcess(process),
   fLayerID(layerID),fLadderID(ladderID),
   fSensorID(sensorID),
   fInPosition(inPos),fOutPosition(outPos),
@@ -74,7 +76,7 @@ G4ThreeVector J4VTXPixelAreaHit::GetHitPosition(){
 }
 //=========================================================================
 //* Output ------------------------------------------------------------------
-void J4VTXPixelAreaHit::Output(G4HCofThisEvent* HCTE)
+void J4VTXPixelAreaHit::Output(G4HCofThisEvent* /* HCTE */)
 {
 	
   // output hitdata to output file ....

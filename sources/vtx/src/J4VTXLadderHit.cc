@@ -63,7 +63,7 @@ G4ThreeVector J4VTXLadderHit::GetHitPosition(){
 }
 //=========================================================================
 //* Output ------------------------------------------------------------------
-void J4VTXLadderHit::Output(G4HCofThisEvent* HCTE)
+void J4VTXLadderHit::Output(G4HCofThisEvent* /* HCTE */)
 {
 	
   // output hitdata to output file ....

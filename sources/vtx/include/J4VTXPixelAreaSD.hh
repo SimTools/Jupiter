@@ -32,6 +32,14 @@ public:
   J4VTXPixelAreaSD(J4VDetectorComponent* detector);
   ~J4VTXPixelAreaSD();
 
+#if 1
+  virtual const J4VSD<J4VTXPixelAreaHit> & 
+                operator=(const J4VSD<J4VTXPixelAreaHit> &r)
+  {
+     return J4VSD<J4VTXPixelAreaHit>::operator=(r);
+  }
+#endif
+
   virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist);
   virtual void   Initialize (G4HCofThisEvent* HCTE);
   virtual void   EndOfEvent (G4HCofThisEvent* HCTE);
