@@ -12,28 +12,28 @@
 //*	2000/12/20  K.Hoshina	Original version.
 //********************************************************************
 
+#include "J4Named.hh"
 
 // ====================================================================
 // ----------------
 // class definition
 // ----------------
+
  
-class J4VParameterList
+class J4VParameterList : public J4Named
 {
  
  public:
-   J4VParameterList() {};   
-   virtual ~J4VParameterList(){};  
+
+   J4VParameterList();
+   J4VParameterList(const G4String &name);
+
+   virtual ~J4VParameterList();  
    
-   virtual void PrintParameterList(){};
-   
-   virtual void PrintAllParameters(){};
+   virtual void PrintParameterList() = 0;
   
-   //
-   // get parameters
-   //
+   // getter
    
-  
  private:
   
 };

@@ -64,13 +64,19 @@ class J4ParticleBeam : public G4ParticleGun
      //   particle_energy(Kinetic Energy) are set.
      //   
 
-     void SetParticleMomentum(G4ParticleMomentum aMomentum);
-     void SetBeamType(G4int type) { fBeamType = (EBeamType)type; }
-     void SetConvergenceMode(G4bool convergence = TRUE) 
-                                       { fIsConvergenceMode = convergence; }
-     void SetBeamProfileType(G4bool is) { fIsFlatProfile = is; }
-
+     inline virtual void SetParticleMomentum(G4ParticleMomentum aMomentum);
+     inline virtual void SetBeamType(G4int type)    { fBeamType = (EBeamType)type; }
+     inline virtual void SetConvergenceMode(G4bool mod = TRUE) 
+                                                       { fIsConvergenceMode = mod; }
+     inline virtual void SetBeamProfileType(G4bool is) { fIsFlatProfile = is     ; }
+     inline virtual void SetNumberOfParticles(G4int n) { fNParticlesPerVertex = n; }
+     inline virtual void SetNumberOfVertices (G4int n) { fNVerticesPerBeam = n   ; }
+     
   private:
+  
+     virtual void GenerateIsotopicBeam(G4Event* evt);
+     virtual void GenerateGaussianBeam(G4Event* evt);
+    
      class RefFrame
      {
         public:
@@ -111,6 +117,8 @@ class J4ParticleBeam : public G4ParticleGun
      G4double              fDirectionSigma;
      G4ThreeVector         fMeanPosition;
      G4double              fPositionSigma[3];
+     G4int                 fNVerticesPerBeam;
+     G4int                 fNParticlesPerVertex;
 
   private:
      J4ParticleBeamMessenger* fMessenger;

@@ -16,7 +16,7 @@
 
 #include "G4VUserDetectorConstruction.hh"
 #include "G4ThreeVector.hh"
-#include "J4ExpHall.hh"
+#include "J4EXPHall.hh"
 #include "J4TypeDef.hh"
 #include "J4VComponent.hh"
 
@@ -25,30 +25,34 @@
 // class definition
 //---------------------
 
-class J4DetectorConstruction : public G4VUserDetectorConstruction, public J4Object {
+class J4DetectorConstruction : public G4VUserDetectorConstruction, 
+                               public J4Object 
+{
 	
 public:
   J4DetectorConstruction();
   ~J4DetectorConstruction();
 
-  G4VPhysicalVolume* Construct(); 
+  G4VPhysicalVolume   *Construct(); 
     
-  J4VComponent         *GetExpHall()       const { return fExpHall; }
-  const G4ThreeVector  &GetSizeOfExpHall() const { return fExpHall->GetCenter();}
-  J4ObjArray  	        GetComponents()    const { return fComponents; }
+  static  J4EXPHall   *GetEXPHall()             { return fEXPHall; }
+
+  J4ObjArray  	       GetComponents()    const { return fComponents; }
+
+  const G4ThreeVector &GetSizeOfEXPHall() const 
+                       { return fEXPHall->GetSizeOfEXPHall(); }
   
   void	AddComponent(J4VComponent *dtc) 
         { 
            Register(dtc);
            fComponents.append(dtc); 
         }     
-    
-  static J4ExpHall    *fExpHall;
 
 private:
-
+  static J4EXPHall    *fEXPHall;
   J4ObjArray           fComponents;
   	  
 };
 
 #endif
+

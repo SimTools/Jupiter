@@ -6,7 +6,7 @@
 //* J4EXPHALL
 //* --------------------
 //* (Description)
-//* 	Derived class for ExperimentalHall.
+//* 	Derived class for EXPerimentalHall.
 //*     Mother class : J4VDetectorComponent
 //*    
 //* (Update Record)
@@ -20,25 +20,25 @@
 // class definition
 //---------------------
 
-class J4ExpHall : public J4VComponent {	
+class J4EXPHall : public J4VComponent {	
 
 public:
 
-  J4ExpHall( J4VComponent *parent = 0,
+  J4EXPHall( J4VComponent *parent = 0,
              G4int  nclones       = 1,
              G4int  nbrothers     = 1, 
              G4int  me            = 0,
              G4int  copyno        = -1 );
   		  
-  virtual ~J4ExpHall();
+  virtual ~J4EXPHall();
 
-  virtual void  InstallIn(J4VComponent         *mother,
+  virtual void   InstallIn(J4VComponent        *mother,
                           G4RotationMatrix     *prot  = 0,
                           const G4ThreeVector  &tlate = 0 );
-  virtual void	Draw()      ;
-  virtual void	Print() const ;
-  
-  virtual const G4ThreeVector& GetCenter() const; 
+  virtual void   Draw() ;
+  virtual void   Print() const ;
+
+  const G4ThreeVector &GetSizeOfEXPHall() const { return fSizeOfEXPHall; }
 
 private:
   void 	            Assemble(); 
@@ -48,8 +48,8 @@ private:
 private: 
   static J4VMaterialStore* fMaterialStore;
   static G4String          fProjectName; 
-  static G4String          fExpName; 
-  
+  static G4String          fEXPName; 
+  G4ThreeVector            fSizeOfEXPHall;
 
 };
 

@@ -27,7 +27,7 @@
 #include "G4PVReplica.hh"
 #include "G4UserLimits.hh"
 #include "G4Color.hh"
-#include "J4Object.hh"
+#include "J4Named.hh"
 #include "J4TypeDef.hh"
 
 class J4VMaterialStore;
@@ -38,7 +38,7 @@ class J4VSensitiveDetector;
 // class definition
 //---------------------
 
-class J4VComponent : public J4Object
+class J4VComponent : public J4Named
 {
 public:
 
@@ -78,7 +78,10 @@ public:
   //===== get method
   inline virtual       G4VSolid             *GetSolid()     const { return fSolid;    }
   inline virtual       G4LogicalVolume      *GetLV()        const { return fLV;       }
-  inline virtual       J4VSensitiveDetector *GetSD()        const { return (J4VSensitiveDetector *)fLV->GetSensitiveDetector(); }
+  inline virtual       J4VSensitiveDetector *GetSD()        const 
+                        {
+                           return (J4VSensitiveDetector *)fLV->GetSensitiveDetector(); 
+                        }
   inline virtual       G4VPhysicalVolume    *GetPV()        const { return fPV;       }
   inline virtual       J4VComponent         *GetMother()    const { return fMother;   }
   inline virtual       G4int                 GetNbrothers() const { return fNbrothers;}
@@ -86,7 +89,6 @@ public:
   inline virtual       G4int                 GetNclones()   const { return fNclones;  } 
   inline virtual       G4int                 GetCopyNo()    const { return fCopyNo;   } 
   inline virtual const G4String             &GetSubGroup()  const { return fSubGroup; }   
-  inline virtual const G4String             &GetName()      const { return fName;     }
   inline virtual       G4int                 GetMyDepth()   const { return fMyDepth;  }
 
   inline virtual       G4bool                IsOn()         const { return fIsOn;        }
@@ -166,7 +168,6 @@ private:
 
   //===== data members
   G4String               fSubGroup;               // subgroup name
-  G4String               fName;                   // full name
   J4VComponent          *fMother;                 // pointer to mother detector component
   J4ComponentArray       fDaughters;              // pointer array to daughter detector components
   G4bool                 fIsOn;                   // switch flag of Sensitive Detector 
@@ -197,7 +198,6 @@ J4VComponent::J4VComponent(const J4VComponent& orig, G4int copyno)
   // The original object and copied objects share a LogicalVolume.
 
   fSubGroup            = orig.fSubGroup   ;
-  fName                = orig.fName       ;
   fMother              = orig.fMother     ;
   fDaughters           = orig.fDaughters  ;
   fIsInstalled         = orig.fIsInstalled;
@@ -209,18 +209,18 @@ J4VComponent::J4VComponent(const J4VComponent& orig, G4int copyno)
   fMyID                = orig.fMyID       ;
   fCopyNo              = copyno           ;
 
-  G4int loc1 = fName.rfind(':');
+  G4String origname = orig.GetName();
+  G4int loc1 = origname.rfind(':');
   if (loc1 < 0) loc1 = 0;
   else          loc1 = loc1++;
-  G4int loc2 = fName.rfind('_');
-  if (loc2 < 0) loc2 = fName.length();
+  G4int loc2 = origname.rfind('_');
+  if (loc2 < 0) loc2 = origname.length();
   else          loc2 = loc2--;
-  G4String name(fName.substr(loc1,loc2-loc1+1));
+  G4String name(origname.substr(loc1,loc2-loc1+1));
 
   SetName( name, fNbrothers, fMyID, fNclones, fCopyNo, fMother);
-#if 1 
-  J4Object::fName = fName;
-#endif
+  J4Named::SetName(name);
+
 }
 
 const J4VComponent& 
@@ -228,7 +228,6 @@ J4VComponent::operator= (const J4VComponent& right)
 {
 
   fSubGroup            = right.fSubGroup   ;
-  fName                = right.fName       ;
   fMother              = right.fMother     ;
   fDaughters           = right.fDaughters  ;
   fIsInstalled         = right.fIsInstalled;
@@ -239,9 +238,8 @@ J4VComponent::operator= (const J4VComponent& right)
   fNbrothers           = right.fNbrothers  ;
   fMyID                = right.fMyID       ;
   fCopyNo              = right.fCopyNo     ;
-#if 1 
-  J4Object::fName = fName;
-#endif
+
+  J4Named::SetName(right.GetName());
   
   return *this;
             

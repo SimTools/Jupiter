@@ -71,8 +71,9 @@ class J4ParticleBeamMessenger: public G4UImessenger
     G4UIcmdWithADoubleAndUnit * fYPositionSigmaCmd;
     G4UIcmdWithADoubleAndUnit * fZPositionSigmaCmd;
     G4UIcmdWithADoubleAndUnit * fTimeCmd;
-    G4UIcmdWith3Vector *        fPolCmd;
-    G4UIcmdWithAnInteger *      fNumberCmd;
+    G4UIcmdWith3Vector        * fPolCmd;
+    G4UIcmdWithAnInteger      * fNVerticesPerBeamCmd;
+    G4UIcmdWithAnInteger      * fNParticlesPerVertexCmd;
     
     G4UIcommand *               fIonCmd;
 

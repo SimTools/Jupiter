@@ -85,6 +85,7 @@ class J4VSensitiveDetector : public G4VSensitiveDetector, public J4Object
   inline virtual const G4ThreeVector        &GetPostPosition () const;
   inline virtual       G4ParticleDefinition *GetParticle     () const;
   inline virtual       G4int                 GetHitNumber    () const { return fHitNumber; }
+  inline virtual       G4double              GetWeight       () const;
   inline virtual       G4bool                IsOutputLocked  () const { return fIsOutputLocked; }
 
   // getters for replicated or copied volume 
@@ -327,6 +328,17 @@ inline G4ParticleDefinition* J4VSensitiveDetector::GetParticle () const
   } else {
      G4cerr << "J4VSensitiveDetector::GetParticle: fNewStep is empty! "
           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
+     abort();
+  }
+}
+
+inline G4double J4VSensitiveDetector::GetWeight() const
+{
+  if (fNewStep) {
+     return fNewStep->GetPreStepPoint()->GetWeight();
+  } else {
+     G4cerr << "J4VSensitiveDetector::GetWeight: fNewStep is empty! "
+           << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << G4endl;
      abort();
   }
 }

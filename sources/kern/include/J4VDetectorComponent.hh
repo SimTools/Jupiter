@@ -44,6 +44,14 @@ public:
   //====== constructor
   J4VDetectorComponent(const G4String       &groupname,
                        const G4String       &name, 
+                       J4VComponent         *parent    = 0,
+                       G4int                 nclones   = 1,
+                       G4int                 nbrothers = 1, 
+                       G4int                 me        = 0,
+                       G4int                 copyno    = -1);
+
+  J4VDetectorComponent(const G4String       &groupname,
+                       const G4String       &name, 
                        J4VDetectorComponent *parent    = 0,
                        G4int                 nclones   = 1,
                        G4int                 nbrothers = 1, 
@@ -55,6 +63,7 @@ public:
      // in order to save memoly. This constructor copies fLV pointer 
      // from original object, then original one and copied objects share
      // same LogicalVolume object. 
+  inline J4VDetectorComponent(const J4VComponent &orig, G4int copyno);
   inline J4VDetectorComponent(const J4VDetectorComponent &orig, G4int copyno);
   			
   //===== destructor
@@ -72,6 +81,11 @@ public:
 //---------------------
 // inline function
 //---------------------
+
+J4VDetectorComponent::J4VDetectorComponent(const J4VComponent& orig, G4int copyno)
+                     :J4VComponent(orig, copyno) 
+{
+}
 
 J4VDetectorComponent::J4VDetectorComponent(const J4VDetectorComponent& orig, G4int copyno)
                      :J4VComponent(orig, copyno) 
