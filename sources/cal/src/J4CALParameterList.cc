@@ -11,8 +11,9 @@
 //*************************************************************************
 
 #include "J4CALParameterList.hh"
-//#include "J4CALSubLayerParameterList.hh"
 #include <algorithm>
+#include "TVNewton.hh"
+#include "geomdefs.hh"
 
 J4CALParameterList* J4CALParameterList::fgInstance = 0;
 
@@ -21,7 +22,6 @@ J4CALParameterList* J4CALParameterList::fgInstance = 0;
 J4CALParameterList* J4CALParameterList::GetInstance()
 {
    if ( !fgInstance ) {
-      //J4CALParameterList* instance = new J4CALParameterList("CAL");
       fgInstance = new J4CALParameterList("CAL");
    }
    return fgInstance;
@@ -106,18 +106,16 @@ void J4CALParameterList::SetParameters()
    // as a dip angle(lambda)
 
    // EM ------------------
-   fEMNLayers          = 20;
-   //fEMNLayers          = 38;
+   //fEMNLayers          = 10;
+   fEMNLayers          = 38;
    fEMMiniConeNClones  = 3;
    fEMMiniTowerNClones = 3;
-  // fEMThickness      = 26. *cm;
 
    // HD -------------
-   fHDNLayers          = 30;
-   //fHDNLayers          = 130;
+   //fHDNLayers          = 10;
+   fHDNLayers          = 130;
    fHDMiniTowerNClones = 1;
    fHDMiniConeNClones  = 1;
-   //fHDThickness      = 156. *cm;
    
    // ==== Calculate Tower parameters =============================== 
    G4double startlambda = 0;
@@ -216,50 +214,44 @@ void J4CALParameterList::SetTowerParameters( G4double towerheight,
    if (startlambda == 0) {
       // Gaps should not be placed at dipangle(lambda) = 0.
 
-      startr       = length;
-      lambda       = asin(0.5 * nominalwidth / startr);
-      tanlambda    = tan(lambda);
-      tanlambda2   = tanlambda * tanlambda;
-      r            = length * sqrt(1 + tanlambda2); 
+      tanlambda    = (0.5 * nominalwidth / length);
+      lambda       = atan(tanlambda);
       ntowers++;
 
    } else { 
 
       lambda       = startlambda;
       tanlambda    = tan(lambda);
-      tanlambda2   = tanlambda * tanlambda;
-      startr       = length * sqrt(1 + tanlambda2); 
-      r            = startr;
-
+      
    }
+
+   tanlambda2   = tanlambda * tanlambda;
+   startr       = length * sqrt(1 + tanlambda2); 
+   r            = startr;
 
    width    = nominalwidth;
 
    while (lambda < endlambda) {
 
-      nextlambda = CalcNextTowerEdgeAngle(r, width, lambda);
+      nextlambda = CalcNextTowerEdgeAngle(startr, width, lambda);
 
       if (nextlambda > endlambda) {
          nextlambda = endlambda;
+         dlambda      = nextlambda - lambda; 
+         break;
       }
-
-      dlambda      = nextlambda - lambda;
-
       lambda       = nextlambda; 
       tanlambda    = tan(lambda);
       tanlambda2   = tanlambda * tanlambda;
-      r            = length * sqrt(1 + tanlambda2); 
+      r            = length * sqrt(1 + tanlambda2) ; 
       ntowers++;
    }
 
-   G4double ddlambda = dlambda / ntowers;
-   G4double ddr      = 0.5 * (startr + r);
-   G4double ddwidth  = 2 * ddr * sin( 0.5 * ddlambda); 
-   nominalwidth      += ddwidth;
+   nominalwidth      += r * dlambda / ntowers;
 
    std::cerr << "  ntowers = " << ntowers << std::endl;
    std::cerr << "  nominal tile size is replaced to " 
-          << nominalwidth / cm << " cm. " << std::endl; 
+             << nominalwidth / cm << " cm. " << std::endl; 
 
    // ------------------------------------------------------
    // set tower parameters 
@@ -267,7 +259,6 @@ void J4CALParameterList::SetTowerParameters( G4double towerheight,
 
    // reset parameters 
 
-   G4double lastr;
    G4double lastlambda;
    G4double centerlambda;  // lambda at the center of tower-front
 
@@ -284,7 +275,8 @@ void J4CALParameterList::SetTowerParameters( G4double towerheight,
       width        = nominalwidth;
       dlambda      = 2 * asin(0.5 * width / r);
       centerlambda = 0; 
-
+      r            /= cos(0.5 * dlambda);
+ 
       paramright = new J4CALTowerParam(r, 
                                        towerheight, 
                                        centerlambda,
@@ -296,10 +288,8 @@ void J4CALParameterList::SetTowerParameters( G4double towerheight,
       fTowerParamVector.push_back(pair);
       ntowers++;
 
-      lambda     = asin(0.5 * width / r);
-      tanlambda  = tan(lambda);
-      tanlambda2 = tanlambda * tanlambda;
-      r          = length * sqrt(1 + tanlambda2); 
+      lambda     = 0.5 * dlambda;
+
 
    } else { 
       lambda = startlambda;
@@ -309,16 +299,14 @@ void J4CALParameterList::SetTowerParameters( G4double towerheight,
    // calculate ntowers 
 
    lastlambda = -DBL_MAX;
+   width = nominalwidth;
 
    while (lambda < endlambda) {
 
-      width = nominalwidth;
-      
-      nextlambda   = CalcNextTowerEdgeAngle(r, width, lambda);   
+      nextlambda   = CalcNextTowerEdgeAngle(startr, width, lambda);   
 
       if (nextlambda > endlambda) {
          nextlambda = endlambda; 
-         width = 2 * r * sin( 0.5 * (nextlambda - lambda) ); 
       } 
 
       dlambda  = nextlambda - lambda; 
@@ -327,37 +315,36 @@ void J4CALParameterList::SetTowerParameters( G4double towerheight,
 
          if (lastlambda == -DBL_MAX) {
             std::cerr << "J4CDCParameterList::SetTowerParameters:"
-                   << " You may set too big nominal tile size. abort."
-                   << std::endl;
+                      << " You may set too big nominal tile size. abort."
+                      << std::endl;
             abort();
          }
 
          std::cerr << "J4CDCParameterList::SetTowerParameters:"
-                << " delta lambda is too small! " << std::endl;
+                   << " delta lambda is too small! " << std::endl;
          std::cerr << "  i, r, dlambda, rdlambda " 
-                << ntowers << " " << r << " " 
-                << dlambda << " " << r * dlambda << std::endl; 
+                   << ntowers << " " << r << " " 
+                   << dlambda << " " << r * dlambda << std::endl; 
         
-         // delete formar tower parameter 
+         // delete the narrow tower and put it to the previous,
          fTowerParamVector.pop_back(); 
          fTowerParamVector.pop_back(); 
          if (paramright) delete paramright; 
          if (paramleft)  delete paramleft; 
          ntowers--;
-           
+
          lambda  = lastlambda;
-         dlambda = endlambda - lambda; 
-         r       = lastr;
-         width   = 2 * r * sin( 0.5 * dlambda); 
+         dlambda = endlambda - lambda - kAngTolerance * 1.e3; 
 
          std::cerr << "  marged formar tower. " << std::endl;
+         std::cerr << ( isbarrel ? " Barrel" : "Endcap" )  << std::endl;
          std::cerr << "  i, r, dlambda, rdlambda " 
-                << ntowers << " " << r << " " << dlambda 
-                << " " << r * dlambda << std::endl; 
-
+                   << ntowers << " " << r << " " << dlambda 
+                   << " " << r * dlambda << std::endl; 
       }
             
       centerlambda = lambda + 0.5 * dlambda;
+      r = length / cos(nextlambda); 
 
       // if endcap CAL, replace theta(angGOX) to lambda(angFOX)  
 
@@ -383,16 +370,11 @@ void J4CALParameterList::SetTowerParameters( G4double towerheight,
       fTowerParamVector.push_back(pairright);
       fTowerParamVector.push_back(pairleft);
 
-      lastr      = r; 
       lastlambda = lambda; 
 
       // calculate next r 
 
       lambda       = nextlambda;
-      tanlambda    = tan(lambda);
-      tanlambda2   = tanlambda * tanlambda;
-      r            = length * sqrt(1 + tanlambda2); 
-
    }
 
    // sort fTowerParamPair .....
@@ -466,7 +448,7 @@ G4double J4CALParameterList::CalcNextTowerEdgeAngle(G4double r,
                                                     G4double width,
                                                     G4double lambda)
 {
-   // CalcNextTowerEdgeAngle 
+   //CalcNextTowerEdgeAngle 
    // Calculate edge angle of next tower. 
    //
    // parameters:
@@ -480,38 +462,68 @@ G4double J4CALParameterList::CalcNextTowerEdgeAngle(G4double r,
    //         |            /     / 
    //         |           /     /
    //         |          /     /
-   //         |       X /    /
-   //       F'|......../_   /.............E'
-   //         |       /: -_/X'           :  
-   //        F+------/----------------+E : 
-   //         :     /  :              |  :
-   //         :    /   :              |  :.....
-   //         :   /    :              |  D' 
-   //         :  /     :             D+--------
-   //         : /      :     
-   //         :/       :    
+   //         |         /    /
+   //         |        /_   /
+   //         |     X /  -_/X'             
+   //        F+------/----------------+E  
+   //         :     /:                |  
+   //         :    / :                |  
+   //         :   /  :                |   
+   //         :  /   :               D+--------
+   //         : /    :     
+   //         :/     :    
    //         /................................G  z-axis
-   //        O         z 
+   //        O       z 
    //
    //
    // Equations:
    //  
    //     
-   //    angFOX  = lambda[i]  
+   //    angFOX  = lambda[i-1]  
    //    angXOX' = dlambda[i]  
-   //    OF'     = fBarrelFrontRho
-   //    OX      = r = length * sqrt ( 1 + tan(lambda)*tan(lambda) )
+   //    angFOX' = lambda[i]  
+   //    OF      =  R = fBarrelFrontRho
+   //    OX'     = r[i] = length / cos( lambda[i] )
    //    w       = width       // width of tile at front face of tower)
    //
-   //    sin(0.5 * dlambda[i]) = 0.5 * w / r
+   //    sin(0.5 * dlambda[i]) = 0.5 * w / r[i]
    //
-   //    lambda[i+1] = lambda[i] + dlambda[i] 
+   //    0 = F( dlambda[i] )
+   //      = 2 * sin( dlambda[i] / 2) - ( W / R ) * cos( lambda[i-1] + dlambda[i] )
    //
    //
 
-   G4double deltalambda = 2 * asin(0.5 * width / r);
-   return   lambda + deltalambda;
+class Solver : public TVNewton {
+   public:
+     Solver( G4double r, G4double w, G4double l, G4double x )
+       : TVNewton( x ), fR(r), fW(w), fLambda(l)
+     {
+     }
+     
+     G4double F(G4double x)
+     {
+       return  2 * sin(0.5 * x) - (fW/fR) * cos(fLambda + x );
+     }
+    
+     G4double DFdx(G4double x)
+     {
+       return cos(0.5 * x) + (fW/fR) * sin(fLambda + x );
+     }
 
+     void SetR      (G4double r) { fR = r; }       
+     void SetW      (G4double w) { fW = w; }       
+     void SetLambda (G4double l) { fLambda = l; }       
+
+   private: 
+     G4double fR;
+     G4double fW;
+     G4double fLambda;
+   };
+     
+   G4double dlambda = width/r;
+   Solver sol( r, width, lambda, dlambda );
+  
+   return lambda + sol.Solve();
 }
 
 //=====================================================================
@@ -536,13 +548,13 @@ void J4CALParameterList::ShowTowerParameters()
 //* SetVisAttributes --------------------------------------------------
 void J4CALParameterList::SetVisAttributes()
 {
-   fCALVisAtt         = FALSE;
+  fCALVisAtt         = TRUE;//FALSE;
    fBarrelVisAtt      = FALSE;
    fEndcapVisAtt      = FALSE;
-   fConeVisAtt        = FALSE;
-   fTowerVisAtt       = FALSE; 
-   fEMVisAtt          = TRUE;
-   fHDVisAtt          = TRUE;
+   fConeVisAtt        = TRUE;//FALSE;
+   fTowerVisAtt       = TRUE;//FALSE; 
+   fEMVisAtt          = FALSE;//TRUE;
+   fHDVisAtt          = FALSE;//TRUE;
    fMiniConeVisAtt    = FALSE;
    fMiniTowerVisAtt   = FALSE;
    fLayerVisAtt       = FALSE;
@@ -556,10 +568,8 @@ void J4CALParameterList::SetColors()
    SetCALColor(G4Color(0., 0., 1.));
    SetBarrelColor(G4Color(0., 0., 1.));
    SetEndcapColor(G4Color(0., 0., 1.));
-   //SetConeColor(G4Color(1., 1., 0.));
    SetConeColor(G4Color(1., 0., 0.));
    SetTowerColor(G4Color(0., 1., 0.));
-   //   SetTowerColor(G4Color(1., 1., 0.));
    SetEMColor(G4Color(0., 0., 1.));
    SetHDColor(G4Color(1., 0., 0.));
    SetMiniConeColor(G4Color(1., 1., 0.));
