@@ -52,11 +52,19 @@ public:
   }
 #endif
 
+  inline static void SetHCID( G4int i ) { fgLastHCID = i; }
+
   virtual G4bool IsBarrel() = 0;
   virtual G4bool IsFront()  = 0;
   
-private:
+  G4bool IsSDFront( const G4ThreeVector& pos, const G4ThreeVector& p ) const;
   
+private:
+  static G4int fgLastHCID;
+  J4MUDHit*    fMUDHits;
+  G4bool       fIsBarrel;
+  G4bool       fIsFront;
+
 };
 
 #endif
