@@ -85,7 +85,7 @@ G4Material* J4TPCMaterialStore::Create(const G4String &name,
     G4String name;
 
     A = 63.546 *g/mole;
-    density = 7.716 *g/cm3;
+    density = 7.716e-2 *g/cm3;
     G4Material *EndCu = new G4Material(name="EndCu", Z=29., A, density);
 
     material = EndCu;
