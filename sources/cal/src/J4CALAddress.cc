@@ -53,7 +53,7 @@ G4int J4CALAddress::GetCellID( G4int coneID, G4int towerID,
   if ( isEM ) 
     cellID = coneID + nCones*( towerID + nTowers*( miniConeID + nEMMiniCones*( miniTowerID + nEMMiniTowers*( layerID + nEMLayers*( subLayerID )))));
   else
-    cellID = coneID + nCones*( towerID + nTowers*( miniConeID + nHDMiniCones*( miniTowerID + nHDMiniTowers*( layerID + nHDLayers*( subLayerID )))));
+    cellID = coneID + nCones*( towerID + nTowers*( miniConeID + nHDMiniCones*( miniTowerID + nHDMiniTowers*( layerID + nEMLayers + nHDLayers*( subLayerID )))));
 
   return cellID;
 }
@@ -127,7 +127,7 @@ G4int J4CALAddress::GetCellLayerID( G4int cellID, G4bool isEM )
   if ( isEM ) {
     layerID  = ( cellID / nCones / nTowers / nEMMiniCones / nEMMiniTowers ) % nEMLayers;
   } else {
-    layerID  = ( cellID / nCones / nTowers / nHDMiniCones / nHDMiniTowers ) % nHDLayers;
+    layerID  = ( cellID / nCones / nTowers / nHDMiniCones / nHDMiniTowers ) % nHDLayers - nEMLayers;
   }
   return layerID;
 }
