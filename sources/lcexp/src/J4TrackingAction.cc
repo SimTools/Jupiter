@@ -17,11 +17,11 @@
 #include "J4Global.hh"
 
 std::vector<G4int> J4TrackingAction::fgRegs;
-
+G4int              J4TrackingAction::fCurrentTrackID;
 //=====================================================================
 //* Constructor -------------------------------------------------------
 J4TrackingAction::J4TrackingAction()
-                 :fCurrentTrackID(0), fStoredTrajectoryID(1) 
+                : fStoredTrajectoryID(1) 
 {
 
    fMessenger = new J4TrackingActionMessenger(this);
@@ -53,7 +53,7 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
   using namespace std;
   vector<G4int>::iterator iter;
   for (iter = fgRegs.begin(); iter != fgRegs.end(); iter++) {
-     if (*iter != INT_MAX && fCurrentTrackID < *iter) *iter = INT_MAX;
+     if (*iter != INT_MAX && fCurrentTrackID <= *iter) *iter = INT_MAX;
   }
   
 #ifdef G4_STORE_TRAJECTORY

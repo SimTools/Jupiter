@@ -23,6 +23,7 @@
 #endif
 
 #include "G4UserTrackingAction.hh"
+#include "J4StackingAction.hh"
 
 class J4TrackingActionMessenger;
 
@@ -47,21 +48,22 @@ class J4TrackingAction : public G4UserTrackingAction
     inline G4int    GetStoredDebugPrintID() const { return fStoredDebugPrintID; }
 #endif
 
-    static void  SetCurTrackID(G4int &detid, G4int trackid)
+    static G4bool IsNext(G4int &detid)
     { 
+       G4int trackid = J4StackingAction::GetTopOfStackID();
+       if (trackid < fCurrentTrackID) return FALSE;
        if (detid < 0) {
           fgRegs.push_back(trackid);
           detid = fgRegs.size() - 1;
        } else {
           fgRegs[detid] = trackid;
        }
+       return TRUE;
     }
-
-    static G4int GetCurTrackID(G4int detid) { return fgRegs[detid]; }
 
   private:
 
-    G4int            fCurrentTrackID;        // 1 : charged particle only 
+    static G4int     fCurrentTrackID;        // 1 : charged particle only 
     G4int            fStoredTrajectoryID;    // 1 : charged particle only 
                                              // 2 : all particles
 #ifdef __THEBE__
