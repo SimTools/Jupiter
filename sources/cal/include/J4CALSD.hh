@@ -1,9 +1,9 @@
 // $Id$
-#ifndef __J4CALEMSD__
-#define __J4CALEMSD__
+#ifndef __J4CALSD__
+#define __J4CALSD__
 //*************************************************************************
 //* --------------------
-//* J4CALEMSD
+//* J4CALSD
 //* --------------------
 //* (Description)
 //* 	It appends Sensitive propaty to J4CALEM. 
@@ -21,13 +21,12 @@
 // class definition
 //---------------------
 
-
-class J4CALEMSD : public J4VSD<J4CALHit>{
+class J4CALSD : public J4VSD<J4CALHit>{
   
 public:
 
-  J4CALEMSD(J4VDetectorComponent* detector);
-  ~J4CALEMSD();
+  J4CALSD(J4VDetectorComponent* detector);
+  ~J4CALSD();
 
   virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist);
   virtual void   Initialize (G4HCofThisEvent* HCTE);
@@ -44,7 +43,7 @@ public:
      }
      else
      {
-       std::cerr << "J4CALEMSD::OutputAll: No HitBuf! " << std::endl;
+       std::cerr << "J4CALSD::OutputAll: No HitBuf! " << std::endl;
      }
   }
   
@@ -52,10 +51,9 @@ public:
    
 private:
 
-  J4CALHit       **fCalHits; 
-  G4int            fNsectionsInPhi; 
-  
+  //std::vector< std::vector<J4CALHit *> > fCalHits;
+  J4CALHit       **fCalHits;
+
 };
 
 #endif
-

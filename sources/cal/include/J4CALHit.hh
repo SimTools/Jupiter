@@ -64,7 +64,7 @@ public:
   inline G4int         GetMotherTrackID()  const { return fMotherTrackID; }
   inline G4int         GetTrackID()        const { return fTrackID;       }
   inline G4bool        IsBarrel()          const { return fIsBarrel;      }
-  inline G4bool        IsEM()              const { return fIsEM;          }
+  inline G4bool        IsCAL()              const { return fIsCAL;          }
   inline G4double      GetEnergyDeposit()  const { return fEnergyDep;     }
   inline G4double      GetTof()            const { return fTof;           }
   inline G4ThreeVector GetInjectionPoint() const { return fInjectionPoint; }
@@ -91,7 +91,7 @@ private:
   G4int                     fThetaNumber; 
   G4int                     fPhiNumber;
   G4bool                    fIsBarrel;
-  G4bool                    fIsEM;
+  G4bool                    fIsCAL;
   G4double                  fEnergyDep;
   G4double                  fTof;
   G4ThreeVector             fInjectionPoint;

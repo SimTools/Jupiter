@@ -68,8 +68,3 @@ J4VCALDetectorComponent::operator=(const J4VCALDetectorComponent& right)
 }
 
 #endif
-
-
-
-
-

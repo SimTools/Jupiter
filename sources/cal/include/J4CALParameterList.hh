@@ -16,12 +16,13 @@
 
 #include <iomanip> 
 #include "globals.hh"
-#include "./vector"
-#include "./functional"
-#include "./algorithm"
+#include <vector>
+#include <functional>
+#include <algorithm>
 #include "G4Material.hh"
 #include "G4Color.hh"
 #include "J4ParameterList.hh"
+#include "J4CALSubLayerParameterList.hh"
 
 
 // ====================================================================
@@ -84,9 +85,28 @@ class J4CALParameterList : public J4VParameterList
 
    //*EM ----------------------------------------------------------------
    inline G4double GetEMThickness()       const { return fEMThickness;    }
+   //inline G4double GetEMLayerThickness()  const { return fEMLayerThickness;}
 
-   //*HD ----------------------------------------------------------------
+   //*HD ---------------------------------------------------------
    inline G4double GetHDThickness()       const { return fHDThickness;    }
+   //inline G4double GetHDLayerThickness()  const { return fHDLayerThickness;}
+
+   //*MiniCone --------------------------------------------------
+   inline G4int    GetNMiniCones()            const; 
+
+  //*MiniCone and MiniTower (# of clones) ---------------------------------
+   inline G4int GetEMMiniConeNClones()  const { return fEMMiniConeNClones; }
+   inline G4int GetEMMiniTowerNClones() const { return fEMMiniTowerNClones; }
+   inline G4int GetHDMiniConeNClones()  const { return fHDMiniConeNClones; }
+   inline G4int GetHDMiniTowerNClones() const { return fHDMiniTowerNClones; }
+
+   //*Layer
+   inline G4int GetEMNLayers()                const { return fEMNLayers; } 
+   inline G4int GetHDNLayers()                const { return fHDNLayers; } 
+//   inline G4double GetEMAbsLayerThickness()    const { return fEMAbsLayerThickness; } 
+//   inline G4double GetHDAbsLayerThickness()    const { return fHDAbsLayerThickness; } 
+//   inline G4double GetEMActiveLayerThickness() const { return fEMActiveLayerThickness; } 
+//   inline G4double GetHDActiveLayerThickness() const { return fHDActiveLayerThickness; } 
 
    //*Materials ---------------------------------------------------------
    inline G4String GetCALMaterial()       const { return fCALMaterial;    }
@@ -96,6 +116,13 @@ class J4CALParameterList : public J4VParameterList
    inline G4String GetTowerMaterial()     const { return fTowerMaterial;  }
    inline G4String GetEMMaterial()        const { return fEMMaterial;     }
    inline G4String GetHDMaterial()        const { return fHDMaterial;     }
+   inline G4String GetMiniConeMaterial()  const { return fMiniConeMaterial; }
+   inline G4String GetMiniTowerMaterial() const { return fMiniTowerMaterial; }
+   inline G4String GetEMAbsLayerMaterial()  const { return fEMAbsLayerMaterial; }
+   inline G4String GetHDAbsLayerMaterial()  const { return fHDAbsLayerMaterial; }
+   inline G4String GetEMActiveLayerMaterial()const { return fEMActiveLayerMaterial; }
+   inline G4String GetHDActiveLayerMaterial()const { return fHDActiveLayerMaterial; }
+   inline G4String GetLayerMaterial()const { return fLayerMaterial; }
 
    //*VisAtt ------------------------------------------------------------
    inline G4bool   GetCALVisAtt()         const { return fCALVisAtt;      }
@@ -105,7 +132,10 @@ class J4CALParameterList : public J4VParameterList
    inline G4bool   GetTowerVisAtt()       const { return fTowerVisAtt;    }
    inline G4bool   GetEMVisAtt()          const { return fEMVisAtt;       }
    inline G4bool   GetHDVisAtt()          const { return fHDVisAtt;       }
-
+   inline G4bool   GetMiniConeVisAtt()    const { return fMiniConeVisAtt; }
+   inline G4bool   GetMiniTowerVisAtt()   const { return fMiniTowerVisAtt;}
+   inline G4bool   GetLayerVisAtt()       const { return fLayerVisAtt;    }
+   inline G4bool   GetSubLayerVisAtt()    const { return fSubLayerVisAtt; }
    //*Color  ------------------------------------------------------------
    inline G4Color  GetCALColor()          const { return fCALColor;       }
    inline G4Color  GetBarrelColor()       const { return fBarrelColor;    }
@@ -114,7 +144,10 @@ class J4CALParameterList : public J4VParameterList
    inline G4Color  GetTowerColor()        const { return fTowerColor;     }
    inline G4Color  GetEMColor()           const { return fEMColor;        }
    inline G4Color  GetHDColor()           const { return fHDColor;        }
-
+   inline G4Color  GetMiniConeColor()     const { return fMiniConeColor;  }
+   inline G4Color  GetMiniTowerColor()    const { return fMiniTowerColor; }
+   inline G4Color  GetLayerColor()        const { return fLayerColor;   }
+   inline G4Color  GetSubLayerColor()     const { return fSubLayerColor;   }
    //
    // Setters
    //
@@ -126,7 +159,10 @@ class J4CALParameterList : public J4VParameterList
    inline void SetTowerColor  (const G4Color &c) { fTowerColor      = c; }
    inline void SetEMColor     (const G4Color &c) { fEMColor         = c; }
    inline void SetHDColor     (const G4Color &c) { fHDColor         = c; }
-   
+   inline void SetMiniConeColor(const G4Color &c) { fMiniConeColor  = c; }
+   inline void SetMiniTowerColor(const G4Color &c) { fMiniTowerColor = c; }
+   inline void SetLayerColor(const G4Color &c) { fLayerColor        = c; }
+   inline void SetSubLayerColor(const G4Color &c) { fSubLayerColor     = c; }
     
 
  private:
@@ -151,7 +187,6 @@ class J4CALParameterList : public J4VParameterList
                                         G4double length,
                                         G4double width,
                                         G4bool   isbarrel);
-
 
  public:
 
@@ -183,31 +218,30 @@ class J4CALParameterList : public J4VParameterList
        
         ~J4CALTowerParam(){}  
 
-        void      ShowData() 
-                  {
-                      std::cerr << std::setprecision(5) 
-                             << std::setw(10) << fIsBarrel
-                             << std::setw(10) << fR
-                             << std::setw(10) << fHeight
-                             << std::setw(10) << fCenterLambda
-                             << std::setw(10) << fDlambda
-                             << std::setw(10) << 2 * fR * sin(0.5 * fDlambda)
-                             << std::setw(10) << fNphi
-                             << std::setw(10) << fDphi 
-                             << std::setw(10) << 2 * fR * sin(0.5 * fDphi)
-                             << std::endl;
-                  }
+        void ShowData() 
+             {
+                std::cerr << std::setprecision(5) 
+                          << std::setw(10) << fIsBarrel
+                          << std::setw(10) << fR
+                          << std::setw(10) << fHeight
+                          << std::setw(10) << fCenterLambda
+                          << std::setw(10) << fDlambda
+                          << std::setw(10) << 2 * fR * sin(0.5 * fDlambda)
+                         << std::setw(10) << fNphi
+                          << std::setw(10) << fDphi 
+                          << std::setw(10) << 2 * fR * sin(0.5 * fDphi)
+                          << std::endl;
+              }
 
-        inline G4bool     IsBarrel()        const { return fIsBarrel;     }
-        inline G4double   GetR()            const { return fR;            }
-        inline G4double   GetHeight()       const { return fHeight;       }
-        inline G4double   GetLambda()       const { return fCenterLambda; }
-        inline G4int      GetNphi()         const { return fNphi;         }
-        inline G4double   GetDphi()         const { return fDphi;         }
-        inline G4double   GetDlambda()      const { return fDlambda;      }
-        inline G4double   GetDtheta()       const { return GetDlambda();  }
-        inline G4double   GetTheta()        const 
-                          { return 0.5 * M_PI - fCenterLambda; }
+        inline G4bool     IsBarrel()   const { return fIsBarrel;     }
+        inline G4double   GetR()       const { return fR;            }
+        inline G4double   GetHeight()  const { return fHeight;       }
+        inline G4double   GetLambda()  const { return fCenterLambda; }
+        inline G4int      GetNphi()    const { return fNphi;         }
+        inline G4double   GetDphi()    const { return fDphi;         }
+        inline G4double   GetDlambda() const { return fDlambda;      }
+        inline G4double   GetDtheta()  const { return GetDlambda();  }
+        inline G4double   GetTheta()   const { return 0.5 * M_PI - fCenterLambda; }
  
      private:
 
@@ -225,11 +259,22 @@ class J4CALParameterList : public J4VParameterList
 
    J4CALTowerParamVector  GetTowerParamVector()  const { return fTowerParamVector; }
    J4CALTowerParam       *GetTowerParam(G4int i) const { return fTowerParamVector[i].second; }
-
+ 
+   // SubParameterList 
+   inline J4CALSubLayerParameterList* GetSubLayerParam()
+   {
+      if( !fSubLayerParameterList ) {
+          fSubLayerParameterList = new J4CALSubLayerParameterList; 
+      }
+      return fSubLayerParameterList;
+   }
+ 
  private:
 
    static J4CALParameterList *fgInstance;
    J4CALTowerParamVector      fTowerParamVector;
+
+   J4CALSubLayerParameterList* fSubLayerParameterList;
 
    // material
    G4String  fCALMaterial; 
@@ -239,6 +284,14 @@ class J4CALParameterList : public J4VParameterList
    G4String  fTowerMaterial; 
    G4String  fEMMaterial; 
    G4String  fHDMaterial; 
+   G4String  fMiniConeMaterial;
+   G4String  fMiniTowerMaterial;
+   G4String  fLayerMaterial;
+   G4String  fHDLayerMaterial;
+   G4String  fEMAbsLayerMaterial;
+   G4String  fHDAbsLayerMaterial;
+   G4String  fEMActiveLayerMaterial;
+   G4String  fHDActiveLayerMaterial;
 
    // visatt 
    G4bool    fCALVisAtt;
@@ -248,6 +301,10 @@ class J4CALParameterList : public J4VParameterList
    G4bool    fTowerVisAtt;
    G4bool    fEMVisAtt;
    G4bool    fHDVisAtt;
+   G4bool    fMiniConeVisAtt;
+   G4bool    fMiniTowerVisAtt;
+   G4bool    fLayerVisAtt;
+   G4bool    fSubLayerVisAtt;
 
    // color 
    G4Color   fCALColor;
@@ -257,6 +314,10 @@ class J4CALParameterList : public J4VParameterList
    G4Color   fTowerColor;
    G4Color   fEMColor;
    G4Color   fHDColor;
+   G4Color   fMiniConeColor;
+   G4Color   fMiniTowerColor;
+   G4Color   fLayerColor;
+   G4Color   fSubLayerColor;
 
    // CAL
    G4double  fCALDeltaPhi;
@@ -286,6 +347,26 @@ class J4CALParameterList : public J4VParameterList
    // HD
    G4double  fHDThickness;
 
+   // MiniCone
+   G4int fEMMiniConeNClones;
+   G4int fHDMiniConeNClones;
+   
+   // MiniTower
+   G4int fEMMiniTowerNClones;
+   G4int fHDMiniTowerNClones;
+
+   // Layer
+   G4double fNLayers;
+   G4int     fEMNLayers;
+   G4int     fHDNLayers;
+   
+   // AbsLayer
+   G4double fEMAbsLayerThickness;
+   G4double fHDAbsLayerThickness;
+   
+  // ActiveLayer
+   G4double fEMActiveLayerThickness;
+   G4double fHDActiveLayerThickness;
 };
 
 //=========================================================

@@ -1,9 +1,9 @@
 // $Id$
-#ifndef __J4CALEM__
-#define __J4CALEM__
+#ifndef __J4CALSUBLAYER__
+#define __J4CALSUBLAYER__
 //*************************************************************************
 //* --------------------
-//* J4CALEM
+//* J4CALSubLayer
 //* --------------------
 //* (Description)
 //* 	Derivation class for CAL.
@@ -14,26 +14,25 @@
 //*************************************************************************
 
 #include "J4VCALDetectorComponent.hh"
-#include "J4CALBlock.hh"
-#include "J4CALHit.hh"
-class J4CALMiniCone;
+#include "J4CALLayer.hh"
+class J4VDetectorComponent;
+class J4CALSubLayerSD;
 
 //=====================================================================
 //---------------------
 // class definition
 //---------------------
 
-//class J4CALEM : public J4VCALDetectorComponent {	
-class J4CALEM : public J4CALBlock
-{
+//class J4CALSubLayer : public J4VCALDetectorComponent {
+class J4CALSubLayer : public J4CALLayer{
 
 public:
-  J4CALEM(J4VDetectorComponent *parent    = 0,
+  J4CALSubLayer(J4VDetectorComponent  *parent    = 0,
                              G4int  nclones   = 1,
                              G4int  nbrothers = 1, 
                              G4int  me        = 0,
                              G4int  copyno    = -1 );
-  virtual ~J4CALEM();
+  virtual ~J4CALSubLayer();
 
   virtual void  InstallIn(J4VComponent         *mother,
                           G4RotationMatrix     *prot  = 0,
@@ -41,34 +40,20 @@ public:
   virtual void	Draw()      ;
   virtual void	Print() const ;
 
-//  inline G4int      GetNsectionsInPhi();
-//  inline G4int      GetNsectionsInTheta();   
-
-//  static G4String   GetFirstName() { return fFirstName; }  
-
 //private:
+protected:
   void 	Assemble();    
-//  void  Cabling ();
+  void  Cabling ();
   
-private:  
- //static G4String   fFirstName;
- static G4String     firstName;
+//private:  
+protected:  
+  static G4String   fFirstName;
 
-  // For input array
-  std::vector<J4CALMiniCone *>  fMiniCones;
+  G4int fMiniTowerNClones;
+  G4int fMiniConeNCBrohers;
+  G4int fTowerNClones;
+  G4int fConeNBrothers;
+  
 };
 
-// =====================================================
-// inline finctions ------------------------------------
-//G4int J4CALEM::GetNsectionsInPhi()
-//{
-   // mother component : Tower
-//   return GetMother()->GetNclones();
-//}
-
-//G4int J4CALEM::GetNsectionsInTheta()
-//{
-   // grand mother component : Cone 
- //  return GetMother()->GetMother()->GetNbrothers();
-//}
 #endif

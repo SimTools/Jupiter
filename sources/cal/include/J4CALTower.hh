@@ -15,14 +15,16 @@
 
 #include "J4VCALDetectorComponent.hh"
 #include "J4CALCone.hh"
-#include "J4CALEM.hh"
-#include "J4CALHD.hh"
+//#include "J4CALEM.hh"
+//#include "J4CALHD.hh"
 
 //=====================================================================
 //---------------------
 // class definition
 //---------------------
 
+class J4CALEM;
+class J4CALHD;
 class J4CALTower : public J4VCALDetectorComponent {	
 
 public:
@@ -51,9 +53,6 @@ private:
   
   J4CALEM          *fEMcal;
   J4CALHD          *fHDcal;
-
 };
 
 #endif
-
-
