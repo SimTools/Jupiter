@@ -13,6 +13,7 @@
 //*************************************************************************
 
 #include "J4ITMaterialStore.hh"
+#include "J4ITParameterList.hh"
 #include "J4VDetectorComponent.hh"
 
 //=====================================================================
@@ -39,6 +40,7 @@ public:
       
 protected:    
   J4VMaterialStore* 	 OpenMaterialStore();
+  J4ITParameterList* 	 OpenParameterList() { return J4ITParameterList::GetInstance(); }
   
 private:
   static J4ITMaterialStore* fMaterialStore;
