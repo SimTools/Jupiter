@@ -8,6 +8,7 @@
 //*     
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
+//*	2002/11/19  T.Aso       Modify to use ParameterList.
 //*************************************************************************
 
 #include "J4VTXLayer.hh"
@@ -33,20 +34,11 @@ J4VTXLayer::J4VTXLayer(J4VDetectorComponent* parent,
   		  	              G4int  nbrothers, 
   		  	              G4int  me) :
   	   J4VVTXDetectorComponent(fFirstName, parent, 1,nbrothers, me),
-#ifdef __HOSHINA__
            fLadders(0)
-#else
-           fLadder(0)
-#endif
 {   
 
   // Define Layer parameters ----------------//    
 
-    fRmin = RINNER_LAYER[me];
-    fRmax = ROUTER_LAYER[me];
-    fLen  = VTXMASTER_Z/2.;
-    fTotalPhi = ((G4Tubs *)parent->GetLV()->GetSolid())->GetDeltaPhiAngle();
-    
 }
 
 //=====================================================================
@@ -54,17 +46,14 @@ J4VTXLayer::J4VTXLayer(J4VDetectorComponent* parent,
 
 J4VTXLayer::~J4VTXLayer()
 {
-#ifdef __HOSHINA__
+
+  G4int layerID = GetMyID();
   if (fLadders) {   
-    G4int i;  
-    for (i = 0; i < NLADDER[GetMyID()] ; i++) {
+    for (G4int i = 0; i < OpenParameterList()->GetNLadders(layerID) ; i++) {
      if(Deregister(fLadders[i])) delete fLadders [i];
     } 
     if (Deregister(fLadders)) delete [] fLadders;
   }
-#else
-  if (Deregister(fLadder)) delete fLadder;
-#endif
 }
 
 //=====================================================================
@@ -72,23 +61,32 @@ J4VTXLayer::~J4VTXLayer()
 
 void J4VTXLayer::Assemble() 
 {   
+
+    J4VTXParameterList* list = OpenParameterList();
+    G4int layerID = GetMyID();
+
+    G4double   rmin = list->GetLayerInnerRadius(layerID);
+    G4double   rmax = list->GetLayerOuterRadius(layerID);
+    G4double   len  = 
+      ((G4Tubs *)GetMother()->GetLV()->GetSolid())->GetZHalfLength();
+    G4double   totalPhi=
+      ((G4Tubs *)GetMother()->GetLV()->GetSolid())->GetDeltaPhiAngle();
+
+
   if (!GetLV())
   {	  
     // define geometry
     // MakeSolid ----------//
-    OrderNewTubs (fRmin, fRmax, fLen, fTotalPhi );
+    OrderNewTubs (rmin, rmax, len, totalPhi );
     // MakeLogicalVolume --//  
-    MakeLVWith(OpenMaterialStore()-> Order(_LAYERMATERIAL_));
+    MakeLVWith(OpenMaterialStore()->Order(list->GetLayerMaterial()));
     // SetVisAttribute ----//
-    PaintLV( _VTXLAYERVISATT_ , G4Color(1,0,0));    
+    PaintLV(list->GetLayerVisAtt() , list->GetLayerColor());    
         
     // Install daughter PV //
     // Install Ladder      //
-    G4int layer = GetMyID();
-    G4int numOfLadders = NLADDER[layer];
+    G4int numOfLadders = list->GetNLadders(layerID);
  
-#ifdef __HOSHINA__
-
     // make pointer array for Ladder...
     fLadders = new J4VTXLadder* [numOfLadders]; 
     Register(fLadders);
@@ -96,8 +94,7 @@ void J4VTXLayer::Assemble()
     // make first ladder object (MUST define copyNo as 0)
     fLadders[0] = new J4VTXLadder(this,numOfLadders, 1, 0, 0);
     Register(fLadders[0]);
-    fLadders[0]->InstallIn(this);  
-    
+
     // copy ladder objects (copyNo must start from 1)
     G4int copyNo;
     for (copyNo = 1; copyNo < numOfLadders; copyNo++) {
@@ -106,19 +103,10 @@ void J4VTXLayer::Assemble()
     }
     
     // install ladder objects...    
-    for (copyNo = 1 ; copyNo < numOfLadders; copyNo++) {
+    for (copyNo = 0 ; copyNo < numOfLadders; copyNo++) {
        fLadders[copyNo]->InstallIn(this);  
        SetDaughter(fLadders[copyNo]);
     }
-    
-#else
-
-    fLadder  = new J4VTXLadder(this,numOfLadders);
-    Register(fLadders);
-    fLadder->InstallIn(this);  
-    SetDaughter(fLadder);
-
-#endif
   }
 }
 
@@ -156,12 +144,6 @@ void J4VTXLayer::Draw()
 //* Print  --------------------------------------------------------
 void J4VTXLayer::Print() const
 {
-  G4cout << "-J4VTXLayer(mm)-  " <<G4endl;
-  G4cout << "Rmin " << fRmin/mm 
-       << " Rmax "<< fRmax/mm 
-       <<" Z "<< fLen/mm 
-       << G4endl;
-  G4cout << "----------------" << G4endl;
 }
 
 	

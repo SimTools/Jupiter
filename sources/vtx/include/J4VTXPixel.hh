@@ -49,9 +49,6 @@ private:
 private:
   
   static G4String fFirstName;
-
-  G4ThreeVector* fDxyzPixel;
-
 };
 
 #endif

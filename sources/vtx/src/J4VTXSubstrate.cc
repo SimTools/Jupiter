@@ -8,6 +8,7 @@
 //*     
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
+//*	2002/11/19  T.Aso       ParameterList
 //*************************************************************************
 
 #include "J4VTXSubstrate.hh"
@@ -30,15 +31,10 @@ G4String J4VTXSubstrate::fFirstName("Substrate");
 //* constructor -------------------------------------------------------
 
 J4VTXSubstrate::J4VTXSubstrate(J4VDetectorComponent* parent):
-  	   J4VVTXDetectorComponent(fFirstName, parent, 1,1, 0, -1),
-           fDxyzSubstrate(0), fxyzSubstrate(0)
+  	   J4VVTXDetectorComponent(fFirstName, parent, 1,1, 0, -1)
 
 {   
   // Define Substrate parameters ----------------//    
-  fDxyzSubstrate = new G4ThreeVector(DXYZ_SUBSTRATE);
-  Register(fDxyzSubstrate);
-  fxyzSubstrate  = new G4ThreeVector(XYZ_SUBSTRATE);
-  Register(fxyzSubstrate);
 }
 
 //=====================================================================
@@ -46,8 +42,6 @@ J4VTXSubstrate::J4VTXSubstrate(J4VDetectorComponent* parent):
 
 J4VTXSubstrate::~J4VTXSubstrate()
 {
-  if (Deregister(fDxyzSubstrate)) delete fDxyzSubstrate;
-  if (Deregister(fxyzSubstrate))  delete fxyzSubstrate;
 }
 
 //=====================================================================
@@ -58,19 +52,22 @@ void J4VTXSubstrate::Assemble()
   if(!GetLV())
   {	  
     // define geometry
+    J4VTXParameterList* list = OpenParameterList();
+    G4ThreeVector dxyzSubstrate = list->GetSubstrateSize();
+
     // MakeSolid ----------//
-    G4VSolid *solid = new G4Box(GetName(),fDxyzSubstrate->x()/2.,
-		                 fDxyzSubstrate->y()/2.,
-		                 fDxyzSubstrate->z()/2.);
+    G4VSolid *solid = new G4Box(GetName(),dxyzSubstrate.x()/2.,
+		                 dxyzSubstrate.y()/2.,
+		                 dxyzSubstrate.z()/2.);
     Register(solid);
     SetSolid(solid);
 
     // MakeLogicalVolume --//  
-    MakeLVWith(OpenMaterialStore()-> Order(_SUBSTRATEMATERIAL_));
+    MakeLVWith(OpenMaterialStore()->Order(list->GetSubstrateMaterial()));
     // SetVisAttribute ----//
-    PaintLV( _SUBSTRATEVISATT_ , G4Color(0.5,0.,0.5));    
+    PaintLV(list->GetSubstrateVisAtt(),list->GetSubstrateColor());    
 
-    SetMaxAllowedStep(0.001*mm);
+    SetMaxAllowedStep(list->GetMaxAllowedStep());
         
     // Install daughter PV //
     // Install Substrate      //
@@ -93,9 +90,9 @@ void J4VTXSubstrate::InstallIn(J4VComponent         *mother,
 { 
   Assemble();			// You MUST call Assemble(); at first.
   				// 
-  
+  G4ThreeVector xyzSubstrate  = OpenParameterList()->GetSubstratePosition();  
   // Placement function into mother object ------//
-  SetPVPlacement(prot, *fxyzSubstrate);
+  SetPVPlacement(prot, xyzSubstrate);
 }
 
 
@@ -109,15 +106,4 @@ void J4VTXSubstrate::Draw()
 //* Print  --------------------------------------------------------
 void J4VTXSubstrate::Print() const
 {
-  G4cout << "-J4VTXSubstrate(mm)-  " <<G4endl;
-  G4cout << "dx " << fDxyzSubstrate->x()/mm 
-       << " dy "<< fDxyzSubstrate->y()/mm 
-       << " dz "<< fDxyzSubstrate->z()/mm 
-       << G4endl;
-  G4cout << "x " << fxyzSubstrate->x()/mm 
-       << " y "<< fxyzSubstrate->y()/mm 
-       << " z "<< fxyzSubstrate->z()/mm 
-       << G4endl;
-  G4cout << "----------------" << G4endl;
-  
 }

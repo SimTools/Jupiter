@@ -10,10 +10,12 @@
 //*     
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
+//*	2002/11/19  T.Aso       modify to use ParameterList
 //*************************************************************************
 
 #include "J4VDetectorComponent.hh"
 #include "J4VTXMaterialStore.hh"
+#include "J4VTXParameterList.hh"
 #include "G4UserLimits.hh"
 
 //=====================================================================
@@ -39,24 +41,13 @@ public:
   virtual ~J4VVTXDetectorComponent();
   void  SetMaxAllowedStep(G4double maxStep);
 
-#ifdef __HOSHINA__
-
-  // use default SetPVPlacement method.
-
-#else
-  virtual void SetPVPlacement (G4RotationMatrix *pRot = 0,
-                               const G4ThreeVector &tlate = 0,
-			       G4int copyNo=0,
-			       G4LogicalVolume* motherlog=0);
-#endif
-      
 protected:    
   J4VMaterialStore* 	 OpenMaterialStore();
-
-  #include "J4VTXParameter.hh"
+  J4VTXParameterList* 	 OpenParameterList();
   
 private:
   static J4VTXMaterialStore *fMaterialStore;
+  static J4VTXParameterList *fParameterList;
   static G4String            fSubGroup;
   G4UserLimits              *fUserLimits;
        

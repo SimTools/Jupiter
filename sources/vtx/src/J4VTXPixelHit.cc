@@ -11,7 +11,7 @@
 //*	2001/02/18  K.Hoshina	Original version.
 //*************************************************************************
 
-#include <iomanip>
+#include <iomanip.h>
 #include "J4VTXPixelHit.hh"
 
 //=========================================================================
@@ -20,7 +20,6 @@
 //---------------------
 
 J4VTXPixelHitAllocator J4VTXPixelHit::fHitAllocator ;
-J4Output *J4VTXPixelHit::fOutput = 0;
 
 //=========================================================================
 //* constructor -----------------------------------------------------------
@@ -76,23 +75,37 @@ G4ThreeVector J4VTXPixelHit::GetHitPosition(){
 //* Output ------------------------------------------------------------------
 void J4VTXPixelHit::Output(G4HCofThisEvent* HCTE)
 {
-
-  if (fOutput) fOutput->Output(this);
 	
   // output hitdata to output file ....
   
-  G4std::ofstream& ofs = GetOutputFileStream();
+  ofstream& ofs = GetOutputFileStream();
   if(! ofs.good()) {
     G4String errorMessage= "J4VTXPixelHit::Output(): write error.";
     G4Exception(errorMessage);
   }  
   else
   {
-     ofs << GetEnergyDeposit()/keV << " keV" <<G4endl;
-     ofs << GetTrackID() << " " << fLayerID 
-	      <<" " << fLadderID <<" "<< fSensorID
-         <<" " << fPixThetaID <<" " << fPixPhiID <<G4endl;
-     ofs << fInPosition <<" " << fOutPosition << G4endl;  	
+#if 1
+     ofs << "Pixel " 
+	 <<  GetEnergyDeposit()/keV << " "
+          << GetTrackID() << " " << fLayerID 
+	  <<" " << fLadderID <<" "<< fSensorID
+         <<" " << fPixThetaID <<" " << fPixPhiID << " " 
+         << fInPosition <<" " << fOutPosition << G4endl;  	
+#else
+     G4double dE = GetEnergyDeposit()/keV;
+     G4int    trk = GetTrackID();
+     G4int pid = GetParticle()->GetPDGEncoding();
+     G4double charge = GetParticle()->GetPDGCharge();
+     G4double xin = fInPosition.x()/mm;
+     G4double yin = fInPosition.y()/mm;
+     G4double zin = fInPosition.z()/mm;
+     ofs << "Pixel " 
+         << trk  << " " << pid << " " << charge << " " << dE
+	 <<" " <<  fLayerID  <<" " << fLadderID <<" "<< fSensorID
+         <<" " << fPixThetaID <<" " << fPixPhiID
+	 <<" " <<  xin << " " << yin << " " << zin << endl;
+#endif
   }
 }
 	
@@ -110,13 +123,13 @@ void J4VTXPixelHit::Print()
 
   G4ThreeVector fHitPosition=GetHitPosition();
 
-  G4cerr << G4std::setiosflags(G4std::ios::fixed);
+  G4cerr << setiosflags(ios::fixed);
   G4cerr << " track#=" << GetTrackID()
-	 << " position(mm)= " << G4std::setprecision(2) 
+	 << " position(mm)= " << setprecision(2) 
 	 << G4std::setw(8) << fHitPosition.x() *(1./mm) << " "
 	 << G4std::setw(8) << fHitPosition.y() *(1./mm) << " "
 	 << G4std::setw(8) << fHitPosition.z() *(1./mm) << " "
-	 << " Edep(keV)= " << G4std::setprecision(2) 
+	 << " Edep(keV)= " << setprecision(2) 
 	 << G4std::setw(6) << GetEnergyDeposit() *(1./keV) << " "
          << G4endl;  
 }

@@ -25,6 +25,7 @@ J4VTXPixelSD::J4VTXPixelSD(J4VDetectorComponent* detector)
               fSTrack(0), fSLayer(0), fSLadder(0), fSSensor(0), 
               fSTpixel(0), fSPpixel(0), fSColNo(0)     
 {
+  cout << " XXXX PixelSD XXXX " << endl;
 }
 
 //=====================================================================
@@ -57,7 +58,7 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   SetNewStep(aStep);
   //Only when a charged particle has just come into a sensitive detector,
   //create a new hit
-  if(GetCharge() == 0.) return FALSE;
+  //if(GetCharge() == 0.) return FALSE;
       
   //Get perticle information
   G4int                 trackID         = GetTrackID();
@@ -102,8 +103,6 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
        (*(J4VTXPixelHitBuf*)GetHitBuf())[fSColNo-1]->AddEdep(edep);
        (*(J4VTXPixelHitBuf*)GetHitBuf())[fSColNo-1]->SetOutPos(outPos);
        (*(J4VTXPixelHitBuf*)GetHitBuf())[fSColNo-1]->SetLocalOutPos(localoutPos);
-      //G4double etmp=(*(J4VTXPixelHitBuf*)GetHitBuf())[fSColNo-1]->GetEDeposit();
-      //     G4cout << "SColNO " << fSColNo <<" E "<<etmp/keV<<" keV " << G4endl; 
   }    
 
   return TRUE;

@@ -11,6 +11,7 @@
 //*    
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
+//*	2002/11/19  T.Aso       Modify to use ParameterList.
 //*************************************************************************
 
 #include "J4VTXLadder.hh"
@@ -44,17 +45,7 @@ private:
 private:
   
   static G4String fFirstName;
-
-#ifdef __HOSHINA__
   J4VTXLadder   **fLadders;
-#else
-  J4VTXLadder    *fLadder;
-#endif
-  G4double   fRmin;
-  G4double   fRmax;
-  G4double   fLen;
-  G4double   fTotalPhi;
-  
 };
 
 #endif

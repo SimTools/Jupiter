@@ -11,6 +11,7 @@
 //*    
 //* (Update Record)
 //*	2002/05/18 K.Hoshina 	Original version.
+//*	2002/11/19 T.Aso        ParameterList
 //*************************************************************************
 
 #include "J4VVTXDetectorComponent.hh"
@@ -49,8 +50,6 @@ private:
 private:
   
   static G4String fFirstName;
-
-  G4ThreeVector *fDxyzPixelArray;
   J4VTXPixel    *fPixel;
 };
 

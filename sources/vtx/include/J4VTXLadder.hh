@@ -25,7 +25,6 @@ class J4VTXLadder : public J4VVTXDetectorComponent {
 
 public:
 
-#ifdef __HOSHINA__
   J4VTXLadder(J4VDetectorComponent *parent       = 0,
 	      G4int                 numOfLadders = 1,
 	      G4int                 nbrothers    = 1,
@@ -34,10 +33,6 @@ public:
 
   J4VTXLadder(const J4VTXLadder    &orig,         
 	             G4int                 copyno);
-#else 
-  J4VTXLadder(J4VDetectorComponent *parent       = 0,
-	      G4int                 numOfLadders = 0);
-#endif
   	     
   virtual ~J4VTXLadder();
 
@@ -55,22 +50,8 @@ private:
 private:
   
   static G4String fFirstName;
-
-  G4ThreeVector    *fDxyzLadder;
-  G4ThreeVector    *fxyzLadder;
-  G4RotationMatrix *fRot;
-  G4double          fAngle; 
-
-#ifdef __HOSHINA__
-
   J4VTXSensor  **fSensors;
 
-#else
-
-  J4VTXSensor   *fSensor;
-
-#endif
-  
 };
 
 #endif

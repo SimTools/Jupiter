@@ -8,6 +8,7 @@
 //*     
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
+//*	2002/11/20  T.Aso       ParameterList
 //*************************************************************************
 
 #include "J4VTXPixelArray.hh"
@@ -36,13 +37,9 @@ J4VTXPixelArray::J4VTXPixelArray(J4VDetectorComponent *parent,
                        G4int                 copyno )
   	   :J4VVTXDetectorComponent(fFirstName, parent, nclones, nbrothers,
                                     me, copyno), 
-            fDxyzPixelArray(0), fPixel(0) 
+            fPixel(0) 
 {   
   // Define PixelArray parameters ----------------//    
-  fDxyzPixelArray = new G4ThreeVector(DXYZ_PIXELAREA.x(),
-                                      DXYZ_PIXELAREA.y(),
-                                      ZPIXELSIZE);
-  Register(fDxyzPixelArray);
 }
 
 //=====================================================================
@@ -50,7 +47,6 @@ J4VTXPixelArray::J4VTXPixelArray(J4VDetectorComponent *parent,
 
 J4VTXPixelArray::~J4VTXPixelArray()
 {
-  if (Deregister(fDxyzPixelArray)) delete fDxyzPixelArray;
   if (Deregister(fPixel))          delete fPixel;
 }
 
@@ -62,30 +58,33 @@ void J4VTXPixelArray::Assemble()
   if (!GetLV())
   {	  
     // define geometry
-      
+    J4VTXParameterList* list = OpenParameterList();
+    G4ThreeVector dxyzPixelArray = list->GetPixelArraySize();
+    cout << " Pixel Array size " << dxyzPixelArray << endl;
     // MakeSolid ----------//
-    G4VSolid *solid = new G4Box(GetName(),fDxyzPixelArray->x()/2.,
-		                 fDxyzPixelArray->y()/2.,
-		                 fDxyzPixelArray->z()/2.);
+    G4VSolid *solid = new G4Box(GetName(),
+				 dxyzPixelArray.x()/2.,
+		                 dxyzPixelArray.y()/2.,
+		                 dxyzPixelArray.z()/2.);
     Register(solid);
     SetSolid(solid);
     
     // MakeLogicalVolume --//  
-    MakeLVWith(OpenMaterialStore()-> Order(_PIXELAREAMATERIAL_));
+    MakeLVWith(OpenMaterialStore()-> Order(list->GetPixelAreaMaterial()));
     
     // SetVisAttribute ----//
-    PaintLV( _PIXELAREAVISATT_ , G4Color(0.0,0.0,0.0));    
+    PaintLV(list->GetPixelVisAtt(),list->GetPixelAreaColor());    
 
-    SetMaxAllowedStep(0.001*mm);
+    SetMaxAllowedStep(list->GetMaxAllowedStep());
         
     // Install daughter PV //
     // Install PixelArray      //
-
-    fPixel = new J4VTXPixel(this, NXPIXEL);
+#if 1
+    fPixel = new J4VTXPixel(this, list->GetNxPixels());
     Register(fPixel);
     fPixel->InstallIn(this);
     SetDaughter(fPixel);
-
+#endif
   }
 }
 
@@ -107,7 +106,7 @@ void J4VTXPixelArray::InstallIn(J4VComponent         *mother,
   				// 
   
   // Placement function into mother object ------//
-  SetPVReplica(kZAxis, ZPIXELSIZE);
+  SetPVReplica(kZAxis, OpenParameterList()->GetPixelArraySize().z());
 
   if (!GetSD()) Cabling(); 
   
@@ -136,11 +135,4 @@ void J4VTXPixelArray::Draw()
 //* Print  --------------------------------------------------------
 void J4VTXPixelArray::Print() const
 {
-  G4cout << "-J4VTXPixelArray(mm)-  " <<G4endl;
-  G4cout << "dx " << fDxyzPixelArray->x()/mm 
-       << " dy "<< fDxyzPixelArray->y()/mm 
-       << " dz "<< fDxyzPixelArray->z()/mm 
-       << G4endl;
-  G4cout << "----------------" << G4endl;
-  
 }

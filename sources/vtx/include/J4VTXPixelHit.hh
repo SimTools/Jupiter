@@ -16,7 +16,6 @@
 #include "J4VHit.hh"
 #include "G4THitsCollection.hh"
 #include "G4HCofThisEvent.hh"
-#include "J4Output.hh"
 
 
 //=========================================================================
@@ -70,9 +69,8 @@ public:
   virtual void Draw();
   virtual void Print();
 
-  void   SetOutPos(G4ThreeVector out)     { fOutPosition=out; }  
-  void   SetLocalOutPos(G4ThreeVector out){ fLocalOutPosition=out; }  
-  static void SetOutput(J4Output *output) { fOutput=output; }
+  void SetOutPos(G4ThreeVector out)     { fOutPosition=out; }  
+  void SetLocalOutPos(G4ThreeVector out){ fLocalOutPosition=out; }  
 
   G4ThreeVector         GetHitPosition() ;  
   G4ParticleDefinition* GetPID()        { return GetParticle();     }
@@ -93,7 +91,6 @@ public:
     
 private: 
 
-  G4ParticleDefinition *fPID;
   G4int                 fLayerID;
   G4int                 fLadderID;
   G4int                 fSensorID;
@@ -106,7 +103,6 @@ private:
   G4ThreeVector         fLocalOutPosition;
   G4ThreeVector         fLocalPixPosition;  
 
-  static J4Output      *fOutput; // Pointer to Output Module
   static J4VTXPixelHitAllocator fHitAllocator;
 
 };

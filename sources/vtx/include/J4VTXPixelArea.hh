@@ -11,15 +11,12 @@
 //*    
 //* (Update Record)
 //*	2001/06/06  T.Aso	Original version.
+//*	2002/11/20  T.Aso	Remove RO
 //*************************************************************************
 
 #include "J4VVTXDetectorComponent.hh"
 
-#ifdef __HOSHINA__
 #include "J4VTXPixelArray.hh"
-#else
-#include "J4VTXPixelAreaSD.hh"
-#endif
 
 //=====================================================================
 //---------------------
@@ -49,14 +46,7 @@ private:
 private:
   
   static G4String fFirstName;
-
-  G4ThreeVector* fDxyzPixelArea;
-  G4ThreeVector* fxyzPixelArea;   
-
-#ifdef __HOSHINA__
   J4VTXPixelArray  *fPixelArray;
-#endif
-
 };
 
 #endif

@@ -8,6 +8,7 @@
 //*     
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
+//*	2002/11/19  T.Aso       ParameterList.
 //*************************************************************************
 
 #include "J4VTXEpitaxial.hh"
@@ -30,15 +31,9 @@ G4String J4VTXEpitaxial::fFirstName("Epitaxial");
 //* constructor -------------------------------------------------------
 
 J4VTXEpitaxial::J4VTXEpitaxial(J4VDetectorComponent* parent):
-  	   J4VVTXDetectorComponent(fFirstName, parent, 1,1, 0, -1),
-           fPixelArea(0), fDxyzEpitaxial(0), fxyzEpitaxial(0)
-
+  	   J4VVTXDetectorComponent(fFirstName, parent, 1,1, 0, -1)
 {   
   // Define Epitaxial parameters ----------------//    
-  fDxyzEpitaxial = new G4ThreeVector(DXYZ_EPITAXIAL);
-  Register(fDxyzEpitaxial);
-  fxyzEpitaxial  = new G4ThreeVector(XYZ_EPITAXIAL);
-  Register(fxyzEpitaxial);
 }
 
 //=====================================================================
@@ -47,8 +42,6 @@ J4VTXEpitaxial::J4VTXEpitaxial(J4VDetectorComponent* parent):
 J4VTXEpitaxial::~J4VTXEpitaxial()
 {
   if (Deregister(fPixelArea))     delete fPixelArea;
-  if (Deregister(fDxyzEpitaxial)) delete fDxyzEpitaxial;
-  if (Deregister(fxyzEpitaxial))  delete fxyzEpitaxial;
 }
 
 //=====================================================================
@@ -59,21 +52,24 @@ void J4VTXEpitaxial::Assemble()
   if(!GetLV())
   {	  
     // define geometry
+    J4VTXParameterList* list = OpenParameterList();
+    G4ThreeVector dxyzEpitaxial = list->GetEpitaxialSize();
+    G4ThreeVector xyzEpitaxial  = list->GetEpitaxialPosition();
       
     // MakeSolid ----------//
-    G4VSolid *solid =  new G4Box(GetName(),fDxyzEpitaxial->x()/2.,
-		                 fDxyzEpitaxial->y()/2.,
-		                 fDxyzEpitaxial->z()/2.);
+    G4VSolid *solid =  new G4Box(GetName(),dxyzEpitaxial.x()/2.,
+		                 dxyzEpitaxial.y()/2.,
+		                 dxyzEpitaxial.z()/2.);
     Register(solid);
     SetSolid(solid);
     
     // MakeLogicalVolume --//  
-    MakeLVWith(OpenMaterialStore()-> Order(_EPITAXIALMATERIAL_));
+    MakeLVWith(OpenMaterialStore()-> Order(list->GetEpitaxialMaterial()));
     
     // SetVisAttribute ----//
-    PaintLV( _EPITAXIALVISATT_ , G4Color(0.0,1.,0.0));    
+    PaintLV( list->GetEpitaxialVisAtt() , list->GetEpitaxialColor());    
 
-    SetMaxAllowedStep(0.001*mm);
+    SetMaxAllowedStep(list->GetMaxAllowedStep());
         
     // Install daughter PV //
     // Install PixelArea      //
@@ -99,12 +95,12 @@ void J4VTXEpitaxial::InstallIn(J4VComponent         *mother,
                                const G4ThreeVector  &tlate ) 
 { 
   Assemble();			// You MUST call Assemble(); at first.
-  				// 
-  
-  // Placement function into mother object ------//
-  SetPVPlacement(prot,*fxyzEpitaxial);
-}
+  				//
 
+  // Placement function into mother object ------//
+  SetPVPlacement(prot,OpenParameterList()->GetEpitaxialPosition());
+
+}
 
 //* Draw  --------------------------------------------------------
 void J4VTXEpitaxial::Draw()
@@ -116,17 +112,6 @@ void J4VTXEpitaxial::Draw()
 //* Print  --------------------------------------------------------
 void J4VTXEpitaxial::Print() const
 {
-  G4cout << "-J4VTXEpitaxial(mm)  "<< G4endl;
-  G4cout << "dx " << fDxyzEpitaxial->x()/mm 
-       << " dy "<< fDxyzEpitaxial->y()/mm 
-       << " dz "<< fDxyzEpitaxial->z()/mm 
-       << G4endl;
-  G4cout << "x " << fxyzEpitaxial->x()/mm 
-       << " y "<< fxyzEpitaxial->y()/mm 
-       << " z "<< fxyzEpitaxial->z()/mm 
-       << G4endl;
-  G4cout << "----------------" << G4endl;
-  
 }
 
 

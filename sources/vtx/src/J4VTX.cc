@@ -8,6 +8,7 @@
 //*     
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
+//*	2002/11/19  T.Aso       Modify to use ParameterList.
 //*************************************************************************
 
 #include "J4VTX.hh"
@@ -43,7 +44,7 @@ J4VTX::~J4VTX()
 {
   if (fLayers) {  
     G4int i; 
-    for (i = 0; i < NLAYER ; i++) {
+    for (i = 0; i < OpenParameterList()->GetNLayers() ; i++) {
      if(Deregister(fLayers[i])) delete fLayers [i];
     }
     if (Deregister(fLayers)) delete [] fLayers;
@@ -55,28 +56,31 @@ J4VTX::~J4VTX()
 
 void J4VTX::Assemble() 
 {   
+
+  J4VTXParameterList* list = OpenParameterList();
+
   if(!GetLV()){
 
     //--- Assemble Master volume for VTX ----
-    G4double rmin = VTXMASTER_INNER_R;
-    G4double rmax = VTXMASTER_OUTER_R;
-    G4double len  = VTXMASTER_Z/2.;
-    G4double dphi = VTXMASTER_PHI;
+    G4double rmin = list->GetVTXInnerRadius();
+    G4double rmax = list->GetVTXOuterRadius();
+    G4double len  = list->GetVTXZLength()/2.;
+    G4double dphi = twopi;
  	
     // MakeSolid ----------//
     OrderNewTubs (rmin, rmax, len, dphi);
-    // MakeLogicalVolume --//  
-    MakeLVWith(OpenMaterialStore()->Order(_MASTERMATERIAL_));
+    // MakeLogicalVolume --//
+    MakeLVWith(OpenMaterialStore()->Order(list->GetVTXMaterial()));
     // SetVisAttribute ----//
-    PaintLV(_VTXVISATT_, G4Color(0, 0, 0));
-  	
+    PaintLV(list->GetVTXVisAtt(), list->GetVTXColor());
 
     // Install daughter PV //
     // Install Layer       //
-    fLayers = new J4VTXLayer* [NLAYER];
+    G4int nlayers = list->GetNLayers();
+    fLayers = new J4VTXLayer* [nlayers];
     Register(fLayers);
-    for (G4int i = 0; i < NLAYER ; i++) {
-      fLayers[i] = new J4VTXLayer(this,NLAYER , i );
+    for (G4int i = 0; i < nlayers; i++) {
+      fLayers[i] = new J4VTXLayer(this,nlayers , i );
       Register(fLayers[i]);
       fLayers[i]->InstallIn(this);  
       SetDaughter(fLayers[i]);
@@ -120,12 +124,6 @@ void J4VTX::Draw()
 //* Print  --------------------------------------------------------
 void J4VTX::Print() const
 {
-    G4double rmin = VTXMASTER_INNER_R;
-    G4double rmax = VTXMASTER_OUTER_R;
-    G4double len  = VTXMASTER_Z;
-    //G4double dphi = VTXMASTER_PHI;
-    G4cout << "VTX Master Volume " << G4endl;
-    G4cout << "Rmin " << rmin/mm << " Rmax " << rmax/mm<<" Z"<< len/mm<< G4endl;
 }
 
 	

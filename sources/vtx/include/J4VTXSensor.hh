@@ -31,27 +31,11 @@ private:
 
   static G4String fFirstName;
 
-#ifdef __HOSHINA__
  
   J4VTXSubstrate  *fSubstrate; 
   J4VTXEpitaxial  *fEpitaxial; 
-  G4ThreeVector   *fDxyzSensor;
-  G4ThreeVector   *fxyzSensor;   
-
-#else 
-
-  static G4LogicalVolume* fStaticLV;
- 
-  J4VTXSubstrate* fSubstrate; 
-  J4VTXEpitaxial* fEpitaxial; 
-  G4ThreeVector* fDxyzSensor;
-  G4ThreeVector* fxyzSensor;   
-
-#endif
 
 public:
-
-#ifdef __HOSHINA__
 
   J4VTXSensor(J4VDetectorComponent *parent       = 0,
               G4int                 numOfSensors = 1,
@@ -61,12 +45,6 @@ public:
 
   J4VTXSensor(const J4VTXSensor &orig,
 	             G4int        copyno);
-#else
-
-  J4VTXSensor(J4VDetectorComponent* parent       = 0,
-	      G4int  numOfSensors = 0);
-
-#endif
 
   virtual ~J4VTXSensor();
 
@@ -75,20 +53,6 @@ public:
                           const G4ThreeVector  &tlate = 0 );
   virtual void	Draw()      ;
   virtual void	Print() const ;
-  virtual G4int GetMyID(){ return -1; } 
-
-#ifdef __HOSHINA__
-
-  // nothing to do here
-
-#else
-  virtual void  LoadLV(){fStaticLV = J4VDetectorComponent::GetLV(); }   
-  virtual void  SetLV(G4LogicalVolume* lv ){
-    J4VDetectorComponent::SetLV(lv);
-    fStaticLV = lv;
-  }
-  inline virtual G4LogicalVolume*  GetLV() const { return fStaticLV; }
-#endif
 
 };
 
