@@ -1,5 +1,16 @@
 M... Modified R...Replaced A...Added D...Deleted
 ------------------------------------------------------------------
+2003/08/21 K.Hoshina	 Version 2.5.02
+------------------------------------------------------------------
+M J4CAL J4CALEMSD J4PVPlacemen J4PVReplica
+  J4EXPHall J4UnionSolid J4VComponent
+  modified for Geant4.5.2
+  define __GEANT452__ when you compile with Geant4.5.2
+
+  make CXX='g++ -D__GEANT452__'
+
+
+------------------------------------------------------------------
 2003/08/13 K.Hoshina	 Version 2.5.01
 ------------------------------------------------------------------
 M J4TwistedTubs
