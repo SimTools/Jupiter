@@ -53,21 +53,20 @@ void J4TPCParameterList::SetMaterials()
    fLayerMaterial           = "P10";
    fPadPlaneMaterial        = "P10";
    fPadRowMaterial          = "P10";
+   fT0detMaterial           = "Silicon";
+   fInnerSupportTubMaterial = "InShellC";
+   fCentralMembraneMaterial = "Copper";
 #else
    fTPCMaterial             = "vacuum";
    fLayerMaterial           = "vacuum";
    fPadPlaneMaterial        = "vacuum";
    fPadRowMaterial          = "vacuum";
-   fT0detMaterial           = "Silicon";
-#endif
-   fInnerSupportTubMaterial = "InShellC";
-   fOuterSupportTubMaterial = "OutShellC";
-   fEndcapMaterial          = "EndCu";
-#if 0
-   fCentralMembraneMaterial = "Copper";
-#else
+   fT0detMaterial           = "vacuum";
+   fInnerSupportTubMaterial = "vacuum";
    fCentralMembraneMaterial = "vacuum";
 #endif
+   fOuterSupportTubMaterial = "OutShellC";
+   fEndcapMaterial          = "EndCu";
    fPadMaterial             = "EndCu";
 }
 

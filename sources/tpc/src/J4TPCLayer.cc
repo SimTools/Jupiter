@@ -66,7 +66,7 @@ void J4TPCLayer::Assemble()
       rmin = list->GetLayerInnerR(GetMyID() - 1);
       rmax = list->GetLayerOuterR(GetMyID() - 1);
     }
-    G4double len  = list->GetLayerHalfZ() / 2;
+    G4double len  = list->GetLayerHalfZ();
     G4double dphi = list->GetLayerDeltaPhi();
       
     // MakeSolid ----------//
@@ -107,8 +107,9 @@ void J4TPCLayer::InstallIn(J4VComponent       *,
   
   // Placement function into mother object ... 
   
-  G4double z = OpenParameterList()->GetCentralMembraneHalfThick() -
-               OpenParameterList()->GetEndcapHalfThick() * 2;
+  G4double z = - OpenParameterList()->GetCentralMembraneHalfThick() / 2 
+               - OpenParameterList()->GetEndcapHalfThick()
+               - OpenParameterList()->GetPadPlaneHalfThick();
                                                                                 
   G4ThreeVector tlate(0., 0., z);
   SetPVPlacement(0, tlate);

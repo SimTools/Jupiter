@@ -95,7 +95,7 @@ void J4TPCHalf::Assemble()
     G4double otubOuterR  = list->GetOuterSupportTubOuterR();
     G4double itubInnerR  = list->GetInnerSupportTubInnerR();
     G4double itubOuterR  = list->GetInnerSupportTubOuterR();
-    G4double tublen      = list->GetSupportTubHalfZ() / 2;
+    G4double tublen      = list->GetSupportTubHalfZ();
     G4double tubdphi     = list->GetSupportTubDeltaPhi();
                                                                                 
     fOuterSupportTub = new J4TPCSupportTub(otubInnerR, otubOuterR, tublen,

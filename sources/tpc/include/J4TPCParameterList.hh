@@ -341,7 +341,7 @@ G4double J4TPCParameterList::GetInnerSupportTubOuterR() const
 
 G4double J4TPCParameterList::GetSupportTubHalfZ() const
 {
-   return GetTPCHalfZ() - 2 * fEndcapHalfThick;
+   return (GetTPCHalfZ() - 2 * fEndcapHalfThick) / 2;
 }
                                                                                 
 G4double J4TPCParameterList::GetCentralMembraneInnerR() const
@@ -373,8 +373,8 @@ G4double J4TPCParameterList::GetLayerOuterR(G4int ilayer) const
 
 G4double J4TPCParameterList::GetLayerHalfZ() const
 {
-   return GetTPCHalfZ() - fCentralMembraneHalfThick - 
-                      2 * (fEndcapHalfThick + fPadPlaneHalfThick);
+   return (GetTPCHalfZ() - fCentralMembraneHalfThick - 
+           2 * (fEndcapHalfThick + fPadPlaneHalfThick)) / 2;
 }
 
 G4double J4TPCParameterList::GetT0detInnerR() const
