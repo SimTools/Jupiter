@@ -1,6 +1,6 @@
 // $Id$
-#ifndef __J4CDCDRIFTREGIONSD__
-#define __J4CDCDRIFTREGIONSD__
+#ifndef __J4CDCSTEREODRIFTREGIONSD__
+#define __J4CDCSTEREODRIFTREGIONSD__
 //*************************************************************************
 //* --------------------
 //* J4CDCStereoDriftRegionSD
@@ -14,7 +14,7 @@
 //*************************************************************************
  
 #include "G4Step.hh"
-#include "J4VSD.hh"
+#include "J4VCDCDriftRegionSD.hh"
 #include "J4CDCStereoDriftRegionHit.hh"
 
 //=====================================================================
@@ -23,33 +23,13 @@
 //---------------------
 
 
-class J4CDCStereoDriftRegionSD : public J4VSD<J4CDCStereoDriftRegionHit>{
+class J4CDCStereoDriftRegionSD : public J4VCDCDriftRegionSD<J4CDCStereoDriftRegionHit>{
   
 public:
 
   J4CDCStereoDriftRegionSD(J4VDetectorComponent* detector);
   ~J4CDCStereoDriftRegionSD();
 
-  virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist);
-  virtual void   Initialize (G4HCofThisEvent* HCTE);
-  virtual void   EndOfEvent (G4HCofThisEvent* HCTE);
-
-  virtual void OutputAll(G4HCofThisEvent* HCTE)
-  {
-     if(GetHitBuf())
-     {
-       J4VSD<J4CDCStereoDriftRegionHit>::OutputAll(HCTE);
-     }
-     else
-     {
-       G4cerr << "J4CDCStereoDriftRegionSD::OutputAll: No Hit! " << G4endl;
-     }
-  }
-
-  virtual void DrawAll();
-  virtual void PrintAll(); 
- 
-  // set/get functions
    
 private:
   

@@ -27,6 +27,7 @@ class J4CDCParameterList : public J4VParameterList
  
  public:
    J4CDCParameterList();   
+   J4CDCParameterList(const G4String &name);   
    virtual ~J4CDCParameterList();  
    
    virtual void PrintParameterList(){};
@@ -62,7 +63,7 @@ class J4CDCParameterList : public J4VParameterList
    inline G4double GetSupportTubDPhi()    const { return fCDCDeltaPhi;    }
  
    //*SuperLayer --------------------------------------------------------------
-   inline G4bool   IsAxialInnermost()      const { return fIsAxialInnermost;    }
+   inline G4bool   IsOddSuperLyrOutermost()      const { return fIsOddSuperLyrOutermost;    }
    inline G4int    GetNsuperLayers()       const { return fNsuperLayers;        }
    inline G4int    GetNlayersPerSuperLayer(G4int ilayer) const;
    inline G4int    GetNcellsPerLayer(G4int ilayer) const
@@ -211,7 +212,7 @@ class J4CDCParameterList : public J4VParameterList
    G4bool    fIsAxialOnly;
    
    // SuperLayer
-   G4bool    fIsAxialInnermost;
+   G4bool    fIsOddSuperLyrOutermost;
              // Is axial layer innermost in a superlayer?
              // YES : 3 big superlayer + 1 small (outermost) superlayer
              // NO  : 1 small (innermost) superlayer + 3 big superlayer
@@ -301,7 +302,7 @@ G4double J4CDCParameterList::GetSupportTubSPhi() const
 
 G4int J4CDCParameterList::GetNlayersPerSuperLayer(G4int ilayer) const
 { 
-   if (fIsAxialInnermost) {
+   if (fIsOddSuperLyrOutermost) {
       if (ilayer < fNsuperLayers) {
          return fNlayersPerSuperLayer;
       } else {
@@ -323,8 +324,8 @@ G4double J4CDCParameterList::GetSuperLayerHalfZ() const
 
 G4double J4CDCParameterList::GetSuperLayerThick(G4int ilayer) const
 {
-   if ((fIsAxialInnermost && (ilayer == fNsuperLayers - 1)) ||
-                   ((!fIsAxialInnermost) && ilayer == 0)) {
+   if ((fIsOddSuperLyrOutermost && (ilayer == fNsuperLayers - 1)) ||
+                   ((!fIsOddSuperLyrOutermost) && ilayer == 0)) {
       return fCellThickness;
    } else {
       return (3 * fCellThickness + fAxialToStereoGap +
@@ -334,7 +335,7 @@ G4double J4CDCParameterList::GetSuperLayerThick(G4int ilayer) const
 
 G4double J4CDCParameterList::GetSuperLayerIR(G4int ilayer) const
 {
-   if (fIsAxialInnermost || (!fIsAxialInnermost && ilayer == 0)) {
+   if (fIsOddSuperLyrOutermost || (!fIsOddSuperLyrOutermost && ilayer == 0)) {
       return (GetInnerSupportTubOR() + fSuperLayerInnerGap 
               + ilayer * GetSuperLayerThick(1));
    } else {

@@ -51,6 +51,7 @@ public:
   virtual void	Print() const ;
 
   inline virtual G4double GetTwistedAngle()   const { return fTwistedAngle; }
+  inline virtual G4double GetStereoAngle()    const { return fStereoAngle; }
   inline virtual G4double GetShieldWidth()    const { return fShieldWidth; }
   inline virtual G4String GetLayerType()      const { return fLayerType; }
   inline virtual G4int    GetNcellsPerLayer() const;
@@ -69,10 +70,11 @@ private:
   J4CDCStereoCell **fStereoCells;
   G4double          fOffset;
   G4double          fTwistedAngle;
+  G4double          fStereoAngle;
   G4double          fShieldWidth;
   G4double          fRmin;
   G4double          fRmax;
-  G4String          fLayerType; // A:axial, U:inner stereo, V:outer stereo
+  G4String          fLayerType; // A:axial, V:inner stereo, U:outer stereo
   G4RotationMatrix  fRot;
 };
 

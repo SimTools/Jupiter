@@ -13,7 +13,7 @@
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
 
-#include "J4VCDCDetectorComponent.hh"
+#include "J4VCDCCell.hh"
 #include "J4CDCLayer.hh"
 
 //=====================================================================
@@ -24,7 +24,7 @@
 class J4CDCStereoDriftRegion;
 //class J4CDCDummyDriftRegion;
 
-class J4CDCStereoCell : public J4VCDCDetectorComponent {	
+class J4CDCStereoCell : public J4VCDCCell {	
 
 public:
   J4CDCStereoCell(J4VDetectorComponent *parent    = 0,
@@ -42,13 +42,6 @@ public:
                           const G4ThreeVector  &tlate = 0 );
   virtual void	Draw()      ;
   virtual void	Print() const ;
-  
-  inline virtual G4int    GetNcellsPerLayer() const; 
-  inline virtual G4double GetTwistedAngle()   const;
-  inline virtual G4double GetShieldWidth()    const;
-  inline virtual G4String GetLayerType()      const;
-  inline virtual G4int    GetGlobalLayerNumber() const;
-
   
 private:
   void  Assemble();    
@@ -68,32 +61,5 @@ private:
 // inline function
 //---------------------
 
-G4int J4CDCStereoCell::GetNcellsPerLayer() const
-{ 
-   return ((J4CDCLayer *)GetMother())->GetNcellsPerLayer(); 
-}
-
-G4double J4CDCStereoCell::GetTwistedAngle() const
-{ 
-   return ((J4CDCLayer *)GetMother())->GetTwistedAngle(); 
-}
-
-G4double J4CDCStereoCell::GetShieldWidth() const
-{ 
-   return ((J4CDCLayer *)GetMother())->GetShieldWidth(); 
-}
-
-G4String J4CDCStereoCell::GetLayerType() const
-{ 
-   return ((J4CDCLayer *)GetMother())->GetLayerType(); 
-}
-
-G4int J4CDCStereoCell::GetGlobalLayerNumber() const
-{
-   return ((J4CDCLayer *)GetMother())->GetGlobalLayerNumber();
-}
-
-
 #endif
-
 

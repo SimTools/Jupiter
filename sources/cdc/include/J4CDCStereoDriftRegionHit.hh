@@ -1,6 +1,6 @@
 // $Id$
-#ifndef __J4CDCDRIFTREGIONHIT__
-#define __J4CDCDRIFTREGIONHIT__
+#ifndef __J4CDCSTEREODRIFTREGIONHIT__
+#define __J4CDCSTEREODRIFTREGIONHIT__
 //*************************************************************************
 //* --------------------
 //* J4CDCStereoDriftRegionHit
@@ -13,7 +13,7 @@
 //*	2001/02/18  K.Hoshina	Original version.
 //*************************************************************************
 
-#include "J4VHit.hh"
+#include "J4VCDCDriftRegionHit.hh"
 #include "G4THitsCollection.hh"
 #include "G4HCofThisEvent.hh"
 #include "G4RotationMatrix.hh"
@@ -33,11 +33,11 @@ typedef G4THitsCollection<J4CDCStereoDriftRegionHit> J4CDCStereoDriftRegionHitBu
 //---------------------
  
 
-class J4CDCStereoDriftRegionHit : public J4VHit {
+class J4CDCStereoDriftRegionHit : public J4VCDCDriftRegionHit {
 
 public:
   J4CDCStereoDriftRegionHit();
-  J4CDCStereoDriftRegionHit(J4VComponent         *detector,
+  J4CDCStereoDriftRegionHit(J4VComponent   *detector,
                       G4int                 cloneID, 
                       G4int                 trackID        = 0,
                       G4int                 mothertrackID  = 0,
@@ -48,36 +48,28 @@ public:
                       const G4ThreeVector  &momentum       = 0,
                       const G4ThreeVector  &pre            = 0,
                       const G4ThreeVector  &pos            = 0,
+                      G4double              rotangle       = 0, 
                       const G4ThreeVector  &wireEndpz      = 0,
                       const G4ThreeVector  &wireEndmz      = 0, 
-                      const G4double       &rotangle       = 0, 
+                      G4double              stereoangle    = 0, 
+                      G4double              rwaist         = 0, 
                       const G4int           hitnumber      = 0); 
-  	 	            
-  J4CDCStereoDriftRegionHit(const J4CDCStereoDriftRegionHit &right);
+
+  J4CDCStereoDriftRegionHit(const J4CDCStereoDriftRegionHit &right)
+           :J4VCDCDriftRegionHit(right) {}
   
   virtual ~J4CDCStereoDriftRegionHit();
-  
-  const J4CDCStereoDriftRegionHit& 
-          operator=(const J4CDCStereoDriftRegionHit &right);    
+
   void* operator new    (size_t    );
   void  operator delete (void *aHit);
 
-  virtual void Output(G4HCofThisEvent *HCTE);
-  virtual void Draw();
-  virtual void Print();
-  
-  virtual G4ThreeVector GetHitPosition() const; 
-  virtual G4double      DistanceToWire(const G4ThreeVector &p,
-                                             G4ThreeVector xx) const;
-  static  void          SetOutput(J4Output *output) { fOutput=output; }
+  virtual void   Output(G4HCofThisEvent *HCTE);
+  static  void   SetOutput(J4Output *output) { fOutput=output; }
     
 private: 
 
-  G4ThreeVector  fHitPosition;
-  G4ThreeVector  fWireEnd[2];
-  G4double       fRotAngle;
+  static J4Output *fOutput; // Pointer to Output Module
   static J4CDCStereoDriftRegionHitAllocator  fHitAllocator;
-  static J4Output  *fOutput; // Pointer to Output Module
   
 };
 
@@ -85,18 +77,6 @@ private:
 //----------------------------------------
 // inline function for J4CDCStereoDriftRegionHit
 //----------------------------------------
-
-inline J4CDCStereoDriftRegionHit::J4CDCStereoDriftRegionHit(const J4CDCStereoDriftRegionHit &right)
-{
-  fHitPosition  = right.fHitPosition ;
-}
-
-inline const J4CDCStereoDriftRegionHit& 
-  J4CDCStereoDriftRegionHit::operator= (const J4CDCStereoDriftRegionHit &right)
-{         
-  fHitPosition  = right.fHitPosition ;
-  return *this;
-}
   
 //----------------------------------------
 // Allocator

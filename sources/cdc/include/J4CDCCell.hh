@@ -13,7 +13,7 @@
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
 
-#include "J4VCDCDetectorComponent.hh"
+#include "J4VCDCCell.hh"
 #include "J4CDCLayer.hh"
 
 //=====================================================================
@@ -26,7 +26,7 @@ class J4CDCDriftRegion;
 class J4CDCDummyDriftRegion;
 #endif
 
-class J4CDCCell : public J4VCDCDetectorComponent {	
+class J4CDCCell : public J4VCDCCell {	
 
 public:
   J4CDCCell(J4VDetectorComponent *parent    = 0,
@@ -34,6 +34,9 @@ public:
                            G4int  nbrothers = 1, 
                            G4int  me        = 0,
                            G4int  copyno    = -1 );
+
+  J4CDCCell(const J4CDCCell &orig, G4int copyno);
+
   virtual ~J4CDCCell();
 
   virtual void  InstallIn(J4VComponent         *mother,
@@ -41,12 +44,6 @@ public:
                           const G4ThreeVector  &tlate = 0 );
   virtual void	Draw()      ;
   virtual void	Print() const ;
-  
-  inline virtual G4int    GetNcellsPerLayer() const; 
-  inline virtual G4double GetTwistedAngle()   const;
-  inline virtual G4double GetShieldWidth()    const;
-  inline virtual G4String GetLayerType()      const;
-  inline virtual G4int    GetGlobalLayerNumber() const;
   
 private:
   void  Assemble();    
@@ -68,32 +65,6 @@ private:
 //---------------------
 // inline function
 //---------------------
-
-G4int J4CDCCell::GetNcellsPerLayer() const
-{ 
-   return ((J4CDCLayer *)GetMother())->GetNcellsPerLayer(); 
-}
-
-G4double J4CDCCell::GetTwistedAngle() const
-{ 
-   return ((J4CDCLayer *)GetMother())->GetTwistedAngle(); 
-}
-
-G4double J4CDCCell::GetShieldWidth() const
-{ 
-   return ((J4CDCLayer *)GetMother())->GetShieldWidth(); 
-}
-
-G4String J4CDCCell::GetLayerType() const
-{ 
-   return ((J4CDCLayer *)GetMother())->GetLayerType(); 
-}
-
-G4int J4CDCCell::GetGlobalLayerNumber() const
-{
-   return ((J4CDCLayer *)GetMother())->GetGlobalLayerNumber();
-}
-
 
 #endif
 

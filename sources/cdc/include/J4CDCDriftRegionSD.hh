@@ -14,7 +14,7 @@
 //*************************************************************************
  
 #include "G4Step.hh"
-#include "J4VSD.hh"
+#include "J4VCDCDriftRegionSD.hh"
 #include "J4CDCDriftRegionHit.hh"
 
 //=====================================================================
@@ -23,34 +23,14 @@
 //---------------------
 
 
-class J4CDCDriftRegionSD : public J4VSD<J4CDCDriftRegionHit>{
+class J4CDCDriftRegionSD : public J4VCDCDriftRegionSD<J4CDCDriftRegionHit>{
   
 public:
 
   J4CDCDriftRegionSD(J4VDetectorComponent* detector);
   ~J4CDCDriftRegionSD();
 
-  virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist);
-  virtual void   Initialize (G4HCofThisEvent* HCTE);
-  virtual void   EndOfEvent (G4HCofThisEvent* HCTE);
 
-  virtual void OutputAll(G4HCofThisEvent* HCTE)
-  {
-     if(GetHitBuf())
-     {
-       J4VSD<J4CDCDriftRegionHit>::OutputAll(HCTE);
-     }
-     else
-     {
-       G4cerr << "J4CDCDriftRegionSD::OutputAll: No Hit! " << G4endl;
-     }
-  }
-
-  virtual void DrawAll();
-  virtual void PrintAll(); 
- 
-  // set/get functions
-   
 private:
   
 };
