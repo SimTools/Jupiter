@@ -8,6 +8,8 @@
 //*     
 //* (Update Record)
 //*	2002/05/15  K.Hoshina	Original version.
+//*	2004/06/10  K.Fujii	Added SetName that correctly overrides
+//*				that of J4VNamed.
 //*************************************************************************
 
 //_________________________________________________________________________
@@ -153,11 +155,16 @@ private:
 
   //===== naming functions
   virtual void              SetName(const G4String &name,
-                                    G4int           nbrothers = 1,
+                                    G4int           nbrothers,
                                     G4int           me        = 0,
                                     G4int           nclones   = 1,
                                     G4int           copyno    = 0,
                                     J4VComponent   *parent    = 0);		    	 
+  inline virtual void       SetName(const G4String &name)
+                              {
+                                 SetName(name,1,0,1,0);
+                              }
+
   virtual G4String          GetNewName(const G4String &middlename, 
                                        G4int           me         = 0, 
                                        G4int           width1     = 0, 
