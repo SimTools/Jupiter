@@ -69,6 +69,16 @@
 #endif
 #endif
 
+// temporary, for installation MUD without CAL
+#ifdef __INSTALLMUD__
+#ifndef __INSTALLCAL__
+#include "J4CALPostHit.hh"
+#include "J4CALPostHitKeeper.hh"
+#include "J4CALPreHit.hh"
+#include "J4CALPreHitKeeper.hh"
+#endif
+#endif
+
 #include "J4CommandArguments.hh"
 
 TBookKeeper* TBookKeeper::fgBookKeeper = new TBookKeeper(); 
@@ -172,7 +182,13 @@ int main(int argc, char** argv)
   dtcptr->AddComponent(solptr);
 #endif
 
-#ifdef __INSTALLMUD__  
+#ifdef __INSTALLMUD__
+ #ifndef __INSTALLCAL__
+  J4CALPostHitKeeper::GetInstance();
+  J4CALPreHitKeeper::GetInstance();
+  J4CALPostHit::GetCurPostHitID();
+ #endif
+  
   J4MUD *mudptr = new J4MUD();
   mudptr->SetMother(dtcptr->GetEXPHall());
   dtcptr->AddComponent(mudptr);
