@@ -158,7 +158,7 @@ void J4TrackingAction::PostUserTrackingAction(const G4Track* /* aTrack */)
 G4bool J4TrackingAction::IsNext(G4int &detid)
 { 
    G4int n2nds   = GetTrackingManager()->GimmeSecondaries()->size();
-   G4int trackid = fTrackCounter + (n2nds ? n2nds : -1);
+   G4int trackid = n2nds ? fTrackCounter + n2nds : fCurrentTrackID - 1;
    if (detid < 0) {
       fRegs.push_back(Pair(fCurrentTrackID, trackid));
       detid = fRegs.size() - 1;
