@@ -20,7 +20,12 @@
 
 //static J4CALPreHit* J4CALPreHit::fgCurrentPreHitPtr = 0;
 G4int J4CALSD::fgCurrentPreHitID = -1;
+#if 0
 G4int J4CALSD::fgCurrentTrackID = 999999999;
+#else
+#include <limits>
+G4int J4CALSD::fgCurrentTrackID = __INT_MAX__;
+#endif
  
 //=====================================================================
 //---------------------
