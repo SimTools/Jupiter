@@ -51,7 +51,7 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 
   fCurrentTrackID = aTrack->GetTrackID();
 
-#if 1
+#if 0
   // Reset current track ID for PreHit makeing upon starting of a new track
 
   if (J4CALSD::GetCurrentTrackID() != __INT_MAX__
