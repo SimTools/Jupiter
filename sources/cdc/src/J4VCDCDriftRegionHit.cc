@@ -41,11 +41,10 @@ J4VCDCDriftRegionHit::J4VCDCDriftRegionHit(
      G4double              tanstereo,     // stereo angle of cell 
      G4double              rwaist,        // stereo angle of cell 
      const G4int           hitnumber)     // unique hit number
-   : J4VHit(detector, cloneID, trackID, mothertrackID, particle, 
+   : J4VTrackerHit(detector, cloneID, trackID, mothertrackID, particle, 
             tof, edep, totalE, momentum, pre, pos, hitnumber),
      fTanStereo(tanstereo), fRwaist(rwaist),fRotAngle(rotangle)
 {
-   fHitPosition = GetHitPosition(); 
    fWireEnd[0] = wireEndmz;
    fWireEnd[1] = wireEndpz;
 }
@@ -57,6 +56,7 @@ J4VCDCDriftRegionHit::~J4VCDCDriftRegionHit()
 {
 }
 
+#if 0
 //=========================================================================
 //* GetHitPosition --------------------------------------------------
 
@@ -106,4 +106,4 @@ G4double J4VCDCDriftRegionHit::DistanceToWire(const G4ThreeVector &p,
 
 }
 
-
+#endif

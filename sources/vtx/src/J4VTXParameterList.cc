@@ -12,6 +12,10 @@
 
 #include "J4VTXParameterList.hh"
 
+#define __VTXACFAREPCONF__  0
+#define __VTXSTDCONF__      1
+#define __VTX5LYRCONF__     0
+
 //=====================================================================
 //* constructor -------------------------------------------------------
 
@@ -54,7 +58,7 @@ void J4VTXParameterList::SetMaterials()
   fVTXMaterial       = "Air";
   fLayerMaterial     = "Air";
   fLadderMaterial    = "Air";
-  fSensorMaterial    = "Air";
+  fSensorMaterial    = "Silicon";
   fSubstrateMaterial = "Silicon";
   fEpitaxialMaterial = "Silicon";
   fPixelAreaMaterial = "Silicon";
@@ -65,8 +69,9 @@ void J4VTXParameterList::SetMaterials()
 void J4VTXParameterList::SetSensitiveDetector()
 {
   SetLadderSD(FALSE);
-  SetPixelAreaSD(TRUE);
-  SetPixelSD(FALSE);
+  SetSensorSD(FALSE);
+  SetPixelAreaSD(FALSE);
+  SetPixelSD(TRUE);
 }
 //=====================================================================
 //* SetParameters ------------------------------------------------------
@@ -75,42 +80,64 @@ void J4VTXParameterList::SetParameters()
   SetDefaults();
   BuildParameters();
 }
-
 //=====================================================================
 //* SetParameters ------------------------------------------------------
 void J4VTXParameterList::SetDefaults()
 {
+
   // Margin for avoiding volume intersection.
   SetDxyzMarginSize(G4ThreeVector(0.1*mm,0.1*mm,0.1*mm));
   SetDrMarginSize(0.5*mm);
 
+  G4double  sensorDZ = 330*micrometer;
+  G4double  epitaxDZ = 30*micrometer;
+
   // Sensor Size 
-  SetSensorSize(G4ThreeVector(1.25*cm,330*micrometer,5.0*cm));
+  SetSensorSize(G4ThreeVector(1.25*cm,sensorDZ,5.0*cm));
   // Substrate Size
-  SetDySubstrate(300.*micrometer);
+  SetDySubstrate(sensorDZ-epitaxDZ);
   // Epitaxial
-  SetDyEpitaxial(30*micrometer);
+  SetDyEpitaxial(epitaxDZ);
 
   // Number of Pixels
-  //SetNzPixels(2000);
-  //SetNxPixels(500);
-  SetNzPixels(5);
-  SetNxPixels(2);
+  SetNzPixels(2000);
+  SetNxPixels(500);
 
+#if __VTXACFAREPCONF__
+  // Number of laysers
+  SetNLayers(3);
+  // Number of sensors in a ladder in a layer
+  G4int nsensors[] = {  3,  6,  9 };
+  // Number of ladders in a layer
+  G4int nladders[] = { 16, 24, 32 };
+  // Radius of the layer
+  G4double layerradius[] = { 2.5*cm, 5.0*cm, 7.5*cm };
+#endif
+#if __VTXSTDCONF__  
   // Number of laysers
   SetNLayers(4);
-  // Number of ladders in a layer
-  G4int nladders[] = { 16, 24, 32, 40 };
   // Number of sensors in a ladder in a layer
   G4int nsensors[] = {  2,  3,  4,  5 };
-  // Radius of the layers
-  G4double layerradius[] = { 2.4*cm, 3.6*cm, 4.8*cm,6.0*cm};
+  // Number of ladders in a layer
+  G4int nladders[] = { 16, 24, 32, 40 };
+  // Radius of the layer
+  G4double layerradius[] = { 2.4*cm, 3.6*cm, 4.8*cm, 6.0*cm };
+#endif
+#if __VTX5LYRCONF__
+  SetNLayers(5);
+  G4int nsensors[] = {  2,  3,  4,  5 ,6};
+  G4int nladders[] = { 8, 16, 24, 32 ,40};
+  G4double layerradius[] = { 1.5*cm, 2.7*cm, 3.9*cm, 5.1*cm ,6.3*cm};
+#endif
+
+  // Cover angle of VTX Mother Volume  ( not Used.)
+  SetVTXAngle(205.*milliradian);
 
   // Tilt of ladders
   SetTilt(10*deg);
 
   // Set parameters 
-  for ( G4int ilayer = 0; ilayer < fNLayers ; ilayer++ ){
+  for ( G4int ilayer = 0; ilayer < GetNLayers() ; ilayer++ ){
     SetNLadders(ilayer,nladders[ilayer]);
     SetNSensors(ilayer,nsensors[ilayer]);
     SetRLayer(ilayer,layerradius[ilayer]);
@@ -176,13 +203,13 @@ void J4VTXParameterList::BuildParameters()
 //* SetVtsAttributes ------------------------------------------------------
 void J4VTXParameterList::SetVisAttributes()
 {
-  fVTXVisAtt       = FALSE;
+  fVTXVisAtt       = TRUE;
   fLayerVisAtt     = FALSE;
   fLadderVisAtt    = FALSE;
-  fSensorVisAtt    = FALSE;
+  fSensorVisAtt    = TRUE;
   fSubstrateVisAtt = FALSE;
   fEpitaxialVisAtt = FALSE;
-  fPixelAreaVisAtt = TRUE;
+  fPixelAreaVisAtt = FALSE;
   fPixelVisAtt = FALSE;
 }
 

@@ -59,12 +59,11 @@ public:
                              G4double halflength);
 
 protected:    
-  J4VMaterialStore*       OpenMaterialStore();
-  J4CDCParameterList*     OpenParameterList();
+  J4VMaterialStore*          OpenMaterialStore();
+  J4CDCParameterList*        OpenParameterList() { return J4CDCParameterList::GetInstance();}
   
 private:
   static J4CDCMaterialStore *fMaterialStore;
-  static J4CDCParameterList *fParameterList;
   static G4String            fSubGroup;
        
 };

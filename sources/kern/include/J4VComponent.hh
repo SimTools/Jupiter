@@ -90,10 +90,11 @@ public:
   inline virtual       G4int                 GetCopyNo()    const { return fCopyNo;   } 
   inline virtual const G4String             &GetSubGroup()  const { return fSubGroup; }   
   inline virtual       G4int                 GetMyDepth()   const { return fMyDepth;  }
+  inline virtual       J4ComponentArray      GetDaughters() const { return fDaughters; } 
+  inline         const EPlacementType        GetPlacementType() const; 
 
   inline virtual       G4bool                IsOn()         const { return fIsOn;        }
   inline virtual       G4bool                IsInstalled()  const { return fIsInstalled; }
-  inline         const EPlacementType        GetPlacementType() const; 
   
   //===== set method
   inline virtual void SetSolid        (G4VSolid          *solid) { fSolid  = solid; }

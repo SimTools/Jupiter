@@ -14,6 +14,7 @@
 
 #include "J4EXPHall.hh"
 #include "J4VMaterialStore.hh"
+#include "J4VSensitiveDetector.hh"
 #include "J4ParameterList.hh"
 // ====================================================================
 //--------------------------------
@@ -79,14 +80,39 @@ void J4EXPHall::Assemble()
 }
 
 
+//=====================================================================
 //* InstallIn  --------------------------------------------------------
-
 void J4EXPHall::InstallIn(J4VComponent         *mother,
                           G4RotationMatrix     *prot, 
                           const G4ThreeVector  &tlate ) 
 {
 }
 
+//=====================================================================
+//* OutputAll ---------------------------------------------------------
+void J4EXPHall::OutputAll(G4HCofThisEvent* HCTE, G4std::ofstream & ofs)
+{
+
+   
+   if (GetSD()) {  
+      if (IsOn()) {
+          ofs << "*****_EXPHall_output_start_*****" << G4endl;
+          GetSD()->OutputAll(HCTE);  
+          ofs << "*****_EXPHall_output_end_*****" << G4endl; 
+      }
+   }
+
+   J4ComponentArray daughters = GetDaughters();
+   G4int ndaughters = daughters.entries();
+
+   G4int i;
+
+   for( i=0; i<ndaughters; i++) {
+      ofs << "*****_" << daughters[i]->GetName() << "_output_start_*****" << G4endl; 
+      daughters[i]->OutputAll(HCTE);
+      ofs << "*****_" << daughters[i]->GetName() << "_output_end_*****" << G4endl; 
+   }
+}
 
 //* Draw  --------------------------------------------------------
 void J4EXPHall::Draw()

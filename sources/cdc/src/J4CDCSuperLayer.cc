@@ -41,9 +41,9 @@ J4CDCSuperLayer::J4CDCSuperLayer(J4VDetectorComponent *parent,
                       fLayers(0), fOffset(0), fNcellsPerLayer(0) 
 {
    J4CDCParameterList *list = OpenParameterList();
-   fOffset                  = list->GetSuperLayerSPhi(me);
+   fOffset                  = list->GetSuperLayerPhiOffset(me);
    fNcellsPerLayer          = list->GetNcellsPerLayer(me);
-   fRot.rotateZ(list->GetSuperLayerSPhi(me));
+   fRot.rotateZ(list->GetSuperLayerPhiOffset(me));
 }
 
 //=====================================================================
@@ -68,10 +68,10 @@ void J4CDCSuperLayer::Assemble()
       // define geometry
       J4CDCParameterList *list = OpenParameterList();
 
-      G4double rmin      = list->GetSuperLayerIR(GetMyID());
-      G4double rmax      = list->GetSuperLayerOR(GetMyID());
+      G4double rmin      = list->GetSuperLayerInnerR(GetMyID());
+      G4double rmax      = list->GetSuperLayerOuterR(GetMyID());
       G4double len       = list->GetSuperLayerHalfZ();
-      G4double motherphi = list->GetCDCDPhi();
+      G4double motherphi = list->GetCDCDeltaPhi();
          
       // MakeSolid ----------//
       OrderNewTubs (rmin, rmax, len, motherphi);
@@ -90,7 +90,7 @@ void J4CDCSuperLayer::Assemble()
       if ( (!(list->IsOddSuperLyrOutermost()) && GetMyID() == 0) ||
            ( (list->IsOddSuperLyrOutermost())
                   && (GetMyID() == list->GetNsuperLayers() - 1)) ) {
-         // isolated superlayer! (innermost or outermost)
+         // isolated small superlayer! 
 
          fLayers = new J4CDCLayer* [1];
          Register(fLayers);

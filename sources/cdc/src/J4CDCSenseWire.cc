@@ -79,7 +79,7 @@ void J4CDCSenseWire::Assemble()
    
       G4double len  = GetZHalfLength(GetMother());
       G4double rmin = 0;
-      G4double rmax = list->GetSenseWireRadius();
+      G4double rmax = list->GetSenseWireR();
         
       // Asssemble LogicalVolume...
    

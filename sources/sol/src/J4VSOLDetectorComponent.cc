@@ -14,7 +14,6 @@
 
 
 J4SOLMaterialStore* J4VSOLDetectorComponent::fMaterialStore = 0;
-J4SOLParameterList* J4VSOLDetectorComponent::fParameterList = 0;
 
 G4String J4VSOLDetectorComponent::fSubGroup("SOL");
 
@@ -46,7 +45,6 @@ J4VSOLDetectorComponent::J4VSOLDetectorComponent(
 J4VSOLDetectorComponent::~J4VSOLDetectorComponent()
 {	
    if(Deregister(fMaterialStore)) delete fMaterialStore;
-   if(Deregister(fParameterList)) delete fParameterList;
 }
 
 //=====================================================================
@@ -61,18 +59,5 @@ J4VMaterialStore* J4VSOLDetectorComponent::OpenMaterialStore()
   }
     
    return fMaterialStore;
-}
-
-//=====================================================================
-////* OpenParameterList -------------------------------------------------
-
-J4SOLParameterList* J4VSOLDetectorComponent::OpenParameterList()
-{
-   if (!fParameterList) {
-      fParameterList = new J4SOLParameterList();
-      Register(fParameterList);
-      G4cerr << "*** Opend J4SOLParameterList ***" << G4endl;
-   }
-   return fParameterList;
 }
 

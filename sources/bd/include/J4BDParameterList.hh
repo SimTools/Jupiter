@@ -7,6 +7,8 @@
 //* ---------------------------
 //* (Description)
 //* 	ParameterList class for BD
+//*     The instance must be singleton. Use "GetInstance()" function
+//*     to create and get the instance.
 //*     
 //* (Update Record)
 //*	2003/02/28  R.Kuboshima  Original version.
@@ -24,50 +26,52 @@
  
 class J4BDParameterList : public J4VParameterList 
 {
+
+ protected: 
+   J4BDParameterList(const G4String &name);
+
  public:
-   J4BDParameterList();
+   virtual ~J4BDParameterList();
 
-   virtual ~J4BDParameterList() {}
-
-   static J4BDParameterList *GetInstance() { return fInstance;    }
+   static J4BDParameterList *GetInstance();
    
    // Getters
-   inline G4String GetMaterial()         const { return fMaterial;      }
-   inline G4bool   GetVisAtt  ()         const { return fVisAtt;        }
-   inline G4Color *GetColor   ()         const { return fColor;         }
-   inline G4double GetOuterHalfX()       const { return fOuterHalfX;    }
-   inline G4double GetOuterHalfY()       const { return fOuterHalfY;    }
-   inline G4double GetOuterHalfZ()       const { return fOuterHalfZ;    }
-   inline G4double GetInnerHalfX()       const { return fInnerHalfX;    }
-   inline G4double GetInnerHalfY()       const { return fInnerHalfY;    }
-   inline G4double GetInnerHalfZ()       const { return fInnerHalfZ;    }
+   inline G4String GetBDMaterial()       const { return fBDMaterial;    }
+   inline G4bool   GetBDVisAtt  ()       const { return fBDVisAtt;      }
+   inline G4Color  GetBDColor   ()       const { return fBDColor;       }
+   inline G4double GetBDOuterHalfX()     const { return fBDOuterHalfX;  }
+   inline G4double GetBDOuterHalfY()     const { return fBDOuterHalfY;  }
+   inline G4double GetBDOuterHalfZ()     const { return fBDOuterHalfZ;  }
+   inline G4double GetBDInnerHalfX()     const { return fBDInnerHalfX;  }
+   inline G4double GetBDInnerHalfY()     const { return fBDInnerHalfY;  }
+   inline G4double GetBDInnerHalfZ()     const { return fBDInnerHalfZ;  }
 
    // Setters
-   inline void SetMaterial        (G4String s) { fMaterial       = s; }
-   inline void SetVisAtt          (G4bool   b) { fVisAtt         = b; }
-   inline void SetColor           (G4Color *c) { fColor          = c; }
-   inline void SetOuterHalfX      (G4double x) { fOuterHalfX     = x; }
-   inline void SetOuterHalfY      (G4double x) { fOuterHalfY     = x; }
-   inline void SetOuterHalfZ      (G4double x) { fOuterHalfZ     = x; }
-   inline void SetInnerHalfX      (G4double x) { fInnerHalfX     = x; }
-   inline void SetInnerHalfY      (G4double x) { fInnerHalfY     = x; }
-   inline void SetInnerHalfZ      (G4double x) { fInnerHalfZ     = x; }
+   inline void SetBDMaterial      (G4String s) { fBDMaterial     = s; }
+   inline void SetBDVisAtt        (G4bool   b) { fBDVisAtt       = b; }
+   inline void SetBDColor         (G4Color  c) { fBDColor        = c; }
+   inline void SetBDOuterHalfX    (G4double x) { fBDOuterHalfX   = x; }
+   inline void SetBDOuterHalfY    (G4double x) { fBDOuterHalfY   = x; }
+   inline void SetBDOuterHalfZ    (G4double x) { fBDOuterHalfZ   = x; }
+   inline void SetBDInnerHalfX    (G4double x) { fBDInnerHalfX   = x; }
+   inline void SetBDInnerHalfY    (G4double x) { fBDInnerHalfY   = x; }
+   inline void SetBDInnerHalfZ    (G4double x) { fBDInnerHalfZ   = x; }
    
    virtual void    PrintParameterList(){};
     
  private:
-   static J4BDParameterList *fInstance;
+   static J4BDParameterList *fgInstance;
 
-   G4String  fMaterial; 
-   G4bool    fVisAtt;
-   G4Color  *fColor;
+   G4String  fBDMaterial; 
+   G4bool    fBDVisAtt;
+   G4Color   fBDColor;
 
-   G4double  fOuterHalfX;
-   G4double  fOuterHalfY;
-   G4double  fOuterHalfZ;
-   G4double  fInnerHalfX;
-   G4double  fInnerHalfY;
-   G4double  fInnerHalfZ;
+   G4double  fBDOuterHalfX;
+   G4double  fBDOuterHalfY;
+   G4double  fBDOuterHalfZ;
+   G4double  fBDInnerHalfX;
+   G4double  fBDInnerHalfY;
+   G4double  fBDInnerHalfZ;
 
 };
 

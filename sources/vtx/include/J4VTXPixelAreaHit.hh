@@ -38,19 +38,23 @@ public:
             J4VComponent         *component,
             G4int                 trackID ,
             G4int                 parenttrackID ,
-  	 	      G4ParticleDefinition *particle,
-		      G4int                 layerID ,
-		      G4int                 ladderID ,
-		      G4int                 sensorID,
-		      G4double              edep    ,
-  	 	      const G4ThreeVector  &momentum,
-  	 	      G4double              energy,
-  	 	      G4double              tof,
-  	 	      const G4ThreeVector  &inPos ,
-		      const G4ThreeVector  &outPos,
-  	 	      const G4ThreeVector  &localinPos ,
-		      const G4ThreeVector  &localoutPos
-		      );
+	    G4ParticleDefinition *particle,
+	    G4double             weight,
+	    const G4ThreeVector  &origin,
+            const G4ThreeVector  &origP,
+            const G4String       &process,
+	    G4int                 layerID ,
+	    G4int                 ladderID ,
+	    G4int                 sensorID,
+	    G4double              edep    ,
+	    const G4ThreeVector  &momentum,
+	    G4double              energy,
+	    G4double              tof,
+	    const G4ThreeVector  &inPos ,
+	    const G4ThreeVector  &outPos,
+	    const G4ThreeVector  &localinPos ,
+	    const G4ThreeVector  &localoutPos
+	    );
   	 	            
   
   virtual ~J4VTXPixelAreaHit();
@@ -66,8 +70,10 @@ public:
 
   void SetOutPos(G4ThreeVector out)     { fOutPosition=out; }  
   void SetLocalOutPos(G4ThreeVector out){ fLocalOutPosition=out; }  
-
+  G4ThreeVector         GetOrigin() { return fOrigin; }
   G4ThreeVector         GetHitPosition() ;  
+  G4String              GetProcessName(){return fProcess;}
+
   G4ParticleDefinition* GetPID()        { return GetParticle();     }
   G4int                 GetLayerID()    { return fLayerID;          }
   G4int                 GetLadderID()   { return fLadderID;         }
@@ -81,6 +87,11 @@ public:
   G4ThreeVector         GetLocalOutPos(){ return fLocalOutPosition; }
     
 private: 
+
+  G4ThreeVector         fOrigin;
+  G4ThreeVector         fOriginP;
+  G4double              fWeight;
+  G4String              fProcess;
 
   G4int                 fLayerID;
   G4int                 fLadderID;

@@ -34,15 +34,13 @@ public:
                            G4int                 me        = 0,
                            G4int                 copyno    = -1 );
   virtual ~J4VSOLDetectorComponent();
-  static J4SOLParameterList * GetParameterList() { return fParameterList; }
       
 protected:    
-  J4VMaterialStore   * 	 OpenMaterialStore();
-  J4SOLParameterList * 	 OpenParameterList();
+  J4VMaterialStore   * OpenMaterialStore();
+  J4SOLParameterList * OpenParameterList() { return J4SOLParameterList::GetInstance(); }
   
 private:
   static J4SOLMaterialStore *fMaterialStore;
-  static J4SOLParameterList *fParameterList;
   static G4String            fSubGroup;
        
 };

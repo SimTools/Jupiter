@@ -1,0 +1,247 @@
+// $Id$
+//*************************************************************************
+//* --------------------
+//* J4CDCParameterList
+//* --------------------
+//* (Description)
+//* 	Class for describing his/her detector compornents.
+//*
+//* (Update Record)
+//*	2002/10/06  K.Hoshina	Original version.
+//*************************************************************************
+
+#include "J4CDCParameterList.hh"
+ 
+J4CDCParameterList*   J4CDCParameterList::fgInstance = 0;
+
+//=====================================================================
+//* public get function -----------------------------------------------
+
+J4CDCParameterList* J4CDCParameterList::GetInstance()
+{
+   if (!fgInstance) {
+      fgInstance = new J4CDCParameterList("CDC");
+   }
+   return fgInstance;
+}
+ 
+//=====================================================================
+//* protected constructor ---------------------------------------------
+
+J4CDCParameterList::J4CDCParameterList(const G4String &name)
+                   :J4VParameterList(name) 
+{
+   SetMaterials();
+   SetParameters();
+   SetVisAttributes();
+   SetColors();
+}
+
+//=====================================================================
+//* destructor -------------------------------------------------------
+
+J4CDCParameterList::~J4CDCParameterList()
+{
+   delete  fTwistedAngle;
+   delete  fSuperLayerPhiOffset;
+   delete  fNcellsParLayer;
+   fgInstance = 0;
+}
+
+//=====================================================================
+//* SetMaterials ------------------------------------------------------
+void J4CDCParameterList::SetMaterials()
+{
+#if 1
+   fCDCMaterial         = "Air";
+   fSupportTubMaterial  = "Aluminum";
+   fEndcapMaterial      = "Aluminum";
+   fLayerMaterial       = "CO2Isobutane";
+   fCellMaterial        = "CO2Isobutane";
+   fDriftRegionMaterial = "CO2Isobutane";
+   //fSenseWireMaterial = "CO2Isobutane";
+   fSenseWireMaterial   = "Tungsten";
+#else
+   fCDCMaterial         = "vacuum";
+   fSupportTubMaterial  = "vacuum";
+   fEndcapMaterial      = "vacuum";
+   fLayerMaterial       = "vacuum";
+   fCellMaterial        = "vacuum";
+   fDriftRegionMaterial = "vacuum";
+   fSenseWireMaterial   = "vacuum";
+#endif
+}
+
+//=====================================================================
+//* SetParameters -----------------------------------------------------
+void J4CDCParameterList::SetParameters()
+{
+
+   // CDC
+   fCDCDeltaPhi     = 360.*deg;
+   fCDCPhiOffset    = 360.*deg;
+   
+   // Endcap
+   fEndcapHalfThick = 1.*cm;
+   
+   // SupportTub
+   fSupportTubHalfThick = 0.5*cm;
+   
+   // Layer
+   fNlayers           = 10;
+   fTwistedAngle      = new G4double[fNlayers];
+   fLayerPhiOffset    = new G4double[fNlayers];
+   fIsAxialOnly       = TRUE; // TRUE: Axial only, FALSE: with Stereo cell
+   
+   fTwistedAngle[0]   =  0.   *rad; // axial
+   fTwistedAngle[1]   =  0.512*rad; // stereo
+   fTwistedAngle[2]   = -0.475*rad; // stereo
+   fTwistedAngle[3]   =  0.   *rad; // axial
+   fTwistedAngle[4]   =  0.415*rad; // stereo
+   fTwistedAngle[5]   = -0.394*rad; // stereo
+   fTwistedAngle[6]   =  0.   *rad; // axial
+   fTwistedAngle[7]   =  0.358*rad; // stereo
+   fTwistedAngle[8]   = -0.344*rad; // stereo
+   fTwistedAngle[9]   =  0.   *rad; // axial
+   
+   fLayerPhiOffset[0] =  0.   *rad; // axial
+   fLayerPhiOffset[1] =  0.032*rad; // stereo
+   fLayerPhiOffset[2] = -0.032*rad; // stereo 
+   fLayerPhiOffset[3] =  0.   *rad; // axial 
+   fLayerPhiOffset[4] =  0.032*rad; // stereo
+   fLayerPhiOffset[5] = -0.032*rad; // stereo 
+   fLayerPhiOffset[6] =  0.   *rad; // axial 
+   fLayerPhiOffset[7] =  0.016*rad; // stereo 
+   fLayerPhiOffset[8] = -0.016*rad; // stereo 
+   fLayerPhiOffset[9] =  0.   *rad; // axial 
+   
+   
+   // SuperLayer
+   fIsOddSuperLyrOutermost = TRUE;  // Outermost superlayer is small.
+   fNlayersPerSuperLayer   = 3;
+   fNsuperLayers           = (fNlayers - 1) / fNlayersPerSuperLayer + 1;
+
+#if 0
+
+   fSuperLayerInnerGap     = 4.*cm;
+   fSuperLayerOuterGap     = 4.*cm;
+   fAxialToStereoGap       = 5.*cm;
+   fStereoToStereoGap      = 3.*cm;
+
+#else
+
+   fSuperLayerInnerGap     = 4 *cm;
+   fSuperLayerOuterGap     = (4 + 4 * 3 + 2 * 3) *cm;
+   fAxialToStereoGap       = 1.*cm;  // -4 cm
+   fStereoToStereoGap      = 1.*cm;  // -2 cm
+
+#endif
+
+   fSuperLayerPhiOffset    = new G4double[fNsuperLayers];
+   fNcellsParLayer         = new G4int[fNsuperLayers];
+   // now, fNsuperLayers = 4
+   
+   fNcellsParLayer[0]      = 42;
+   fNcellsParLayer[1]      = 63;
+   fNcellsParLayer[2]      = 84;
+   fNcellsParLayer[3]      = 105;
+
+   fSuperLayerPhiOffset[0] =  0    *rad;
+   fSuperLayerPhiOffset[1] =  0    *rad;
+   fSuperLayerPhiOffset[2] = -0.016*rad;
+   fSuperLayerPhiOffset[3] =  0.016*rad;
+   
+   // DriftRegion
+
+   fMeasPlaneHalfThick     = 0.0015*cm; // thickness of hypothetical measurement plane
+   //fMeasPlaneHalfThick     = 0.5*cm; // thickness of hypothetical measurement plane
+
+   fNdriftRegions          = 5;       // per cell
+   fDriftRegionThick       = 1.*cm;   // thickness of driftregion per wire
+   fDummyDriftRegionThick  = 1.*cm;
+   
+   // SenseWire
+   fSenseWireR             = 0.015*mm;
+   //fSenseWireR           = 1.5*mm;  // for printing
+   
+   // calcurated parameters
+   
+   fCellThick = fNdriftRegions * fDriftRegionThick 
+                    + 2 * fDummyDriftRegionThick;
+
+   fStereoToAxialGap = 
+      (GetOuterSupportTubInnerR() - GetInnerSupportTubOuterR()
+       - fSuperLayerInnerGap - fSuperLayerOuterGap
+       - fNlayers * fCellThick
+       - (fNsuperLayers - 1) * (fAxialToStereoGap + fStereoToStereoGap))
+      / (fNsuperLayers - 1);
+}
+
+//=====================================================================
+//* SetVisAttributes --------------------------------------------------
+void J4CDCParameterList::SetVisAttributes()
+{
+#if 0
+   fCDCVisAtt         = TRUE;
+   fEndcapVisAtt      = TRUE;
+   fSupportTubVisAtt  = TRUE;
+   fSuperLayerVisAtt  = FALSE;
+   fLayerVisAtt       = FALSE;
+   fCellVisAtt        = TRUE; 
+   fDriftRegionVisAtt = FALSE;
+   fSenseWireVisAtt   = TRUE;
+   
+   fStereoCellVisAtt  = FALSE; 
+   fStereoDriftRegionVisAtt = FALSE;
+   fDummyDriftRegionVisAtt  = FALSE;
+
+#else
+   fCDCVisAtt         = TRUE;
+   fEndcapVisAtt      = TRUE;
+   fSupportTubVisAtt  = TRUE;
+   fSuperLayerVisAtt  = FALSE;
+   fLayerVisAtt       = FALSE;
+   fCellVisAtt        = TRUE; 
+   fDriftRegionVisAtt = FALSE;
+   fSenseWireVisAtt   = FALSE;
+   
+   fStereoCellVisAtt  = FALSE; 
+   fStereoDriftRegionVisAtt = FALSE;
+   fDummyDriftRegionVisAtt  = FALSE;
+
+#endif
+
+}
+
+//=====================================================================
+//* SetColors ---------------------------------------------------------
+void J4CDCParameterList::SetColors()
+{
+   SetCDCColor              (G4Color(0., 0., 1.));
+   SetEndcapColor           (G4Color(0., 0., 1.));
+   SetSupportTubColor       (G4Color(0., 0., 1.));
+   SetSuperLayerColor       (G4Color(0., 0., 1.));
+   SetLayerColor            (G4Color(0., 1., 0.));
+   SetCellColor             (G4Color(0., 1., 1.));
+   SetDriftRegionColor      (G4Color(0., 1., 1.));
+   SetSenseWireColor        (G4Color(1., 0., 1.));
+   SetDummyDriftRegionColor (G4Color(0., 1., 1.));
+   SetStereoCellColor       (G4Color(0., 1., 1.));
+   SetStereoDriftRegionColor(G4Color(0., 1., 1.));
+}
+
+//=====================================================================
+//* GetLayerNumber ----------------------------------------------------
+G4int J4CDCParameterList::GetLayerNumber(G4int superlayerid, 
+                                         G4int myid) const
+{
+   if (fIsOddSuperLyrOutermost) {
+      return superlayerid * 3 + myid;
+   } else {
+      if (superlayerid == 0) return 0;
+      return  1 + (superlayerid - 1) * 3 + myid;
+   }
+}
+
+
+

@@ -36,6 +36,14 @@ public:
   //----- constructor
   J4VAcceleratorComponent(const G4String          &groupname,
                           const G4String          &name, 
+                          J4VComponent            *parent    = 0,
+                          G4int                    nclones   = 1,
+                          G4int                    nbrothers = 1, 
+                          G4int                    me        = 0,
+                          G4int                    copyno    = -1);
+
+  J4VAcceleratorComponent(const G4String          &groupname,
+                          const G4String          &name, 
                           J4VAcceleratorComponent *parent    = 0,
                           G4int                    nclones   = 1,
                           G4int                    nbrothers = 1, 

@@ -78,40 +78,37 @@ void J4CDCStereoDriftRegion::Assemble()
   {	  
     // define parameters
      J4CDCParameterList *list = OpenParameterList();
-     G4double motherRmin  = GetInnerRadius(GetMother());
-     G4double halfzlen    = GetZHalfLength(GetMother());
-     G4double motherdphi  = GetDeltaPhi(GetMother());
-     G4double twistedAng  = GetTwistedAngle();
+     G4double motherRmin      = GetInnerRadius(GetMother());
+     G4double halfzlen        = GetZHalfLength(GetMother());
+     G4double motherdphi      = GetDeltaPhi(GetMother());
+     G4double twistedAng      = GetTwistedAngle();
 
              
-     G4int    myid        = GetMyID();
-     G4double thick       = list->GetDriftRegionThick();
-     G4double dummythick  = list->GetDummyDriftRegionThick();
-     G4double endinnerrad = motherRmin 
-                            + thick * (myid) + dummythick;
-     G4double endouterrad = motherRmin
-                            + thick * (myid + 1) + dummythick;
+     G4int    myid            = GetMyID();
+     G4double thick           = list->GetDriftRegionThick();
+     G4double dummythick      = list->GetDummyDriftRegionThick();
+     G4double centerradius    = motherRmin + thick * (myid + 0.5) + dummythick;
 
-     fTanStereo = CalcTanStereo(twistedAng, 
-                                    0.5 * (endinnerrad + endouterrad),
-                                    halfzlen);
-     fRwaist      = CalcWaist(fTanStereo, 
-                              0.5 * (endinnerrad + endouterrad),
-                              halfzlen);
+     G4double measplanehalfthick = list->GetMeasPlaneHalfThick();
+     G4double endinnerradius   = centerradius - measplanehalfthick;
+     G4double endouterradius   = centerradius + measplanehalfthick;
+
+     fTanStereo   = CalcTanStereo(twistedAng, centerradius, halfzlen);
+     fRwaist      = CalcWaist(fTanStereo, centerradius, halfzlen);
 
 #if 0
-     G4cerr << "J4CDCDriftRegion::Assemble -----------------------------" << G4endl;
+     G4cerr << "J4CDCStereoDriftRegion::Assemble -----------------------------" << G4endl;
      G4cerr << " motherendrmin = " << motherRmin << G4endl;
-     G4cerr << " endinnerrad   = " << endinnerrad << G4endl;
-     G4cerr << " endouterrad   = " << endinnerrad << G4endl;
+     G4cerr << " endinnerradius= " << endinnerradius << G4endl;
+     G4cerr << " endouterradius= " << endinnerradius << G4endl;
      G4cerr << " motherdphi    = " << motherdphi << G4endl;
 #endif
      
     // MakeSolid ----------//
      J4TwistedTubs* driftregion = new J4TwistedTubs(GetName(),
                                                     twistedAng,
-                                                    endinnerrad,
-                                                    endouterrad,
+                                                    endinnerradius,
+                                                    endouterradius,
                                                     halfzlen,
                                                     motherdphi);
      Register(driftregion);

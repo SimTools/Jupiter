@@ -11,20 +11,25 @@
 
 #include "J4ParameterList.hh"
  
-J4ParameterList* J4ParameterList::fgParameterList = 0;
+J4ParameterList* J4ParameterList::fgInstance = 0;
 
 //=====================================================================
-//* constructor -------------------------------------------------------
-
-J4ParameterList::J4ParameterList()
-                :J4VParameterList("kern")
+//* public get function -----------------------------------------------
+J4ParameterList* J4ParameterList::GetInstance()
 {
-   if (fgParameterList) { 
-      G4Exception("J4ParameterList constructed twice."); 
-   }
+   if (!fgInstance) {
+      fgInstance = new J4ParameterList("kern");
+   } 
+   return fgInstance;
+}
 
+//=====================================================================
+//* protected constructor ---------------------------------------------
+
+J4ParameterList::J4ParameterList(const G4String &name)
+                :J4VParameterList(name)
+{
    SetParameters();
-   fgParameterList = this;
 }
 
 //=====================================================================
@@ -32,7 +37,7 @@ J4ParameterList::J4ParameterList()
 
 J4ParameterList::~J4ParameterList()
 {
-   delete  fEXPHallColor;
+   fgInstance = 0;
 }
 
 //=====================================================================
@@ -43,42 +48,43 @@ void J4ParameterList::SetParameters()
 
    fEXPHallMaterial = "Air";
    fEXPHallVisAtt   = FALSE;
-   fEXPHallColor    = new G4Color(1, 0, 1);
+   SetEXPHallColor(G4Color(1, 0, 1));
 
 
-   fBPOuterRadius   = 1.8*cm;                  // OuterRadius of BeamPipe
-   fBPMargin        = 0.05*cm;                 // Margin between beampipe and IR
-   fIRThetaMax      = 200*mrad;                // Theta Max of IR region
-   fIRBoxFrontZ     = 500*cm;                  // Front-z of IR box
-   fIRBoxEndZ       = 700*cm;                  // End-z of IR box
-   fIRBoxHalfX      = fEXPHallHalfX - 1.0*cm;  // half x-width of IR box
-   fIRBoxHalfY      = fEXPHallHalfY - 1.0*cm;  // half y-width of IR box
+   fBPOuterR         = 1.8*cm;                 // OuterR of BeamPipe
+   fBPMargin         = 0.05*cm;                // Margin between beampipe and IR
+   fIRThetaMax       = 200*mrad;               // Theta Max of IR region
+   fIRBoxFrontZ      = 500*cm;                 // Front-z of IR box
+   fIRBoxEndZ        = 700*cm;                 // End-z of IR box
 
-   fSupportTubInnerRadius = 40*cm;             // InnerRadius of Support Tub
-   fSupportTubOuterRadius = 44*cm;             // OuterRadius of Support Tub
+   fSupportTubInnerR = 40*cm;                  // InnerR of Support Tub
+   fSupportTubOuterR = 44*cm;                  // OuterR of Support Tub
 
-   fVTXOuterRadius  = 8.0*cm;                  // OuterRadius of VTX
-   fVTXAngle        = 10;                      // half z length of VTX
+   fVTXOuterR        = 8.0*cm;                 // OuterR of VTX
+   fVTXZcoverage     = 0.9015;                 // z-coverage in cos_theta of VTX
 
-   fCDCOuterRadius  = 156*cm;                  // OuterRadius of CDC
-   fCDCHalfZ        = 156*cm;                  // half z length of CDC
+   fITZcoverage      = 0.90;                   // z-coverage in cos_theta of IT 
 
-   fCALInnerRadius  = 160*cm;                  // InnerRadius of CAL
-   fCALOuterRadius  = 290*cm;                  // OuterRadius of CAL
-   fCALHalfZ        = 320*cm;                  // half z length of CAL
+   fCDCOuterR        = 157*cm;                 // OuterR of CDC
+   fCDCHalfZ         = 160*cm;                 // half z length of CDC
 
-   fSOLInnerRadius  = 375*cm;                  // InnerRadius of Solenoid
-   fSOLOuterRadius  = 450*cm;                  // OuterRadius of Solenoid
-   fSOLHalfZ        = 340*cm;                  // half z length of Solenoid
+   fCALInnerR        = 157*cm;                 // InnerR of CAL
+   fCALOuterR        = 370*cm;                 // OuterR of CAL
+   fCALInnerHalfZ    = 185*cm;                 // half z length of innerface of CAL 
+   fCALOuterHalfZ    = 400*cm;                 // half z length of outersurface of CAL
+
+   fSOLInnerR        = 375*cm;                 // InnerR of Solenoid
+   fSOLOuterR        = 450*cm;                 // OuterR of Solenoid
+   fSOLHalfZ         = 430*cm;                 // half z length of Solenoid
 
 #if 0
    fEXPHallHalfX    = 40*m;
    fEXPHallHalfY    = 40*m;
    fEXPHallHalfZ    = 4000*m;
 #else
-   fEXPHallHalfX    = 5*m;
-   fEXPHallHalfY    = 5*m;
-   fEXPHallHalfZ    = 5*m;
+   fEXPHallHalfX    = 7*m;
+   fEXPHallHalfY    = 7*m;
+   fEXPHallHalfZ    = 7*m;
 #endif
 
 

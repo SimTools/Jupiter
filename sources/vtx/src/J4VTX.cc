@@ -12,7 +12,10 @@
 //*************************************************************************
 
 #include "J4VTX.hh"
-
+#include "G4Cons.hh"
+#include "G4Tubs.hh"
+#include "G4Box.hh"
+#include "J4UnionSolid.hh"
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
@@ -62,18 +65,47 @@ void J4VTX::Assemble()
   if(!GetLV()){
 
     //--- Assemble Master volume for VTX ----
-    G4double rmin = list->GetVTXInnerRadius();
-    G4double rmax = list->GetVTXOuterRadius();
-    G4double len  = list->GetVTXZLength()/2.;
-    G4double dphi = twopi;
- 	
-    // MakeSolid ----------//
-    OrderNewTubs (rmin, rmax, len, dphi);
+    G4String vtxname(GetName());
+    G4VSolid* lastsolid;
+    G4String tmpname = vtxname+".master";
+
+#if 1
+    // New Master
+     G4int nlayer = list->GetNLayers();
+    G4double rin,rout;
+    for ( G4int i = 0 ; i < nlayer; i++ ){
+      if ( i == 0 ){
+	rin  = list->GetVTXInnerRadius();
+	if ( (i+1) == nlayer ) rout = list->GetVTXOuterRadius();
+	else rout = list->GetLayerInnerRadius(i+1)-3*mm;	
+      }else if ( i < nlayer-1 ){
+	rin  = list->GetLayerInnerRadius(i)-5*mm;
+	rout = list->GetLayerInnerRadius(i+1)-3*mm;
+      }else {
+	rin  = list->GetLayerInnerRadius(i)-5*mm;
+	rout = list->GetVTXOuterRadius();
+      }
+      G4double z   = list->GetLayerZLength(i);
+      G4String tmptube = vtxname+".tube";
+
+      G4VSolid* tube = new G4Tubs(tmptube,rin,rout,z/2.,0.,twopi);
+      if ( i == 0 ) {
+	lastsolid = tube;
+      }else {
+	lastsolid = new J4UnionSolid(vtxname,lastsolid,tube);
+      }
+    }
+#endif
+
+    Register(lastsolid);
+    SetSolid(lastsolid);
+
     // MakeLogicalVolume --//
     MakeLVWith(OpenMaterialStore()->Order(list->GetVTXMaterial()));
     // SetVisAttribute ----//
     PaintLV(list->GetVTXVisAtt(), list->GetVTXColor());
 
+#if 1
     // Install daughter PV //
     // Install Layer       //
     G4int nlayers = list->GetNLayers();
@@ -87,6 +119,8 @@ void J4VTX::Assemble()
       fLayers[i]->Print();
     }  
     Print();
+
+#endif
   }
 }
 

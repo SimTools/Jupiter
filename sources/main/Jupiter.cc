@@ -31,6 +31,7 @@
 #include "J4ParameterListStore.hh"
 #include "J4ParameterList.hh"
 #include "J4VTXParameterList.hh"
+#include "J4ITParameterList.hh"
 #include "J4CDCParameterList.hh"
 #include "J4SOLParameterList.hh"
 
@@ -48,9 +49,9 @@
 #include "J4CAL.hh"
 #include "J4SOL.hh"
 
-//#define __INSTALLIR__  
-//#define __INSTALLBD__  
-//#define __INSTALLVTX__  
+#define __INSTALLIR__  
+#define __INSTALLBD__  
+#define __INSTALLVTX__  
 #define __INSTALLIT__  
 #define __INSTALLCDC__  
 #define __INSTALLCAL__  
@@ -84,10 +85,7 @@ int main(int argc, char** argv)
   //---------------------------------------------
   // set mandatory user initialization classes...
   
-  J4ParameterList    *paramlist    = new J4ParameterList();
-  J4VTXParameterList *vtxparamlist = new J4VTXParameterList();
-  J4CDCParameterList *cdcparamlist = new J4CDCParameterList();
-  J4SOLParameterList *solparamlist = new J4SOLParameterList();
+  J4VTXParameterList *vtxlist = new J4VTXParameterList();
 
   //*--------------------------------------------
   //* Install detector components...
@@ -206,6 +204,11 @@ int main(int argc, char** argv)
   vtxptr->J4VDetectorComponent::SwitchOn();
 #endif
    
+  //* it 
+#ifdef __INSTALLIT__
+  itptr->J4VDetectorComponent::SwitchOn();
+#endif
+
   //* cdc 
   
   // SwitchOn all SDs.
@@ -229,6 +232,11 @@ int main(int argc, char** argv)
      }
   }
 #endif
+#endif
+
+  //* cal 
+#ifdef __INSTALLCAL__
+  calptr->J4VDetectorComponent::SwitchOn();
 #endif
         
   //*--------------------------------------------

@@ -27,23 +27,38 @@ G4Material* J4IRMaterialStore::Create(const G4String& name)
 
   G4Material* material= 0;
 
-  if(name == "DummyCal") { 		// CO2Isobutane(90:10)  
-  
-    //--------------
-    // elements...  
-    //--------------
-    //  G4double A, Z;
-    //  G4String name, symbol;
-  
+  G4double A, Z;
+  G4String mname;
+  G4double density;
+  G4int nel,natoms,ncomponents;
+  const G4double expTemp=STP_Temperature+20.*kelvin;
+
+  if(name == "Cupper") { 		// Cupper
     //--------------
     // materials...
     //--------------
-    //  G4double density, massfraction;
-    //  G4int natoms, nel, ncomponents;
-    //  temperature of experimental hall is controlled at 20 degree.
-    //  const G4double expTemp= STP_Temperature+20.*kelvin; 
-    
+      A = 63.546 *g/mole;
+      density = 8.96 *g/cm3;
+      G4Material* Cu = new G4Material(mname="Cupper",Z=29.,A,density);
+      material = Cu;
   
+  }else if ( name == "Polyethylene") {
+
+    G4String ename,symbol;
+
+    A= 1.00794 *g/mole;
+    G4Element* elH= new G4Element(ename="Hydrogen", symbol="H", Z=1., A);
+
+    A= 12.011 *g/mole;
+    G4Element* elC= new G4Element(ename="Carbon", symbol="C", Z=6., A);
+
+    density = 0.92*g/cm3;
+    G4Material* Polyethylene = new G4Material(mname="Polyethylene",density,
+					      nel=2,kStateSolid,expTemp);
+    Polyethylene->AddElement(elC,natoms=2);
+    Polyethylene->AddElement(elH,natoms=4);
+
+    material = Polyethylene;
   }
   
   return material;

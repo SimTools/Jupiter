@@ -1,0 +1,172 @@
+// $Id$
+//*************************************************************************
+//* --------------------
+//* J4VTX
+//* --------------------
+//* (Description)
+//* 	Class for describing his/her detector compornents.
+//*     
+//* (Update Record)
+//*	2000/12/08  K.Hoshina	Original version.
+//*	2002/11/19  T.Aso       Modify to use ParameterList.
+//*************************************************************************
+
+#include "J4VTX.hh"
+#include "G4Cons.hh"
+#include "G4Tubs.hh"
+#include "J4UnionSolid.hh"
+// ====================================================================
+//--------------------------------
+// constants (detector parameters)
+//--------------------------------
+
+G4String J4VTX::fFirstName("VTX");
+
+//=====================================================================
+//---------------------
+// Class Description
+//---------------------
+
+//=====================================================================
+//* constructor -------------------------------------------------------
+
+J4VTX::J4VTX(J4VDetectorComponent *parent ,
+                            G4int  nclones,
+                            G4int  nbrothers, 
+                            G4int  me,
+                            G4int  copyno ) :
+       J4VVTXDetectorComponent( fFirstName, parent, 1,1,0,copyno)
+{   
+}
+
+//=====================================================================
+//* destructor --------------------------------------------------------
+
+J4VTX::~J4VTX()
+{
+  if (fLayers) {  
+    G4int i; 
+    for (i = 0; i < OpenParameterList()->GetNLayers() ; i++) {
+     if(Deregister(fLayers[i])) delete fLayers [i];
+    }
+    if (Deregister(fLayers)) delete [] fLayers;
+  }
+}
+
+//=====================================================================
+//* Assemble   --------------------------------------------------------
+
+void J4VTX::Assemble() 
+{   
+
+  J4VTXParameterList* list = OpenParameterList();
+
+  if(!GetLV()){
+
+    //--- Assemble Master volume for VTX ----
+    G4double rmin = list->GetVTXInnerRadius();
+    G4double rmax = list->GetVTXOuterRadius();
+    G4double halflen  = list->GetVTXZLength()/2.;
+    G4double dphi = twopi;
+    G4double cangle = list->GetVTXAngle();
+    G4double tanangle = tan(cangle);
+    G4double masterhalflen = rmin/tanangle;
+    G4double conehalflength = (halflen-masterhalflen)/2.;
+    G4double conermax  = rmax;
+    G4double conezpos  = conehalflength+rmin/tanangle;
+ 	
+    // MakeSolid ----------//
+    //OrderNewTubs (rmin, rmax, len, dphi);
+    G4String vtxname(GetName());
+    vtxname +=".Master";
+    G4VSolid *master = new G4Tubs(vtxname,rmin,rmax,masterhalflen,0.,dphi);
+#if 0
+    G4String covernameR(GetName());
+    covernameR += ".coverR";
+    G4VSolid *coverR = new G4Cons(covernameR,rmin,rmax,conermax,rmax,
+				     conehalflength,0.,dphi);
+    G4String covernameL(GetName());
+    covernameL += ".coverL";
+    G4VSolid *coverL = new G4Cons(covernameL,conermax,rmax,rmin,rmax,
+    			     conehalflength,0,dphi);
+
+    G4String tmpsolid1name(GetName());
+    tmpsolid1name += ".tmpsolid1";
+    G4ThreeVector tmpsolid1tlate(0,0,conezpos);
+    G4VSolid *tmpsolid1 = new J4UnionSolid(tmpsolid1name,master,
+    						 coverR,0,tmpsolid1tlate);
+
+    G4ThreeVector tmpsolid2tlate(0,0,-conezpos);
+    G4VSolid *lastsolid = new J4UnionSolid(GetName(),tmpsolid1,
+    						 coverL,0,tmpsolid2tlate);
+
+    //Register(lastsolid);
+    //SetSolid(lastsolid);
+#endif
+    Register(master);
+    SetSolid(master);
+
+
+    // MakeLogicalVolume --//
+    MakeLVWith(OpenMaterialStore()->Order(list->GetVTXMaterial()));
+    // SetVisAttribute ----//
+    PaintLV(list->GetVTXVisAtt(), list->GetVTXColor());
+
+#if 1
+    // Install daughter PV //
+    // Install Layer       //
+    G4int nlayers = list->GetNLayers();
+    fLayers = new J4VTXLayer* [nlayers];
+    Register(fLayers);
+    for (G4int i = 0; i < nlayers; i++) {
+      fLayers[i] = new J4VTXLayer(this,nlayers , i );
+      Register(fLayers[i]);
+      fLayers[i]->InstallIn(this);  
+      SetDaughter(fLayers[i]);
+      fLayers[i]->Print();
+    }  
+    Print();
+
+#endif
+  }
+}
+
+//=====================================================================
+//* Cabling  ----------------------------------------------------------
+
+void J4VTX::Cabling()
+{
+}
+
+//=====================================================================
+//* InstallIn  --------------------------------------------------------
+
+void J4VTX::InstallIn(J4VComponent         *mother,
+                      G4RotationMatrix     *prot, 
+                      const G4ThreeVector  &tlate ) 
+{ 
+  Assemble();			// You MUST call Assemble(); at first.
+  				// 
+  
+  // Placement function into mother object...
+  
+  SetPVPlacement();
+  
+}
+
+
+//* Draw  --------------------------------------------------------
+void J4VTX::Draw()
+{
+  // set visualization attributes
+  
+}
+	
+//* Print  --------------------------------------------------------
+void J4VTX::Print() const
+{
+}
+
+	
+	
+

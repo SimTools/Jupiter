@@ -60,10 +60,10 @@ public:
   
   virtual ~J4CDCDriftRegionHit();
   
-  void* operator new    (size_t    );
-  void  operator delete (void *aHit);
+  void* operator   new    (size_t    );
+  void  operator   delete (void *aHit);
 
-  virtual void Output(G4HCofThisEvent *HCTE);
+  virtual void     Output(G4HCofThisEvent *HCTE);
 
   static  void     SetOutput(J4Output *output) { fOutput = output; }
     

@@ -67,22 +67,20 @@ void J4VTXLayer::Assemble()
 
     G4double   rmin = list->GetLayerInnerRadius(layerID);
     G4double   rmax = list->GetLayerOuterRadius(layerID);
-    G4double   len  = 
-      ((G4Tubs *)GetMother()->GetLV()->GetSolid())->GetZHalfLength();
-    G4double   totalPhi=
-      ((G4Tubs *)GetMother()->GetLV()->GetSolid())->GetDeltaPhiAngle();
-
+    G4double   halfzlen  = list->GetLayerZLength(layerID)/2.;
+    G4double   totalPhi= twopi;
 
   if (!GetLV())
   {	  
     // define geometry
     // MakeSolid ----------//
-    OrderNewTubs (rmin, rmax, len, totalPhi );
+    OrderNewTubs (rmin, rmax, halfzlen, totalPhi );
     // MakeLogicalVolume --//  
     MakeLVWith(OpenMaterialStore()->Order(list->GetLayerMaterial()));
     // SetVisAttribute ----//
     PaintLV(list->GetLayerVisAtt() , list->GetLayerColor());    
-        
+
+#if 1        
     // Install daughter PV //
     // Install Ladder      //
     G4int numOfLadders = list->GetNLadders(layerID);
@@ -109,6 +107,8 @@ void J4VTXLayer::Assemble()
        fLadders[copyNo]->InstallIn(this);  
        SetDaughter(fLadders[copyNo]);
     }
+#endif
+    
   }
 }
 

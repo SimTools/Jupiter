@@ -38,8 +38,8 @@ void J4SOLMField::GetLocalFieldValue(G4ThreeVector &position,
 
   onlyFlag = false;
 	
-  G4double maxBRad    = fParameterList->GetOR();
-  G4double maxBZ      = fParameterList->GetLength();
+  G4double maxBRad    = fParameterList->GetSOLOuterR();
+  G4double maxBZ      = fParameterList->GetSOLHalfZ();
   G4double zBfield    = fParameterList->GetBField();	
   G4double maxBRad_sq = maxBRad * maxBRad;
   
@@ -52,9 +52,9 @@ void J4SOLMField::GetLocalFieldValue(G4ThreeVector &position,
 //=====================================================================
 void J4SOLMField::GetLocalValidBox(G4double* lpos){
 
-  lpos[0] = fParameterList->GetOR();
-  lpos[1] = fParameterList->GetOR();
-  lpos[2] = fParameterList->GetLength();
+  lpos[0] = fParameterList->GetSOLOuterR();
+  lpos[1] = fParameterList->GetSOLOuterR();
+  lpos[2] = fParameterList->GetSOLHalfZ();
 
 
   return;

@@ -77,37 +77,11 @@ void J4CDCDriftRegionHit::Output(G4HCofThisEvent* HCTE)
   G4double      sphi     = -0.5 * dphi;
 
   G4int         cellID   = GetCloneID();
-  G4String      pname    = GetParticle()->GetParticleName();
-  G4int         pdid     = GetParticle()->GetPDGEncoding();   
+  G4String      pname    = GetParticleName();
+  G4int         pdid     = GetPDGEncoding();   
   G4ThreeVector pre      = GetPrePosition();
   G4ThreeVector post     = GetPostPosition();
 
-  G4double      gwirephi;  // global phi position of wire
-  G4double      rwire;     // global r position of wire   
-  G4double      driftlen;  // drift length
-
-  if (fIsRoundDriftRegion) { 
-
-     G4double   rmin     = cpt->GetInnerRadius(cpt); 
-     G4double   rmax     = cpt->GetOuterRadius(cpt); 
-     G4double   ghitphi  = fHitPosition.getPhi();
-
-     rwire    = (rmax + rmin) * 0.5;
-     gwirephi = fWireEnd[1].getPhi();
-     driftlen = rwire * ( ghitphi - gwirephi);
-  
-     G4double cellphi  = fRotAngle - sphi;
-     while (cellphi < 0)      cellphi += 2*M_PI;
-     while (cellphi > 2*M_PI) cellphi -= 2*M_PI;   
-
-  } else {
-
-     G4ThreeVector xx;
-     driftlen = DistanceToWire(fHitPosition, xx);
-     rwire    = xx.getRho(); 
-     gwirephi = xx.getPhi();
-  } 
-  
   // output hitdata to output file ....
 	
   G4std::ofstream& ofs = GetOutputFileStream();
@@ -123,21 +97,16 @@ void J4CDCDriftRegionHit::Output(G4HCofThisEvent* HCTE)
          << G4std::setw(7) << GetHitNumber() << " " 
          << G4std::setw(6) << pdid << " " 
          << G4std::setw(2) << GetCharge() << " " 
-         << G4std::setiosflags(G4std::ios::scientific) << G4std::setprecision(14)
+         << G4std::setiosflags(G4std::ios::scientific) 
+         << G4std::setprecision(14)
          << G4std::setw(18) << dphi << " " 
          << G4std::setw(18) << sphi << " "
-         << G4std::setw(18) << gwirephi << " " 
-         << G4std::setw(18) << rwire << " " 
-         << G4std::setw(18) << driftlen << " "
          << G4std::setw(18) << pre.x() << " " 
          << G4std::setw(18) << pre.y() << " " 
          << G4std::setw(18) << pre.z() << " "
          << G4std::setw(18) << post.x() << " " 
          << G4std::setw(18) << post.y() << " " 
          << G4std::setw(18) << post.z() << " "
-         << G4std::setw(18) << fHitPosition.x() << " " 
-         << G4std::setw(18) << fHitPosition.y() << " " 
-         << G4std::setw(18) << fHitPosition.z() << " "
          << G4std::setw(18) << GetMomentum().x() << " " 
          << G4std::setw(18) << GetMomentum().y() << " "
          << G4std::setw(18) << GetMomentum().z() << " " 
@@ -152,9 +121,34 @@ void J4CDCDriftRegionHit::Output(G4HCofThisEvent* HCTE)
          << G4std::setw(18) << fWireEnd[1].z() << " "
          << G4std::setw(18) << fTanStereo << " "
          << G4std::setw(18) << fRwaist << " "
-         << G4std::setiosflags(G4std::ios::floatfield) << setprecision(8)
+         << G4std::setiosflags(G4std::ios::floatfield) 
+         << G4std::setprecision(8)
          << G4endl;
   }
+
+#if 0
+     G4cerr << "LayerNo   : " << layerNo << G4endl; 
+     G4cerr << "WireNo    : " << wireNo << G4endl; 
+     G4cerr << "CellID    : " << cellID << G4endl;
+     G4cerr << "TrackID   : " << GetTrackID() << G4endl; 
+     G4cerr << "MotherTrackID : " << GetMotherTrackID() << G4endl; 
+     G4cerr << "HitNumber : " << GetHitNumber() << G4endl; 
+     G4cerr << "PDID      : " << pdid << G4endl; 
+     G4cerr << "Charge    : " << GetCharge() << G4endl; 
+     G4cerr << "DPhi      : " << dphi << G4endl; 
+     G4cerr << "SPhi      : " << sphi << G4endl; 
+     G4cerr << "Pre       : " << pre << G4endl; 
+     G4cerr << "Post      : " << post << G4endl; 
+     G4cerr << "Momentum  : " << GetMomentum() << G4endl; 
+     G4cerr << "TotalE    : " << GetTotalEnergy() << G4endl; 
+     G4cerr << "EDep      : " << GetEnergyDeposit() << G4endl; 
+     G4cerr << "Tof       : " << GetTof() << G4endl; 
+     G4cerr << "WireEndm  : " << fWireEnd[0] << G4endl; 
+     G4cerr << "WireEndp  : " << fWireEnd[1] << G4endl; 
+     G4cerr << "TanStereo : " << fTanStereo << G4endl; 
+     G4cerr << "RWaist    : " << fRwaist << G4endl; 
+#endif
+
 }
 
 

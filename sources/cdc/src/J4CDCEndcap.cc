@@ -53,10 +53,10 @@ void J4CDCEndcap::Assemble()
   if(!GetLV()){
      J4CDCParameterList *list = OpenParameterList();
      
-     G4double rmin = list->GetEndcapIR();
-     G4double rmax = list->GetEndcapOR();
+     G4double rmin = list->GetEndcapInnerR();
+     G4double rmax = list->GetEndcapOuterR();
      G4double len  = list->GetEndcapHalfZ();
-     G4double dphi = list->GetCDCDPhi();
+     G4double dphi = list->GetCDCDeltaPhi();
   	
     // MakeSolid ----------//
     OrderNewTubs (rmin, rmax, len, dphi);
@@ -94,7 +94,7 @@ void J4CDCEndcap::InstallIn(J4VComponent         *mother,
   // Placement function into mother object...
   
   G4double z = OpenParameterList()->GetCDCHalfZ() -
-               OpenParameterList()->GetEndcapThick();  
+               OpenParameterList()->GetEndcapHalfThick();  
                
   if (GetMyID() == 0) 
   {

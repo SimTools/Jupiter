@@ -14,7 +14,6 @@
 
 
 J4CDCMaterialStore* J4VCDCDetectorComponent::fMaterialStore = 0;
-J4CDCParameterList* J4VCDCDetectorComponent::fParameterList = 0;
 
 G4String J4VCDCDetectorComponent::fSubGroup("CDC");
 
@@ -52,7 +51,6 @@ J4VCDCDetectorComponent::J4VCDCDetectorComponent(
 J4VCDCDetectorComponent::~J4VCDCDetectorComponent()
 {	
    if(Deregister(fMaterialStore)) delete fMaterialStore;
-   if(Deregister(fParameterList)) delete fParameterList;
 }
 
 //=====================================================================
@@ -67,20 +65,6 @@ J4VMaterialStore* J4VCDCDetectorComponent::OpenMaterialStore()
    }
     
    return fMaterialStore;
-}
-
-//=====================================================================
-//* OpenParameterList -------------------------------------------------
-
-J4CDCParameterList* J4VCDCDetectorComponent::OpenParameterList()
-{
-   if(!fParameterList) {
-      fParameterList = new J4CDCParameterList();
-      Register(fParameterList);
-      G4cerr << "*** Opend J4CDCParameterList ***" << G4endl;
-   }
-
-   return fParameterList;
 }
 
 //=====================================================================

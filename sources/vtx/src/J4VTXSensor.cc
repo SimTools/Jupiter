@@ -12,6 +12,7 @@
 //*************************************************************************
 
 #include "J4VTXSensor.hh"
+#include "J4VTXSensorSD.hh"
 #include "G4Box.hh"
 
 // ====================================================================
@@ -84,6 +85,7 @@ void J4VTXSensor::Assemble()
     // Install daughter PV //
     // Install Sensor      //
 #if 1   
+  if ( !(OpenParameterList()->IsSensorSD()) ){
     fSubstrate  = new J4VTXSubstrate(this);
     Register(fSubstrate);
     fSubstrate->InstallIn(this);  
@@ -93,6 +95,7 @@ void J4VTXSensor::Assemble()
     Register(fEpitaxial);
     fEpitaxial->InstallIn(this);  
     SetDaughter(fEpitaxial);
+  }
 #endif
   } 
 }
@@ -101,6 +104,14 @@ void J4VTXSensor::Assemble()
 //* Cabling  ----------------------------------------------------------
 void J4VTXSensor::Cabling()
 {
+  if(!GetLV()) Assemble();
+
+  if (OpenParameterList()->IsSensorSD()){
+    J4VTXSensorSD* sd = new J4VTXSensorSD(this);
+    Register(sd);
+    SetSD(sd);
+  }
+
 }
 
 //=====================================================================
@@ -114,12 +125,12 @@ void J4VTXSensor::InstallIn(J4VComponent         *mother,
    G4int layerID        = GetMother()->GetMother()->GetMyID();
    G4int sensorID       = GetCopyNo();
 
-  G4cout << " Sensor === GetCopyNo" << sensorID << G4endl;
-
    G4ThreeVector xyzSensor  = 
    OpenParameterList()->GetSensorPosition(layerID,sensorID);  
   // Placement into mother object ------//
   SetPVPlacement(prot,xyzSensor);
+
+  if (!GetSD()) Cabling(); 
 }
 
 

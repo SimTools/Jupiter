@@ -12,10 +12,24 @@
 
 #include "J4CDCParameterList.hh"
  
-//=====================================================================
-//* constructor -------------------------------------------------------
+J4CDCParameterList*   J4CDCParameterList::fgInstance = 0;
 
-J4CDCParameterList::J4CDCParameterList()
+//=====================================================================
+//* public get function -----------------------------------------------
+
+J4CDCParameterList* J4CDCParameterList::GetInstance()
+{
+   if (!fgInstance) {
+      fgInstance = new J4CDCParameterList("CDC");
+   }
+   return fgInstance;
+}
+ 
+//=====================================================================
+//* protected constructor ---------------------------------------------
+
+J4CDCParameterList::J4CDCParameterList(const G4String &name)
+                   :J4VParameterList(name) 
 {
    SetMaterials();
    SetParameters();
@@ -28,20 +42,10 @@ J4CDCParameterList::J4CDCParameterList()
 
 J4CDCParameterList::~J4CDCParameterList()
 {
-   delete  fCDCColor;
-   delete  fEndcapColor;
-   delete  fSupportTubColor;
-   delete  fSuperLayerColor;
-   delete  fLayerColor;
-   delete  fCellColor;
-   delete  fDriftRegionColor;
-   delete  fStereoCellColor;
-   delete  fStereoDriftRegionColor;
-   delete  fDummyDriftRegionColor;
-   delete  fSenseWireColor;
    delete  fTwistedAngle;
    delete  fSuperLayerPhiOffset;
    delete  fNcellsParLayer;
+   fgInstance = 0;
 }
 
 //=====================================================================
@@ -55,7 +59,7 @@ void J4CDCParameterList::SetMaterials()
    fLayerMaterial       = "CO2Isobutane";
    fCellMaterial        = "CO2Isobutane";
    fDriftRegionMaterial = "CO2Isobutane";
-   //fSenseWireMaterial   = "CO2Isobutane";
+   //fSenseWireMaterial = "CO2Isobutane";
    fSenseWireMaterial   = "Tungsten";
 #else
    fCDCMaterial         = "vacuum";
@@ -72,24 +76,22 @@ void J4CDCParameterList::SetMaterials()
 //* SetParameters -----------------------------------------------------
 void J4CDCParameterList::SetParameters()
 {
+
    // CDC
-   fCDCInnerRadius      = 44.*cm;
-   fCDCOuterRadius      = 157.*cm;
-   fCDCHalfZLength      = 157.*cm;
-   fCDCDeltaPhi         = 360.*deg;
-   fCDCPhiOffset        = 360.*deg;
+   fCDCDeltaPhi     = 360.*deg;
+   fCDCPhiOffset    = 360.*deg;
    
    // Endcap
-   fEndcapHalfThickness = 1.*cm;
+   fEndcapHalfThick = 1.*cm;
    
    // SupportTub
-   fSupportTubThickness = 1.*cm;
+   fSupportTubHalfThick = 0.5*cm;
    
    // Layer
    fNlayers           = 10;
    fTwistedAngle      = new G4double[fNlayers];
    fLayerPhiOffset    = new G4double[fNlayers];
-   fIsAxialOnly       = TRUE; // TRUE: Axial only, FALSE: with Stereo cell
+   fIsAxialOnly       = FALSE; // TRUE: Axial only, FALSE: with Stereo cell
    
    fTwistedAngle[0]   =  0.   *rad; // axial
    fTwistedAngle[1]   =  0.512*rad; // stereo
@@ -136,28 +138,28 @@ void J4CDCParameterList::SetParameters()
    fSuperLayerPhiOffset[2] = -0.016*rad;
    fSuperLayerPhiOffset[3] =  0.016*rad;
    
-   // Cell
-   
    // DriftRegion
-   fNdriftRegions        = 5;             // per cell
-   fDriftRegionThickness = 1.*cm;
-   
-   // DummyDriftRegion
-   fDummyDriftRegionThickness = 1.*cm;
+
+   fMeasPlaneHalfThick     = 0.0015*cm; // thickness of hypothetical measurement plane
+   //fMeasPlaneHalfThick     = 0.5*cm; // thickness of hypothetical measurement plane
+
+   fNdriftRegions          = 5;       // per cell
+   fDriftRegionThick       = 1.*cm;   // thickness of driftregion per wire
+   fDummyDriftRegionThick  = 1.*cm;
    
    // SenseWire
-   fSenseWireRadius      = 0.015*mm;
-   //fSenseWireRadius      = 1.5*mm;  // for printing
+   fSenseWireR             = 0.015*mm;
+   //fSenseWireR           = 1.5*mm;  // for printing
    
    // calcurated parameters
    
-   fCellThickness = fNdriftRegions * fDriftRegionThickness 
-                    + 2 * fDummyDriftRegionThickness;
+   fCellThick = fNdriftRegions * fDriftRegionThick 
+                    + 2 * fDummyDriftRegionThick;
 
    fStereoToAxialGap = 
-      (GetOuterSupportTubIR() - GetInnerSupportTubOR()
+      (GetOuterSupportTubInnerR() - GetInnerSupportTubOuterR()
        - fSuperLayerInnerGap - fSuperLayerOuterGap
-       - fNlayers * fCellThickness
+       - fNlayers * fCellThick
        - (fNsuperLayers - 1) * (fAxialToStereoGap + fStereoToStereoGap))
       / (fNsuperLayers - 1);
 }
@@ -181,11 +183,12 @@ void J4CDCParameterList::SetVisAttributes()
    fDummyDriftRegionVisAtt  = FALSE;
 
 #else
-   fCDCVisAtt         = TRUE;
+   fCDCVisAtt         = FALSE;
    fEndcapVisAtt      = TRUE;
    fSupportTubVisAtt  = TRUE;
    fSuperLayerVisAtt  = FALSE;
    fLayerVisAtt       = FALSE;
+   //fCellVisAtt        = TRUE; 
    fCellVisAtt        = FALSE; 
    fDriftRegionVisAtt = FALSE;
    fSenseWireVisAtt   = FALSE;
@@ -202,17 +205,17 @@ void J4CDCParameterList::SetVisAttributes()
 //* SetColors ---------------------------------------------------------
 void J4CDCParameterList::SetColors()
 {
-   fCDCColor         = new G4Color(0., 0., 1.);
-   fEndcapColor      = new G4Color(0., 0., 1.);
-   fSupportTubColor  = new G4Color(0., 0., 1.);
-   fSuperLayerColor  = new G4Color(0., 0., 1.);
-   fLayerColor       = new G4Color(0., 1., 0.);
-   fCellColor        = new G4Color(0., 1., 1.);
-   fDriftRegionColor = new G4Color(0., 1., 1.);
-   fSenseWireColor   = new G4Color(1., 0., 1.);
-   fDummyDriftRegionColor  = new G4Color(0., 1., 1.);
-   fStereoCellColor        = new G4Color(0., 1., 1.);
-   fStereoDriftRegionColor = new G4Color(0., 1., 1.);
+   SetCDCColor              (G4Color(0., 0., 1.));
+   SetEndcapColor           (G4Color(0., 0., 1.));
+   SetSupportTubColor       (G4Color(0., 0., 1.));
+   SetSuperLayerColor       (G4Color(0., 0., 1.));
+   SetLayerColor            (G4Color(0., 1., 0.));
+   SetCellColor             (G4Color(0., 1., 1.));
+   SetDriftRegionColor      (G4Color(0., 1., 1.));
+   SetSenseWireColor        (G4Color(1., 0., 1.));
+   SetDummyDriftRegionColor (G4Color(0., 1., 1.));
+   SetStereoCellColor       (G4Color(0., 1., 1.));
+   SetStereoDriftRegionColor(G4Color(0., 1., 1.));
 }
 
 //=====================================================================
@@ -224,7 +227,7 @@ G4int J4CDCParameterList::GetLayerNumber(G4int superlayerid,
       return superlayerid * 3 + myid;
    } else {
       if (superlayerid == 0) return 0;
-      return (superlayerid - 1) * 3 + 1 + myid;
+      return  1 + (superlayerid - 1) * 3 + myid;
    }
 }
 

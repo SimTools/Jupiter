@@ -28,8 +28,8 @@ protected:
 public:
   ~J4MaterialCatalog();
   
-  static J4MaterialCatalog*	OpenCatalog();
-  G4Material*		        Order(const G4String& name) const;
+  inline static  J4MaterialCatalog*  OpenCatalog();
+  G4Material*    Order(const G4String& name) const;
 
 private:  
   void  ReadMaterialCatalog();
@@ -48,7 +48,7 @@ private:
 // inline definition
 // ====================================================================
 
-inline J4MaterialCatalog* J4MaterialCatalog::OpenCatalog()
+J4MaterialCatalog* J4MaterialCatalog::OpenCatalog()
 {
   if (!fMaterialCatalog) {
      fMaterialCatalog= new J4MaterialCatalog();

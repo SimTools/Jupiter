@@ -13,7 +13,7 @@
 //*	2001/02/18  K.Hoshina	Original version.
 //*************************************************************************
 
-#include "J4VHit.hh"
+#include "J4VTrackerHit.hh"
 #include "G4THitsCollection.hh"
 #include "G4HCofThisEvent.hh"
 
@@ -31,7 +31,7 @@ typedef G4THitsCollection<J4CDCSenseWireHit> J4CDCSenseWireHitBuf;
 //---------------------
  
 
-class J4CDCSenseWireHit : public J4VHit {
+class J4CDCSenseWireHit : public J4VTrackerHit {
 
 public:
   J4CDCSenseWireHit();

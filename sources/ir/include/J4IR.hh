@@ -6,15 +6,31 @@
 //* J4IR
 //* --------------------
 //* (Description)
-//* 	Derivation class for Beampipe.
-//*     Mother class : J4VAcceleratorComponent
+//* 	Derivation class for IR region
+//*     Mother class : J4VIRAcceleratorComponent
 //*    
 //* (Update Record)
-//*	2000/12/08  K.Hoshina	Original version.
-//*	2002/05/15  K.Hoshina	Argument changed in InstallIn().
+//*	2002/09/13  T.Aso	Original version.
 //*************************************************************************
 
 #include "J4VIRAcceleratorComponent.hh"
+
+// Sub-Component
+#include "J4IRBPPipe.hh"
+#include "J4IRBPCone.hh"
+#include "J4IRBPAlDrum.hh"
+#include "J4IRBPAlTube.hh"
+
+#include "J4IRQC1.hh"
+#include "J4IRSD0.hh"
+#include "J4IRQC2.hh"
+#include "J4IRCH2Mask.hh"
+
+#include "J4IRWSiCAL1.hh"
+#include "J4IRWSiCAL2.hh"
+#include "J4IRWMask1.hh"
+#include "J4IRWMask2.hh"
+//#include "J4IRPairMonitor.hh"
 
 //=====================================================================
 //---------------------
@@ -32,9 +48,6 @@ public:
 
   virtual ~J4IR();
 
-  virtual void  InstallIn(J4VComponent         *mother,
-                          G4RotationMatrix     *prot  = 0,
-                          const G4ThreeVector  &tlate = 0 );
   virtual void	Draw()      ;
   virtual void	Print() const ;
   
@@ -43,8 +56,33 @@ private:
   void  Cabling ();
   
 private:  
-  static G4String	fFirstName;
-  
+  static G4String	fName;
+
+  J4IRBPPipe* fBeampipe;
+  J4IRBPCone* fBeamConeR;
+  J4IRBPCone* fBeamConeL;
+  J4IRBPAlDrum* fAlDrumR; 
+  J4IRBPAlDrum* fAlDrumL; 
+  J4IRBPAlTube* fAlBeamPipeR;
+  J4IRBPAlTube* fAlBeamPipeL;
+  J4IRQC1* fQC1R;
+  J4IRQC1* fQC1L;
+  J4IRSD0* fSD0R;
+  J4IRSD0* fSD0L;
+  J4IRQC2* fQC2R;
+  J4IRQC2* fQC2L;
+  J4IRCH2Mask* fCH2MR;
+  J4IRCH2Mask* fCH2ML;
+  J4IRWMask1* fWM1R;
+  J4IRWMask1* fWM1L;
+  J4IRWMask2* fWM2R;
+  J4IRWMask2* fWM2L;
+  J4IRWSiCAL1* fWSC1R;
+  J4IRWSiCAL1* fWSC1L;
+  J4IRWSiCAL2* fWSC2R;
+  J4IRWSiCAL2* fWSC2L;
+  //  J4IRPairMonitor* fPMNR;
+  //  J4IRPairMonitor* fPMNL;
 };
 
 #endif

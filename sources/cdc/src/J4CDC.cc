@@ -71,11 +71,11 @@ void J4CDC::Assemble()
   
       J4CDCParameterList *list = OpenParameterList();
       
-      G4double rmin = list->GetCDCIR();
-      G4double rmax = list->GetCDCOR();
-      G4double len  = list->GetCDCOR();
-      G4double dphi = list->GetCDCDPhi();
-      //G4double endcapthick = list->GetEndcapThick();
+      G4double rmin = list->GetCDCInnerR();
+      G4double rmax = list->GetCDCOuterR();
+      G4double len  = list->GetCDCOuterR();
+      G4double dphi = list->GetCDCDeltaPhi();
+      //G4double endcapthick = list->GetEndcapHalfThick();
   	
       // MakeSolid ----------//
       OrderNewTubs (rmin, rmax, len, dphi);
@@ -83,6 +83,7 @@ void J4CDC::Assemble()
       // MakeLogicalVolume --//
       G4String material = list->GetCDCMaterial();  
       MakeLVWith(OpenMaterialStore()->Order(material));
+      GetLV()->SetOptimisation(FALSE);
     
       // SetVisAttribute ----//
       PaintLV(list->GetCDCVisAtt(), list->GetCDCColor());
@@ -90,20 +91,20 @@ void J4CDC::Assemble()
       // Install daughter PV //
       // Install SupportTub       //
 
-      G4double otubIR  = list->GetOuterSupportTubIR();
-      G4double otubOR  = list->GetOuterSupportTubOR();
-      G4double itubIR  = list->GetInnerSupportTubIR();
-      G4double itubOR  = list->GetInnerSupportTubOR();
-      G4double tublen  = list->GetSupportTubHalfZ();
-      G4double tubdphi = list->GetSupportTubDPhi();
+      G4double otubInnerR  = list->GetOuterSupportTubInnerR();
+      G4double otubOuterR  = list->GetOuterSupportTubOuterR();
+      G4double itubInnerR  = list->GetInnerSupportTubInnerR();
+      G4double itubOuterR  = list->GetInnerSupportTubOuterR();
+      G4double tublen      = list->GetSupportTubHalfZ();
+      G4double tubdphi     = list->GetSupportTubDeltaPhi();
     
-      fOuterSupportTub = new J4CDCSupportTub(otubIR, otubOR, tublen,
+      fOuterSupportTub = new J4CDCSupportTub(otubInnerR, otubOuterR, tublen,
                                                      tubdphi, this);
       Register(fOuterSupportTub);
       fOuterSupportTub->InstallIn(this);
       SetDaughter(fOuterSupportTub);
     
-      fInnerSupportTub = new J4CDCSupportTub(itubIR, itubOR, tublen, 
+      fInnerSupportTub = new J4CDCSupportTub(itubInnerR, itubOuterR, tublen, 
                                                      tubdphi, this);
       Register(fInnerSupportTub);
       fInnerSupportTub->InstallIn(this);
@@ -118,7 +119,6 @@ void J4CDC::Assemble()
          fEndcaps [i] = new J4CDCEndcap(this, 1 , 2 , i );
          Register(fEndcaps[i]);
          fEndcaps [i]->InstallIn(this);  
-      
          SetDaughter(fEndcaps[i]);
       }  
         

@@ -39,6 +39,7 @@ public:
   //*
   // Sensitive Detector
   inline void SetLadderSD(G4bool log) {fLadderSD = log; }
+  inline void SetSensorSD(G4bool log) {fSensorSD = log; }
   inline void SetPixelAreaSD(G4bool log) { fPixelAreaSD = log; }
   inline void SetPixelSD(G4bool log) { fPixelSD = log; }
 
@@ -75,13 +76,18 @@ public:
   inline void SetRLayer(G4int layer,G4double r){frLayer[layer]=r; }
   // Tilt of ladders
   inline void SetTilt(G4double t){ftiltLadder=t; }
+  // Cover angle of VTX Master (not used)
+  inline void SetVTXAngle(G4double a){ fVTXAngle=a;}
 
   //*
   //* Get Functions
   //*
 
+  inline G4ThreeVector GetDxyzMarginSize() const { return fDxyzMargin;}
+
   // Sensitive Detector
   inline G4bool IsLadderSD() const { return fLadderSD; }
+  inline G4bool IsSensorSD() const { return fSensorSD; }
   inline G4bool IsPixelAreaSD() const { return fPixelAreaSD; }
   inline G4bool IsPixelSD() const { return fPixelSD; }
 
@@ -97,11 +103,14 @@ public:
   inline G4double GetVTXInnerRadius() const { return frVTXInner; }
   inline G4double GetVTXOuterRadius() const { return frVTXOuter; }
   inline G4double GetVTXZLength() const { return fzVTX; }
+  inline G4double GetVTXAngle() const { return fVTXAngle; }
   // Layer
   inline G4double GetLayerInnerRadius(G4int layer) 
     const  { return frInnerLayer[layer];};
   inline G4double GetLayerOuterRadius(G4int layer) 
     const  { return frOuterLayer[layer];};
+  inline G4double GetLayerZLength(G4int layer)
+  const { return (G4double)GetNSensors(layer)*GetSensorSize().z()+4.*GetDxyzMarginSize().z(); }
   //Ladder
   inline G4ThreeVector* GetLadderSize(G4int layer)
     const { return fDxyzLadder[layer]; };
@@ -177,6 +186,7 @@ private:
 
   // Sensitive Detector
   G4bool fLadderSD;
+  G4bool fSensorSD;
   G4bool fPixelAreaSD;
   G4bool fPixelSD;
   
@@ -249,9 +259,9 @@ private:
   G4double* frOuterLayer;
 
   //  Size and Position of Ladders;
-  G4ThreeVector** fDxyzLadder;
   G4ThreeVector fxyzLadder[10][50];
   G4double fangleLadder[10][50];
+  G4ThreeVector** fDxyzLadder;
 
   //  dr of layer
   G4double* fDrLayer;
@@ -260,6 +270,7 @@ private:
   G4double frVTXInner;
   G4double frVTXOuter;
   G4double fzVTX;
+  G4double fVTXAngle;
 
   // Number of pixels;
   G4int fNzPixels;

@@ -13,8 +13,8 @@
 //*************************************************************************
 
 #include "J4CALMaterialStore.hh"
+#include "J4CALParameterList.hh"
 #include "J4VDetectorComponent.hh"
-#include "J4CALParameter.hh"
 
 //=====================================================================
 //---------------------
@@ -32,15 +32,16 @@ public:
                            G4int                 nbrothers = 1, 
                            G4int                 me        = 0,
                            G4int                 copyno    = -1 );
-  virtual ~J4VCALDetectorComponent();
-#if 0 		          
   J4VCALDetectorComponent(J4VCALDetectorComponent& right);
+
+  virtual ~J4VCALDetectorComponent();
+
   virtual const J4VCALDetectorComponent& 
   		operator=(const J4VCALDetectorComponent& right);    
-#endif
       
 protected:    
   J4VMaterialStore* 	 OpenMaterialStore();
+  J4CALParameterList* 	 OpenParameterList() { return J4CALParameterList::GetInstance(); }
   
 private:
   static J4CALMaterialStore* fMaterialStore;
@@ -48,7 +49,6 @@ private:
        
 };
 
-#if 0
 //=====================================================================
 //---------------------
 // inline function
@@ -56,28 +56,20 @@ private:
 
 
 inline J4VCALDetectorComponent::J4VCALDetectorComponent(J4VCALDetectorComponent& right)
+                               :J4VDetectorComponent(right)
 {
 
-  fMaterialStore = right.fMaterialStore;
-  fSubGroup      = right.fSubGroup;
-          
 }
 
 inline const J4VCALDetectorComponent& 
 J4VCALDetectorComponent::operator=(const J4VCALDetectorComponent& right)
 {
-
-  fMaterialStore = right.fMaterialStore;
-  fSubGroup      = right.fSubGroup;
-  
   return *this;
-            
 }
 
 #endif
 
 
 
-#endif
 
 

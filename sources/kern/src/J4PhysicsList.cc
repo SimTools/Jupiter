@@ -34,6 +34,8 @@ J4PhysicsList::J4PhysicsList():  G4VUserPhysicsList()
 {
   // default cut value  (1.0mm) 
   defaultCutValue = 1.0*mm;
+  //defaultCutValue = 10.0*cm;
+  //defaultCutValue = 1.0*m;
 
   SetVerboseLevel(1);
 }

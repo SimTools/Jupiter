@@ -15,7 +15,7 @@
 #include "globals.hh"
 #include "G4Material.hh"
 #include "G4Color.hh"
-#include "J4VParameterList.hh"
+#include "J4ParameterList.hh"
 
 // ====================================================================
 // ----------------
@@ -24,58 +24,74 @@
  
 class J4SOLParameterList : public J4VParameterList 
 {
- public:
-   J4SOLParameterList(G4double ri   = 375.*cm,
-                      G4double ro   = 450.*cm,
-                      G4double len    = 340.*cm,
+ protected:
+   J4SOLParameterList(G4double ri     = 375.*cm,
+                      G4double ro     = 450.*cm,
+                      G4double len    = 380.*cm,
                       G4double bfield = 3.*tesla,
-                      G4double magrad =  157.*cm)
-                    //  G4double magrad =  400.*cm)
-           : fMaterial("Air"),
-             fMagInnerRadius(ri),
-             fMagOuterRadius(ro),
-             fMagLength(len),
-             fMagRad(magrad),
-             fBField(bfield),
-             fVisAtt(TRUE),
-             fColor(0.,0.,0.5) {}
+                      G4double fieldr =  157.*cm)
+                  //  G4double fieldr =  400.*cm)
+           : J4VParameterList("SOL"), 
+             fSOLMaterial("Air"),
+             fSOLVisAtt(TRUE),
+             fSOLColor(0.7, 0.5, 0.5),
+             fFieldR(fieldr),
+             fBField(bfield){}
 
-   virtual ~J4SOLParameterList() {}
+ public: 
+
+   static J4SOLParameterList  *GetInstance();
+
+   virtual ~J4SOLParameterList();
    
    // Getters
-   inline G4String GetMaterial() const { return fMaterial;        }
-   inline G4double GetIR      () const { return fMagInnerRadius;  }
-   inline G4double GetOR      () const { return fMagOuterRadius;  }
-   inline G4double GetLength  () const { return fMagLength;       }
-   inline G4double GetMagRad  () const { return fMagRad;          }
-   inline G4double GetBField  () const { return fBField;          }
-   inline G4bool   GetVisAtt  () const { return fVisAtt;          }
-   inline G4Color  GetColor   () const { return fColor;           }
+   inline G4String GetSOLMaterial() const { return fSOLMaterial; }
+   inline G4double GetSOLInnerR  () const ; 
+   inline G4double GetSOLOuterR  () const ;
+   inline G4double GetSOLHalfZ   () const ;
+   inline G4bool   GetSOLVisAtt  () const { return fSOLVisAtt;   }
+   inline G4Color  GetSOLColor   () const { return fSOLColor;    }
+   inline G4double GetFieldR     () const { return fFieldR;      }
+   inline G4double GetBField     () const { return fBField;      }
 
    // Setters
-   inline void     SetMaterial(G4String s) { fMaterial       = s; }
-   inline void     SetIR      (G4double x) { fMagInnerRadius = x; }
-   inline void     SetOR      (G4double x) { fMagOuterRadius = x; }
-   inline void     SetLength  (G4double x) { fMagLength      = x; }
-   inline void     SetMagRad  (G4double x) { fMagRad         = x; }
-   inline void     SetBField  (G4double x) { fBField         = x; }
-   inline void     SetVisAtt  (G4bool   b) { fVisAtt         = b; }
-   inline void     SetColor   (G4Color  c) { fColor          = c; }
+   inline void     SetSOLMaterial(G4String s) { fSOLMaterial = s; }
+   inline void     SetSOLVisAtt  (G4bool   b) { fSOLVisAtt   = b; }
+   inline void     SetSOlColor   (G4Color  c) { fSOLColor    = c; }
+   inline void     SetFieldR     (G4double x) { fFieldR      = x; }
+   inline void     SetBField     (G4double x) { fBField      = x; }
    
    virtual void    PrintParameterList(){};
     
  private:
-   G4String  fMaterial; 
+ 
+   static J4SOLParameterList  *fgInstance;
 
-   G4double  fMagInnerRadius;
-   G4double  fMagOuterRadius;
-   G4double  fMagLength;
-   G4double  fMagRad;
-
+   G4String  fSOLMaterial; 
+   G4bool    fSOLVisAtt;
+   G4Color   fSOLColor;
+   G4double  fFieldR;
    G4double  fBField;
 
-   G4bool    fVisAtt;
-   G4Color   fColor;
 };
+
+//=========================================================
+//* inline functions
+
+G4double J4SOLParameterList::GetSOLInnerR() const
+{
+   return J4ParameterList::GetInstance()->GetSOLInnerR();
+}
+
+G4double J4SOLParameterList::GetSOLOuterR() const
+{
+   return J4ParameterList::GetInstance()->GetSOLOuterR();
+}
+
+G4double J4SOLParameterList::GetSOLHalfZ() const
+{
+   return J4ParameterList::GetInstance()->GetSOLHalfZ();
+}
+
 
 #endif

@@ -59,7 +59,6 @@ void J4VTXPixel::Assemble()
     // define geometry
     J4VTXParameterList* list = OpenParameterList();
     G4ThreeVector dxyzPixel = list->GetPixelSize();
-    G4cout << " Pixel  size " << dxyzPixel << G4endl;      
     // MakeSolid ----------//
     G4VSolid *solid = new G4Box(GetName(),
 				 dxyzPixel.x()/2.,

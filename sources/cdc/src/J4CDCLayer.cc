@@ -43,7 +43,7 @@ J4CDCLayer::J4CDCLayer(J4VDetectorComponent *parent,
 {
    J4CDCParameterList *list = OpenParameterList();
    G4int globallayerno = GetGlobalLayerNumber();
-   fOffset             = list->GetLayerSPhi(globallayerno);
+   fOffset             = list->GetLayerPhiOffset(globallayerno);
    fTwistedAngle       = list->GetLayerPhiTwist(globallayerno);
    fRot.rotateZ(fOffset);
 
@@ -216,10 +216,9 @@ void J4CDCLayer::InstallIn(J4VComponent         *mother,
 //* GetGlobalLayerNumber ----------------------------------------------
 G4int J4CDCLayer::GetGlobalLayerNumber() 
 {
-//   J4CDCParameterList *list = (((J4CDCParameterList *)() const)OpenParameterList)();  
    J4CDCParameterList *list = OpenParameterList();  
-   G4int superlayerno = GetMother()->GetMyID();
-   G4int nsuperlayers = list->GetNlayersPerSuperLayer(superlayerno);
+   G4int superlayerno       = GetMother()->GetMyID();
+   G4int nsuperlayers       = list->GetNlayersPerSuperLayer(superlayerno);
    if (list->IsOddSuperLyrOutermost()) {
       return superlayerno * nsuperlayers + GetMyID();
    } else {

@@ -11,6 +11,7 @@
 //*************************************************************************
 
 #include "J4VTXPixelSD.hh"
+#include "G4VProcess.hh"
 #include <math.h>
 
 //=====================================================================
@@ -22,10 +23,10 @@
 
 J4VTXPixelSD::J4VTXPixelSD(J4VDetectorComponent* detector)
              :J4VSD<J4VTXPixelHit>(detector),
-              fSTrack(0), fSLayer(0), fSLadder(0), fSSensor(0), 
-              fSTpixel(0), fSPpixel(0), fSColNo(0)     
+              fSTrack(-1), fSLayer(-1), fSLadder(-1), fSSensor(-1), 
+              fSTpixel(-1), fSPpixel(-1), fSColNo(0)     
 {
-  G4cout << " XXXX PixelSD XXXX " << G4endl;
+  G4cout << " ----- PixelSD ----- " << G4endl;
 }
 
 //=====================================================================
@@ -65,6 +66,30 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   G4int                 trackID         = GetTrackID();
   G4int                 mothertrackID   = GetMotherTrackID();
   G4ParticleDefinition *particle        = GetParticle();
+  G4double             weight           = GetWeight();
+
+  const G4ThreeVector &origin = GetTrack()->GetVertexPosition();
+  G4double orgkinE = GetTrack()->GetVertexKineticEnergy();
+  G4ThreeVector  origP;
+  if (orgkinE > 0 ){
+    const G4ThreeVector &orgPDir = GetTrack()->GetVertexMomentumDirection();
+    if ( &orgPDir != NULL ) {
+      G4double mass = GetTrack()->GetDynamicParticle()->GetMass();
+      G4double mom =  sqrt( orgkinE*orgkinE+2*orgkinE*mass );
+      origP =
+        G4ThreeVector(mom*orgPDir.x(),mom*orgPDir.y(),mom*orgPDir.z());
+    }
+  }else{
+    origP = G4ThreeVector(0.,0.,0.);
+  }
+
+  G4String procName;
+  if ( trackID==1 ) {
+    procName = "ORIGIN";
+  }else{
+    const G4VProcess* process = GetTrack()->GetCreatorProcess();
+    procName = process->GetProcessName();
+  }
 
   J4VComponent  *pixel       = GetComponent();
   J4VComponent  *pixelarray  = pixel->GetMother();
@@ -104,6 +129,8 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
         J4VTXPixelHit* hit = new J4VTXPixelHit(
                                GetComponent(),
                                trackID, mothertrackID, particle,
+			       weight,
+			       origin,origP,procName,
                                iLayer,iLadder,iSensor,
                                iPixelIDT,iPixelIDP,
                                edep, trkP, trkE, tof,

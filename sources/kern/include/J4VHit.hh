@@ -34,34 +34,37 @@ class J4Object;
 class J4VHit : public G4VHit, public J4Object {
 public:
   J4VHit();
+  J4VHit(J4VComponent * detector);
+
   J4VHit(J4VComponent        *detector,
          const G4ThreeVector &pre, 
          const G4ThreeVector &pos,
          G4int                cloneid = -1);
          
   J4VHit(J4VComponent          *detector,
-         G4int                  trackID   = 0,
-         G4int                  mothertrackID = 0,
-         G4ParticleDefinition  *particle  = 0,
+         G4int                  trackID ,
+         G4int                  mothertrackID,
+         G4ParticleDefinition  *particle,
          G4double               tof       = 0,
          G4double               edep      = 0,
          G4double               totalE    = 0,
          const G4ThreeVector   &momentum  = G4ThreeVector(0.),
          const G4ThreeVector   &pre       = G4ThreeVector(0.),
-         const G4ThreeVector   &pos       = G4ThreeVector(0.));	      
+         const G4ThreeVector   &pos       = G4ThreeVector(0.),      
+         G4int                  hitnumber = -9999);	      
 
   J4VHit(J4VComponent          *detector,
-         G4int                  cloneID   = 0,
-         G4int                  trackID   = 0,
-         G4int                  mothertrackID  = 0,
-         G4ParticleDefinition  *particle  = 0,
+         G4int                  cloneID,
+         G4int                  trackID,
+         G4int                  mothertrackID,
+         G4ParticleDefinition  *particle,
          G4double               tof       = 0,
          G4double               edep      = 0,
          G4double               totalE    = 0,
          const G4ThreeVector   &momentum  = G4ThreeVector(0.),
          const G4ThreeVector   &pre       = G4ThreeVector(0.),
          const G4ThreeVector   &pos       = G4ThreeVector(0.),
-         const G4int            hitnumber = 0);	      
+         G4int                  hitnumber = -9999);	      
 		       
   J4VHit(const J4VHit &right);		       
   virtual ~J4VHit();
@@ -131,7 +134,8 @@ public:
   inline virtual       G4ThreeVector         GetMomentum()      const { return fMomentum;                   }
   inline virtual       G4ThreeVector         GetPrePosition()   const { return fPrePosition;                }
   inline virtual       G4ThreeVector         GetPostPosition()  const { return fPostPosition;               }
-  inline virtual       G4int	               GetHitNumber()     const { return fHitNumber;                  }
+  inline virtual       G4int	             GetHitNumber()     const { return fHitNumber;                  }
+  inline virtual       G4int                 GetPDGEncoding()   const { return fParticle->GetPDGEncoding(); }
   inline virtual const G4String&             GetParticleName()  const { return fParticle->GetParticleName();}
   
   static G4std::ofstream& GetOutputFileStream() { return *fOfs; } 

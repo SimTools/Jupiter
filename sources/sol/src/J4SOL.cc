@@ -57,19 +57,20 @@ J4SOL::~J4SOL()
 void J4SOL::Assemble() 
 {   
    if (!GetLV()) {
-      G4double rmin = OpenParameterList()->GetIR();
-      G4double rmax = OpenParameterList()->GetOR();
-      G4double len  = OpenParameterList()->GetLength();
+      J4SOLParameterList *list = OpenParameterList();
+      G4double rmin = list->GetSOLInnerR();
+      G4double rmax = list->GetSOLOuterR();
+      G4double len  = list->GetSOLHalfZ();
       G4double dphi = 360.*deg;
  
       // MakeSolid ----------//
       OrderNewTubs (rmin, rmax, len, dphi);
 
       // MakeLogicalVolume --//  
-      MakeLVWith(OpenMaterialStore()->Order(OpenParameterList()->GetMaterial()));
+      MakeLVWith(OpenMaterialStore()->Order(list->GetSOLMaterial()));
 
       // SetVisAttribute ----//
-      PaintLV(OpenParameterList()->GetVisAtt(), OpenParameterList()->GetColor());
+      PaintLV(list->GetSOLVisAtt(), list->GetSOLColor());
    }
 }
 
@@ -108,12 +109,14 @@ void J4SOL::SetMagField()
     G4cerr << "J4DetectorConstruction:: new J4MagneticField!!!" << G4endl;
     G4cerr << "-----------------------------------------------" << G4endl;
     G4cerr << "-----------------------------------------------" << G4endl;
-    
-    if (GetParameterList()->GetBField() != 0) {
-       SetMField(new J4SOLMField(OpenParameterList())); 
+
+
+    J4SOLParameterList *list = OpenParameterList(); 
+    if (list->GetBField() != 0) {
+       SetMField(new J4SOLMField(list)); 
 
        G4FieldManager* fieldManager= 
-       G4TransportationManager::GetTransportationManager()-> GetFieldManager();
+       G4TransportationManager::GetTransportationManager()->GetFieldManager();
     
        J4MFieldMapStore* mfManager = J4MFieldMapStore::GetInstance();
        mfManager->NameList();

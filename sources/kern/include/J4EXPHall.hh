@@ -13,6 +13,7 @@
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
 
+#include <fstream>
 #include "J4VComponent.hh"
 
 //=====================================================================
@@ -35,8 +36,12 @@ public:
   virtual void   InstallIn(J4VComponent        *mother,
                           G4RotationMatrix     *prot  = 0,
                           const G4ThreeVector  &tlate = 0 );
+
+  virtual void   OutputAll(G4HCofThisEvent *HCTE, G4std::ofstream &ofs) ;
+
   virtual void   Draw() ;
   virtual void   Print() const ;
+
 
   const G4ThreeVector &GetSizeOfEXPHall() const { return fSizeOfEXPHall; }
 

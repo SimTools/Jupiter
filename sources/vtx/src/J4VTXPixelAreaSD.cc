@@ -12,6 +12,7 @@
 //*************************************************************************
 
 #include "J4VTXPixelAreaSD.hh"
+#include "G4VProcess.hh"
 #include <math.h>
 
 //=====================================================================
@@ -23,10 +24,10 @@
 
 J4VTXPixelAreaSD::J4VTXPixelAreaSD(J4VDetectorComponent* detector)
              :J4VSD<J4VTXPixelAreaHit>(detector),
-              fSTrack(0), fSLayer(0), fSLadder(0), fSSensor(0), 
+              fSTrack(-1), fSLayer(-1), fSLadder(-1), fSSensor(-1), 
               fSColNo(0)     
 {
-  G4cout << " XXXX PixelAreaSD XXXX " << G4endl;
+  G4cout << " ----- PixelAreaSD ----- " << G4endl;
 }
 
 //=====================================================================
@@ -43,7 +44,6 @@ void J4VTXPixelAreaSD::Initialize(G4HCofThisEvent* HCTE)
 {
   //create hit collection(s) and
   //push H.C. to "Hit Collection of This Event"
-  //cout << " XXXX PixelAreaSD InitializeXXXX " << G4endl;
   MakeHitBuf(HCTE);  
   InitID();
   fSColNo = -1;
@@ -56,7 +56,6 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
 {
   //In order to use Get function of J4VSensitiveDetector,
   // you must call SetNewStep() at first.
-  //G4cout << " XXXX PixelAreaSD ProcessHits XXXX " << G4endl;
 
   SetNewStep(aStep);
   //Only when a charged particle has just come into a sensitive detector,
@@ -67,6 +66,31 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   G4int                 trackID         = GetTrackID();
   G4int                 mothertrackID   = GetMotherTrackID();
   G4ParticleDefinition *particle        = GetParticle();
+  G4double             weight           = GetWeight(); 
+
+  const G4ThreeVector &origin = GetTrack()->GetVertexPosition();
+  G4double orgkinE = GetTrack()->GetVertexKineticEnergy();
+  G4ThreeVector  origP;
+  if (orgkinE > 0 ){
+    const G4ThreeVector &orgPDir = GetTrack()->GetVertexMomentumDirection();
+    if ( &orgPDir != NULL ) {
+      G4double mass = GetTrack()->GetDynamicParticle()->GetMass();
+      G4double mom =  sqrt( orgkinE*orgkinE+2*orgkinE*mass );
+      origP = 
+	G4ThreeVector(mom*orgPDir.x(),mom*orgPDir.y(),mom*orgPDir.z());
+    }
+  }else{
+    origP = G4ThreeVector(0.,0.,0.);
+  }
+
+  G4String procName;
+  if ( trackID==1 ) {
+    procName = "ORIGIN";
+  }else{
+    const G4VProcess* process = GetTrack()->GetCreatorProcess();  
+    procName = process->GetProcessName();
+  }
+
 
   J4VComponent  *pixelarea   = GetComponent();
   J4VComponent  *epitaxial   = pixelarea->GetMother();
@@ -93,10 +117,13 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   G4ThreeVector        localoutPos = GlobalToLocalPosition(outPos);
 
 // Create a new hit and push them to "Hit Collection"
+#if 1
   if(! compareID(trackID,iLayer,iLadder,iSensor) ){
         J4VTXPixelAreaHit* hit = new J4VTXPixelAreaHit(
 		               GetComponent(),
                                trackID, mothertrackID, particle,
+			       weight,
+			       origin,origP,procName,
                                iLayer,iLadder,iSensor,
 		               edep, trkP, trkE,tof,
                                inPos,outPos,
@@ -108,6 +135,7 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
        (*(J4VTXPixelAreaHitBuf*)GetHitBuf())[fSColNo-1]->SetOutPos(outPos);
        (*(J4VTXPixelAreaHitBuf*)GetHitBuf())[fSColNo-1]->SetLocalOutPos(localoutPos);
   }    
+#endif
 
   return TRUE;
 }

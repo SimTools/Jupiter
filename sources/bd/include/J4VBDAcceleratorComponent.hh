@@ -26,6 +26,7 @@
 
 
 #include "J4BDMaterialStore.hh"
+#include "J4BDParameterList.hh"
 #include "J4VAcceleratorComponent.hh"
 
 //=====================================================================
@@ -49,6 +50,8 @@ public:
 
 protected:    
   J4VMaterialStore* 	 OpenMaterialStore();
+  J4BDParameterList* 	 OpenParameterList() 
+                         { return J4BDParameterList::GetInstance(); }
   
 private:
   static J4BDMaterialStore* fMaterialStore;

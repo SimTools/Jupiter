@@ -11,7 +11,8 @@
 //*	2001/02/18  K.Hoshina	Original version.
 //*************************************************************************
 
-#include <iomanip.h>
+#include "g4std/iomanip"
+#include "g4std/fstream"
 #include "J4VTXLadderHit.hh"
 
 //=========================================================================
@@ -92,7 +93,7 @@ void J4VTXLadderHit::Output(G4HCofThisEvent* HCTE)
 	 << layer <<" " << ladder << " " <<  dE <<" " 
 	 <<  xin << " " << yin << " " << zin << " " 
 	 <<  xout << " " << yout << " " << zout 
-	 << endl;
+	 << G4endl;
   }
 }
 	
@@ -110,15 +111,19 @@ void J4VTXLadderHit::Print()
 
   G4ThreeVector fHitPosition=GetHitPosition();
 
-  G4cerr << setiosflags(ios::fixed);
+  G4int prec = G4cerr.precision(2);
+
+  G4cerr << G4std::setiosflags(G4std::ios::fixed);
   G4cerr << " track#=" << GetTrackID()
-	 << " position(mm)= " << setprecision(2) 
+	 << " position(mm)= "  
 	 << G4std::setw(8) << fHitPosition.x() *(1./mm) << " "
 	 << G4std::setw(8) << fHitPosition.y() *(1./mm) << " "
 	 << G4std::setw(8) << fHitPosition.z() *(1./mm) << " "
-	 << " Edep(keV)= " << setprecision(2) 
+	 << " Edep(keV)= " 
 	 << G4std::setw(6) << GetEnergyDeposit() *(1./keV) << " "
          << G4endl;  
+
+  G4cerr.precision(prec);
 }
 
 

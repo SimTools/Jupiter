@@ -81,22 +81,6 @@ void J4CDCStereoDriftRegionHit::Output(G4HCofThisEvent* HCTE)
   G4ThreeVector pre      = GetPrePosition();
   G4ThreeVector post     = GetPostPosition();
 
-  G4double      gwirephi;  // global phi position of wire
-  G4double      rwire;     // global r position of wire
-  G4double      driftlen;  // drift length
-
-  if (fIsRoundDriftRegion) {
-     // yet implemented...
-
-  } else {
-
-     G4ThreeVector xx;
-     driftlen = DistanceToWire(fHitPosition, xx);              
-     rwire    = xx.getRho();              
-     gwirephi = xx.getPhi();              
-
-  }
-  
   // output hitdata to output file ....
 	
   G4std::ofstream& ofs = GetOutputFileStream();
@@ -114,21 +98,16 @@ void J4CDCStereoDriftRegionHit::Output(G4HCofThisEvent* HCTE)
      << G4std::setw(7) << GetHitNumber() << " "
      << G4std::setw(6) << pdid << " "
      << G4std::setw(2) << GetCharge() << " "
-     << setiosflags(G4std::ios::scientific) << G4std::setprecision(14)
+     << setiosflags(G4std::ios::scientific) 
+     << G4std::setprecision(14)
      << G4std::setw(18) << dphi << " "
      << G4std::setw(18) << sphi << " "
-     << G4std::setw(18) << gwirephi << " "
-     << G4std::setw(18) << rwire << " "
-     << G4std::setw(18) << driftlen << " "
      << G4std::setw(18) << pre.x() << " "
      << G4std::setw(18) << pre.y() << " "
      << G4std::setw(18) << pre.z() << " "
      << G4std::setw(18) << post.x() << " "
      << G4std::setw(18) << post.y() << " "
      << G4std::setw(18) << post.z() << " "
-     << G4std::setw(18) << fHitPosition.x() << " "
-     << G4std::setw(18) << fHitPosition.y() << " "
-     << G4std::setw(18) << fHitPosition.z() << " "
      << G4std::setw(18) << GetMomentum().x() << " "
      << G4std::setw(18) << GetMomentum().y() << " "
      << G4std::setw(18) << GetMomentum().z() << " "
@@ -143,7 +122,8 @@ void J4CDCStereoDriftRegionHit::Output(G4HCofThisEvent* HCTE)
      << G4std::setw(18) << fWireEnd[1].z() << " "
      << G4std::setw(18) << fTanStereo << " "
      << G4std::setw(18) << fRwaist << " "
-     << G4std::setiosflags(G4std::ios::floatfield) << setprecision(8)
+     << G4std::setiosflags(G4std::ios::floatfield) 
+     << G4std::setprecision(8)
      << G4endl;
   }
 

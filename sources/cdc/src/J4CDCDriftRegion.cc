@@ -64,7 +64,7 @@ void J4CDCDriftRegion::Assemble()
 {   
   if(!GetLV())
   {	  
-    // define parameters
+     // define parameters
      J4CDCParameterList *list = OpenParameterList();
      
      G4double len        = GetZHalfLength(GetMother());
@@ -74,31 +74,38 @@ void J4CDCDriftRegion::Assemble()
      G4int    myid       = GetMyID();
      G4double thick      = list->GetDriftRegionThick();
      G4double dummythick = list->GetDummyDriftRegionThick();
-     G4double rmin       = motherRmin + thick * (myid) + dummythick;
-     G4double rmax       = motherRmin + thick * (myid + 1) + dummythick;
+     G4double centerradius = motherRmin + thick * (myid + 0.5) + dummythick;
 
-     fRwaist             = 0.5 * (rmin + rmax);
+     fRwaist             = centerradius;
+#if 1
+     G4double measplanehalfthick = list->GetMeasPlaneHalfThick();
+     G4double rmin = centerradius - measplanehalfthick;
+     G4double rmax = centerradius + measplanehalfthick;
+#else
+     G4double rmin = centerradius - 0.5 * thick;
+     G4double rmax = centerradius + 0.5 * thick;
+#endif
        
-    // MakeSolid ----------//
-    OrderNewTubs (rmin, rmax, len, dphi );
+     // MakeSolid ----------//
+     OrderNewTubs (rmin, rmax, len, dphi );
 
-    // MakeLogicalVolume --//
-    G4String material = list->GetDriftRegionMaterial();
-    MakeLVWith(OpenMaterialStore()->Order(material));
+     // MakeLogicalVolume --//
+     G4String material = list->GetDriftRegionMaterial();
+     MakeLVWith(OpenMaterialStore()->Order(material));
     
-    // SetVisAttribute ----//
-    PaintLV(list->GetDriftRegionVisAtt(),
-            list->GetDriftRegionColor());   
+     // SetVisAttribute ----//
+     PaintLV(list->GetDriftRegionVisAtt(),
+             list->GetDriftRegionColor());   
     
          
-    // Install daughter PV //
-    // Install Sense Wire  //
+     // Install daughter PV //
+     // Install Sense Wire  //
 
-    fSenseWire = new J4CDCSenseWire(this);
-    Register(fSenseWire);
-    fSenseWire->InstallIn(this);
+     fSenseWire = new J4CDCSenseWire(this);
+     Register(fSenseWire);
+     fSenseWire->InstallIn(this);
     
-    SetDaughter(fSenseWire);
+     SetDaughter(fSenseWire);
 
   }
     

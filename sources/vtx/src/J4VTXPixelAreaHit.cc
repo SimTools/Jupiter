@@ -11,7 +11,8 @@
 //*	2001/02/18  K.Hoshina	Original version.
 //*************************************************************************
 
-#include <iomanip.h>
+#include "g4std/iomanip"
+#include "g4std/fstream"
 #include "J4VTXPixelAreaHit.hh"
 
 //=========================================================================
@@ -25,10 +26,14 @@ J4VTXPixelAreaHitAllocator J4VTXPixelAreaHit::fHitAllocator ;
 //* constructor -----------------------------------------------------------
 
 J4VTXPixelAreaHit::J4VTXPixelAreaHit(
-                 J4VComponent         *component,
+				     J4VComponent         *component,
 				     G4int                 trackID ,
 				     G4int                 mothertrackID ,
 				     G4ParticleDefinition *particle,
+ 		                     G4double             weight,
+		                     const G4ThreeVector  &origin,
+		                     const G4ThreeVector  &origP,
+		                     const G4String       &process,
 				     G4int                 layerID ,
 				     G4int                 ladderID ,
 				     G4int                 sensorID,
@@ -40,13 +45,15 @@ J4VTXPixelAreaHit::J4VTXPixelAreaHit(
 				     const G4ThreeVector  &outPos,
 				     const G4ThreeVector  &localinPos ,
 				     const G4ThreeVector  &localoutPos )
-              :J4VHit(component, trackID, mothertrackID,
+  :J4VHit(component, trackID, mothertrackID,
                       particle, tof, edep, energy, momentum),
-               fLayerID(layerID),fLadderID(ladderID),
-               fSensorID(sensorID),
-               fInPosition(inPos),fOutPosition(outPos),
-               fLocalInPosition(localinPos),
-               fLocalOutPosition(localoutPos)
+  fOrigin(origin),
+  fOriginP(origP),fProcess(process),fWeight(weight),
+  fLayerID(layerID),fLadderID(ladderID),
+  fSensorID(sensorID),
+  fInPosition(inPos),fOutPosition(outPos),
+  fLocalInPosition(localinPos),
+  fLocalOutPosition(localoutPos)
 {  
 }
 
@@ -88,15 +95,43 @@ void J4VTXPixelAreaHit::Output(G4HCofThisEvent* HCTE)
 #else
      G4double dE = GetEnergyDeposit()/keV;
      G4int    trk = GetTrackID();
+     G4int    mothertrk = GetMotherTrackID();
+     G4double   weight   = fWeight;
      G4int pid = GetParticle()->GetPDGEncoding();
+     G4double trkE = GetTotalEnergy()/keV;
      G4double charge = GetParticle()->GetPDGCharge();
+     G4double xorig = fOrigin.x()/mm;
+     G4double yorig = fOrigin.y()/mm;
+     G4double zorig = fOrigin.z()/mm;
+     G4double xorigP = fOriginP.x()/keV;
+     G4double yorigP = fOriginP.y()/keV;
+     G4double zorigP = fOriginP.z()/keV;
+     G4String procName = fProcess;
      G4double xin = fInPosition.x()/mm;
      G4double yin = fInPosition.y()/mm;
      G4double zin = fInPosition.z()/mm;
+     G4double xout = fOutPosition.x()/mm;
+     G4double yout = fOutPosition.y()/mm;
+     G4double zout = fOutPosition.z()/mm;
+     G4double xLin = fLocalInPosition.x()/mm;
+     G4double yLin = fLocalInPosition.y()/mm;
+     G4double zLin = fLocalInPosition.z()/mm;
+     G4double xLout= fLocalOutPosition.x()/mm;
+     G4double yLout= fLocalOutPosition.y()/mm;
+     G4double zLout= fLocalOutPosition.z()/mm;
+
      ofs << "PixelArea " 
-         << trk  << "\t" << pid << "\t" << charge << "\t" << dE
-	 <<"\t" <<  fLayerID  <<"\t" << fLadderID <<"\t"<< fSensorID
-	 <<"\t" <<  xin << "\t" << yin << "\t" << zin << G4endl;
+	 << " " << xorig << " " << yorig << " " << zorig 
+	 << " " << xorigP << " " << yorigP << " " << zorigP 
+         << " " << trk  << " " << mothertrk<< " " << weight
+	 << " " << pid << " " << charge << " " << trkE
+	 <<" " <<  fLayerID  <<" " << fLadderID 
+	 <<" " << fSensorID << " " <<dE
+	 <<" " <<  xin << " " << yin << " " << zin 
+	 <<" " <<  xout << " " << yout << " " << zout 
+	 <<" " <<  xLin << " " << yLin << " " << zLin 
+	 <<" " <<  xLout << " " << yLout << " " << zLout 
+	 <<" " <<  procName<< G4endl;
 #endif
   }
 }
@@ -115,15 +150,18 @@ void J4VTXPixelAreaHit::Print()
 
   G4ThreeVector fHitPosition=GetHitPosition();
 
-  G4cerr << setiosflags(ios::fixed);
+  G4int prec = G4cerr.precision(2);
+
+  G4cerr << G4std::setiosflags(G4std::ios::fixed);
   G4cerr << " track#=" << GetTrackID()
-	 << " position(mm)= " << setprecision(2) 
+	 << " position(mm)= "
 	 << G4std::setw(8) << fHitPosition.x() *(1./mm) << " "
 	 << G4std::setw(8) << fHitPosition.y() *(1./mm) << " "
 	 << G4std::setw(8) << fHitPosition.z() *(1./mm) << " "
-	 << " Edep(keV)= " << setprecision(2) 
+	 << " Edep(keV)= " 
 	 << G4std::setw(6) << GetEnergyDeposit() *(1./keV) << " "
          << G4endl;  
+  G4cerr.precision(prec);
 }
 
 

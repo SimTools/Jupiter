@@ -35,7 +35,7 @@ J4CAL::J4CAL(J4VDetectorComponent *parent,
                             G4int  copyno ) :
        J4VCALDetectorComponent(fFirstName, parent, nclones,
                                nbrothers, me, copyno),
-  		fBarrel(0), fEndcaps(0)
+       fCones(0)
 {   
 }
 
@@ -44,16 +44,14 @@ J4CAL::J4CAL(J4VDetectorComponent *parent,
 
 J4CAL::~J4CAL()
 {
-  if (Deregister(fBarrel)) delete fBarrel;
-  if (fEndcaps)
-  {
- 	 G4int i;
- 	 G4int calnum = _CALENDCAPNUM_ ;
- 	 for (i=0; i < calnum ; i++) {
-  		if (Deregister(fEndcaps[i])) delete fEndcaps[i];
-  	 }
-  	 if (Deregister(fEndcaps)) delete [] fEndcaps;
-  }
+
+   if (fCones) {
+      J4CALParameterList *list = OpenParameterList(); 
+      for (G4int i=0; i < list->GetNcones(); i++) {
+         if (Deregister(fCones[i])) delete fCones[i];
+      }
+      if (Deregister(fCones)) delete [] fCones;
+   }
 }
 
 //=====================================================================
@@ -61,44 +59,38 @@ J4CAL::~J4CAL()
 
 void J4CAL::Assemble() 
 {   
-  if(!GetLV()){
+   if(!GetLV()){
+      J4CALParameterList *list = OpenParameterList(); 
   	
-    G4double rmin = _CALIR_;
-    G4double rmax = _CALOR_;
-    G4double len  = _CALLEN_;
-    G4double dphi = _CALDPHI_;
-    G4double endcapthickness = (_CALLEN_ - _CALFRONTZ_) / 2. ;
-    G4double endcaprmin      = _CALENDCAPIR_ ;
+      G4double rmin        = list->GetCALInnerR();
+      G4double rmax        = list->GetCALOuterR();
+      G4double len         = list->GetCALOuterHalfZ();
+      G4double dphi        = list->GetCALDeltaPhi();
+      G4double endcaprmin  = list->GetEndcapInnerR();
+      G4double endcaphalfz = 0.5 * (len - list->GetCALInnerHalfZ());
   	
-    // MakeSolid ----------//
-    OrderNewTubs (rmin, rmax, len, dphi, endcapthickness, endcaprmin);
+      // MakeSolid ----------//
+      OrderNewTubs (rmin, rmax, len, dphi, endcaphalfz, endcaprmin);
     
-    // MakeLogicalVolume --//  
-    MakeLVWith(OpenMaterialStore()->Order(_CALMATERIAL_));
+      // MakeLogicalVolume --//  
+      MakeLVWith(OpenMaterialStore()->Order(list->GetCALMaterial()));
     
-    // SetVisAttribute ----//
-    PaintLV(_CALVISATT_, G4Color(1, 1, 0));
+      // SetVisAttribute ----//
+      PaintLV(list->GetCALVisAtt(), list->GetCALColor());
   	
-    // Install daughter PV //
+      // Install daughter PV //
   		  
-    fBarrel = new J4CALBarrel(this, 1, 1, 0 );
-    Register(fBarrel);
-    fBarrel->InstallIn(this);
-    SetDaughter(fBarrel);
-    
-    G4int i;
-    G4int nendcaps = _CALENDCAPNUM_ ;
-    fEndcaps = new J4CALEndcap* [nendcaps];
-    Register(fEndcaps);
-    for(i=0; i<nendcaps; i++)
-    {
-   	 fEndcaps[i] = new J4CALEndcap(this, 1, nendcaps, i );
-         Register(fEndcaps[i]);
-  	 fEndcaps[i] ->InstallIn(this);
-  	 SetDaughter(fEndcaps[i]);
-    } 
-    
-  }
+      G4int ncones = list->GetNcones();
+      fCones       = new J4CALCone* [ncones];
+      Register(fCones);
+      for (G4int i=0; i<ncones; i++) {
+         fCones[i] = new J4CALCone(this, 1, ncones, i );
+         Register(fCones[i]);
+         fCones[i] ->InstallIn(this);
+         SetDaughter(fCones[i]);
+      }
+
+   }
       
 }
 

@@ -14,8 +14,7 @@
 //*************************************************************************
 
 #include "J4VCALDetectorComponent.hh"
-#include "J4CALBarrel.hh"
-#include "J4CALEndcap.hh"
+#include "J4CALCone.hh"
 
 //=====================================================================
 //---------------------
@@ -44,8 +43,7 @@ private:
   
 private:  
   static G4String	fFirstName;
-  J4CALBarrel*  	fBarrel;
-  J4CALEndcap** 	fEndcaps;  
+  J4CALCone**           fCones;  
   
   
 };
