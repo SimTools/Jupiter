@@ -27,7 +27,7 @@ J4VTXPixelAreaSD::J4VTXPixelAreaSD(J4VDetectorComponent* detector)
               fSTrack(-1), fSLayer(-1), fSLadder(-1), fSSensor(-1), 
               fSColNo(0)     
 {
-  std::cout << " ----- PixelAreaSD ----- " << std::endl;
+  G4cout << " ----- PixelAreaSD ----- " << G4endl;
 }
 
 //=====================================================================
@@ -99,13 +99,13 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   J4VComponent  *layer       = ladder->GetMother();
 
   G4VPhysicalVolume* pixelareaPV = pixelarea->GetPV();
-  G4VPhysicalVolume* epitaxialPV = pixelareaPV->GetMother();
-  G4VPhysicalVolume* sensorPV = epitaxialPV->GetMother();
-  G4VPhysicalVolume* ladderPV = sensorPV->GetMother();
+//  G4VPhysicalVolume* epitaxialPV = pixelareaPV->GetMother();
+//  G4VPhysicalVolume* sensorPV = epitaxialPV->GetMother();
+//  G4VPhysicalVolume* ladderPV = sensorPV->GetMother();
 
   G4int iLayer    =  layer->GetMyID();
-  G4int iLadder   =  ladderPV->GetCopyNo();
-  G4int iSensor   =  sensorPV->GetCopyNo();
+//  G4int iLadder   =  ladderPV->GetCopyNo();
+//  G4int iSensor   =  sensorPV->GetCopyNo();
 
   G4double             edep      = GetEnergyDeposit();
   G4ThreeVector        trkP      = GetMomentum();
@@ -117,7 +117,7 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   G4ThreeVector        localoutPos = GlobalToLocalPosition(outPos);
 
 // Create a new hit and push them to "Hit Collection"
-#if 1
+#if 0
   if(! compareID(trackID,iLayer,iLadder,iSensor) ){
         J4VTXPixelAreaHit* hit = new J4VTXPixelAreaHit(
 		               GetComponent(),
@@ -160,8 +160,8 @@ void J4VTXPixelAreaSD::DrawAll()
 void J4VTXPixelAreaSD::PrintAll()
 {
   G4int nHit= ((J4VTXPixelAreaHitBuf*)GetHitBuf())-> entries();
-  std::cout << "------------------------------------------" << std::endl
-         << "*** tracker Hit (#hits=" << nHit << ")" << std::endl;
+  G4cout << "------------------------------------------" << G4endl
+         << "*** tracker Hit (#hits=" << nHit << ")" << G4endl;
   ((J4VTXPixelAreaHitBuf*)GetHitBuf())-> PrintAllHits();
 }
 
@@ -169,13 +169,16 @@ void J4VTXPixelAreaSD::PrintAll()
 
 G4ThreeVector J4VTXPixelAreaSD::GlobalToLocalPosition(G4ThreeVector gpIn){
   G4ThreeVector pos = G4ThreeVector(gpIn);
+/*
   G4VPhysicalVolume* pv = GetPreStepPoint()->GetPhysicalVolume();
   while( pv != NULL ){
     G4ThreeVector Ot = pv->GetFrameTranslation();
     G4RotationMatrix Or = (pv->GetObjectRotationValue()).inverse();
   pos = Or*(pos+Ot);
-  pv = pv->GetMother();
+//  pv = pv->GetMother();
+  pv = pv->GetMotherLogical();
   }
+*/
   return pos;
 }
 

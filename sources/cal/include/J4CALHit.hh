@@ -65,7 +65,7 @@ public:
   inline G4int         GetTrackID()        const { return fTrackID;       }
   inline G4bool        IsBarrel()          const { return fIsBarrel;      }
   inline G4bool        IsEM()              const { return fIsEM;          }
-  inline G4double      GetEnerygDeposit()  const { return fEnergyDep;     }
+  inline G4double      GetEnergyDeposit()  const { return fEnergyDep;     }
   inline G4double      GetTof()            const { return fTof;           }
   inline G4ThreeVector GetInjectionPoint() const { return fInjectionPoint; }
   inline G4ParticleDefinition * GetParticle() const { return fParticle; }
@@ -81,6 +81,7 @@ public:
   inline void SetParticle(G4ParticleDefinition *p) { fParticle       = p; }
 
   inline void AccumulateEdep(G4double ed) { fEnergyDep += ed; }
+  static void SetOutput(J4Output *output) { fOutput=output; } 
     
 private: 
 

@@ -26,7 +26,7 @@ J4VTXPixelSD::J4VTXPixelSD(J4VDetectorComponent* detector)
               fSTrack(-1), fSLayer(-1), fSLadder(-1), fSSensor(-1), 
               fSTpixel(-1), fSPpixel(-1), fSColNo(0)     
 {
-  std::cout << " ----- PixelSD ----- " << std::endl;
+  G4cout << " ----- PixelSD ----- " << G4endl;
 }
 
 //=====================================================================
@@ -99,6 +99,7 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   J4VComponent  *ladder      = sensor->GetMother();
   J4VComponent  *layer       = ladder->GetMother();
 
+#if 0
   // Pixel -> PixelArray -> PixelArea -> Epitaxial -> Sensor -> Ladder
   G4VPhysicalVolume* pixelPV = pixel->GetPV();
   G4VPhysicalVolume* pixelarrayPV = pixelPV->GetMother();
@@ -144,6 +145,8 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
        (*(J4VTXPixelHitBuf*)GetHitBuf())[fSColNo-1]->SetLocalOutPos(localoutPos);
   }    
 
+#endif
+
   return TRUE;
 }
 
@@ -167,8 +170,8 @@ void J4VTXPixelSD::DrawAll()
 void J4VTXPixelSD::PrintAll()
 {
   G4int nHit= ((J4VTXPixelHitBuf*)GetHitBuf())-> entries();
-  std::cout << "------------------------------------------" << std::endl
-         << "*** tracker Hit (#hits=" << nHit << ")" << std::endl;
+  G4cout << "------------------------------------------" << G4endl
+         << "*** tracker Hit (#hits=" << nHit << ")" << G4endl;
   ((J4VTXPixelHitBuf*)GetHitBuf())-> PrintAllHits();
 }
 
@@ -176,6 +179,7 @@ void J4VTXPixelSD::PrintAll()
 
 G4ThreeVector J4VTXPixelSD::GlobalToLocalPosition(G4ThreeVector gpIn){
   G4ThreeVector pos = G4ThreeVector(gpIn);
+#if 0
   G4VPhysicalVolume* pv = GetPreStepPoint()->GetPhysicalVolume();
   while( pv != NULL ){
     G4ThreeVector Ot = pv->GetFrameTranslation();
@@ -183,6 +187,7 @@ G4ThreeVector J4VTXPixelSD::GlobalToLocalPosition(G4ThreeVector gpIn){
   pos = Or*(pos+Ot);
   pv = pv->GetMother();
   }
+#endif
   return pos;
 }
 
