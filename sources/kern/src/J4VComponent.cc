@@ -28,6 +28,7 @@
 #include "G4Cons.hh"
 #include "J4SubtractionSolid.hh"
 #include "G4Box.hh"
+#include "J4Timer.hh"
 
 #define __NMAXFAMILYMEMBERS__  500000
 
@@ -137,7 +138,7 @@ void J4VComponent::SwitchOn(G4String opt)
 {
    if (GetSD()) {   	
       if (!fIsOn) fIsOn = TRUE;
-      G4SDManager::GetSDMpointer()->Activate(fLV->GetName(),TRUE);
+      GetSD()->Activate( TRUE );
    }
    
    if (opt == "recursive") {
@@ -177,7 +178,7 @@ void J4VComponent::SwitchOff(G4String opt)
 
    if (GetSD()) {   	
       if (fIsOn) fIsOn = FALSE;
-      G4SDManager::GetSDMpointer()->Activate(GetName(),FALSE);
+      GetSD()->Activate( FALSE );
    }
    
    if (opt == "recursive") {
@@ -211,6 +212,10 @@ void J4VComponent::SetMother(J4VComponent* mother)
 
 void J4VComponent::SetSD(J4VSensitiveDetector* sd)
 {
+  static G4int timerID = -1;
+  J4Timer timer( timerID, "J4VComponet", "SetSD()" );
+  timer.Start(); 
+
   if (!fLV) Assemble(); 
   if (!fLV->GetSensitiveDetector()) {
      G4SDManager::GetSDMpointer()-> AddNewDetector(sd);
@@ -221,6 +226,7 @@ void J4VComponent::SetSD(J4VSensitiveDetector* sd)
             << "You must delete your sd created by new operator. abort." << std::endl;
      abort();
   } 
+  timer.Stop();
 }
 
 //=====================================================================
@@ -270,7 +276,9 @@ void J4VComponent::SetName(const G4String&       name,
     }
   } 
   J4Named::SetName(newname);
+#if 1
   std::cerr << " My name is " << GetName() << std::endl;
+#endif
 }
 
 //=====================================================================
