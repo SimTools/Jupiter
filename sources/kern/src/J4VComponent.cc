@@ -28,7 +28,7 @@
 #include "J4SubtractionSolid.hh"
 #include "G4Box.hh"
 
-#define __NMAXFAMILYMEMBERS__  100000
+#define __NMAXFAMILYMEMBERS__  500000
 
 J4ComponentArray J4VComponent::fgFamilyMembers(__NMAXFAMILYMEMBERS__);
 
