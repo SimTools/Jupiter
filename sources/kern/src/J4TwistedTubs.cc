@@ -190,9 +190,9 @@ J4TwistedTubs::~J4TwistedTubs()
 //=====================================================================
 //* ComputeDimensions -------------------------------------------------
 
- void J4TwistedTubs::ComputeDimensions(G4VPVParameterisation* p,
-                              const G4int n,
-                              const G4VPhysicalVolume* pRep)
+ void J4TwistedTubs::ComputeDimensions(G4VPVParameterisation*,
+                              const G4int,
+                              const G4VPhysicalVolume*)
 {
     J4cerr << "J4TwistedTubs::ComputeDimensions: J4TwistedTubs does not "
     << "support Parameterisation. abort. " << J4endl;

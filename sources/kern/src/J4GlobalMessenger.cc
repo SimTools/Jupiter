@@ -63,10 +63,9 @@ J4GlobalMessenger::~J4GlobalMessenger()
    delete fGlobalDir;
 }
 
-void J4GlobalMessenger::SetNewValue(G4UIcommand * command,G4String newValues)
-{
-
 #ifdef __THEBE__
+void J4GlobalMessenger::SetNewValue(G4UIcommand * command, G4String newValues)
+{
 
   if( command == fErrorOutputFilenameCmd ) {
      fGlobal->SetErrorOutputFilename(newValues);
@@ -75,12 +74,19 @@ void J4GlobalMessenger::SetNewValue(G4UIcommand * command,G4String newValues)
   } else if( command == fErrorOutputDeviceIDCmd) {
      fGlobal->SetErrorOutputDeviceID(fErrorOutputDeviceIDCmd->GetNewIntValue(newValues)); 
   }
+#else
 
+void J4GlobalMessenger::SetNewValue(G4UIcommand *, G4String)
+{
 #endif
 
 }
 
+#ifdef __THEBE__   
 G4String J4GlobalMessenger::GetCurrentValue(G4UIcommand * command)
+#else
+G4String J4GlobalMessenger::GetCurrentValue(G4UIcommand *)
+#endif
 {
    G4String cv;
 

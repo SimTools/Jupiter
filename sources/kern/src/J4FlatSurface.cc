@@ -72,7 +72,7 @@ J4FlatSurface::~J4FlatSurface()
 
 //=====================================================================
 //* GetNormal ---------------------------------------------------------
-G4ThreeVector J4FlatSurface::GetNormal(const G4ThreeVector &xx, 
+G4ThreeVector J4FlatSurface::GetNormal(const G4ThreeVector &, 
                                              G4bool isGlobal)
 {
    if (isGlobal) {

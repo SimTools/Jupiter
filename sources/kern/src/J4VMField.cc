@@ -29,13 +29,13 @@ J4VMField::~J4VMField()
 {
 }
 //=====================================================================
-void J4VMField::GetLocalFieldValue(G4ThreeVector& position,
-                                   G4ThreeVector& bfield,
-                                   G4bool& onlyFlag)
+void J4VMField::GetLocalFieldValue(G4ThreeVector&, // position
+                                   G4ThreeVector&, // bfield
+                                   G4bool&)        // flag
 {
 }
 //=====================================================================
-void J4VMField::GetLocalValidBox(G4double* lpos)
+void J4VMField::GetLocalValidBox(G4double*)
 {
 }
 

@@ -53,8 +53,8 @@ G4Material* J4VMaterialStore::Order(const G4String& name,
 }
 
 /////////////////////////////////////////////////////////////////////////
-G4Material* J4VMaterialStore::Create(const G4String& name, 
-                                     G4MaterialPropertiesTable* mtable) 
+G4Material* J4VMaterialStore::Create(const G4String&, 
+                                     G4MaterialPropertiesTable*) 
 /////////////////////////////////////////////////////////////////////////
 {  
   	   std::cerr << "*********************************************" << std::endl;
