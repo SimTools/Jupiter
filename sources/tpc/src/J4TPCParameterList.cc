@@ -73,7 +73,7 @@ void J4TPCParameterList::SetParameters()
    fSupportTubHalfThick = 0.25*cm;
 
    // Layer
-#if 0  
+#if 1  
    fNlayers             = 200;
    fLayerThick          = 0.001*mm;
    fLayerRspacing       = 5.6*mm;
