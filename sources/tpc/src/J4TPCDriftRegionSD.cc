@@ -74,7 +74,8 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   G4double                 distance = location->GetSolid()
                                       ->DistanceToOut(localpos, localp.unit());
 
-  if (distance > kCarTolerance || trackID >= GetCurTrackID()) {
+  if (distance > kCarTolerance || trackID == GetCurTrackID()
+     || localp.x() * localpos.x() + localp.y() * localpos.y() < 0.) {
      return FALSE;
   }
 
@@ -88,13 +89,13 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   G4double               etot          = GetTotalEnergy();
   
 #if 0  
-  G4cerr << "SDname = " << GetComponent()->GetName() << " " 
-  	 << "TrackID = " << trackID << " " 
-  	 << "ParticleName = " << particle->GetParticleName() << " "
-  	 << "PreStepPoint(x,y,z) = " << pre.x() << " " 
-  	 << pre.y() << " " << pre.z() << G4endl 
-         << "PreStepR =  " << pre.perp() << " "
-         << "PostStepR = " << pos.perp() << G4endl;
+  G4cerr << "SDname       = " << GetComponent()->GetName()   << G4endl 
+  	 << "TrackID      = " << trackID                     << G4endl 
+  	 << "ParticleName = " << particle->GetParticleName() << G4endl
+  	 << "PreStepPoint = " << pre.x() << " " 
+  	                      << pre.y() << " " << pre.z()   << G4endl 
+         << "PreStepR     = " << pre.perp()                  << G4endl 
+         << "PostStepR    = " << pos.perp()                  << G4endl;
 #endif
 
 #if 0
