@@ -44,7 +44,7 @@
 
 //#define __INSTALLIR__  
 //#define __INSTALLBD__  
-//#define __INSTALLVTX__  
+#define __INSTALLVTX__  
 #define __INSTALLIT__  
 #define __INSTALLCDC__  
 #define __INSTALLCAL__  
