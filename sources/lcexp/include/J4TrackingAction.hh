@@ -54,6 +54,7 @@ public:
      fRegs[detid].fFirst  = INT_MAX; 
      fRegs[detid].fSecond = INT_MAX; 
   }
+  void     ResetTrackCounter(G4int n = INT_MIN) { fTrackCounter = n; }
 
   static   J4TrackingAction *GetInstance() { return fgInstance ? fgInstance : (fgInstance = new J4TrackingAction()); }
 

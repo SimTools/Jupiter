@@ -20,6 +20,7 @@
 
 #include "J4RunAction.hh"
 #include "J4EventAction.hh"
+#include "J4TrackingAction.hh"
 
 #include "G4VHitsCollection.hh"
 
@@ -98,6 +99,7 @@ void J4EventAction::BeginOfEventAction(const G4Event*)
 
    J4DetectorConstruction::GetEXPHall()->UnlockOutput();
    fEventTimer->Start();
+   J4TrackingAction::GetInstance()->ResetTrackCounter();
    
 }
 
