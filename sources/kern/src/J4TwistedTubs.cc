@@ -51,7 +51,9 @@ J4TwistedTubs::J4TwistedTubs(const G4String &pname,
                                    G4double  endouterrad,
                                    G4double  halfzlen,
                                    G4double  dphi)
-              :G4VSolid(pname), fDPhi(dphi)
+              :G4VSolid(pname), fDPhi(dphi), 
+               fLowerEndcap(0), fUpperEndcap(0), fLatterTwisted(0),
+               fFormerTwisted(0), fInnerHype(0), fOuterHype(0)
 {
    if (endinnerrad < DBL_MIN) {
       J4cerr << "J4VTwistedTubs: invalid endinnerrad" << J4endl;
@@ -98,7 +100,9 @@ J4TwistedTubs::J4TwistedTubs(const G4String &pname,
                                    G4double  halfzlen,
                                    G4int     nseg,
                                    G4double  totphi)
-               :G4VSolid(pname)
+               :G4VSolid(pname),
+                fLowerEndcap(0), fUpperEndcap(0), fLatterTwisted(0),
+                fFormerTwisted(0), fInnerHype(0), fOuterHype(0)
 {
 
    if (!nseg) J4cerr << "J4VTwistedTubs: invalid nseg" << J4endl;
@@ -131,7 +135,9 @@ J4TwistedTubs::J4TwistedTubs(const G4String &pname,
                                    G4double  negativeEndz,
                                    G4double  positiveEndz,
                                    G4double  dphi)
-              :G4VSolid(pname), fDPhi(dphi)
+              :G4VSolid(pname), fDPhi(dphi),
+               fLowerEndcap(0), fUpperEndcap(0), fLatterTwisted(0),
+               fFormerTwisted(0), fInnerHype(0), fOuterHype(0)
 {
    if (innerrad < DBL_MIN) {
       J4cerr << "J4VTwistedTubs: invalid innerrad" << J4endl;
@@ -150,7 +156,9 @@ J4TwistedTubs::J4TwistedTubs(const G4String &pname,
                                    G4double  positiveEndz,
                                    G4int     nseg,
                                    G4double  totphi)
-               :G4VSolid(pname)
+               :G4VSolid(pname),
+                fLowerEndcap(0), fUpperEndcap(0), fLatterTwisted(0),
+                fFormerTwisted(0), fInnerHype(0), fOuterHype(0)
 {
    if (!nseg) J4cerr << "J4VTwistedTubs: invalid nseg" << J4endl;
    if (totphi == DBL_MIN || innerrad < DBL_MIN) {

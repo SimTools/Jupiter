@@ -21,10 +21,11 @@
 
 J4Global*        J4Global::fGlobal   = 0;
 G4std::ofstream* J4Global::fErrorOfs = 0;
-G4int     J4Global::fErrorCounter = 0;
-G4int     J4Global::fErrorNevents = 1;
-G4int     J4Global::fErrorOutputDeviceID = 1;
-G4String  J4Global::fErrorOutputFilename = "lastevtError.log";
+G4int            J4Global::fErrorCounter = 1;
+G4int            J4Global::fErrorNevents = 1;
+G4int            J4Global::fErrorOutputDeviceID = 1;
+G4String         J4Global::fErrorOutputFilename = "lastevtError.log";
+G4String         J4Global::fErrorOutputUnit     = "Track";
 
 //=====================================================================
 //---------------------
@@ -59,7 +60,7 @@ G4std::ostream& J4Global::GetErrorOutputStream()
          return G4cerr;
          break;
       case 1:
-         if (fErrorOfs && fErrorOfs->is_open()) {
+         if (fErrorOfs) {
             return *fErrorOfs;
          } else {
             return G4cerr;
@@ -101,7 +102,9 @@ void J4Global::CloseErrorOutputStream()
    if (fErrorCounter < fErrorNevents) {
       fErrorCounter++;
    } else {
-      fErrorCounter = 0;
+      fErrorCounter = 1;
       fErrorOfs->close();
+      G4cerr << "J4Global::CloseErrorOutputStream fErrorOfs is closed " 
+             << G4endl; 
    }
 }

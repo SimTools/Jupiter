@@ -65,19 +65,19 @@ void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
 {
   // printout primary information
 #ifdef __THEBE__
-#ifdef __DUMPERRORPEREVENT__
-   if ( !fErrorOfs.is_open() ) {
-      fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), ios::out);
-      if(! fErrorOfs.good()) {
-         G4String errorMessage=
-         "*** EventAction::BeginOfEventAction():fail to open a file ("
-         + J4Global::GetErrorOutputFilename() + ").";
-         G4Exception(errorMessage);
-      } else {
-         J4Global::SetErrorOutputStream(fErrorOfs);
+   if ( J4Global::GetErrorOutputUnit() == "Event" ) {
+      if ( !fErrorOfs.is_open() ) {
+         fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), ios::out);
+         if(! fErrorOfs.good()) {
+            G4String errorMessage=
+            "*** EventAction::BeginOfEventAction():fail to open a file ("
+            + J4Global::GetErrorOutputFilename() + ").";
+            G4Exception(errorMessage);
+         } else {
+            J4Global::SetErrorOutputStream(fErrorOfs);
+         }
       }
    }
-#endif
 #endif
          
 #ifdef __VERBOSE__
@@ -173,9 +173,9 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
 #endif
 
 #ifdef __THEBE__
-#ifdef __DUMPERRORPEREVENT__
-   J4Global::GetGlobal()->CloseErrorOutputStream();
-#endif
+   if ( J4Global::GetErrorOutputUnit() == "Event" ) {
+      J4Global::GetGlobal()->CloseErrorOutputStream();
+   }
 #endif
               
 }

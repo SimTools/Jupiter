@@ -83,6 +83,7 @@ void J4Timer::ResetAllTimers()
 //* PrintAllAccumulatedTimes ------------------------------------------
 void J4Timer::PrintAllAccumulatedTimes()
 {
+   G4cerr.precision(6);
    G4cerr << " *********************************************************************************" << G4endl;
    G4cerr << " * Output of Accumulated Time ****************************************************" << G4endl;
    G4cerr << " * ---------+---------+---------+---------+---------+---------+---------+---------" << G4endl;

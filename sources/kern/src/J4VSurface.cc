@@ -88,6 +88,8 @@ J4VSurface::J4VSurface(const G4String         &name,
       fCorners[i].set(kInfinity, kInfinity, kInfinity);
       fNeighbours[i] = 0;
    }
+
+   fCurrentNormal.p.set(kInfinity, kInfinity, kInfinity);
    
    fAmIOnLeftSide.me.set(kInfinity, kInfinity, kInfinity);
    fAmIOnLeftSide.vec.set(kInfinity, kInfinity, kInfinity);
@@ -129,24 +131,28 @@ G4int J4VSurface::AmIOnLeftSide(const G4ThreeVector &me,
    fAmIOnLeftSide.vec     = vec;
    fAmIOnLeftSide.withTol = withtol;
    
-   G4ThreeVector met  = (G4ThreeVector(me.x(), me.y(), 0.)).unit();
-   G4ThreeVector vect = (G4ThreeVector(vec.x(), vec.y(), 0.)).unit();
+   G4ThreeVector met   = (G4ThreeVector(me.x(), me.y(), 0.)).unit();
+   G4ThreeVector vect  = (G4ThreeVector(vec.x(), vec.y(), 0.)).unit();
    
    G4ThreeVector ivect = invrottol * vect;
    G4ThreeVector rvect = rottol * vect;
+
+   G4double metcrossvect = met.x() * vect.y() - met.y() * vect.x();
    
    if (withtol) {
-      if (met.x() * ivect.y() - met.y() * ivect.x() > 0) {
+      if (met.x() * ivect.y() - met.y() * ivect.x() > 0 && 
+          metcrossvect >= 0)  {
          fAmIOnLeftSide.amIOnLeftSide = 1;
-      } else if (met.x() * rvect.y() - met.y() * rvect.x() < 0 ) {
+      } else if (met.x() * rvect.y() - met.y() * rvect.x() < 0 &&
+                 metcrossvect <= 0)  {
          fAmIOnLeftSide.amIOnLeftSide = -1;
       } else {
          fAmIOnLeftSide.amIOnLeftSide = 0;
       }
    } else {
-      if (met.x() * vect.y() - met.y() * vect.x() > 0) {    
+      if (metcrossvect > 0) {    
          fAmIOnLeftSide.amIOnLeftSide = 1;
-      } else if (met.x() * vect.y() - met.y() * vect.x() < 0 ) {
+      } else if (metcrossvect < 0 ) {
          fAmIOnLeftSide.amIOnLeftSide = -1;
       } else {       
          fAmIOnLeftSide.amIOnLeftSide = 0;
@@ -158,17 +164,19 @@ G4int J4VSurface::AmIOnLeftSide(const G4ThreeVector &me,
           << J4endl;
    J4cerr << "         //# NAME , returncode  : " << fName << " " 
                        << fAmIOnLeftSide.amIOnLeftSide <<  J4endl;
-   J4cerr << "         //# me, vec : " << G4std::setprecision(14) << me 
-                                       << " " << vec  << J4endl;
-   J4cerr << "         //# met, vect : " << met << " " << vect  
-          << J4endl;
-   J4cerr << "         //# ivec, rvec : " << ivect << " " << rvect 
-          << J4endl;
+   J4cerr << "         //# me, vec    : " << G4std::setprecision(14) << me 
+                                          << " " << vec  << J4endl;
+   J4cerr << "         //# met, vect  : " << met << " " << vect  << J4endl;
+   J4cerr << "         //# ivec, rvec : " << ivect << " " << rvect << J4endl;
+   J4cerr << "         //# met x vect : " << metcrossvect << J4endl;
+   J4cerr << "         //# met x ivec : " << met.cross(ivect) << J4endl;
+   J4cerr << "         //# met x rvec : " << met.cross(rvect) << J4endl;
    J4cerr << "         =============================================="
           << J4endl;
 #endif
 
    return fAmIOnLeftSide.amIOnLeftSide;
+
 }
 
 //=====================================================================
@@ -265,7 +273,7 @@ G4double J4VSurface::DistanceToIn(const G4ThreeVector &gp,
          // accept this intersection
          if (distance[i] < bestdistance) {
             bestdistance = distance[i];
-            gxxbest = gxx[i];
+            bestgxx = gxx[i];
             besti   = i;
 #ifdef __SOLIDDEBUG__
             J4cerr << "   J4VSurface:DistanceToIn(p,v): "

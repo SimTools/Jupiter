@@ -19,6 +19,8 @@ J4GlobalMessenger::J4GlobalMessenger(J4Global * global)
   fGlobalDir = new G4UIdirectory("/jupiter/global/");
   fGlobalDir->SetGuidance("Global setting commands.");
 
+#ifdef __THEBE__
+
   fErrorOutputFilenameCmd = new G4UIcmdWithAString("/jupiter/global/ErrorOutputFilename",this);
   fErrorOutputFilenameCmd->SetGuidance("Set output filename for error");
   fErrorOutputFilenameCmd->SetGuidance(" (lastevtError.log is default)");
@@ -42,18 +44,30 @@ J4GlobalMessenger::J4GlobalMessenger(J4Global * global)
   fGlobal->SetErrorOutputFilename("lastevtError.log");
   fGlobal->SetErrorNevents(1);
   fGlobal->SetErrorOutputDeviceID(1);
+
+#endif
+
 }
 
 J4GlobalMessenger::~J4GlobalMessenger()
 {
+
+#ifdef __THEBE__
+
    delete fErrorOutputDeviceIDCmd;
    delete fErrorOutputFilenameCmd;
    delete fErrorNeventsCmd;;
+
+#endif
+
    delete fGlobalDir;
 }
 
 void J4GlobalMessenger::SetNewValue(G4UIcommand * command,G4String newValues)
 {
+
+#ifdef __THEBE__
+
   if( command == fErrorOutputFilenameCmd ) {
      fGlobal->SetErrorOutputFilename(newValues);
   } else if( command == fErrorNeventsCmd ) {
@@ -61,12 +75,17 @@ void J4GlobalMessenger::SetNewValue(G4UIcommand * command,G4String newValues)
   } else if( command == fErrorOutputDeviceIDCmd) {
      fGlobal->SetErrorOutputDeviceID(fErrorOutputDeviceIDCmd->GetNewIntValue(newValues)); 
   }
+
+#endif
+
 }
 
 G4String J4GlobalMessenger::GetCurrentValue(G4UIcommand * command)
 {
    G4String cv;
-   
+
+#ifdef __THEBE__   
+
    if( command == fErrorOutputFilenameCmd ) {
       cv = fGlobal->GetErrorOutputFilename();
    } else if( command == fErrorNeventsCmd ) {
@@ -74,6 +93,8 @@ G4String J4GlobalMessenger::GetCurrentValue(G4UIcommand * command)
    } else if( command == fErrorOutputDeviceIDCmd) {
       cv = fErrorOutputDeviceIDCmd->ConvertToString(fGlobal->GetErrorOutputDeviceID());
    }
+
+#endif
    
    return cv;
 }

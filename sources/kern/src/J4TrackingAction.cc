@@ -11,48 +11,127 @@
 //*************************************************************************
 
 #include "J4TrackingAction.hh"
+#include "J4TrackingActionMessenger.hh"
 #include "G4TrackingManager.hh"
 #include "G4Track.hh"
 #include "J4Global.hh"
 
 //=====================================================================
+//* Constructor -------------------------------------------------------
+J4TrackingAction::J4TrackingAction()
+                 :fCurrentTrackID(0), fStoredTrajectoryID(1) 
+{
+
+   fMessenger = new J4TrackingActionMessenger(this);
+
+#ifdef __THEBE__
+   fStoredDebugPrintID = -2;   
+#endif
+
+}
+
+//=====================================================================
+//* Destructor -------------------------------------------------------
+J4TrackingAction::~J4TrackingAction()
+{
+   if (fMessenger) delete fMessenger;
+}
+
+//=====================================================================
 //* PreUserTrackingAction ---------------------------------------------
 void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 {
-#ifdef __THEBE__
-#ifdef __DUMPERRORPERTRACK__
-   if ( !fErrorOfs.is_open() ) {
-      fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), ios::out);
-      if(! fErrorOfs.good()) {
-         G4String errorMessage=
-         "*** J4TrackingAction::PreUserTrackingAction:fail to open a file ("
-         + J4Global::GetErrorOutputFilename() + ").";
-         G4Exception(errorMessage);
-      } else {
-         J4Global::SetErrorOutputStream(fErrorOfs);
-      }
-   }
+
+  // Create trajectory only for charged particles
+
+  fCurrentTrackID = aTrack->GetTrackID();
+  
+#ifdef G4_STORE_TRAJECTORY
+  if (fpTrackingManager && fpTrackingManager->GetStoreTrajectory()) { 
+
+     switch (fStoredTrajectoryID) {
+    
+        case 1 :  // charged particle only
+
+           if (aTrack->GetDefinition()->GetPDGCharge() != 0) {
+              fpTrackingManager->SetStoreTrajectory(true); 
+           } 
+           break;
+
+        case 2 :  // all particles
+
+           fpTrackingManager->SetStoreTrajectory(true); 
+           break;
+
+     }
+  }
 #endif
+
+
+#ifdef __THEBE__
+   if (J4Global::GetErrorOutputUnit() == "Track") {
+  
+      static G4int callNo = 0;
+ 
+      G4cerr << "***** J4TrackingAction::PreUserTrackingAction:Track_" 
+             << fCurrentTrackID << "_Start ****** "<< G4endl;
+
+
+      if (fStoredDebugPrintID == -1 || fStoredDebugPrintID == fCurrentTrackID) {
+      
+         if ( fStoredDebugPrintID == fCurrentTrackID) {
+            fErrorOfs.close();
+            callNo = 0;
+         }
+
+         if ( !fErrorOfs.is_open()) {
+            fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), ios::out);
+            if(! fErrorOfs.good()) {
+               G4String errorMessage=
+               "*** J4TrackingAction::PreUserTrackingAction:fail to open a file ("
+               + J4Global::GetErrorOutputFilename() + ").";
+               G4Exception(errorMessage);
+            } 
+         }
+
+      } else {
+         // no output.
+
+         // !!!!  ATTENTIOH  !!!ii //
+         // temporary treatment !
+         // Only in the case of G4Global::StoredNEvents == 0, it works correctly 
+
+         if (callNo == 0) {
+            fErrorOfs.open("/dev/null", ios::out);
+            if(! fErrorOfs.good()) {
+               G4String errorMessage=
+               "*** J4TrackingAction::PreUserTrackingAction:fail to open a file (/dev/null) .";
+               G4Exception(errorMessage);
+            }
+            callNo++;
+         } 
+
+      }
+
+      J4Global::SetErrorOutputStream(fErrorOfs);
+
+   }
+
 #endif
    
-#ifdef __REMOVENEUTRALTRAJECTORY__  
-  // Create trajectory only for charged particles
-  
-  if(aTrack->GetDefinition()->GetPDGCharge()!=0)
-  { fpTrackingManager->SetStoreTrajectory(true); }
-  else
-  { fpTrackingManager->SetStoreTrajectory(false); }
-#endif
 }
 
 //=====================================================================
 //* PostUserTrackingAction --------------------------------------------
 void J4TrackingAction::PostUserTrackingAction(const G4Track* aTrack)
 {
+
 #ifdef __THEBE__
-#ifdef __DUMPERRORPERTRACK__
-   J4Global::GetGlobal()->CloseErrorOutputStream();
-#endif
+
+   if (fErrorOfs.is_open()) {
+      J4Global::GetGlobal()->CloseErrorOutputStream();
+   }
+
 #endif
    
 }
