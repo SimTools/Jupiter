@@ -45,9 +45,14 @@ J4MUDParameterList::~J4MUDParameterList()
 //* SetMaterials ------------------------------------------------------
 void J4MUDParameterList::SetMaterials()
 {
-   fMUDMaterial           = "vacuum";
-   fBarrelMaterial        = "Iron";
-   fEndcapMaterial        = "Iron" ;
+  fMUDMaterial                = "Air";
+  fBlockMaterial              = "Air";
+  fBarrelActiveMaterial       = "Scintillator";
+  fEndcapActiveMaterial       = "Scintillator";
+  fFrontEndcapActiveMaterial  = "Scintillator";
+  fBarrelAbsMaterial          = "Iron";
+  fEndcapAbsMaterial          = "Iron";
+  fFrontEndcapAbsMaterial     = "Iron";
 }
 
 //=====================================================================
@@ -55,26 +60,63 @@ void J4MUDParameterList::SetMaterials()
 void J4MUDParameterList::SetParameters()
 {
   // MUD
-  fBarrelInnerR    = 450.0*cm;
-  fBarrelOuterR    = 700.0*cm;
-  fEndcapFrontZ    = 430.0*cm;
-  fEndcapInnerR    = 44.0*cm;
-  fEndcapThickness = 415.0*cm;
-  fDeltaPhi        = 360.*deg;
-  fNBarrelLayers   = 5;
-  fNEndcapLayers   = 8;
-  fBarrelHalfZ     = fEndcapFrontZ + fEndcapThickness;
-  fBarrelLayer     = ( fBarrelOuterR - fBarrelInnerR ) / fNBarrelLayers;
-  fEndcapLayer     = fEndcapThickness / fNEndcapLayers;
+  fMUDHeight           = 700.0*cm;
+  fTrapDeltaPhi        = 45.0*deg;
+  fMUDOuterR           = fMUDHeight / cos( 0.5* fTrapDeltaPhi );
+  fDeltaPhi            = 360.*deg;
+  fNTraps              = 8;
+  
+  // Endcap
+#ifdef __FRONTENDCAP__
+  fEndcapFrontZ        = 535.0*cm;                            // Endcap front z-axis position
+  fEndcapThick         = 310.0*cm;                            // Endcap thickness
+#else
+  fEndcapFrontZ        = 430.0*cm;
+  fEndcapThick         = 415.0*cm;                            // Endcap thickness
+#endif
+  
+  fEndcapInnerR        = 44.0*cm;                             // Endcap inner radius
+  fEndcapNSuperLayers  = 5;                                   // Number of Endcap SuperLayer
+  fEndcapNAbsLayers    = fEndcapNSuperLayers + 1;             // Number of Endcap Active Layer
+  fEndcapNActiveLayers = fEndcapNSuperLayers;                 // Number of Endcap Active Layer
+  fEndcapActiveThick   = 10.0*cm;                             // Endcap Active Layer thickness
+  fEndcapAbsThick      = (fEndcapThick - fEndcapNActiveLayers*fEndcapActiveThick ) / fEndcapNAbsLayers; // Endcap Absorber thickness
+
+  // frontEndcap
+  fFrontEndcapNSuperLayers  = 2;                              // Number of FrontEndcap SuperLayer
+  fFrontEndcapNAbsLayers    = fFrontEndcapNSuperLayers;       // Number of FrontEndcap Abs Layer
+  fFrontEndcapNActiveLayers = fFrontEndcapNSuperLayers;       // Number of FrontEndcap Active Layer
+  fFrontEndcapFrontZ        = 430.0*cm;                       // FrontEndcap front z-axis position
+  fFrontEndcapOuterR        = 375.0*cm;                       // FrontEndcap Outer radius
+  fFrontEndcapThick         = fEndcapFrontZ - fFrontEndcapFrontZ; // FrontEndcap Thickness
+  fFrontEndcapActiveThick   = 10.0*cm;                        // FrontEndcap Active Layer Thickness
+  fFrontEndcapAbsThick      = ( fFrontEndcapThick - fFrontEndcapNActiveLayers*fFrontEndcapActiveThick ) / fFrontEndcapNAbsLayers; // FrontEndcap Absorber thickness
+  
+  // Barrel
+  fBarrelInnerR        = 450.0*cm;                            // Barrel inner radius
+  fBarrelThick         = fMUDHeight - fBarrelInnerR;          // Barrel thickness : 250cm 
+  fBarrelFrontHalfL    = fEndcapFrontZ;                       // Half length of Barrel front layer
+  fBarrelNSuperLayers  = 4;                                   // Number of Barrel SuperLayer
+  fBarrelNAbsLayers    = fBarrelNSuperLayers + 1;             // Number of Barrel Active Layer
+  fBarrelNActiveLayers = fBarrelNSuperLayers;                 // Number of Barrel Active Layer
+  fBarrelActiveThick   = 10.0*cm;                             // Barrel Active Layer thickness
+  fBarrelAbsThick      = (fBarrelThick - fBarrelNActiveLayers*fBarrelActiveThick ) / fBarrelNAbsLayers; // Barrel Absorber thickness
+  fMUDHalfL            = fEndcapFrontZ + fEndcapThick;        // Half length of MUD : 845cm
+
 }
 
 //=====================================================================
 //* SetVisAttributes --------------------------------------------------
 void J4MUDParameterList::SetVisAttributes()
 {
-   fMUDVisAtt        = TRUE;
-   fBarrelVisAtt     = TRUE;
-   fEndcapVisAtt     = TRUE;
+   fMUDVisAtt               = false;
+   fBlockVisAtt             = true;
+   fBarrelActiveVisAtt      = true;
+   fBarrelAbsVisAtt         = true;
+   fEndcapActiveVisAtt      = true;
+   fEndcapAbsVisAtt         = true;
+   fFrontEndcapActiveVisAtt = true;
+   fFrontEndcapAbsVisAtt    = true;
 }
 
 //=====================================================================
@@ -82,6 +124,11 @@ void J4MUDParameterList::SetVisAttributes()
 void J4MUDParameterList::SetColors()
 {
    SetMUDColor( G4Color( 0., 1., 0. ) );
-   SetBarrelColor( G4Color( 0., 1., 0. ) );
-   SetEndcapColor( G4Color( 0., 1., 0. ) );
+   SetBlockColor( G4Color( 0., 1., 0. ) );
+   SetBarrelActiveColor( G4Color( 0.5, 1., 0.5 ) );
+   SetEndcapActiveColor( G4Color( 0.5, 1., 0.5 ) );
+   SetBarrelAbsColor( G4Color( 0.3, 0.3, 1.0 ) );
+   SetEndcapAbsColor( G4Color( 0.3, 0.3, 1.0 ) );
+   SetFrontEndcapActiveColor( G4Color( 0.5, 1., 0.5 ) );
+   SetFrontEndcapAbsColor( G4Color( 0.3, 0.3, 1.0 ) );
 }

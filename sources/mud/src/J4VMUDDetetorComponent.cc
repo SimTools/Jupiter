@@ -9,12 +9,9 @@
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
-
 #include "J4VMUDDetectorComponent.hh"
 
-
 J4MUDMaterialStore* J4VMUDDetectorComponent::fMaterialStore = 0;
-
 G4String J4VMUDDetectorComponent::fSubGroup("MUD");
 
 //=====================================================================
@@ -31,12 +28,9 @@ J4VMUDDetectorComponent::J4VMUDDetectorComponent(
                                 G4int                 nclones,
                                 G4int                 nbrothers, 
                                 G4int                 me,
-                                G4int                 copyno ) :
-                         J4VDetectorComponent(fSubGroup, name, 
-                         		      parent, nclones,	 
-                         		      nbrothers, me, copyno)   
-{ 
-}
+                                G4int                 copyno ) 
+:J4VDetectorComponent( fSubGroup, name, parent, nclones, nbrothers, me, copyno )
+{ }
 
 
 //=====================================================================
@@ -44,7 +38,7 @@ J4VMUDDetectorComponent::J4VMUDDetectorComponent(
 
 J4VMUDDetectorComponent::~J4VMUDDetectorComponent()
 {	
-   if (Deregister(fMaterialStore)) delete fMaterialStore;
+   if ( Deregister( fMaterialStore ) ) delete fMaterialStore;
 }
 
 //=====================================================================
@@ -60,5 +54,3 @@ J4VMaterialStore* J4VMUDDetectorComponent::OpenMaterialStore()
     
    return fMaterialStore;
 }
-
-
