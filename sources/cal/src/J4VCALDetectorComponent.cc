@@ -34,23 +34,7 @@ J4VCALDetectorComponent::J4VCALDetectorComponent(
                                 G4int                 copyno ) :
                          J4VDetectorComponent(fSubGroup, name, 
                          		      parent, nclones,	 
-                         		      nbrothers, me, copyno ),
-                         fIsEM(true)
-{ 
-}
-
-J4VCALDetectorComponent::J4VCALDetectorComponent(
-			   	const G4String       &name, 
-                                G4bool                isem,
-  			   	J4VDetectorComponent *parent,
-                                G4int                 nclones,
-                                G4int                 nbrothers, 
-                                G4int                 me,
-                                G4int                 copyno ) :
-                         J4VDetectorComponent(fSubGroup, name, 
-                         		      parent, nclones,	 
-                         		      nbrothers, me, copyno  ),
-                         fIsEM(isem)
+                         		      nbrothers, me, copyno  )
 { 
 }
 

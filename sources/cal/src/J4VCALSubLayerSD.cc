@@ -1,7 +1,7 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* J4CALSubLayerSD
+//* J4VCALSubLayerSD
 //* --------------------
 //* (Description)
 //* 	Class for describing his/her sensitive ptrDetector.
@@ -13,13 +13,14 @@
 //*                                   J4CALHit::J4CALHitlet is now obsolete.
 //*                                   Use std::multimap for monitoring hits.
 //*************************************************************************
+
 #include "J4CALCone.hh"
 #include "J4CALTower.hh"
-#include "J4CALMiniCone.hh"
-#include "J4CALMiniTower.hh"
-#include "J4CALLayer.hh"
-#include "J4CALSubLayer.hh"
-#include "J4CALSubLayerSD.hh"
+#include "J4VCALMiniCone.hh"
+#include "J4VCALMiniTower.hh"
+#include "J4VCALLayer.hh"
+#include "J4VCALSubLayer.hh"
+#include "J4VCALSubLayerSD.hh"
 #include "J4CALHit.hh"
 #include "J4CALSD.hh"
 #include "G4Sphere.hh"
@@ -30,9 +31,9 @@
 
 //=====================================================================
 // static datamember's initialize
-G4int J4CALSubLayerSD::fgLastHCID=-1;
-G4int J4CALSubLayerSD::fgCurrentPreHitID = -1;
-std::multimap<G4int,J4CALHit*> J4CALSubLayerSD::fgCalHits;
+G4int J4VCALSubLayerSD::fgLastHCID=-1;
+G4int J4VCALSubLayerSD::fgCurrentPreHitID = -1;
+std::multimap<G4int,J4CALHit*> J4VCALSubLayerSD::fgCalHits;
 
 //=====================================================================
 //---------------------
@@ -41,29 +42,24 @@ std::multimap<G4int,J4CALHit*> J4CALSubLayerSD::fgCalHits;
 
 //=====================================================================
 //* constructor -------------------------------------------------------
-J4CALSubLayerSD::J4CALSubLayerSD( J4VDetectorComponent* ptrDetector )
+J4VCALSubLayerSD::J4VCALSubLayerSD( J4VDetectorComponent* ptrDetector )
   : J4VSD<J4CALHit>( ptrDetector ),
-    fConeID(-1), fTowerID(-1), fMiniConeID(-1), fMiniTowerID(-1), fLayerID(-1), fSubLayerID(-1),
-    fIsBarrel(-1)
+    fConeID(-1), fTowerID(-1), fMiniConeID(-1), fMiniTowerID(-1), fLayerID(-1), fIsBarrel(-1)
 {
 }
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
-J4CALSubLayerSD::~J4CALSubLayerSD()
+J4VCALSubLayerSD::~J4VCALSubLayerSD()
 {
 }
 
 //=====================================================================
 //* Initialize --------------------------------------------------------
 
-void J4CALSubLayerSD::Initialize( G4HCofThisEvent* HCTE )
+void J4VCALSubLayerSD::Initialize( G4HCofThisEvent* HCTE )
 {
-  
-  static G4int timerID = -1;
-  J4Timer timer( timerID, "J4CALSubLayerSD", "Initialize()" );
-  timer.Start();
   
   //create hit collection(s) and
   //push H.C. to "Hit Collection of This Event"
@@ -74,7 +70,7 @@ void J4CALSubLayerSD::Initialize( G4HCofThisEvent* HCTE )
   hitbuf = new G4THitsCollection<J4CALHit>( SensitiveDetectorName, collectionName[0] ) ;
   SetHitBuf( (G4VHitsCollection*)hitbuf );
   if ( fgLastHCID < 0  ) {
-    //     G4int hcID = GetCollectionID(0); 
+    //G4int hcID = GetCollectionID(0); 
     fgLastHCID=GetCollectionID(0); 
   }
   else {
@@ -85,24 +81,15 @@ void J4CALSubLayerSD::Initialize( G4HCofThisEvent* HCTE )
   // Geant4 deletes hit objects at the end of the run.
 #endif
   
-  timer.Stop();
 }
 
 //=====================================================================
 //* ProcessHits -------------------------------------------------------
-G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ )
+G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ )
 {
-  static G4int timerID = -1;
-  J4Timer timer( timerID, "J4CAL", "J4CALSubLayerSD:ProcessHits" );
-  timer.Start();
 
   //In order to use Get function, you must call SetNewStep() at first.
   SetNewStep( aStep );
-
-#if 0
-  J4CALSubLayer *cp  = (J4CALSubLayer *)GetComponent();
-  if (cp->IsEM()) std::cerr << "!!!!!! EM Hit !!!!!!!" << std::endl;
-#endif
 
   // don't process e/mu/gamma/pi/p with no edep
   G4String pname = GetParticleName();
@@ -125,31 +112,30 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
   const G4int ConeDepth      = 6;
 
   // poiters for components -------------------------------------
-  J4CALSubLayer* ptrSubLayerComponent  = (J4CALSubLayer *)GetComponent();
-  J4VComponent*  ptrLayerComponent     = GetComponent( LayerDepth );
-  J4VComponent*  ptrMiniTowerComponent = GetComponent( MiniTowerDepth );
-  J4VComponent*  ptrMiniConeComponent  = GetComponent( MiniConeDepth );
+  J4VCALSubLayer*    ptrSubLayerComponent  = (J4VCALSubLayer *)GetComponent();
+  J4VComponent*      ptrLayerComponent        = GetComponent( LayerDepth );
+  J4VComponent*      ptrMiniTowerComponent    = GetComponent( MiniTowerDepth );
+  J4VComponent*      ptrMiniConeComponent     = GetComponent( MiniConeDepth );
 #if 0
   J4VComponent*  ptrBlockComponent     = GetComponent( BlockDepth );
 #endif
-  J4VComponent*  ptrTowerComponent     = GetComponent( TowerDepth );
-  J4VComponent*  ptrConeComponent      = GetComponent( ConeDepth );
+  J4VComponent*      ptrTowerComponent        = GetComponent( TowerDepth );
+  J4VComponent*      ptrConeComponent         = GetComponent( ConeDepth );
 
   G4int  coneID      = ptrConeComponent      -> GetMyID();
   G4int  towerID     = GetCloneID( ptrTowerComponent );
   G4int  miniConeID  = ptrMiniConeComponent  -> GetMyID();
-#ifndef __REPLICA__
-  G4int  miniTowerID = ptrMiniTowerComponent -> GetMyID();
+#ifdef __REPLICA__
+  G4int  miniTowerID = GetCloneID( ptrMiniTowerComponent );  
 #else
-  G4int  miniTowerID = GetCloneID( ptrMiniTowerComponent );  // double replica problem
+  G4int  miniTowerID = ptrMiniTowerComponent -> GetMyID();
 #endif
   G4int  layerID     = ptrLayerComponent     -> GetMyID();
-  G4int  subLayerID  = ptrSubLayerComponent  -> GetMyID();
 
   // flag for checking Barrel or Endcap -------------------------
   G4bool isBarrel    = ( (J4CALCone *)ptrConeComponent ) -> IsBarrel();
   // flag for checking EM or HD ---------------------------------
-  G4bool isEM = ptrSubLayerComponent->IsEM();
+  G4bool isEM =IsEM();
 
   //  Get particle information
   G4int  preHitID = J4CALSD::GetCurrentPreHitID();
@@ -163,7 +149,7 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
   G4double  edep  = GetEnergyDeposit();
   const G4ThreeVector&  Xcm   = GetPrePosition() * GetEnergyDeposit(); // energy-weighted position vector
 
-  G4int cellID = J4CALAddress::GetCellID( coneID, towerID, miniConeID, miniTowerID, layerID, subLayerID, isEM );
+  G4int cellID = J4CALAddress::GetCellID( coneID, towerID, miniConeID, miniTowerID, layerID, isEM );
   
   // check if the cell is already hit
   typedef std::multimap< G4int, J4CALHit* >::iterator MI;
@@ -216,15 +202,13 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
       ((J4CALHitBuf*)GetHitBuf())->insert( aHit );
     }
   }
-  
-  timer.Stop();
   return TRUE;
 }
 
 //=====================================================================
 //* EndOfEvent --------------------------------------------------------
 
-void J4CALSubLayerSD::EndOfEvent( G4HCofThisEvent* /* HCTE */ )
+void J4VCALSubLayerSD::EndOfEvent( G4HCofThisEvent* /* HCTE */ )
 {
   fgCurrentPreHitID = -1;
   SetHCID(-1);
@@ -237,12 +221,12 @@ void J4CALSubLayerSD::EndOfEvent( G4HCofThisEvent* /* HCTE */ )
 
 //=====================================================================
 //* DrawAll -----------------------------------------------------------
-void J4CALSubLayerSD::DrawAll()
+void J4VCALSubLayerSD::DrawAll()
 { }
 
 //=====================================================================
 //* PrintAll ----------------------------------------------------------
-void J4CALSubLayerSD::PrintAll()
+void J4VCALSubLayerSD::PrintAll()
 {
   G4int nHit= ( (J4CALHitBuf*)GetHitBuf() ) -> entries();
   G4cout << "------------------------------------------" << G4endl; 

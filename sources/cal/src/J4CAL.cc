@@ -14,14 +14,12 @@
 #include "J4CALCone.hh"
 #include "J4Timer.hh"
 
-//#define __DRAWONETOWER__
-
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
 
-const G4String J4CAL::fFirstName = "CAL";
+const G4String J4CAL::fFirstName= "CAL" ;
 
 //=====================================================================
 //---------------------
@@ -46,11 +44,9 @@ J4CAL::J4CAL( J4VDetectorComponent *parent,
 
 J4CAL::~J4CAL()
 {
-#if 0
- static G4int timerID = -1;
- J4Timer timer( timerID, "J4CAL", "Destructor" );
- timer.Start();
-#endif
+#ifdef __DRAWONETOWER__
+  if (fCones && Deregister(fCones)) delete fCones;
+#else
 #ifndef __GEANT452__
    if ( fCones ) {
       J4CALParameterList *ptrList = OpenParameterList(); 
@@ -60,8 +56,6 @@ J4CAL::~J4CAL()
       if (Deregister(fCones)) delete [] fCones;
    }
 #endif
-#if 0
- timer.Stop();
 #endif
 }
 
@@ -92,13 +86,9 @@ void J4CAL::Assemble()
   	
       // Install daughter PV //
 #ifdef __DRAWONETOWER__
-      //////////////////////////////////////////////////////////////////////
-      //* for one cone printing ---------------------- 	  
       G4int ncones = 1;
 #else
-      //* for whole tower printing -------------------
       G4int ncones = ptrList->GetNcones();
-      //////////////////////////////////////////////////////////////////////
 #endif
       fCones = new J4CALCone* [ncones];
       Register(fCones);

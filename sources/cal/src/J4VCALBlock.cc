@@ -1,7 +1,7 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* J4CALBlock
+//* J4VCALBlock
 //* --------------------
 //* (Description)
 //*    Base class for CAL blocks like EM or HD.
@@ -11,10 +11,12 @@
 //*	2004/11/14  K.Fujii	Derived from J4CALEM by S.Ono.
 //*************************************************************************
 
-#include "J4CALBlock.hh"
+#include "J4VCALBlock.hh"
 #include "J4CALParameterList.hh"
 #include "G4Sphere.hh"
-#include "J4CALMiniCone.hh"
+#include "J4VCALMiniCone.hh"
+#include "J4CALEMMiniCone.hh"
+#include "J4CALHDMiniCone.hh"
 
 //=====================================================================
 //---------------------
@@ -25,27 +27,20 @@
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CALBlock::J4CALBlock(      const G4String &firstname,
-                                     G4bool  isem,
-                       J4VDetectorComponent *parent,
-                                      G4int  nclones,
-                                      G4int  nbrothers, 
-                                      G4int  me,
-                                      G4int  copyno) 
-          : J4VCALDetectorComponent(firstname,
-                                    isem,
-                                    parent,
-                                    nclones,
-                                    nbrothers,
-                                    me,
-                                    copyno)
+J4VCALBlock::J4VCALBlock( const G4String       &name,
+                          J4VDetectorComponent *parent,
+                                         G4int  nclones,
+                                         G4int  nbrothers, 
+                                         G4int  me,
+                                         G4int  copyno) 
+: J4VCALDetectorComponent( name, parent, nclones, nbrothers, me, copyno )
 {   
 }
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
-J4CALBlock::~J4CALBlock()
+J4VCALBlock::~J4VCALBlock()
 {
   G4int nMiniCones = fMiniCones.size();
   for (G4int i = 0; i < nMiniCones;i++ ) {
@@ -56,7 +51,7 @@ J4CALBlock::~J4CALBlock()
 //=====================================================================
 //* Assemble   --------------------------------------------------------
 
-void J4CALBlock::Assemble() 
+void J4VCALBlock::Assemble() 
 {   
   if (!GetLV()) {
 
@@ -66,25 +61,24 @@ void J4CALBlock::Assemble()
     G4double sphi       = mother->GetStartPhiAngle();
     G4double dphi       = mother->GetDeltaPhiAngle();
     G4double Thickness  = GetThickness();
-    G4double rmin       = GetInnerRadius();
+    G4double rmin       = GetInsideRadius();
     G4double rmax       = rmin + Thickness; 
     G4double dtheta     = mother->GetDeltaThetaAngle(); 
     G4double stheta     = mother->GetStartThetaAngle();
 
-    G4Sphere* block     = new G4Sphere(GetName(),
-                                       rmin, rmax, sphi, dphi, stheta, dtheta);
-    Register(block);
-    SetSolid(block);
+    G4Sphere* block = new G4Sphere( GetName(), rmin, rmax, sphi, dphi, stheta, dtheta );
+    Register( block );
+    SetSolid( block );
 
-    MakeLVWith(OpenMaterialStore()->Order(GetMaterial()));
+    MakeLVWith( OpenMaterialStore()->Order(GetMaterial()) );
 
-    PaintLV(GetVisAtt(), GetColor());
-      
-    for (G4int i = 0; i < nMiniCones; i++) {
-      J4CALMiniCone* minicone = new J4CALMiniCone(this, IsEM(), 1, nMiniCones, i);
-      fMiniCones.push_back(minicone);
-      Register(minicone);
-      minicone->InstallIn(this);
+    PaintLV( GetVisAtt(), GetColor() );
+
+    for ( G4int i = 0; i < nMiniCones; i++ ) {
+      J4VCALMiniCone* minicone = Create( this, 1, nMiniCones, i );
+      fMiniCones.push_back( minicone );
+      Register( minicone );
+      minicone->InstallIn( this );
       SetDaughter( minicone );
     }
   }
@@ -92,22 +86,14 @@ void J4CALBlock::Assemble()
 
 //=====================================================================
 //* Cabling  ----------------------------------------------------------
-
-void J4CALBlock::Cabling()
+void J4VCALBlock::Cabling()
 {
-#if 0
-   if (!GetSD()) {
-      J4CALBlockSD* sd = new J4CALBlockSD(this);
-      Register(sd);
-      SetSD(sd);
-   }
-#endif
 }
 
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CALBlock::InstallIn(J4VComponent    *  /* mother */,
+void J4VCALBlock::InstallIn(J4VComponent    *  /* mother */,
                            G4RotationMatrix*  /* prot   */, 
                      const G4ThreeVector   &  /* tlate  */ ) 
 { 
@@ -116,19 +102,17 @@ void J4CALBlock::InstallIn(J4VComponent    *  /* mother */,
    // Placement function into mother object...
    SetPVPlacement();
    
-#if 0
-  Cabling();
-#endif
+   //Cabling();
 }
 
 
 //* Draw  --------------------------------------------------------
-void J4CALBlock::Draw()
+void J4VCALBlock::Draw()
 {
    // set visualization attributes
 }
 	
 //* Print  --------------------------------------------------------
-void J4CALBlock::Print() const
+void J4VCALBlock::Print() const
 {
 }

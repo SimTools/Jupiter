@@ -26,6 +26,7 @@ J4Output*            J4CALPreHit::fgPreOutput = 0;
 //=========================================================================
 //* constructor -----------------------------------------------------------
 J4CALPreHit::J4CALPreHit( J4VComponent*         detector,  // He is in "location" now
+                          G4int                 postHitID, // PostHitID of insident particle 
                           G4int                 preHitID,  // HitID of insident particle
                           const G4ThreeVector&  pre,       // Pre-position of track
 		          const G4ThreeVector&  momentum,  // Momentum of track
@@ -36,6 +37,7 @@ J4CALPreHit::J4CALPreHit( J4VComponent*         detector,  // He is in "location
 			  G4int                 motherTrackID ) // mother track's ID
   // detector, trackID, motherTrackID, particle, TOF, Edep, Energy, Momentum
   : J4VHit(detector, trackID, motherTrackID, particle, tof, 0, energy, momentum, pre),
+    fPostHitID(postHitID),
     fPreHitID(preHitID)
 {
 }
@@ -59,7 +61,9 @@ void J4CALPreHit::Output( G4HCofThisEvent* /* PreHCTE */ )
     const G4String& errorMessage = "J4CALPreHit::Output(): write error.";
     G4cerr << errorMessage << G4endl;
   } else {
-    ofs << std::setw(3)  << fPreHitID << " "
+    ofs << "prehit "
+        << std::setw(3)  << fPostHitID << " "
+        << std::setw(3)  << fPreHitID << " "
         << std::setw(5)  << GetTrackID() << " "
 	<< std::setw(5)  << GetMotherTrackID() << " "
 	<< std::setw(12) << GetTotalEnergy() << " "

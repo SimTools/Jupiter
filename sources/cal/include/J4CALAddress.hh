@@ -1,4 +1,6 @@
 // $Id$
+#ifndef __J4CALADDRESS__
+#define __J4CALADDRESS__
 //*************************************************************************
 //* --------------------
 //* J4CALAddress
@@ -10,11 +12,8 @@
 //*     Preriminal version
 //*     2004/08/01  ONO Hiroaki  <ono@hep.sc.niigata-u.ac.jp>
 //*************************************************************************
-#ifndef __J4CALADDRESS__
-#define __J4CALADDRESS__
 
 #include "J4CALParameterList.hh"
-#include "J4CALSubLayerParameterList.hh"
 
 //=========================================================================
 //---------------------
@@ -36,12 +35,10 @@ public:
   static G4int GetCellMiniConeID( G4int cellID, G4bool isEM );
   static G4int GetCellMiniTowerID( G4int cellID, G4bool isEM );
   static G4int GetCellLayerID( G4int cellID, G4bool isEM );
-  static G4int GetCellSubLayerID( G4int cellID,G4bool isEM );
 
   static G4int GetCellID(  G4int coneID, G4int towerID,
 			   G4int miniConeID, G4int miniTowerID,
-			   G4int layerID, G4int subLayerID, 
-			   G4bool isEM );
+			   G4int layerID, G4bool isEM );
   
 private:
   G4int   fConeID; 
@@ -49,7 +46,6 @@ private:
   G4int   fMiniConeID; 
   G4int   fMiniTowerID; 
   G4int   fLayerID; 
-  G4int   fSubLayerID; 
   G4int   fCellID;
   
 };

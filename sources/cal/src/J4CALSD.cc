@@ -10,16 +10,17 @@
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
 
+#include "J4TPCPostHit.hh"
 #include "J4CALSD.hh"
 #include "J4CALPreHit.hh"
 #include "J4CAL.hh"
 #include "J4CALCone.hh"
-#include "J4CALMiniTower.hh"
+#include "J4VCALMiniTower.hh"
 #include "J4CALEM.hh"
 #include <cmath>
 
 G4int J4CALSD::fgCurrentPreHitID = -1;
-G4int J4CALSD::fgTrackRegID = -1;
+G4int J4CALSD::fgCurrentTrackID  = INT_MAX;
  
 //=====================================================================
 //---------------------
@@ -32,7 +33,6 @@ G4int J4CALSD::fgTrackRegID = -1;
 J4CALSD::J4CALSD( J4VDetectorComponent* detector )
                   :J4VSD<J4CALPreHit>( detector )
 {  
-  SetCurrentTrackID( INT_MAX );  
 }
 
 //=====================================================================
@@ -76,23 +76,24 @@ G4bool J4CALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ )
 
   //Get perticle information
   //G4int                 preHitID = 0;
-  const G4ThreeVector&  pre      = GetPrePosition();
-  const G4ThreeVector&  momentum = GetMomentum();
+  G4int                 postHitID = J4TPCPostHit::GetCurPostHitID();
+  const G4ThreeVector&  pre       = GetPrePosition();
+  const G4ThreeVector&  momentum  = GetMomentum();
   //  G4double              edep     = GetEnergyDeposit();
-  G4double              energy   = GetKineticEnergy();
-  G4double              tof      = GetTof();
-  G4int                 trackID  = GetTrackID();
+  G4double              energy    = GetKineticEnergy();
+  G4double              tof       = GetTof();
+  G4int                 trackID   = GetTrackID();
   G4int                 motherTrackID = GetMotherTrackID();
   G4ParticleDefinition* particle = GetParticle(); 
   
   // Create new hit
-  if ( trackID < GetCurrentTrackID()) { 
+  if ( trackID < fgCurrentTrackID ) { 
 
      fgCurrentPreHitID++;
      SetCurrentTrackID( trackID );
      // create new hit!
 
-     fCurrentPreHitPtr = new J4CALPreHit( ptrCAL, fgCurrentPreHitID, pre, momentum, 
+     fCurrentPreHitPtr = new J4CALPreHit( ptrCAL, postHitID, fgCurrentPreHitID, pre, momentum, 
 					  energy, tof, trackID, particle, motherTrackID );
      
      ( (J4CALPreHitBuf *)GetHitBuf() ) -> insert( fCurrentPreHitPtr );

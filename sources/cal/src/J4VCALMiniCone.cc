@@ -1,7 +1,7 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* J4CALMiniCone
+//* J4VCALMiniCone
 //* --------------------
 //* (Description)
 //* 	Class for describing his/her detector compornents.
@@ -10,8 +10,10 @@
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
 
-#include "J4CALMiniCone.hh"
-#include "J4CALMiniTower.hh"
+#include "J4VCALMiniCone.hh"
+#include "J4CALEMMiniTower.hh"
+#include "J4CALHDMiniTower.hh"
+#include "J4VCALMiniTower.hh"
 #include "J4CALParameterList.hh"
 #include "G4Sphere.hh"
 
@@ -19,8 +21,6 @@
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
-
-const G4String  J4CALMiniCone::fFirstName = "MiniCone";
 
 //=====================================================================
 //---------------------
@@ -30,105 +30,91 @@ const G4String  J4CALMiniCone::fFirstName = "MiniCone";
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CALMiniCone::J4CALMiniCone(J4VDetectorComponent *parent,
-                                           G4bool  isem,
-                                            G4int  nclones,
-                                            G4int  nbrothers, 
-                                            G4int  me,
-                                            G4int  copyno)
-             : J4VCALDetectorComponent(fFirstName, isem, parent,
-                                       nclones, nbrothers, me, copyno)
+J4VCALMiniCone::J4VCALMiniCone( const G4String       &name,
+                                J4VDetectorComponent *parent,
+                                               G4int  nclones,
+                                               G4int  nbrothers, 
+                                               G4int  me,
+                                               G4int  copyno )
+: J4VCALDetectorComponent( name, parent, nclones, nbrothers, me, copyno )
 {   
 }
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
-J4CALMiniCone::~J4CALMiniCone()
+J4VCALMiniCone::~J4VCALMiniCone()
 {
-#ifndef __REPLICA__
+#ifdef __REPLICA__
+  if (fMiniTowers && Deregister(fMiniTowers)) delete fMiniTowers;
+#else
   G4int nMiniTowers = fMiniTowers.size();
   for (G4int i = 0; i < nMiniTowers; i++) {
     if (fMiniTowers[i] && Deregister(fMiniTowers[i])) delete fMiniTowers[i];
   }
-#else
-  if (fMiniTower && Deregister(fMiniTower)) delete fMiniTower;
 #endif
 }
 
 //=====================================================================
 //* Assemble   --------------------------------------------------------
 
-void J4CALMiniCone::Assemble() 
+void J4VCALMiniCone::Assemble() 
 {   
-  if (!GetLV()) {
- 
-    J4CALParameterList *ptrList = OpenParameterList();
-      
-    G4Sphere* mother = (G4Sphere *)(GetMother()->GetSolid());
+  if ( !GetLV() ) {
 
-    G4double rmin = mother -> GetInsideRadius();
-    G4double rmax = mother -> GetOuterRadius();
-    G4int nLayers = 0;
-    G4int ntheta  = 0;
-    G4int nphi    = 0;
-      
-    if (IsEM()) {
-      nLayers = ptrList -> GetEMNLayers();
-      nphi    = ptrList -> GetEMMiniTowerNClones();
-      ntheta  = ptrList -> GetEMMiniConeNClones();
-    } else {
-      nLayers = ptrList -> GetHDNLayers();
-      nphi    = ptrList -> GetHDMiniTowerNClones();
-      ntheta  = ptrList -> GetHDMiniConeNClones();
-    }
+    G4Sphere* mother = (G4Sphere *)( GetMother()->GetSolid() );
 
-    G4int myID = GetMyID();
+    G4double rmin   = mother->GetInsideRadius();
+    G4double rmax   = mother->GetOuterRadius();
+    G4int nphi      = GetNofMiniCones();
+    G4int ntheta    = GetNofMiniTowers();
+    G4int myID      = GetMyID();
     G4double sphi   = mother->GetStartPhiAngle();
     G4double dphi   = mother->GetDeltaPhiAngle();
-    G4double dtheta = (mother->GetDeltaThetaAngle()) / ntheta;
-    G4double stheta = (mother->GetStartThetaAngle()) + myID * dtheta;
+    G4double dtheta = ( mother->GetDeltaThetaAngle() ) / ntheta;
+    G4double stheta = ( mother->GetStartThetaAngle() ) + myID * dtheta;
 
     // MakeSolid ----------//
     G4Sphere* minicone = new G4Sphere( GetName(), rmin, rmax, sphi, dphi, stheta, dtheta );
-    Register(minicone);
-    SetSolid(minicone);
+    Register( minicone );
+    SetSolid( minicone );
 
     // MakeLogicalVolume --//  
-    MakeLVWith(OpenMaterialStore()->Order(ptrList->GetConeMaterial()));
+    MakeLVWith( OpenMaterialStore()->Order( GetMaterial()) );
     
     // SetVisAttribute ----//
-    PaintLV(ptrList->GetMiniConeVisAtt(), ptrList->GetMiniConeColor());
+    PaintLV( GetVisAtt(), GetColor() );
   	
     // Install daughter PV //
-#ifndef __REPLICA__
-    for (G4int i = 0; i < nphi; i++) {
-      J4CALMiniTower* minitower = new J4CALMiniTower(this, IsEM(), 1, nphi, i);
-      fMiniTowers.push_back(minitower);
-      Register(minitower);
-      minitower->InstallIn(this);
-      SetDaughter(minitower);
-    }
+#ifdef __REPLICA__ 
+    J4VCALMiniTower* fMiniTowers = Create( this, nphi );
+    Register( fMiniTowers );
+    fMiniTowers -> InstallIn( this );
+    SetDaughter( fMiniTowers );
 #else
-    fMiniTower = new J4CALMiniTower(this, IsEM(), nphi);
-    Register(fMiniTower);
-    fMiniTower->InstallIn(this);
-    SetDaughter(fMiniTower);
+    for ( G4int i = 0; i < nphi; i++ ) {
+      J4VCALMiniTower* minitower = Create( this, 1, nphi, i );
+      fMiniTowers.push_back( minitower );
+      Register( minitower );
+      minitower -> InstallIn( this );
+      SetDaughter( minitower );
+    }
 #endif
   }
 }
 
+
+
 //=====================================================================
 //* Cabling  ----------------------------------------------------------
-
-void J4CALMiniCone::Cabling()
-{
-}
+ void J4VCALMiniCone::Cabling()
+ {
+ }
 
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CALMiniCone::InstallIn( J4VComponent*        /* mother */,
+void J4VCALMiniCone::InstallIn( J4VComponent*        /* mother */,
                                G4RotationMatrix*    /* prot   */, 
                                const G4ThreeVector& /* tlate  */) 
 { 
@@ -140,13 +126,13 @@ void J4CALMiniCone::InstallIn( J4VComponent*        /* mother */,
 
 
 //* Draw  --------------------------------------------------------
-void J4CALMiniCone::Draw()
+void J4VCALMiniCone::Draw()
 {
    // set visualization attributes
   
 }
 	
 //* Print  --------------------------------------------------------
-void J4CALMiniCone::Print() const
+void J4VCALMiniCone::Print() const
 {
 }

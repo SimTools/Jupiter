@@ -20,7 +20,7 @@
 // constants (detector parameters)
 //--------------------------------
 
-const G4String J4CALCone::fFirstName = "Cone";
+const G4String J4CALCone::fFirstName= "Cone" ;
 
 //=====================================================================
 //---------------------
@@ -30,14 +30,13 @@ const G4String J4CALCone::fFirstName = "Cone";
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CALCone::J4CALCone(J4VDetectorComponent *parent,
+J4CALCone::J4CALCone( J4VDetectorComponent *parent,
                                     G4int  nclones,
                                     G4int  nbrothers, 
                                     G4int  me,
-                                    G4int  copyno)
-         : J4VCALDetectorComponent(fFirstName, parent, nclones,
-                                   nbrothers, me, copyno),
-           fTower(0) 
+                                    G4int  copyno )
+ : J4VCALDetectorComponent( fFirstName, parent, nclones,
+                            nbrothers, me, copyno ), fTower(0) 
 {   
    J4CALParameterList *ptrList = OpenParameterList();  	
    J4CALParameterList::J4CALTowerParam *curparam = ptrList->GetTowerParam(me); 
@@ -49,7 +48,7 @@ J4CALCone::J4CALCone(J4VDetectorComponent *parent,
 
 J4CALCone::~J4CALCone()
 {
-   if (Deregister(fTower)) delete fTower;
+   if ( Deregister(fTower) ) delete fTower;
 }
 
 //=====================================================================
@@ -62,8 +61,8 @@ void J4CALCone::Assemble()
       J4CALParameterList* ptrList = OpenParameterList();  	
       J4CALParameterList::J4CALTowerParam *curparam = ptrList->GetTowerParam(GetMyID());
       
-      const G4double EMThickness = ptrList->GetEMThickness();
-      const G4double HDThickness = ptrList->GetHDThickness();
+      G4double EMThickness = ptrList->GetEMThickness();
+      G4double HDThickness = ptrList->GetHDThickness();
       
       G4double rmin   = curparam->GetR();
       G4double rmax   = rmin + EMThickness + HDThickness; 

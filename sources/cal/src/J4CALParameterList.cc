@@ -15,8 +15,6 @@
 #include "TVNewton.hh"
 #include "geomdefs.hh"
 
-//#define __DRAWONETOWER__
-
 J4CALParameterList* J4CALParameterList::fgInstance = 0;
 
 //=====================================================================
@@ -33,7 +31,7 @@ J4CALParameterList* J4CALParameterList::GetInstance()
 //* protected constructor ---------------------------------------------
 
 J4CALParameterList::J4CALParameterList( const G4String& name )
-  : J4VParameterList(name), fSubLayerParameterList(0)
+  : J4VParameterList(name) 
 {
    fgInstance = this;
    
@@ -56,34 +54,34 @@ J4CALParameterList::~J4CALParameterList()
 void J4CALParameterList::SetMaterials()
 {
 #if 1
-   fCALMaterial          = "Air";
-   fConeMaterial         = "Air";
-   fTowerMaterial        = "Air";
-   fEMMaterial           = "Air";
-   fHDMaterial           = "Air";
-   fMiniConeMaterial     = "Air";
-   fMiniTowerMaterial    = "Air";
-   fLayerMaterial        = "Air";
+   fCALMaterial           = "Air";
+   fConeMaterial          = "Air";
+   fTowerMaterial         = "Air";
+   fEMMaterial            = "Air";
+   fHDMaterial            = "Air";
+   fMiniConeMaterial      = "Air";
+   fMiniTowerMaterial     = "Air";
+   fLayerMaterial         = "Air";
+   fEMAbsLayerMaterial    = "Lead";
+   fHDAbsLayerMaterial    = "Lead";
+   fEMActiveLayerMaterial = "Scintillator";
+   fHDActiveLayerMaterial = "Scintillator";
 
-   J4CALSubLayerParameterList *subList = GetSubLayerParam();
-
-   fEMActiveLayerMaterial= subList->GetLayerMaterial("EM",1);//"Scintillator";
-   fEMAbsLayerMaterial   = subList->GetLayerMaterial("EM",0);//"Lead";
-   fHDActiveLayerMaterial= subList->GetLayerMaterial("HD",1);//"Scintillator";
-   fHDAbsLayerMaterial   = subList->GetLayerMaterial("HD",0);//"Lead";
 #else
-   fCALMaterial          = "vacuum";
-   fConeMaterial         = "vacuum";
-   fEMMaterial           = "vacuum";
-   fHDMaterial           = "vacuum";
-   fMiniConeMaterial     = "vacuum";
-   fMiniTowerMaterial    = "vacuum";
-   fLayerMaterial        = "vacuum";
-   fEMActiveLayerMaterial= "vacuum";
-   fEMAbsLayerMaterial   = "vacuum";
-   fHDActiveLayerMaterial= "vacuum";
-   fHDAbsLayerMaterial   = "vacuum";
+   fCALMaterial           = "vacuum";
+   fConeMaterial          = "vacuum";
+   fEMMaterial            = "vacuum";
+   fHDMaterial            = "vacuum";
+   fMiniConeMaterial      = "vacuum";
+   fMiniTowerMaterial     = "vacuum";
+   fLayerMaterial         = "vacuum";
+   fEMAbsLayerMaterial    = "vacuum";
+   fHDAbsLayerMaterial    = "vacuum";
+   fEMActiveLayerMaterial = "vacuum";
+   fHDActiveLayerMaterial = "vacuum";
+
 #endif
+
 }
 
 //=====================================================================
@@ -101,7 +99,7 @@ void J4CALParameterList::SetParameters()
 
    // Endcap ------------------ 
 #if defined(__GLD_V1__)
-   fEndcapInnerR    =  40.*cm;
+   fEndcapInnerR    =  39.9*cm;
 #else
    fEndcapInnerR    =  45.*cm;
 #endif
@@ -134,34 +132,34 @@ void J4CALParameterList::SetParameters()
    fBarrelCoverageAngle = atan2(fEndcapTowerFrontZ, fBarrelTowerFrontRho);
    // as a dip angle(lambda)
 
-   J4CALSubLayerParameterList *subList = GetSubLayerParam();
-
    // EM ------------------
-   //fEMNLayers            = 10;
-   fEMNLayers              = 38;
-   fEMNSubLayers           = 2;
-   fEMAbsLayerThickness    = subList->GetLayerSize("EM",0);//4.*mm;
-   fEMActiveLayerThickness = subList->GetLayerSize("EM",1);//1.*mm;
-   fEMThickness            = (fEMAbsLayerThickness+fEMActiveLayerThickness)*fEMNLayers;
-   fEMMiniConeNClones      = 3;
-   fEMMiniTowerNClones     = 3;
+   //fEMNLayers          = 10;
+   fEMNLayers          = 38;
+   fEMMiniConeNClones  = 3;
+   fEMMiniTowerNClones = 3;
 
-   // HD -------------
-   //fHDNLayers            = 10;
-   fHDNLayers              = 130;
-   fHDNSubLayers           = 2;
-   fHDAbsLayerThickness    = subList->GetLayerSize("HD",0);//8.*mm;
-   fHDActiveLayerThickness = subList->GetLayerSize("HD",1);//2.*mm;
-   fHDThickness            = (fHDAbsLayerThickness+fHDActiveLayerThickness)*fHDNLayers;
-   fHDMiniTowerNClones   = 1;
-   fHDMiniConeNClones    = 1;
+   // HD ------------------
+   //fHDNLayers          = 10;
+   fHDNLayers          = 130;
+   fHDMiniTowerNClones = 1;
+   fHDMiniConeNClones  = 1;
+      
+   // Thickness of AbsLayer ------------
+   fEMAbsLayerThickness = 4. *mm;
+   fHDAbsLayerThickness = 8. *mm;
+ 
+   // Thickness of ActiveLayer ------------
+   fEMActiveLayerThickness = 1. *mm;
+   fHDActiveLayerThickness = 2. *mm;
 
    // Number of Barrel types
    fNIsBarrel          = 2;
 
    // Nubmer of CAL types
    fNIsEM              = 2;
-   
+ 
+
+
    // ==== Calculate Tower parameters =============================== 
    G4double startlambda = 0;
 
@@ -596,8 +594,17 @@ void J4CALParameterList::SetVisAttributes()
    fCALVisAtt         = TRUE;//FALSE;
    fBarrelVisAtt      = FALSE;
    fEndcapVisAtt      = FALSE;
-#ifndef __DRAWONETOWER__
-   fConeVisAtt        = TRUE;//FALSE;
+#ifdef __DRAWONETOWER__
+   fConeVisAtt        = TRUE;
+   fTowerVisAtt       = TRUE;
+   fEMVisAtt          = TRUE;
+   fHDVisAtt          = TRUE;
+   fMiniConeVisAtt    = TRUE;
+   fMiniTowerVisAtt   = TRUE;
+   fLayerVisAtt       = TRUE;
+   fSubLayerVisAtt    = TRUE;
+#else
+   fConeVisAtt        = FALSE;
    fTowerVisAtt       = TRUE;//FALSE; 
    fEMVisAtt          = FALSE;//TRUE;
    fHDVisAtt          = FALSE;//TRUE;
@@ -605,15 +612,6 @@ void J4CALParameterList::SetVisAttributes()
    fMiniTowerVisAtt   = FALSE;
    fLayerVisAtt       = FALSE;
    fSubLayerVisAtt    = FALSE;
-#else
-   fConeVisAtt        = TRUE;//FALSE;
-   fTowerVisAtt       = TRUE;//FALSE; 
-   fEMVisAtt          = TRUE;
-   fHDVisAtt          = TRUE;
-   fMiniConeVisAtt    = TRUE;
-   fMiniTowerVisAtt   = TRUE;
-   fLayerVisAtt       = TRUE;
-   fSubLayerVisAtt    = TRUE;
 #endif
 }
 

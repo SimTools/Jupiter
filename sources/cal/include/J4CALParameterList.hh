@@ -24,7 +24,6 @@
 #include "G4Material.hh"
 #include "G4Color.hh"
 #include "J4ParameterList.hh"
-#include "J4CALSubLayerParameterList.hh"
 
 // ====================================================================
 // ----------------
@@ -86,14 +85,10 @@ class J4CALParameterList : public J4VParameterList
    inline G4int    GetConstNTowers()        const { return fConstNTowers;        }
 
    //*EM ----------------------------------------------------------------
-   inline G4double GetEMThickness()            const { return fEMThickness;    }
-   inline G4double GetEMActiveLayerThickness() const { return fEMActiveLayerThickness;    }
-   inline G4double GetEMAbsLayerThickness()    const { return fEMAbsLayerThickness;    }
+   inline G4double GetEMThickness()       const;
 
    //*HD ---------------------------------------------------------
-   inline G4double GetHDThickness()            const { return fHDThickness;    }
-   inline G4double GetHDActiveLayerThickness() const { return fHDActiveLayerThickness;    }
-   inline G4double GetHDAbsLayerThickness()    const { return fHDAbsLayerThickness;    }
+   inline G4double GetHDThickness()       const;
 
    //*IsBarrel
    inline G4int   GetNIsBarrel()          const { return fNIsBarrel; }
@@ -111,12 +106,18 @@ class J4CALParameterList : public J4VParameterList
    inline G4int GetHDMiniTowerNClones() const { return fHDMiniTowerNClones; }
 
    //*Layer
+   inline G4double GetEMLayerThickness()      const; 
+   inline G4double GetHDLayerThickness()      const;
    inline G4int GetEMNLayers()                const { return fEMNLayers; } 
    inline G4int GetHDNLayers()                const { return fHDNLayers; } 
 
-   //*SubLayer
-   inline G4int GetEMNSubLayersPerLayer()    const { return fEMNSubLayers; } 
-   inline G4int GetHDNSubLayersPerLayer()    const { return fHDNSubLayers; } 
+   //*AbsLayer
+   inline G4double GetEMAbsLayerThickness() const { return fEMAbsLayerThickness; }  
+   inline G4double GetHDAbsLayerThickness() const { return fHDAbsLayerThickness; }  
+
+   //*ActiveLayer
+   inline G4double GetEMActiveLayerThickness() const { return fEMActiveLayerThickness; }  
+   inline G4double GetHDActiveLayerThickness() const { return fHDActiveLayerThickness; }  
 
    //*Materials ---------------------------------------------------------
    inline G4String GetCALMaterial()          const { return fCALMaterial;    }
@@ -128,11 +129,12 @@ class J4CALParameterList : public J4VParameterList
    inline G4String GetHDMaterial()           const { return fHDMaterial;     }
    inline G4String GetMiniConeMaterial()     const { return fMiniConeMaterial; }
    inline G4String GetMiniTowerMaterial()    const { return fMiniTowerMaterial; }
+   inline G4String GetLayerMaterial()        const { return fLayerMaterial; }
    inline G4String GetEMAbsLayerMaterial()   const { return fEMAbsLayerMaterial; }
    inline G4String GetHDAbsLayerMaterial()   const { return fHDAbsLayerMaterial; }
    inline G4String GetEMActiveLayerMaterial()const { return fEMActiveLayerMaterial; }
    inline G4String GetHDActiveLayerMaterial()const { return fHDActiveLayerMaterial; }
-   inline G4String GetLayerMaterial()        const { return fLayerMaterial; }
+
 
    //*VisAtt ------------------------------------------------------------
    inline G4bool   GetCALVisAtt()         const { return fCALVisAtt;      }
@@ -146,6 +148,7 @@ class J4CALParameterList : public J4VParameterList
    inline G4bool   GetMiniTowerVisAtt()   const { return fMiniTowerVisAtt;}
    inline G4bool   GetLayerVisAtt()       const { return fLayerVisAtt;    }
    inline G4bool   GetSubLayerVisAtt()    const { return fSubLayerVisAtt; }
+
    //*Color  ------------------------------------------------------------
    inline G4Color  GetCALColor()          const { return fCALColor;       }
    inline G4Color  GetBarrelColor()       const { return fBarrelColor;    }
@@ -158,6 +161,7 @@ class J4CALParameterList : public J4VParameterList
    inline G4Color  GetMiniTowerColor()    const { return fMiniTowerColor; }
    inline G4Color  GetLayerColor()        const { return fLayerColor;   }
    inline G4Color  GetSubLayerColor()     const { return fSubLayerColor;   }
+
    //
    // Setters
    //
@@ -270,6 +274,7 @@ class J4CALParameterList : public J4VParameterList
    J4CALTowerParamVector  GetTowerParamVector()  const { return fTowerParamVector; }
    J4CALTowerParam       *GetTowerParam(G4int i) const { return fTowerParamVector[i].second; }
 
+#if 0
    // SubParameterList 
    inline J4CALSubLayerParameterList* GetSubLayerParam()
    {
@@ -278,13 +283,16 @@ class J4CALParameterList : public J4VParameterList
       }
       return fSubLayerParameterList;
    }
+#endif
  
  private:
 
    static J4CALParameterList *fgInstance;
    J4CALTowerParamVector      fTowerParamVector;
 
+#if 0
    J4CALSubLayerParameterList* fSubLayerParameterList;
+#endif
 
    // material
    G4String  fCALMaterial; 
@@ -354,13 +362,9 @@ class J4CALParameterList : public J4VParameterList
 
    // EM
    G4double  fEMThickness;
-   G4double  fEMAbsLayerThickness;
-   G4double  fEMActiveLayerThickness;
 
    // HD
    G4double  fHDThickness;
-   G4double  fHDAbsLayerThickness;
-   G4double  fHDActiveLayerThickness;
 
    // Barrel, endcap types for isBarrel
    G4int     fNIsBarrel;
@@ -380,9 +384,15 @@ class J4CALParameterList : public J4VParameterList
    G4double  fNLayers;
    G4int     fEMNLayers;
    G4int     fHDNLayers;
-   G4int     fEMNSubLayers;
-   G4int     fHDNSubLayers;
    
+   // AbsLayer
+   G4double   fEMAbsLayerThickness;
+   G4double   fHDAbsLayerThickness;
+
+   // ActiveLayer
+   G4double   fEMActiveLayerThickness;
+   G4double   fHDActiveLayerThickness;
+
 };
 
 //=========================================================
@@ -441,5 +451,26 @@ G4int J4CALParameterList::GetNendcapCones() const
 {
    return GetNcones() - GetNbarrelCones(); 
 }
+
+G4double J4CALParameterList::GetEMThickness() const 
+{
+   return ( GetEMAbsLayerThickness() + GetEMActiveLayerThickness() ) * GetEMNLayers();
+}
+ 
+G4double J4CALParameterList::GetHDThickness() const 
+{
+   return ( GetHDAbsLayerThickness() + GetHDActiveLayerThickness() ) * GetHDNLayers();
+}
+
+G4double J4CALParameterList::GetEMLayerThickness() const 
+{
+   return GetEMAbsLayerThickness() + GetEMActiveLayerThickness();
+}
+ 
+G4double J4CALParameterList::GetHDLayerThickness() const 
+{
+   return GetHDAbsLayerThickness() + GetHDActiveLayerThickness(); 
+}
+
 
 #endif

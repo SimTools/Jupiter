@@ -33,14 +33,6 @@ public:
                            G4int                 me        = 0,
                            G4int                 copyno    = -1 );
 
-  J4VCALDetectorComponent( const G4String       &name, 
-                           G4bool                isem      = true,
-  			   J4VDetectorComponent *parent    = 0,
-                           G4int                 nclones   = 1,
-                           G4int                 nbrothers = 1, 
-                           G4int                 me        = 0,
-                           G4int                 copyno    = -1 );
-
   virtual ~J4VCALDetectorComponent();
 
 #if 0
@@ -49,16 +41,12 @@ public:
   virtual const J4VCALDetectorComponent& 
   		operator=(const J4VCALDetectorComponent& right);    
 #endif
-  G4bool IsEM ()            const { return fIsEM; }
 
 protected:    
   J4VMaterialStore* 	 OpenMaterialStore();
   J4CALParameterList* 	 OpenParameterList() { return J4CALParameterList::GetInstance(); }
 
-  void   SetEM(G4bool val = true) { fIsEM = val; }
-  
 private:
-  G4bool fIsEM;
   static J4CALMaterialStore* fMaterialStore;
   static G4String fSubGroup;
        

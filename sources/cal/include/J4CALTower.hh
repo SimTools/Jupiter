@@ -15,8 +15,8 @@
 
 #include "J4VCALDetectorComponent.hh"
 #include "J4CALCone.hh"
-//#include "J4CALEM.hh"
-//#include "J4CALHD.hh"
+#include "J4CALEM.hh"
+#include "J4CALHD.hh"
 
 //=====================================================================
 //---------------------
@@ -27,7 +27,7 @@ class J4CALHD;
 class J4CALTower : public J4VCALDetectorComponent {	
 
 public:
-  J4CALTower(J4VDetectorComponent *parent     = 0,
+  J4CALTower(J4VDetectorComponent *parent    = 0,
                              G4int  nclones   = 1,
                              G4int  nbrothers = 1, 
                              G4int  me        = 0,

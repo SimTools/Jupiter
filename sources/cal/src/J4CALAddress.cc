@@ -9,10 +9,11 @@
 //* (Update Record)
 //*	2004/08/03  ONO Hiroaki Original version.
 //*************************************************************************
+
 #include "G4Types.hh"
 #include "J4CALAddress.hh"
 #include "J4CALParameterList.hh"
-#include "J4CALSubLayerParameterList.hh"
+//#include "J4CALSubLayerParameterList.hh"
 
 //=====================================================================
 //---------------------
@@ -22,8 +23,7 @@
 //=====================================================================
 //* default constructor -----------------------------------------------
 J4CALAddress::J4CALAddress() 
-: fConeID(0), fTowerID(0), fMiniConeID(0),fMiniTowerID(0),
-  fLayerID(0), fSubLayerID(0)
+: fConeID(0), fTowerID(0), fMiniConeID(0), fMiniTowerID(0), fLayerID(0)
 { }
 
 //=====================================================================
@@ -34,14 +34,13 @@ J4CALAddress::~J4CALAddress() { }
 //* static functions --------------------------------------------------
 G4int J4CALAddress::GetCellID( G4int coneID, G4int towerID,
 			       G4int miniConeID, G4int miniTowerID,
-			       G4int layerID, G4int subLayerID,
-			       G4bool isEM )
+			       G4int layerID, G4bool isEM )
 {
   G4int  cellID      = -1;
   
   J4CALParameterList* ptrList = J4CALParameterList::GetInstance();
   
-  const G4int nCones        = ptrList -> GetNcones();
+  //const G4int nCones        = ptrList -> GetNcones();
   const G4int nTowers       = ptrList -> GetConstNTowers(); // Set as constant value for tower
   const G4int nEMLayers     = ptrList -> GetEMNLayers();
   const G4int nHDLayers     = ptrList -> GetHDNLayers();
@@ -50,11 +49,19 @@ G4int J4CALAddress::GetCellID( G4int coneID, G4int towerID,
   const G4int nEMMiniTowers = ptrList -> GetEMMiniTowerNClones();
   const G4int nHDMiniTowers = ptrList -> GetHDMiniTowerNClones();
   const G4int nIsEM         = ptrList -> GetNIsEM();
-  
+
+  G4cerr << "coneID = " << coneID << " " 
+         << "towerID = " << towerID << " "   
+         << "isEM = " << isEM << " "   
+         << "miniConeID = " << miniConeID << " "   
+         << "miniTowerID = " << miniTowerID << " "   
+         << "layerID = " << layerID 
+         << G4endl;
+
   if ( isEM ) 
-    cellID = coneID + nCones*( towerID + nTowers*( 0 + nIsEM*( miniConeID + nEMMiniCones*( miniTowerID + nEMMiniTowers*( layerID + nEMLayers*( subLayerID ))))));
+    cellID = ((((coneID*nTowers + towerID)*nIsEM + 0)*nEMMiniCones + miniConeID)*nEMMiniTowers + miniTowerID)*nEMLayers + layerID;
   else
-    cellID = coneID + nCones*( towerID + nTowers*( 1 + nIsEM*( miniConeID + nHDMiniCones*( miniTowerID + nHDMiniTowers*( layerID + nHDLayers*( subLayerID ))))));
+    cellID = ((((coneID*nTowers + towerID)*nIsEM + 1)*nHDMiniCones + miniConeID)*nHDMiniTowers + miniTowerID)*nHDLayers + layerID;
 
   return cellID;
 }
@@ -136,28 +143,3 @@ G4int J4CALAddress::GetCellLayerID( G4int cellID, G4bool isEM )
   return layerID;
 }
 
-G4int J4CALAddress::GetCellSubLayerID( G4int cellID, G4bool isEM )
-{
-  J4CALParameterList* ptrList = J4CALParameterList::GetInstance();
-  J4CALSubLayerParameterList* ptrSubList = ptrList -> GetSubLayerParam();
-  const G4int nCones        = ptrList -> GetNcones();
-  const G4int nTowers       = ptrList -> GetConstNTowers();
-  const G4int nEMMiniCones  = ptrList -> GetEMMiniConeNClones();
-  const G4int nHDMiniCones  = ptrList -> GetHDMiniConeNClones();
-  const G4int nEMMiniTowers = ptrList -> GetEMMiniTowerNClones();
-  const G4int nHDMiniTowers = ptrList -> GetHDMiniTowerNClones();
-  const G4int nEMLayers     = ptrList -> GetEMNLayers();
-  const G4int nHDLayers     = ptrList -> GetHDNLayers();
-  const G4int nIsEM         = ptrList -> GetNIsEM();
-  const G4int nEMSubLayers  = ptrSubList -> GetNLayers( "EM" );
-  const G4int nHDSubLayers  = ptrSubList -> GetNLayers( "HD" );
-  G4int subLayerID = -1;
-
-  if ( isEM ) {
-    subLayerID  = ( cellID / nCones / nTowers / nIsEM / nEMMiniCones / nEMMiniTowers / nEMLayers ) % nEMSubLayers;
-  } else {
-    subLayerID  = ( cellID / nCones / nTowers / nIsEM / nHDMiniCones / nHDMiniTowers / nHDLayers ) % nHDSubLayers; 
-  }
-  
-  return subLayerID;
-}

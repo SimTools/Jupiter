@@ -66,8 +66,9 @@ void J4CALHit::Output( G4HCofThisEvent* /* HCTE */ )
     const G4String& errorMessage = "J4CALHit::Output(): write error.";
     G4cerr << errorMessage << G4endl;
   } else {
-    ofs << std::setw(3) << fPreHitID << " "
-	<< std::setw(5) << GetPDGEncoding() << " "
+    ofs << "calhit "
+        << std::setw(3) << fPreHitID << " "	
+        << std::setw(5) << GetPDGEncoding() << " "
 	<< std::setw(10) << fCellID << " "
 	<< std::setw(2) << (G4int)fIsEM << " "
 	<< std::setw(2) << (G4int)fIsBarrel << " "

@@ -1,3 +1,4 @@
+
 // $Id$
 #ifndef __J4CALPREHIT__
 #define __J4CALPREHIT__
@@ -38,6 +39,7 @@ public:
   J4CALPreHit();
 
   J4CALPreHit( J4VComponent*         detector,
+	       G4int                 posthitID,
 	       G4int                 hitID,
                const G4ThreeVector&  pre,
 	       const G4ThreeVector&  momentum,
@@ -58,6 +60,7 @@ public:
   virtual void Print();
 
   // getters
+  inline G4int         GetPostHitID()        const { return fPostHitID;       }
   inline G4int         GetPreHitID()         const { return fPreHitID;       }
   inline G4ThreeVector GetInjectionPoint()   const { return GetPrePosition(); }
   //inline G4ThreeVector GetMomentum()         const { return fMomentum;       }
@@ -67,6 +70,7 @@ public:
   //inline G4ParticleDefinition* GetParticle() const { return fParticle;       }
   
   // setters
+  inline void SetPostHitID( G4int n )                { fPostHitID      = n; }
   inline void SetPreHitID( G4int n )                 { fPreHitID       = n; }
   inline void SetInjectionPoint( G4ThreeVector p )   { SetPrePosition(p); }
   //inline void SetMomentum( const G4ThreeVector& p )  { fMomentum       = p; }
@@ -80,7 +84,9 @@ public:
   static J4CALPreHitAllocator  fgPreHitAllocator;
   static J4Output             *fgPreOutput;       // Pointer to Output Module
 
+  G4int                  fPostHitID;
   G4int                  fPreHitID;
+
   // The following data are available from J4VHit
   //G4ThreeVector          fInjectionPoint; // fPrePosition in J4VHit
   //G4ThreeVector          fMomentum;

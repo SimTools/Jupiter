@@ -21,7 +21,6 @@
 //---------------------
 
 class J4CALTower;
-
 class J4CALCone : public J4VCALDetectorComponent {	
 
 public:
@@ -45,7 +44,7 @@ private:
   void  Cabling ();
   
 private:  
-  static const G4String fFirstName;
+  static const G4String  fFirstName;
 
   J4CALTower           *fTower;
   G4bool                fIsBarrel;

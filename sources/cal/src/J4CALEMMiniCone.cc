@@ -1,7 +1,7 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* J4CALEM
+//* J4CALEMMiniCone
 //* --------------------
 //* (Description)
 //* 	Class for describing his/her detector compornents.
@@ -10,14 +10,14 @@
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
 
-#include "J4CALEM.hh"
+#include "J4CALEMMiniCone.hh"
 
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
 
-const G4String  J4CALEM::fFirstName= "EM" ;
+const G4String J4CALEMMiniCone::fFirstName= "EMMiniCone" ;
 
 //=====================================================================
 //---------------------
@@ -27,29 +27,30 @@ const G4String  J4CALEM::fFirstName= "EM" ;
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CALEM::J4CALEM( J4VDetectorComponent *parent,
-                                 G4int  nclones,
-                                 G4int  nbrothers, 
-                                 G4int  me,
-                                 G4int  copyno ) 
-: J4VCALBlock( fFirstName, parent, nclones, nbrothers, me, copyno  )
+J4CALEMMiniCone::J4CALEMMiniCone( J4VDetectorComponent *parent,
+                                                 G4int  nclones,
+                                                 G4int  nbrothers, 
+                                                 G4int  me,
+                                                 G4int  copyno )
+: J4VCALMiniCone( fFirstName, parent, nclones, nbrothers, me, copyno )
 {   
 }
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
-J4CALEM::~J4CALEM()
+J4CALEMMiniCone::~J4CALEMMiniCone()
 {
 }
 
 //===================================================================
 //* Create ----------------------------------------------------------
-J4VCALMiniCone *J4CALEM::Create( J4VDetectorComponent *parent,
-                         			G4int  nclones,
-                         			G4int  nbrothers,
-                           			G4int  me,
-                        			G4int  copyno )
+J4VCALMiniTower *J4CALEMMiniCone::Create( J4VDetectorComponent *parent,
+                                                         G4int  nclones,
+                                                         G4int  nbrothers,
+                                                         G4int  me,
+                                                         G4int  copyno )
 {
-  return new J4CALEMMiniCone( parent, nclones, nbrothers, me, copyno ); 
+  return new J4CALEMMiniTower( parent, nclones, nbrothers, me, copyno ); 
 }
+

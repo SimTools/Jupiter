@@ -1,7 +1,7 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* J4CALEM
+//* J4CALEMAbsLayer
 //* --------------------
 //* (Description)
 //* 	Class for describing his/her detector compornents.
@@ -10,14 +10,14 @@
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
 
-#include "J4CALEM.hh"
+#include "J4CALEMAbsLayer.hh"
 
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
 
-const G4String  J4CALEM::fFirstName= "EM" ;
+const G4String J4CALEMAbsLayer::fFirstName= "EMAbsLayer" ;
 
 //=====================================================================
 //---------------------
@@ -27,29 +27,26 @@ const G4String  J4CALEM::fFirstName= "EM" ;
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CALEM::J4CALEM( J4VDetectorComponent *parent,
-                                 G4int  nclones,
-                                 G4int  nbrothers, 
-                                 G4int  me,
-                                 G4int  copyno ) 
-: J4VCALBlock( fFirstName, parent, nclones, nbrothers, me, copyno  )
+J4CALEMAbsLayer::J4CALEMAbsLayer(J4VDetectorComponent *parent,
+                                                G4int  nclones,
+                                                G4int  nbrothers, 
+                                                G4int  me,
+                                                G4int  copyno )
+: J4VCALSubLayer( fFirstName, parent, nclones, nbrothers, me, copyno )
 {   
 }
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
-J4CALEM::~J4CALEM()
+J4CALEMAbsLayer::~J4CALEMAbsLayer()
 {
 }
 
-//===================================================================
-//* Create ----------------------------------------------------------
-J4VCALMiniCone *J4CALEM::Create( J4VDetectorComponent *parent,
-                         			G4int  nclones,
-                         			G4int  nbrothers,
-                           			G4int  me,
-                        			G4int  copyno )
+//=====================================================================
+//* Cabling  ----------------------------------------------------------
+
+void J4CALEMAbsLayer::Cabling()
 {
-  return new J4CALEMMiniCone( parent, nclones, nbrothers, me, copyno ); 
 }
+

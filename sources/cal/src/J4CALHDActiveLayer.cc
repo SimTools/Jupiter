@@ -1,7 +1,7 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* J4CALEM
+//* J4CALHDActiveLayer
 //* --------------------
 //* (Description)
 //* 	Class for describing his/her detector compornents.
@@ -10,14 +10,16 @@
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
 
-#include "J4CALEM.hh"
+#include "J4CALHDActiveLayer.hh"
+#include "J4VCALSubLayerSD.hh"
+#include "J4CALHDActiveLayerSD.hh"
 
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
 
-const G4String  J4CALEM::fFirstName= "EM" ;
+const G4String J4CALHDActiveLayer::fFirstName= "HDActiveLayer" ;
 
 //=====================================================================
 //---------------------
@@ -27,29 +29,31 @@ const G4String  J4CALEM::fFirstName= "EM" ;
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CALEM::J4CALEM( J4VDetectorComponent *parent,
-                                 G4int  nclones,
-                                 G4int  nbrothers, 
-                                 G4int  me,
-                                 G4int  copyno ) 
-: J4VCALBlock( fFirstName, parent, nclones, nbrothers, me, copyno  )
+J4CALHDActiveLayer::J4CALHDActiveLayer(J4VDetectorComponent *parent,
+                                                      G4int  nclones,
+                                                      G4int  nbrothers, 
+                                                      G4int  me,
+                                                      G4int  copyno )
+: J4VCALSubLayer( fFirstName, parent, nclones, nbrothers, me, copyno )
 {   
 }
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
-J4CALEM::~J4CALEM()
+J4CALHDActiveLayer::~J4CALHDActiveLayer()
 {
 }
 
-//===================================================================
-//* Create ----------------------------------------------------------
-J4VCALMiniCone *J4CALEM::Create( J4VDetectorComponent *parent,
-                         			G4int  nclones,
-                         			G4int  nbrothers,
-                           			G4int  me,
-                        			G4int  copyno )
+//=====================================================================
+//* Cabling  ----------------------------------------------------------
+
+void J4CALHDActiveLayer::Cabling()
 {
-  return new J4CALEMMiniCone( parent, nclones, nbrothers, me, copyno ); 
+  if( !GetSD() ) {
+    J4CALHDActiveLayerSD* sd = new J4CALHDActiveLayerSD(this);
+    Register(sd);
+    SetSD(sd);
+  }
 }
+
