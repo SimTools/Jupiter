@@ -36,9 +36,12 @@ class J4GlobalMessenger: public G4UImessenger
 
   private: //commands
     G4UIdirectory *             fGlobalDir;
+
+#ifdef __THEBE__
     G4UIcmdWithAnInteger *      fErrorNeventsCmd;
     G4UIcmdWithAnInteger *      fErrorOutputDeviceIDCmd;
     G4UIcmdWithAString *        fErrorOutputFilenameCmd;
+#endif
     
 };
 

@@ -63,7 +63,6 @@ private:
 
 
 private:
-   G4double               fHalfDPhi;
    
 };
 

@@ -44,6 +44,7 @@ public:
   static G4int            GetErrorNevents()        { return fErrorNevents; }
   static G4int            GetErrorOutputDeviceID() { return fErrorOutputDeviceID; }
   static G4String         GetErrorOutputFilename() { return fErrorOutputFilename; }
+  static G4String         GetErrorOutputUnit()     { return fErrorOutputUnit; }
        
   static void             SetErrorOutputStream(G4std::ofstream& ofs) 
                                                    { fErrorOfs = &ofs;     }
@@ -52,6 +53,8 @@ public:
                                                    { fErrorOutputDeviceID = i; }
   static void             SetErrorOutputFilename(G4String s)
                                                    { fErrorOutputFilename = s; }
+  static void             SetErrorOutputUnit(G4String s)
+                                                   { fErrorOutputUnit = s; }
   void                    CloseErrorOutputStream();
   
 private:
@@ -61,6 +64,7 @@ private:
   static G4int              fErrorNevents;
   static G4int              fErrorOutputDeviceID;   // 0: cerr, 1:fileoutput
   static G4String           fErrorOutputFilename;
+  static G4String           fErrorOutputUnit;       // "Run", "Event", "Track"  
   J4GlobalMessenger        *fMessenger;
 };
 
