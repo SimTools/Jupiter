@@ -14,6 +14,7 @@
 #include "J4TPCPostHitKeeper.hh"
 #include "J4TPCParameterList.hh"
 #include "J4VTPCDetectorComponent.hh"
+#include "J4TrackingAction.hh"
 #include "G4VSolid.hh"
 #include "G4RotationMatrix.hh"
 
@@ -30,7 +31,7 @@
 J4TPCDriftRegionSD::J4TPCDriftRegionSD(J4VDetectorComponent* detector)
 		   :J4VSD<J4TPCLayerHit>(detector)
 {  
-  J4TPCPostHitKeeper::GetInstance(); // create book keeper
+  J4TrackingAction::GetInstance()->Add(J4TPCPostHitKeeper::GetInstance());
 }
 
 //=====================================================================

@@ -19,6 +19,7 @@
 #include "J4CALCone.hh"
 #include "J4VCALMiniTower.hh"
 #include "J4CALEM.hh"
+#include "J4TrackingAction.hh"
 #include <cmath>
  
 //=====================================================================
@@ -32,7 +33,7 @@
 J4CALSD::J4CALSD( J4VDetectorComponent* detector )
                   :J4VSD<J4CALPreHit>( detector )
 {
-  J4CALPreHitKeeper::GetInstance(); // create book keeper
+  J4TrackingAction::GetInstance()->Add(J4CALPreHitKeeper::GetInstance());
 }
 
 //=====================================================================
