@@ -19,7 +19,7 @@
 #include "J4CALHit.hh"
 #include "J4VComponent.hh"
 #include "J4CALSubLayer.hh"
-#include "TVAddress.hh"
+#include "J4CALAddress.hh"
 #include "J4CALParameterList.hh"
 #include <map>
 
