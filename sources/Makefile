@@ -33,7 +33,8 @@ all:
 	@case '${MFLAGS}' in *[ik]*) set +e;; esac; \
 	for i in $(SUBDIRS); do \
 	(cd $$i; echo ``making'' all ``in $(CURRDIR)/$$i...''; \
-	$(MAKE) $(MFLAGS)); \
+	$(MAKE) $(MFLAGS); \
+	$(MAKE) $(MFLAGS) includes); \
 	done
 
 clean:

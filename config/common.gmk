@@ -8,6 +8,7 @@ G4TMP    := $(JUPITERROOT)/tmp
 G4BIN    := $(JUPITERROOT)/bin
 G4TARGET := $(name)
 G4LIB    := $(JUPITERROOT)/lib
+G4INCLUDE:= $(JUPITERROOT)/include
 
 ifndef G4WORKDIR
   G4WORKDIR := .

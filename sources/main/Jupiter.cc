@@ -13,10 +13,10 @@
 // ====================================================================
 
 #define __INSTALLIR__  
-#define __INSTALLBD__  
+//#define __INSTALLBD__  
 #define __INSTALLVTX__  
 #define __INSTALLIT__  
-#if 1
+#if 0
 #define __INSTALLCDC__  
 #else
 #define __INSTALLTPC__
