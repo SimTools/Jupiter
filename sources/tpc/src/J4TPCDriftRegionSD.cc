@@ -80,7 +80,7 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
      return FALSE;
   }
 #else
-  if (!IsOnSurface(localpos, localp) || trackID == GetCurTrackID()) {
+  if (!IsExiting(localpos, localp) || trackID == GetCurTrackID()) {
     return FALSE;
   }
 #endif
@@ -153,16 +153,16 @@ void J4TPCDriftRegionSD::PrintAll()
 //=====================================================================
 //* IsOnSurface -------------------------------------------------------
 
-G4bool J4TPCDriftRegionSD::IsOnSurface(const G4ThreeVector &pos,
-                                       const G4ThreeVector &p) const
+G4bool J4TPCDriftRegionSD::IsExiting(const G4ThreeVector &pos,
+                                     const G4ThreeVector &p) const
 {
   J4TPCParameterList *list = J4TPCParameterList::GetInstance();
     
-  if (pos.perp() - list->GetOuterSupportTubInnerR() <= kCarTolerance &&
+  if (abs(pos.perp() - list->GetOuterSupportTubInnerR()) <= kCarTolerance &&
       p.x() * pos.x() + p.y() * pos.y() > 0.) {
      return TRUE;
   }
-  if (abs(pos.z()) - list->GetPadPlaneFrontZ() <= kCarTolerance &&
+  if (abs(abs(pos.z()) - list->GetPadPlaneFrontZ()) <= kCarTolerance &&
       p.z() * pos.z() > 0.) {
      return TRUE;
   }
