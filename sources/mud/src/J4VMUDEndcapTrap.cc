@@ -46,12 +46,8 @@ void J4VMUDEndcapTrap::Assemble()
      G4double py     = 0.5 * height;
      G4double plx    = GetHeight( myID )*tan( 0.5*dphi );
      G4double px     = rmin*tan(0.5*dphi);
+     G4double phi    = 0.0;
 
-#if __MUDREPLICA__
-     G4double phi    = ( (G4Tubs*)( GetMother()->GetSolid() ) ) -> GetStartPhiAngle();
-#else
-     G4double phi = 0.0;
-#endif
      // ------------------------------------------------------------------------ //
      //   in Endcap:                                                             //
      //                                                                          //
