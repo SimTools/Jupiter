@@ -76,9 +76,9 @@ void J4BD::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4BD::InstallIn(J4VComponent* mother,
-                     G4RotationMatrix     *prot, 
-                     const G4ThreeVector  &tlate )
+void J4BD::InstallIn(J4VComponent         * /* mother */,
+                     G4RotationMatrix     * /* prot   */, 
+                     const G4ThreeVector  & /* tlate  */)
 { 
   // before installation, you must call Assemble() first.
   

@@ -21,6 +21,8 @@
 
 #include "J4VMaterialStore.hh"
 
+class G4MaterialPropertiesTable;
+
 // ====================================================================
 // ----------------
 // class definition
@@ -34,7 +36,8 @@ public:
     
 private:
   
-  G4Material* Create(const G4String& name) ; //Define User Materials
+  G4Material* Create(const G4String&, 
+                     G4MaterialPropertiesTable *); //Define User Materials
   
 };
 

@@ -29,7 +29,7 @@ J4BDParameterList* J4BDParameterList::GetInstance()
 //=====================================================================
 //* protected constructor ---------------------------------------------
 
-J4BDParameterList::J4BDParameterList(const G4String &name)
+J4BDParameterList::J4BDParameterList(const G4String & /* name */)
 {
    J4ParameterList   *paramlist = J4ParameterList::GetInstance();    
    J4IRParameterList *irlist    = J4IRParameterList::GetInstance();    

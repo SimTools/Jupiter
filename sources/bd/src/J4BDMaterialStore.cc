@@ -13,7 +13,8 @@
 #include "G4Material.hh"
 
 
-G4Material* J4BDMaterialStore::Create(const G4String& name) 
+G4Material* J4BDMaterialStore::Create(const G4String& name,
+                                      G4MaterialPropertiesTable *) 
 {  	
   // Define your materials here.
   
