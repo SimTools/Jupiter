@@ -12,7 +12,6 @@
 //* (Update Record)
 //*	2003/03/18  K.Hoshina	Original version.
 //*************************************************************************
- 
 #include "J4VSD.hh"
 #include "J4CALPreHit.hh"
 #include "J4CALPreHitKeeper.hh"
@@ -21,7 +20,6 @@
 //---------------------
 // class definition
 //---------------------
-
 class J4CALSD : public J4VSD<J4CALPreHit>{
   
 public:
@@ -53,6 +51,9 @@ public:
     J4VSD<J4CALPreHit>::operator=( right );
     return *this;
   }
+
+ private:
+  G4bool IsExiting(const G4ThreeVector &pos, const G4ThreeVector &p) const;
 };
 
 #endif
