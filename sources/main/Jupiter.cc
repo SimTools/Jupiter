@@ -28,6 +28,12 @@
 #include "J4TrackingAction.hh"
 #include "TBookKeeper.hh"
 
+#include "J4ParameterListStore.hh"
+#include "J4ParameterList.hh"
+#include "J4VTXParameterList.hh"
+#include "J4CDCParameterList.hh"
+#include "J4SOLParameterList.hh"
+
 #ifdef G4VIS_USE
 #include "J4VisManager.hh"
 #endif
@@ -44,7 +50,7 @@
 
 //#define __INSTALLIR__  
 //#define __INSTALLBD__  
-#define __INSTALLVTX__  
+//#define __INSTALLVTX__  
 #define __INSTALLIT__  
 #define __INSTALLCDC__  
 #define __INSTALLCAL__  
@@ -67,15 +73,22 @@ int main(int argc, char** argv)
 #endif
 
   //-------------------------
-  // Set run manager 
+  // Set manager 
   //-------------------------
 
   G4RunManager* runManager = new G4RunManager;  G4cout << G4endl;
 //  runManager->SetVerboseLevel(2);
 
+  J4ParameterListStore *paramlistStore = new J4ParameterListStore();
+
   //---------------------------------------------
   // set mandatory user initialization classes...
   
+  J4ParameterList    *paramlist    = new J4ParameterList();
+  J4VTXParameterList *vtxparamlist = new J4VTXParameterList();
+  J4CDCParameterList *cdcparamlist = new J4CDCParameterList();
+  J4SOLParameterList *solparamlist = new J4SOLParameterList();
+
   //*--------------------------------------------
   //* Install detector components...
   //*--------------------------------------------
@@ -86,20 +99,20 @@ int main(int argc, char** argv)
   
 #ifdef __INSTALLIR__  
   J4IR *irptr = new J4IR();
-  irptr->SetMother(dtcptr->GetExpHall());
+  irptr->SetMother(dtcptr->GetEXPHall());
   dtcptr->AddComponent(irptr);
 #endif
   
 #ifdef __INSTALLBD__  
   J4BD *bdptr = new J4BD();
-  bdptr->SetMother(dtcptr->GetExpHall());
+  bdptr->SetMother(dtcptr->GetEXPHall());
   dtcptr->AddComponent(bdptr);
 #endif
 
   //* vtx 
 #ifdef __INSTALLVTX__  
   J4VTX *vtxptr = new J4VTX();
-  vtxptr->SetMother(dtcptr->GetExpHall());
+  vtxptr->SetMother(dtcptr->GetEXPHall());
   dtcptr->AddComponent(vtxptr);
 #endif
   
@@ -107,7 +120,7 @@ int main(int argc, char** argv)
   
 #ifdef __INSTALLIT__  
   J4IT *itptr = new J4IT();
-  itptr->SetMother(dtcptr->GetExpHall());
+  itptr->SetMother(dtcptr->GetEXPHall());
   dtcptr->AddComponent(itptr);
 #endif
   
@@ -115,7 +128,7 @@ int main(int argc, char** argv)
     
 #ifdef __INSTALLCDC__  
   J4CDC *cdcptr = new J4CDC();
-  cdcptr->SetMother(dtcptr->GetExpHall());
+  cdcptr->SetMother(dtcptr->GetEXPHall());
   dtcptr->AddComponent(cdcptr);
 #endif
 
@@ -123,7 +136,7 @@ int main(int argc, char** argv)
     
 #ifdef __INSTALLCAL__  
   J4CAL *calptr = new J4CAL();
-  calptr->SetMother(dtcptr->GetExpHall());
+  calptr->SetMother(dtcptr->GetEXPHall());
   dtcptr->AddComponent(calptr);
 #endif
   
@@ -131,7 +144,7 @@ int main(int argc, char** argv)
     
 #ifdef __INSTALLSOL__  
   J4SOL *solptr = new J4SOL();
-  solptr->SetMother(dtcptr->GetExpHall());
+  solptr->SetMother(dtcptr->GetEXPHall());
   dtcptr->AddComponent(solptr);
 #endif
 
@@ -191,7 +204,6 @@ int main(int argc, char** argv)
   //* vtx 
 #ifdef __INSTALLVTX__
   vtxptr->J4VDetectorComponent::SwitchOn();
-//  vtxptr->J4VDetectorComponent::SwitchOff();
 #endif
    
   //* cdc 
@@ -209,7 +221,7 @@ int main(int argc, char** argv)
 	char tmpst[1024];
         strstream str(tmpst, 1024);
 #endif
-        str << "ExpName:CDC:Layer0" << i << ":Cell:DriftRegion"
+        str << "EXPName:CDC:Layer0" << i << ":Cell:DriftRegion"
             << j << ":SenseWire" << G4std::ends;           
         G4String name;
         str >> name;
