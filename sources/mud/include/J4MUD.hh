@@ -12,14 +12,14 @@
 //* (Update Record)
 //*	2003/08/13  A.Miyamoto Original version.(Copied from J4IT)
 //*************************************************************************
-#include "J4MUDBarrel.hh"
-#include "J4MUDEndcap.hh"
+#include "J4MUDBlock.hh"
 #include "J4VMUDDetectorComponent.hh"
 
 //=====================================================================
 //---------------------
 // class definition
 //---------------------
+class J4MUDBlock;
 class J4MUD : public J4VMUDDetectorComponent {	
 
 public:
@@ -38,11 +38,16 @@ public:
 
 private:
   void 	Assemble();
-  void  Cabling() {};
+  void  Cabling();
+
 private:  
   static G4String      fFirstName;
-  J4MUDEndcap**        fEndcaps;
-  J4MUDBarrel**         fLayers;
+
+#ifdef __MUDREPLICA__
+  J4MUDBlock*          fBlocks;
+#else
+  J4MUDBlock**         fBlocks;
+#endif
 };
 
 #endif

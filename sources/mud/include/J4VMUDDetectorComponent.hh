@@ -1,6 +1,6 @@
 // $Id$
-#ifndef __J4VMUDDETEMUDORCOMPONENT__
-#define __J4VMUDDETEMUDORCOMPONENT__
+#ifndef __J4VMUDDETECTORCOMPONENT__
+#define __J4VMUDDETECTORCOMPONENT__
 //*************************************************************************
 //* -----------------------
 //* J4VMUDDetectorComponent
@@ -14,11 +14,11 @@
 #include "J4MUDMaterialStore.hh"
 #include "J4MUDParameterList.hh"
 #include "J4VDetectorComponent.hh"
+
 //=====================================================================
 //---------------------
 // class definition
 //---------------------
-
 class J4VMUDDetectorComponent : public J4VDetectorComponent
 {	// abstruct class
 
@@ -30,7 +30,7 @@ public:
                            G4int                 nbrothers = 1, 
                            G4int                 me        = 0,
                            G4int                 copyno    = -1 );
-  J4VMUDDetectorComponent( J4VMUDDetectorComponent& right );
+  // J4VMUDDetectorComponent( J4VMUDDetectorComponent& right );
   //  virtual const J4VMUDDetectorComponent& 
   //  		operator=(const J4VMUDDetectorComponent& right);    
   virtual ~J4VMUDDetectorComponent();
@@ -48,9 +48,9 @@ private:
 //---------------------
 // inline function
 //---------------------
-inline J4VMUDDetectorComponent::J4VMUDDetectorComponent( J4VMUDDetectorComponent& right )
-: J4VDetectorComponent( right )
-{ }
+//inline J4VMUDDetectorComponent::J4VMUDDetectorComponent( J4VMUDDetectorComponent& right )
+//: J4VDetectorComponent( right )
+//{ }
 
 //inline const J4VMUDDetectorComponent& 
 //J4VMUDDetectorComponent::operator=(const J4VMUDDetectorComponent& right)
@@ -59,5 +59,3 @@ inline J4VMUDDetectorComponent::J4VMUDDetectorComponent( J4VMUDDetectorComponent
 //}
 
 #endif
-
-
