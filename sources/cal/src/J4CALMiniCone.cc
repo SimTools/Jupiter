@@ -70,7 +70,7 @@ void J4CALMiniCone::Assemble()
   if ( !GetLV() ) {
  
     J4CALParameterList *ptrList = OpenParameterList();
-    J4CALSubLayerParameterList* subList = ptrList -> GetSubLayerParam();
+    //J4CALSubLayerParameterList* subList = ptrList -> GetSubLayerParam();
       
     G4Sphere* mother = (G4Sphere *)( GetMother()->GetSolid() );
 
@@ -131,9 +131,9 @@ void J4CALMiniCone::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CALMiniCone::InstallIn( J4VComponent         *mother,
-                               G4RotationMatrix     *prot, 
-                               const G4ThreeVector  &tlate ) 
+void J4CALMiniCone::InstallIn( J4VComponent*        /* mother */,
+                               G4RotationMatrix*    /* prot   */, 
+                               const G4ThreeVector& /* tlate  */) 
 { 
    Assemble();			// You MUST call Assemble(); at first.
 

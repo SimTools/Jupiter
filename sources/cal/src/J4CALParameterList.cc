@@ -21,7 +21,8 @@ J4CALParameterList* J4CALParameterList::fgInstance = 0;
 J4CALParameterList* J4CALParameterList::GetInstance()
 {
    if ( !fgInstance ) {
-      J4CALParameterList* instance = new J4CALParameterList("CAL");
+      //J4CALParameterList* instance = new J4CALParameterList("CAL");
+      fgInstance = new J4CALParameterList("CAL");
    }
    return fgInstance;
 }

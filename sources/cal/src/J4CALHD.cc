@@ -107,9 +107,9 @@ void J4CALHD::Assemble()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CALHD::InstallIn( J4VComponent         *mother,
-                         G4RotationMatrix     *prot, 
-                         const G4ThreeVector  &tlate ) 
+void J4CALHD::InstallIn( J4VComponent*        /* mother */,
+                         G4RotationMatrix*    /* prot   */, 
+                         const G4ThreeVector& /* tlate  */) 
 { 
    Assemble();			// You MUST call Assemble(); at first.
   

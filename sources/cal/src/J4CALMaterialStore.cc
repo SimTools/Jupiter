@@ -23,7 +23,7 @@
 
 
 G4Material* J4CALMaterialStore::Create(const G4String& name,
-        G4MaterialPropertiesTable *mtable) 
+        G4MaterialPropertiesTable* /* mtable */ ) 
 {  	
 
   G4Material* material= 0;
@@ -50,5 +50,3 @@ G4Material* J4CALMaterialStore::Create(const G4String& name,
   return material;
 
 }
-
-

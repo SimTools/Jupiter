@@ -8,6 +8,7 @@
 //*     
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
+//*     2004/07/30  ONO Hiroaki  revised
 //*************************************************************************
 
 #include "J4CALCone.hh"
@@ -58,6 +59,10 @@ void J4CALSubLayerSD::Initialize( G4HCofThisEvent* HCTE )
   //create hit collection(s) and
   //push H.C. to "Hit Collection of This Event"
   
+  static G4int timerID = -1;
+  J4Timer timer( timerID, "J4CALSubLayerSD", "Initialize()" );
+  timer.Start();
+
   MakeHitBuf(HCTE);  
 
   // Don't "delete" fCalHits[i]!
@@ -68,12 +73,13 @@ void J4CALSubLayerSD::Initialize( G4HCofThisEvent* HCTE )
          fCalHits[i]  = 0;
    }
   }
+ timer.Stop();
 }
 
 //=====================================================================
 //* ProcessHits -------------------------------------------------------
 
-G4bool J4CALSubLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
+G4bool J4CALSubLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* /* ROhist */ )
 {
   //In order to use Get function, you must call SetNewStep() at first.
   SetNewStep(aStep);
@@ -192,7 +198,7 @@ G4bool J4CALSubLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
 //=====================================================================
 //* EndOfEvent --------------------------------------------------------
 
-void J4CALSubLayerSD::EndOfEvent(G4HCofThisEvent* HCTE)
+void J4CALSubLayerSD::EndOfEvent(G4HCofThisEvent* /* HCTE */ )
 {			
 }
 

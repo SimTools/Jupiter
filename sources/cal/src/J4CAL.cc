@@ -44,7 +44,11 @@ J4CAL::J4CAL(J4VDetectorComponent *parent,
 
 J4CAL::~J4CAL()
 {
-//#ifndef __GEANT452__
+ static G4int timerID = -1;
+ J4Timer timer( timerID, "J4CAL", "Destructor" );
+ timer.Start();
+
+#ifndef __GEANT452__
    if ( fCones ) {
       J4CALParameterList *ptrList = OpenParameterList(); 
       for ( G4int i = 0; i < ptrList->GetNcones(); i++ ) {
@@ -52,7 +56,8 @@ J4CAL::~J4CAL()
       }
       if (Deregister(fCones)) delete [] fCones;
    }
-//#endif
+#endif
+ timer.Stop();
 }
 
 //=====================================================================
@@ -112,9 +117,9 @@ void J4CAL::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CAL::InstallIn( J4VComponent         *mother,
-                       G4RotationMatrix     *prot, 
-                       const G4ThreeVector  &tlate )
+void J4CAL::InstallIn( J4VComponent*         /* mother */,
+                       G4RotationMatrix*     /* prot   */, 
+                       const G4ThreeVector&  /* tlate  */  )
 { 
   static G4int timerID = -1;
   J4Timer timer( timerID, "J4CAL", "InstallIn()" );

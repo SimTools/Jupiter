@@ -61,7 +61,7 @@ J4CALHit::~J4CALHit()
 //=========================================================================
 //* Output ------------------------------------------------------------------
 
-void J4CALHit::Output(G4HCofThisEvent* HCTE)
+void J4CALHit::Output(G4HCofThisEvent* /* HCTE */ )
 {
   if ( fOutput ) fOutput->Output( this );
   // output hitdata to output file ....
