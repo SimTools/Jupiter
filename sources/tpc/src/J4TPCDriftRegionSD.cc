@@ -11,6 +11,7 @@
 
 #include "J4TPCDriftRegionSD.hh"
 #include "J4TPCPostHit.hh"
+#include "J4TPCParameterList.hh"
 #include "J4VTPCDetectorComponent.hh"
 #include "G4VSolid.hh"
 #include "G4RotationMatrix.hh"
@@ -65,12 +66,12 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   G4ThreeVector            p        = GetMomentum();
   J4VComponent*            location = GetComponent();
   G4int                    trackID  = GetTrackID();
-#if 1
   const G4RotationMatrix  *rotp     = GetRotation();
   G4ThreeVector            localp   = rotp ? rotp->inverse() * p : p;
   G4ThreeVector            localpos = (rotp ? rotp->inverse()
                                     * (pos - GetTranslation())
                                     : (pos - GetTranslation()));
+#if 0
   G4double                 distance = location->GetSolid()
                                       ->DistanceToOut(localpos, localp.unit());
 
@@ -78,9 +79,13 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
      || localp.x() * localpos.x() + localp.y() * localpos.y() < 0.) {
      return FALSE;
   }
+#else
+  if (!IsOnSurface(localpos, localp) || trackID == GetCurTrackID()) {
+    return FALSE;
+  }
+#endif
 
   SetCurTrackID(trackID);
-#endif
   //Get particle information
 
   G4int                  mothertrackID = GetMotherTrackID();
@@ -143,5 +148,24 @@ void J4TPCDriftRegionSD::DrawAll()
 
 void J4TPCDriftRegionSD::PrintAll()
 {
+}
+
+//=====================================================================
+//* IsOnSurface -------------------------------------------------------
+
+G4bool J4TPCDriftRegionSD::IsOnSurface(const G4ThreeVector &pos,
+                                       const G4ThreeVector &p) const
+{
+  J4TPCParameterList *list = J4TPCParameterList::GetInstance();
+    
+  if (pos.perp() - list->GetOuterSupportTubInnerR() <= kCarTolerance &&
+      p.x() * pos.x() + p.y() * pos.y() > 0.) {
+     return TRUE;
+  }
+  if (abs(pos.z()) - list->GetPadPlaneFrontZ() <= kCarTolerance &&
+      p.z() * pos.z() > 0.) {
+     return TRUE;
+  }
+  return FALSE;
 }
 

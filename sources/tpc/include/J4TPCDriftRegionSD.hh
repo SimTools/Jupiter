@@ -59,6 +59,8 @@ public:
   static void  SetCurTrackID(G4int id) { J4TrackingAction::SetCurTrackID(fgTrackRegID, id); }
    
 private:
+  G4bool IsOnSurface(const G4ThreeVector &pos, const G4ThreeVector &p) const; 
+private:
   static G4int fgTrackRegID;
   
 };
