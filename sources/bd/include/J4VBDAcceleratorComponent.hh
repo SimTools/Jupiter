@@ -27,7 +27,6 @@
 
 #include "J4BDMaterialStore.hh"
 #include "J4VAcceleratorComponent.hh"
-#include "J4BDParameter.hh"
 
 //=====================================================================
 //---------------------

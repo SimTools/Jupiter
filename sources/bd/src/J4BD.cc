@@ -10,6 +10,7 @@
 //*************************************************************************
 
 #include "J4BD.hh"
+#include "J4BDParameterList.hh"
 
 
 //====================================================================
@@ -45,17 +46,20 @@ J4BD::~J4BD()
 void J4BD::Assemble() 
 { 
   // Assemble your LogicalVolume here.
+
+  J4BDParameterList *list = J4BDParameterList::GetInstance(); 
   
   if (!GetLV()) {
     // MakeSolid ----------//
-    OrderNewBox (_BDOUTERHALFX_, _BDOUTERHALFY_, _BDOUTERHALFZ_,
-                 0, 0, 0, _BDINNERHALFX_, _BDINNERHALFY_, _BDINNERHALFZ_);
+    OrderNewBox (list->GetOuterHalfX(), list->GetOuterHalfY(), list->GetOuterHalfZ(), 
+                 0, 0, 0, 
+                 list->GetInnerHalfX(), list->GetInnerHalfY(), list->GetInnerHalfZ());
                      
     // MakeLogicalVolume --//  
-    MakeLVWith(OpenMaterialStore()->Order(_BDMATERIAL_));
+    MakeLVWith(OpenMaterialStore()->Order(list->GetMaterial()));
     
     // SetVisAttribute ----//
-    PaintLV(_BDVISATT_, G4Color(1, 0, 1));
+    PaintLV(list->GetVisAtt(), *list->GetColor());
   	
     // Install daughter PV //
     
