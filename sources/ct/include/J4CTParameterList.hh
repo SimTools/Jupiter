@@ -86,7 +86,7 @@ class J4CTParameterList : public J4VParameterList
    inline G4double GetLayerDeltaPhi()         const { return GetCTDeltaPhi();  }
    inline G4double GetLayerPhiOffset(G4int i) const { return GetCTPhiOffset();}
 
-   inline G4double GetLayerHalfZ(G4int i) const { return GetEndcapFrontZ(); }
+   inline G4double GetLayerHalfZ(G4int ) const { return GetEndcapFrontZ(); }
    inline G4double GetLayerInnerR(G4int i)    const; 
    inline G4double GetLayerOuterR(G4int i)    const; 
                  

@@ -73,6 +73,7 @@ private:
 // inline function for J4CTLayerHit
 //----------------------------------------
 
+#if 0
 inline J4CTLayerHit::J4CTLayerHit(const J4CTLayerHit& right)
 {
 }
@@ -82,6 +83,7 @@ inline const J4CTLayerHit&
 {         
   return *this;
 }
+#endif
   
 //----------------------------------------
 // Allocator

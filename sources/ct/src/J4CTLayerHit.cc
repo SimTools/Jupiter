@@ -52,7 +52,7 @@ J4CTLayerHit::~J4CTLayerHit()
 //=========================================================================
 //* Output ------------------------------------------------------------------
 
-void J4CTLayerHit::Output(G4HCofThisEvent* HCTE)
+void J4CTLayerHit::Output(G4HCofThisEvent* /* HCTE */)
 {
   if (fOutput) fOutput->Output(this);
   // output hitdata to output file ....

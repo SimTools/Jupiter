@@ -153,9 +153,9 @@ void J4CT::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CT::InstallIn(J4VComponent         *mother,
-                     G4RotationMatrix     *prot, 
-                     const G4ThreeVector  &tlate ) 
+void J4CT::InstallIn(J4VComponent         * /* mother */,
+                     G4RotationMatrix     * /* prot   */, 
+                     const G4ThreeVector  & /* tlate  */) 
 { 
   Assemble();			// You MUST call Assemble(); at first.
   				// 
