@@ -85,9 +85,20 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
   ofs.open("readpythia_event.data");
 #endif
 #endif
+
+  static G4int eventID = -1;
+         G4int nSkips = fNskipEvents 
+                        ? fNskipEvents
+                        : (eventID < 0 ? evt->GetEventID() + 1 : 0);
+  if (nSkips) {
+     G4cerr << ">>>>>> J4HEPEvtInterface::GeneratePrimaryVertex >>>>>>> " << G4endl
+            << " Going to skip " << nSkips << "events!"                   << G4endl
+            << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " << G4endl;
+  }
+  eventID = evt->GetEventID();
   
   // skip events. Default is no skip.
-  for (G4int i=0; i<fNskipEvents; i++) {  
+  for (G4int i=0; i<nSkips; i++) {  
      fInputStream >> NHEP;
      if (fInputStream.eof()) {
         G4Exception("End-Of-File : HEPEvt input file");
@@ -140,7 +151,7 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 #ifdef __THEBE__
 #ifdef __DUMPREADDATA__
   ofs << "J4HEPEvtInterFace::GeneratePrimaryVertex:_Loaded_event_"
-     << fNskipEvents << "_==========================" << std::endl;
+      << nSkips << "_==========================" << std::endl;
   ofs << NHEP << std::endl;
 #endif
 #endif
