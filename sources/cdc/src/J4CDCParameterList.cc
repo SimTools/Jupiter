@@ -91,8 +91,8 @@ void J4CDCParameterList::SetParameters()
    fNlayers           = 10;
    fTwistedAngle      = new G4double[fNlayers];
    fLayerPhiOffset    = new G4double[fNlayers];
-   fIsAxialOnly       = FALSE; // TRUE: Axial only, FALSE: with Stereo cell
-   //fIsAxialOnly       = TRUE; // TRUE: Axial only, FALSE: with Stereo cell
+   //fIsAxialOnly       = FALSE; // TRUE: Axial only, FALSE: with Stereo cell
+   fIsAxialOnly       = TRUE; // TRUE: Axial only, FALSE: with Stereo cell
    
    fTwistedAngle[0]   =  0.   *rad; // axial
    fTwistedAngle[1]   =  0.512*rad; // stereo
@@ -152,7 +152,8 @@ void J4CDCParameterList::SetParameters()
    fDummyDriftRegionThick  = 1.*cm;
    
    // SenseWire
-   fSenseWireR             = 0.015*mm;
+   fSenseWireR             = 0.014*mm; // -1 micron to avoid volume overlapping
+   //fSenseWireR             = 0.015*mm;
    //fSenseWireR           = 1.5*mm;  // for printing
    
    // calcurated parameters
