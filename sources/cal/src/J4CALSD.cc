@@ -87,7 +87,7 @@ G4bool J4CALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ )
   G4ParticleDefinition* particle = GetParticle(); 
   
   // Create new hit
-  if ( J4TrackingAction::IsNext(fgTrackRegID) ) { 
+  if ( J4TrackingAction::GetInstance()->IsNext(fgTrackRegID) ) { 
 
      fgCurrentPreHitID++;
      // create new hit!
@@ -108,6 +108,7 @@ void J4CALSD::EndOfEvent( G4HCofThisEvent* /* PreHCTE */ )
 {			
   SetCurrentPreHitPtr(0);
   SetCurrentPreHitID(-1);
+  J4TrackingAction::GetInstance()->ResetTrackIDReg(fgTrackRegID);
 }
 
 //=====================================================================

@@ -48,13 +48,25 @@ class J4TrackingAction : public G4UserTrackingAction
     inline G4int    GetStoredDebugPrintID() const { return fStoredDebugPrintID; }
 #endif
 
-    static G4bool   IsNext(G4int &detid);
+    G4bool   IsNext(G4int &detid);
+    void     ResetTrackIDReg(G4int detid)
+    {
+       fgRegs[detid].fFirst  = INT_MAX; 
+       fgRegs[detid].fSecond = INT_MAX; 
+    }
+
+    static   J4TrackingAction *GetInstance() { return fgInstance ? fgInstance : (fgInstance = new J4TrackingAction()); }
 
   private:
 
     static G4int     fCurrentTrackID;        // 1 : charged particle only 
     G4int            fStoredTrajectoryID;    // 1 : charged particle only 
                                              // 2 : all particles
+    struct Pair {
+       Pair(G4int first, G4int second) : fFirst(first), fSecond(second) { }
+       G4int fFirst;
+       G4int fSecond;
+    };
 #ifdef __THEBE__
     std::ofstream  fErrorOfs;              // for debugprint 
     G4int            fStoredDebugPrintID;    // -2 : no output
@@ -64,7 +76,9 @@ class J4TrackingAction : public G4UserTrackingAction
 
     J4TrackingActionMessenger *fMessenger;
 
-    static std::vector<G4int>       fgRegs;
+    static std::vector<Pair>   fgRegs;
+
+    static J4TrackingAction *fgInstance;
 
 };
 

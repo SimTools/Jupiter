@@ -16,19 +16,27 @@
 #include "G4Track.hh"
 #include "J4Global.hh"
 
-std::vector<G4int> J4TrackingAction::fgRegs;
-G4int              J4TrackingAction::fCurrentTrackID;
+std::vector<J4TrackingAction::Pair> J4TrackingAction::fgRegs;
+G4int                               J4TrackingAction::fCurrentTrackID;
+J4TrackingAction                   *J4TrackingAction::fgInstance = 0;
 //=====================================================================
 //* Constructor -------------------------------------------------------
 J4TrackingAction::J4TrackingAction()
                 : fStoredTrajectoryID(1) 
 {
+   if (fgInstance) {
+      G4cerr << ">>>>>>> Error in J4TrackingAction::J4TrackingAction" << G4endl
+             << "  duplicateing a singleton!"                         << G4endl
+             << "  abort"                                             << G4endl;
+      abort();
+   }
 
    fMessenger = new J4TrackingActionMessenger(this);
 
 #ifdef __THEBE__
    fStoredDebugPrintID = -2;   
 #endif
+   fgInstance = this;
 
 }
 
@@ -51,9 +59,11 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
   // Reset current track ID for PreHit makeing upon starting of a new track
 
   using namespace std;
-  vector<G4int>::iterator iter;
+  vector<Pair>::iterator iter;
   for (iter = fgRegs.begin(); iter != fgRegs.end(); iter++) {
-     if (*iter != INT_MAX && fCurrentTrackID <= *iter) *iter = INT_MAX;
+    if ((*iter).fSecond != INT_MAX && fCurrentTrackID <= (*iter).fSecond) {
+        (*iter).fSecond = INT_MAX;
+    }
   }
   
 #ifdef G4_STORE_TRAJECTORY
@@ -138,18 +148,22 @@ void J4TrackingAction::PostUserTrackingAction(const G4Track* /* aTrack */)
    
 }
 
-
+//=====================================================================
+//* IsNext ------------------------------------------------------------
 
 G4bool J4TrackingAction::IsNext(G4int &detid)
 { 
-   G4int trackid = J4StackingAction::GetTopOfStackID();
+   G4int n2nds   = GetTrackingManager()->GimmeSecondaries()->size();
+   G4int trackid = fCurrentTrackID + (n2nds ? n2nds : -1);
    if (detid < 0) {
-      fgRegs.push_back(trackid);
+      fgRegs.push_back(Pair(fCurrentTrackID, trackid));
       detid = fgRegs.size() - 1;
-   } else if (fgRegs[detid] <= fCurrentTrackID) {
+   } else if (fgRegs[detid].fFirst == fCurrentTrackID ||
+              fgRegs[detid].fSecond <= fCurrentTrackID) {
       return FALSE;
    } else {
-      fgRegs[detid] = trackid;
+      fgRegs[detid] = Pair(fCurrentTrackID, trackid);
    }
    return TRUE;
 }
+

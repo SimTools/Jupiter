@@ -66,7 +66,8 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   J4VComponent*            location = GetComponent();
   G4int                    trackID  = GetTrackID();
 
-  if (!IsExiting(pos, p) || !J4TrackingAction::IsNext(fgTrackRegID)) {
+  if (!IsExiting(pos, p) ||
+      !J4TrackingAction::GetInstance()->IsNext(fgTrackRegID)) {
     return FALSE;
   }
 
@@ -129,6 +130,7 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
 
 void J4TPCDriftRegionSD::EndOfEvent(G4HCofThisEvent *)
 {			
+   J4TrackingAction::GetInstance()->ResetTrackIDReg(fgTrackRegID);
 }
 
 //=====================================================================
