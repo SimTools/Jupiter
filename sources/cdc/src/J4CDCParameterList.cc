@@ -54,7 +54,7 @@ void J4CDCParameterList::SetMaterials()
 {
 #if 1
    fCDCMaterial         = "Air";
-   fSupportTubMaterial  = "Aluminum";
+   fSupportTubMaterial  = "Carbon";
    fEndcapMaterial      = "Aluminum";
    fLayerMaterial       = "CO2Isobutane";
    fCellMaterial        = "CO2Isobutane";
@@ -85,7 +85,7 @@ void J4CDCParameterList::SetParameters()
    fEndcapHalfThick = 1.*cm;
    
    // SupportTub
-   fSupportTubHalfThick = 0.5*cm;
+   fSupportTubHalfThick = 0.25*cm;
    
    // Layer
    fNlayers           = 10;
