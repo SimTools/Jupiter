@@ -80,7 +80,8 @@ void J4ParameterList::SetParameters()
 
    fSOLInnerR        = 375*cm;                 // InnerR of Solenoid
    fSOLOuterR        = 450*cm;                 // OuterR of Solenoid
-   fSOLHalfZ         = 425*cm;                 // half z length of Solenoid
+   //fSOLHalfZ         = 425*cm;                 // half z length of Solenoid
+   fSOLHalfZ         = 530*cm;                 // half z length of Solenoid
 
    fEXPHallHalfX    = 10*m;
    fEXPHallHalfY    = 10*m;
@@ -122,6 +123,7 @@ void J4ParameterList::SetParameters()
    fEXPHallHalfY    = 40*m;
    fEXPHallHalfZ    = 4000*m;
 #else
+
    fEXPHallHalfX    = 10*m;
    fEXPHallHalfY    = 10*m;
    fEXPHallHalfZ    = 40*m;
