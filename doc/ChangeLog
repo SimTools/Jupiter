@@ -1,5 +1,17 @@
 M... Modified R...Replaced A...Added D...Deleted
 ------------------------------------------------------------------
+2002/11/23 K.Hoshina	 Version 2.2.00
+------------------------------------------------------------------
+Updated vtx (by Aso).
+A J4VTXLadderHit, J4VTXLadderSD
+	Added SensitiveDetector to Ladder.
+
+A J4VTXParameterList
+D J4VTXParameter.hh
+	Replaced macros of parameters to parameter-class.
+
+D J4VTXROGeometry, J4VTX-2.cc, J4VTXDummySD 
+------------------------------------------------------------------
 2002/11/05 K.Hoshina	 Version 2.1.00
 ------------------------------------------------------------------
 J4TwistedTubs finally became functional.
@@ -14,28 +26,28 @@ No change. Just replaced the main stream of /proj/soft/CVSMASTER
 Merged with version 1.6 of the main CVS tree.
 The following is the note added by K.Hoshina to the main tree:
 ------------------------------------------------------------------
--2002/10/30 K.Hoshina    Version 1.6.00 
+2002/10/30 K.Hoshina    Version 1.6.00 
 ------------------------------------------------------------------
--M J4HEPEvtInterface
--        Added numberOfSkipEvents command to HEPEvt interface.
--        Type  
--        >  /jupiter/hepevt/numberOfSkipEvents [n]
--        then J4HEPEvtInterface will skip n events before beamOn.  
--        If you want to unset this option, call the command with n=0.
--
--M J4EventAction
--        Random seed is saved event by event.
--        Default seed filename is "Config.conf".
--        To read the seed file, type
--        > /random/resetEngineFrom [seed file name]
--
--A J4Output (by Miyamoto)
--        Output class  
--
--A J4TwistedTubs, J4TwistedSurface, J4FlatSurface, J4HyperbolicSurface
--        Solid class for Stereo Cells.
--        They are alpha version, still remaining sum bugs.   
--
+M J4HEPEvtInterface
+        Added numberOfSkipEvents command to HEPEvt interface.
+        Type  
+        >  /jupiter/hepevt/numberOfSkipEvents [n]
+        then J4HEPEvtInterface will skip n events before beamOn.  
+        If you want to unset this option, call the command with n=0.
+
+M J4EventAction
+        Random seed is saved event by event.
+        Default seed filename is "Config.conf".
+        To read the seed file, type
+        > /random/resetEngineFrom [seed file name]
+
+A J4Output (by Miyamoto)
+        Output class  
+
+A J4TwistedTubs, J4TwistedSurface, J4FlatSurface, J4HyperbolicSurface
+        Solid class for Stereo Cells.
+        They are alpha version, still remaining sum bugs.   
+
 ------------------------------------------------------------------
 2002/10/28 K.Fujii	 Version 1.7.01 
 ------------------------------------------------------------------
