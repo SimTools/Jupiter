@@ -111,6 +111,9 @@ void J4ParameterList::SetParameters()
    fCDCOuterR        = 206*cm;                 // OuterR of CDC
    fCDCHalfZ         = 260*cm;                 // half z length of CDC
 
+   fTPCOuterR        = 206*cm;                 // OuterR of TPC
+   fTPCHalfZ         = 260*cm;                 // half z length of TPC
+
    fCALInnerR        = 206*cm;                 // InnerR of CAL
    fCALOuterR        = 370*cm;                 // OuterR of CAL
    fCALInnerHalfZ    = 265*cm;                 // half z length of innerface of CAL 
