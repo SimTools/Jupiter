@@ -33,9 +33,9 @@ J4CALAddress::~J4CALAddress() { }
 //=====================================================================
 //* static functions --------------------------------------------------
 G4int J4CALAddress::GetCellID( G4int coneID, G4int towerID,
-			    G4int miniConeID, G4int miniTowerID,
-			    G4int layerID, G4int subLayerID,
-			    G4bool isEM )
+			       G4int miniConeID, G4int miniTowerID,
+			       G4int layerID, G4int subLayerID,
+			       G4bool isEM )
 {
   G4int  cellID      = -1;
   
@@ -49,11 +49,12 @@ G4int J4CALAddress::GetCellID( G4int coneID, G4int towerID,
   const G4int nHDMiniCones  = ptrList -> GetHDMiniConeNClones();
   const G4int nEMMiniTowers = ptrList -> GetEMMiniTowerNClones();
   const G4int nHDMiniTowers = ptrList -> GetHDMiniTowerNClones();
+  const G4int nIsEM         = ptrList -> GetNIsEM();
   
   if ( isEM ) 
-    cellID = coneID + nCones*( towerID + nTowers*( miniConeID + nEMMiniCones*( miniTowerID + nEMMiniTowers*( layerID + nEMLayers*( subLayerID )))));
+    cellID = coneID + nCones*( towerID + nTowers*( 0 + nIsEM*( miniConeID + nEMMiniCones*( miniTowerID + nEMMiniTowers*( layerID + nEMLayers*( subLayerID ))))));
   else
-    cellID = coneID + nCones*( towerID + nTowers*( miniConeID + nHDMiniCones*( miniTowerID + nHDMiniTowers*( layerID + nEMLayers + nHDLayers*( subLayerID )))));
+    cellID = coneID + nCones*( towerID + nTowers*( 1 + nIsEM*( miniConeID + nHDMiniCones*( miniTowerID + nHDMiniTowers*( layerID + nHDLayers*( subLayerID ))))));
 
   return cellID;
 }
@@ -82,12 +83,13 @@ G4int J4CALAddress::GetCellMiniConeID( G4int cellID, G4bool isEM )
   const G4int nTowers      = ptrList -> GetConstNTowers();
   const G4int nEMMiniCones = ptrList -> GetEMMiniConeNClones();
   const G4int nHDMiniCones = ptrList -> GetHDMiniConeNClones();
+  const G4int nIsEM        = ptrList -> GetNIsEM();
   G4int miniConeID = -1;
 
   if ( isEM ) {
-    miniConeID  = ( cellID / nCones / nTowers ) % nEMMiniCones;
+    miniConeID  = ( cellID / nCones / nTowers / nIsEM ) % nEMMiniCones;
   } else {
-    miniConeID  = ( cellID / nCones / nTowers ) % nHDMiniCones;
+    miniConeID  = ( cellID / nCones / nTowers / nIsEM ) % nHDMiniCones;
   }
   return miniConeID;
 }
@@ -101,12 +103,13 @@ G4int J4CALAddress::GetCellMiniTowerID( G4int cellID, G4bool isEM )
   const G4int nHDMiniCones  = ptrList -> GetHDMiniConeNClones();
   const G4int nEMMiniTowers = ptrList -> GetEMMiniTowerNClones();
   const G4int nHDMiniTowers = ptrList -> GetHDMiniTowerNClones();
+  const G4int nIsEM         = ptrList -> GeNIsEM();
   G4int miniTowerID = -1;
 
   if ( isEM ) {
-    miniTowerID  = ( cellID / nCones / nTowers / nEMMiniCones ) % nEMMiniTowers;
+    miniTowerID  = ( cellID / nCones / nTowers / nIsEM / nEMMiniCones / nIsEM ) % nEMMiniTowers;
   } else {
-    miniTowerID  = ( cellID / nCones / nTowers / nHDMiniCones ) % nHDMiniTowers;
+    miniTowerID  = ( cellID / nCones / nTowers / nIsEM / nHDMiniCones / nIsEM ) % nHDMiniTowers;
   }
   return miniTowerID;
 }
@@ -122,12 +125,13 @@ G4int J4CALAddress::GetCellLayerID( G4int cellID, G4bool isEM )
   const G4int nHDMiniTowers = ptrList -> GetHDMiniTowerNClones();
   const G4int nEMLayers     = ptrList -> GetEMNLayers();
   const G4int nHDLayers     = ptrList -> GetHDNLayers();
+  const G4int nIsEM         = ptrList -> GetNIsEM();
   G4int layerID = -1;
 
   if ( isEM ) {
-    layerID  = ( cellID / nCones / nTowers / nEMMiniCones / nEMMiniTowers ) % nEMLayers;
+    layerID  = ( cellID / nCones / nTowers / nIsEM / nEMMiniCones / nEMMiniTowers ) % nEMLayers;
   } else {
-    layerID  = ( cellID / nCones / nTowers / nHDMiniCones / nHDMiniTowers ) % nHDLayers - nEMLayers;
+    layerID  = ( cellID / nCones / nTowers / nIsEM / nHDMiniCones / nHDMiniTowers ) % nHDLayers - nEMLayers;
   }
   return layerID;
 }
@@ -144,14 +148,15 @@ G4int J4CALAddress::GetCellSubLayerID( G4int cellID, G4bool isEM )
   const G4int nHDMiniTowers = ptrList -> GetHDMiniTowerNClones();
   const G4int nEMLayers     = ptrList -> GetEMNLayers();
   const G4int nHDLayers     = ptrList -> GetHDNLayers();
+  const G4int nIsEM         = ptrList -> GetNIsEM();
   const G4int nEMSubLayers  = ptrSubList -> GetNLayers( "EM" );
   const G4int nHDSubLayers  = ptrSubList -> GetNLayers( "HD" );
   G4int subLayerID = -1;
 
   if ( isEM ) {
-    subLayerID  = ( cellID / nCones / nTowers / nEMMiniCones / nEMMiniTowers / nEMLayers ) % nEMSubLayers;
+    subLayerID  = ( cellID / nCones / nTowers / nIsEM / nEMMiniCones / nEMMiniTowers / nEMLayers ) % nEMSubLayers;
   } else {
-    subLayerID  = ( cellID / nCones / nTowers / nHDMiniCones / nHDMiniTowers / nHDLayers ) % nHDSubLayers; 
+    subLayerID  = ( cellID / nCones / nTowers / nIsEM / nHDMiniCones / nHDMiniTowers / nHDLayers ) % nHDSubLayers; 
   }
   
   return subLayerID;
