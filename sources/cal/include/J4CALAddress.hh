@@ -14,7 +14,6 @@
 #define __J4CALADDRESS__
 
 #include "J4CALParameterList.hh"
-#include "J4CALSubLayerParameterList.hh"
 
 //=========================================================================
 //---------------------

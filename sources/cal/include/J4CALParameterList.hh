@@ -24,7 +24,6 @@
 #include "G4Material.hh"
 #include "G4Color.hh"
 #include "J4ParameterList.hh"
-#include "J4CALSubLayerParameterList.hh"
 
 // ====================================================================
 // ----------------
@@ -98,7 +97,7 @@ class J4CALParameterList : public J4VParameterList
    inline G4int   GetNIsEM()              const { return fNIsEM; }
 
    //*MiniCone --------------------------------------------------
-//   inline G4int    GetNMiniCones()            const; 
+   //inline G4int    GetNMiniCones()            const; 
 
   //*MiniCone and MiniTower (# of clones) ---------------------------------
    inline G4int GetEMMiniConeNClones()  const { return fEMMiniConeNClones; }
@@ -109,9 +108,12 @@ class J4CALParameterList : public J4VParameterList
    //*Layer
    inline G4double GetEMLayerThickness()      const; 
    inline G4double GetHDLayerThickness()      const;
-   inline G4int GetEMNLayers()                const { return fEMNLayers; } 
-   inline G4int GetHDNLayers()                const { return fHDNLayers; } 
+   inline G4int    GetEMNLayers()             const { return fEMNLayers; } 
+   inline G4int    GetHDNLayers()             const { return fHDNLayers; } 
 
+   //*SubLayer
+   inline G4int    GetNSubLayers()          const { return fNSubLayers; } 
+   
    //*AbsLayer
    inline G4double GetEMAbsLayerThickness() const { return fEMAbsLayerThickness; }  
    inline G4double GetHDAbsLayerThickness() const { return fHDAbsLayerThickness; }  
@@ -275,25 +277,10 @@ class J4CALParameterList : public J4VParameterList
    J4CALTowerParamVector  GetTowerParamVector()  const { return fTowerParamVector; }
    J4CALTowerParam       *GetTowerParam(G4int i) const { return fTowerParamVector[i].second; }
 
-#if 1
-   // SubParameterList 
-   inline J4CALSubLayerParameterList* GetSubLayerParam()
-   {
-      if( !fSubLayerParameterList ) {
-          fSubLayerParameterList = new J4CALSubLayerParameterList; 
-      }
-      return fSubLayerParameterList;
-   }
-#endif
- 
  private:
 
    static J4CALParameterList *fgInstance;
    J4CALTowerParamVector      fTowerParamVector;
-
-#if 1
-   J4CALSubLayerParameterList* fSubLayerParameterList;
-#endif
 
    // material
    G4String  fCALMaterial; 
@@ -386,6 +373,8 @@ class J4CALParameterList : public J4VParameterList
    G4int     fEMNLayers;
    G4int     fHDNLayers;
    
+   // SubLayer
+   G4int     fNSubLayers;
    // AbsLayer
    G4double   fEMAbsLayerThickness;
    G4double   fHDAbsLayerThickness;
