@@ -27,7 +27,7 @@ J4VTXSensorSD::J4VTXSensorSD(J4VDetectorComponent* detector)
               fSTrack(-1), fSLayer(-1), fSLadder(-1), fSSensor(-1), 
               fSColNo(0)     
 {
-  std::cout << " ------ SensorSD ------ " << std::endl;
+  G4cout << " ------ SensorSD ------ " << G4endl;
 }
 
 //=====================================================================
@@ -95,7 +95,7 @@ G4bool J4VTXSensorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   J4VComponent  *sensor      = GetComponent();
   J4VComponent  *ladder      = sensor->GetMother();
   J4VComponent  *layer       = ladder->GetMother();
-
+#if 0
   G4VPhysicalVolume* sensorPV = sensor->GetPV();
   G4VPhysicalVolume* ladderPV = sensorPV->GetMother();
 
@@ -111,9 +111,9 @@ G4bool J4VTXSensorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   const G4ThreeVector &outPos	   = GetPostPosition();
   G4ThreeVector        localinPos  = GlobalToLocalPosition(inPos);
   G4ThreeVector        localoutPos = GlobalToLocalPosition(outPos);
-
+#endif
 // Create a new hit and push them to "Hit Collection"
-#if 1
+#if 0
   if(! compareID(trackID,iLayer,iLadder,iSensor) ){
         J4VTXSensorHit* hit = new J4VTXSensorHit(
 		               GetComponent(),
@@ -156,8 +156,8 @@ void J4VTXSensorSD::DrawAll()
 void J4VTXSensorSD::PrintAll()
 {
   G4int nHit= ((J4VTXSensorHitBuf*)GetHitBuf())-> entries();
-  std::cout << "------------------------------------------" << std::endl
-         << "*** tracker Hit (#hits=" << nHit << ")" << std::endl;
+  G4cout << "------------------------------------------" << G4endl
+         << "*** tracker Hit (#hits=" << nHit << ")" << G4endl;
   ((J4VTXSensorHitBuf*)GetHitBuf())-> PrintAllHits();
 }
 
@@ -165,6 +165,7 @@ void J4VTXSensorSD::PrintAll()
 
 G4ThreeVector J4VTXSensorSD::GlobalToLocalPosition(G4ThreeVector gpIn){
   G4ThreeVector pos = G4ThreeVector(gpIn);
+#if 0
   G4VPhysicalVolume* pv = GetPreStepPoint()->GetPhysicalVolume();
   while( pv != NULL ){
     G4ThreeVector Ot = pv->GetFrameTranslation();
@@ -172,6 +173,7 @@ G4ThreeVector J4VTXSensorSD::GlobalToLocalPosition(G4ThreeVector gpIn){
   pos = Or*(pos+Ot);
   pv = pv->GetMother();
   }
+#endif
   return pos;
 }
 

@@ -45,7 +45,6 @@ J4IRQC1HeVessel::J4IRQC1HeVessel(J4VAcceleratorComponent *parent,
 J4IRQC1HeVessel::~J4IRQC1HeVessel()
 {
   if (Deregister(fcoolant) ) delete fcoolant;
-
 }
 
 //=====================================================================

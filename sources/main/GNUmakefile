@@ -33,6 +33,7 @@ EXTRALIBS =	-L$(JUPITERROOT)/lib/$(G4SYSTEM) \
 		-lJ4cdc \
 		-lJ4cal \
 		-lJ4sol \
+		-lJ4lcexp \
 		-lJ4kern \
 		$(G4LIBS)
 
@@ -46,6 +47,7 @@ CPPFLAGS  += -I../ir/include \
 	     -I../cdc/include \
 	     -I../cal/include \
 	     -I../sol/include \
+	     -I../lcexp/include \
 	     -I../kern/include
 
 CPPFLAGS += -D__HOSHINA__

@@ -28,7 +28,8 @@ public:
     
 private:
   
-  G4Material* Create(const G4String& name) ; //Define User Materials
+  G4Material* Create(const G4String& name,
+	      G4MaterialPropertiesTable *mtable=0 ) ; //Define User Materials
   
 };
 

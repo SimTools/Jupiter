@@ -95,7 +95,8 @@ J4VComponent::J4VComponent(const G4String&     groupname,
 
 J4VComponent::~J4VComponent()
 {
-#ifndef __GEANT452__ 
+// ifndef __GEANT452__ 
+#if 0
    if (Deregister(fSolid))  delete fSolid;
    if (Deregister(fPV))     delete fPV;
    if (fLV->GetSensitiveDetector()) { 

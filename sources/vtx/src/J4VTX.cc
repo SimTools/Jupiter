@@ -45,6 +45,7 @@ J4VTX::J4VTX(J4VDetectorComponent *parent ,
 
 J4VTX::~J4VTX()
 {
+#if 0
   if (fLayers) {  
     G4int i; 
     for (i = 0; i < OpenParameterList()->GetNLayers() ; i++) {
@@ -52,6 +53,7 @@ J4VTX::~J4VTX()
     }
     if (Deregister(fLayers)) delete [] fLayers;
   }
+#endif
 }
 
 //=====================================================================

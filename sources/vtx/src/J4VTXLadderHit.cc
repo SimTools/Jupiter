@@ -93,7 +93,7 @@ void J4VTXLadderHit::Output(G4HCofThisEvent* HCTE)
 	 << layer <<" " << ladder << " " <<  dE <<" " 
 	 <<  xin << " " << yin << " " << zin << " " 
 	 <<  xout << " " << yout << " " << zout 
-	 << std::endl;
+	 << G4endl;
   }
 }
 	
@@ -111,19 +111,19 @@ void J4VTXLadderHit::Print()
 
   G4ThreeVector fHitPosition=GetHitPosition();
 
-  G4int prec = std::cerr.precision(2);
+  G4int prec = G4cerr.precision(2);
 
-  std::cerr << std::setiosflags(std::ios::fixed);
-  std::cerr << " track#=" << GetTrackID()
+  G4cerr << std::setiosflags(std::ios::fixed);
+  G4cerr << " track#=" << GetTrackID()
 	 << " position(mm)= "  
 	 << std::setw(8) << fHitPosition.x() *(1./mm) << " "
 	 << std::setw(8) << fHitPosition.y() *(1./mm) << " "
 	 << std::setw(8) << fHitPosition.z() *(1./mm) << " "
 	 << " Edep(keV)= " 
 	 << std::setw(6) << GetEnergyDeposit() *(1./keV) << " "
-         << std::endl;  
+         << G4endl;  
 
-  std::cerr.precision(prec);
+  G4cerr.precision(prec);
 }
 
 

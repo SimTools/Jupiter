@@ -45,12 +45,10 @@ J4IRQC1Coil::J4IRQC1Coil(J4VAcceleratorComponent *parent,
 
 J4IRQC1Coil::~J4IRQC1Coil()
 {
-
    for ( int i = 0; i < _QC1NCOLLAR_ ; i++){
       if (Deregister(fcollar[i]) ) delete fcollar[i];
     }
     if (Deregister(fcollar) ) delete[] fcollar;
-
 }
 
 //=====================================================================

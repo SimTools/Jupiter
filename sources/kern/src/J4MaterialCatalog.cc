@@ -19,8 +19,8 @@ J4MaterialCatalog::J4MaterialCatalog()
   ReadMaterialCatalog();
   
   // list elements/materials
-  std::cout << *fElementTable << std::endl;
-  std::cout << *fMaterialTable << std::endl;
+  G4cout << *fElementTable << G4endl;
+  G4cout << *fMaterialTable << G4endl;
 
 }
 
@@ -31,7 +31,8 @@ J4MaterialCatalog::~J4MaterialCatalog()
 }
 
 /////////////////////////////////////////////////////////////////////////
-G4Material* J4MaterialCatalog::Order(const G4String& name) const
+G4Material* J4MaterialCatalog::Order(const G4String& name, 
+                                     G4MaterialPropertiesTable* mtable) const
 /////////////////////////////////////////////////////////////////////////
 {
   G4Material* material= 0;
@@ -45,6 +46,8 @@ G4Material* J4MaterialCatalog::Order(const G4String& name) const
       break;
     }
   }
+
+  if (material && mtable) material->SetMaterialPropertiesTable(mtable);
 
   return material;
 }

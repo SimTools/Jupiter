@@ -81,7 +81,7 @@ J4VMaterialStore* J4VVTXDetectorComponent::OpenMaterialStore()
    if(!fMaterialStore) {
    	fMaterialStore = new J4VTXMaterialStore();
         Register(fMaterialStore);
-  	std::cerr << "*** Opend J4VTXMaterialStore ***" << std::endl;
+  	G4cerr << "*** Opend J4VTXMaterialStore ***" << G4endl;
   }
     
    return fMaterialStore;
@@ -95,7 +95,7 @@ J4VTXParameterList* J4VVTXDetectorComponent::OpenParameterList()
   if(!fParameterList) {
     fParameterList = new J4VTXParameterList();
     Register(fParameterList);
-    std::cerr << "*** Opend J4VTXParameterList ***" << std::endl;
+    G4cerr << "*** Opend J4VTXParameterList ***" << G4endl;
   }
 
   return fParameterList;

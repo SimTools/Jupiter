@@ -28,27 +28,33 @@ J4VMaterialStore::~J4VMaterialStore()
 
 
 /////////////////////////////////////////////////////////////////////////
-G4Material* J4VMaterialStore::Order(const G4String& name) 
+G4Material* J4VMaterialStore::Order(const G4String& name,
+                                    G4MaterialPropertiesTable* mtable) 
 /////////////////////////////////////////////////////////////////////////
 {  	
   G4Material* material= 0;
-  material = fMaterialCatalog->Order(name);
+  material = fMaterialCatalog->Order(name, mtable);
   
   if(!material) {
   	
   	std::cerr << "*** Your orderd material " << name << " is not in catalog! ***" << std::endl;
   	
-  	material = Create(name);
+  	std::cerr << "*** Creating your material... ***" << std::endl;
+  	material = Create(name, mtable);
   	
   	if(!material) {
-  	   std::cerr << "*** You couldnot get new material" << name << " ! ***" << std::endl;
+  	   std::cerr << "*** You cannot get new material " << name << " ! ***" << std::endl;
+           abort();
+  	} else {
+  	   std::cerr << "*** Material " << name << " is generated! ***" << std::endl;
   	}	
   }
   return material;
 }
 
 /////////////////////////////////////////////////////////////////////////
-G4Material* J4VMaterialStore::Create(const G4String& name) 
+G4Material* J4VMaterialStore::Create(const G4String& name, 
+                                     G4MaterialPropertiesTable* mtable) 
 /////////////////////////////////////////////////////////////////////////
 {  
   	   std::cerr << "*********************************************" << std::endl;

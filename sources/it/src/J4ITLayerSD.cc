@@ -74,11 +74,11 @@ G4bool J4ITLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   const G4ThreeVector   &pos           = GetPostPosition();
   
 #if 0  
-  std::cerr << "SDname = " << location->GetName() << " " 
+  G4cerr << "SDname = " << location->GetName() << " " 
   	 << "TrackID = " << trackID << " " 
   	 << "ParticleName = " << particle->GetParticleName() << " "
   	 << "PreStepPoint(x,y,z) = " << pre.x() << " " 
-  	 << pre.y() << " " << pre.z() << std::endl; 
+  	 << pre.y() << " " << pre.z() << G4endl; 
 #endif
 
   // Create a new hit and push them to "Hit Coleltion"
@@ -116,8 +116,8 @@ void J4ITLayerSD::DrawAll()
 void J4ITLayerSD::PrintAll()
 {
   G4int nHit= ((J4ITLayerHitBuf*)GetHitBuf())-> entries();
-  std::cout << "------------------------------------------" << std::endl
-         << "*** tracker Hit (#hits=" << nHit << ")" << std::endl;
+  G4cout << "------------------------------------------" << G4endl
+         << "*** tracker Hit (#hits=" << nHit << ")" << G4endl;
   ((J4ITLayerHitBuf*)GetHitBuf())-> PrintAllHits();
 }
 

@@ -102,8 +102,8 @@ void J4VTXLadderSD::DrawAll()
 void J4VTXLadderSD::PrintAll()
 {
   G4int nHit= ((J4VTXLadderHitBuf*)GetHitBuf())-> entries();
-  std::cout << "------------------------------------------" << std::endl
-         << "*** tracker Hit (#hits=" << nHit << ")" << std::endl;
+  G4cout << "------------------------------------------" << G4endl
+         << "*** tracker Hit (#hits=" << nHit << ")" << G4endl;
   ((J4VTXLadderHitBuf*)GetHitBuf())-> PrintAllHits();
 }
 

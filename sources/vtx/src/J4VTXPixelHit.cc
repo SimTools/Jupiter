@@ -21,6 +21,7 @@
 //---------------------
 
 J4VTXPixelHitAllocator J4VTXPixelHit::fHitAllocator ;
+J4Output *J4VTXPixelHit::fOutput = 0;
 
 //=========================================================================
 //* constructor -----------------------------------------------------------
@@ -81,6 +82,7 @@ G4ThreeVector J4VTXPixelHit::GetHitPosition(){
 //* Output ------------------------------------------------------------------
 void J4VTXPixelHit::Output(G4HCofThisEvent* HCTE)
 {
+  if (fOutput) fOutput->Output(this);
 	
   // output hitdata to output file ....
   
@@ -97,7 +99,7 @@ void J4VTXPixelHit::Output(G4HCofThisEvent* HCTE)
           << GetTrackID() << " " << fLayerID 
 	  <<" " << fLadderID <<" "<< fSensorID
          <<" " << fPixThetaID <<" " << fPixPhiID << " " 
-         << fInPosition <<" " << fOutPosition << std::endl;  	
+         << fInPosition <<" " << fOutPosition << G4endl;  	
 #else
      G4double dE = GetEnergyDeposit()/keV;
      G4int    trk = GetTrackID();
@@ -144,7 +146,7 @@ void J4VTXPixelHit::Output(G4HCofThisEvent* HCTE)
 	 << " "<<  xlpix << " " << ylpix << " " << zlpix
 	 << " "<<  xlin << " " << ylin << " " << zlin
 	 << " "<<  xlout << " " << ylout << " " << zlout 
-	 << " " << procName<< std::endl;
+	 << " " << procName<< G4endl;
 #endif
   }
 }
@@ -162,18 +164,18 @@ void J4VTXPixelHit::Print()
 {
 
   G4ThreeVector fHitPosition=GetHitPosition();
-  G4int prec = std::cerr.precision(2);
+  G4int prec = G4cerr.precision(2);
 
-  std::cerr << std::setiosflags(std::ios::fixed);
-  std::cerr << " track#=" << GetTrackID()
+  G4cerr << std::setiosflags(std::ios::fixed);
+  G4cerr << " track#=" << GetTrackID()
 	 << " position(mm)= " 
 	 << std::setw(8) << fHitPosition.x() *(1./mm) << " "
 	 << std::setw(8) << fHitPosition.y() *(1./mm) << " "
 	 << std::setw(8) << fHitPosition.z() *(1./mm) << " "
 	 << " Edep(keV)= " 
 	 << std::setw(6) << GetEnergyDeposit() *(1./keV) << " "
-         << std::endl;  
-  std::cerr.precision(prec);
+         << G4endl;  
+  G4cerr.precision(prec);
 }
 
 

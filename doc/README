@@ -1,11 +1,12 @@
 ------------------------------------------------------------------------------
                                  JUPITER 
 ------------------------------------------------------------------------------
-Version:        2.1.00
+Version:        2.6.00
 
 Description:    JLC Monte-Carlo event simulator based on Geant4 
 
 UpdateRecord:   
+  2004/06/08    A.Miyamoto (v.2.6.00)   Based on 2.5.04 for C++/Jupiter lecture
   2002/11/05    K.Hoshina  (v.2.1.00)   J4TwistedTubs fixed. J4Timer added.
   2002/11/01    K.Fujii    (v.2.0.00)	Replaced Main stream
   2002/10/30    K.Fujii    (v.1.8.00)	Merged with K.Hosina's main stream

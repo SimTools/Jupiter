@@ -86,7 +86,7 @@ void J4ITLayerHit::Output(G4HCofThisEvent* HCTE)
          << std::setw(18) << GetTof() << " "
          << std::setiosflags(std::ios::floatfield) 
          << std::setprecision(8)
-         << std::endl;
+         << G4endl;
   }
 
 	
@@ -106,14 +106,14 @@ void J4ITLayerHit::Print()
 {
 
 
-  std::cout << std::setiosflags(std::ios::fixed);
-  std::cout << std::setw(20) << GetComponentName() << " " << std::endl;
-  std::cout << " track#=" << GetTrackID()
+  G4cout << std::setiosflags(std::ios::fixed);
+  G4cout << std::setw(20) << GetComponentName() << " " << G4endl;
+  G4cout << " track#=" << GetTrackID()
          << " charge=" << GetCharge()
          << " energy(GeV)= " << std::setprecision(2) 
          << std::setw(6) << GetTotalEnergy() *(1./GeV) << " "
          << " TOF(ns)= " << std::setw(4) << std::setprecision(1) 
          << GetTof() /ns 
-         << std::endl;  
+         << G4endl;  
 }
 

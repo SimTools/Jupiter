@@ -13,6 +13,7 @@
 
 #include "J4VTXLayer.hh"
 #include "G4Tubs.hh"
+#include "J4VTXLayerSD.hh"
 
 // ====================================================================
 //--------------------------------
@@ -81,35 +82,36 @@ void J4VTXLayer::Assemble()
     PaintLV(list->GetLayerVisAtt() , list->GetLayerColor());    
 
 #if 1        
-    // Install daughter PV //
-    // Install Ladder      //
-    G4int numOfLadders = list->GetNLadders(layerID);
+    if ( !(list->IsLayerSD()) ){
+      // Install daughter PV //
+      // Install Ladder      //
+      G4int numOfLadders = list->GetNLadders(layerID);
  
-    // make pointer array for Ladder...
-    fLadders = new J4VTXLadder* [numOfLadders]; 
-    Register(fLadders);
-    
-    // make first ladder object (MUST define copyNo as 0)
-    fLadders[0] = new J4VTXLadder(this,numOfLadders, 1, 0, 0);
-    Register(fLadders[0]);
-    fLadders[0]->InstallIn(this);  
-    SetDaughter(fLadders[0]);
-
-    // copy ladder objects (copyNo must start from 1)
-    G4int copyNo;
-    for (copyNo = 1; copyNo < numOfLadders; copyNo++) {
+      // make pointer array for Ladder...
+      fLadders = new J4VTXLadder* [numOfLadders]; 
+      Register(fLadders);
+      
+      // make first ladder object (MUST define copyNo as 0)
+      fLadders[0] = new J4VTXLadder(this,numOfLadders, 1, 0, 0);
+      Register(fLadders[0]);
+      fLadders[0]->InstallIn(this);  
+      SetDaughter(fLadders[0]);
+      
+      // copy ladder objects (copyNo must start from 1)
+      G4int copyNo;
+      for (copyNo = 1; copyNo < numOfLadders; copyNo++) {
     	fLadders[copyNo] = new J4VTXLadder(*fLadders[0], copyNo);
         Register(fLadders[copyNo]);
-    }
+      }
     
-    // install ladder objects...    
-    for (copyNo = 1 ; copyNo < numOfLadders; copyNo++) {
-       fLadders[copyNo]->InstallIn(this);  
-       SetDaughter(fLadders[copyNo]);
+      // install ladder objects...    
+      for (copyNo = 1 ; copyNo < numOfLadders; copyNo++) {
+	fLadders[copyNo]->InstallIn(this);  
+	SetDaughter(fLadders[copyNo]);
+      }
     }
 #endif
-    
-  }
+  }  // GetLV
 }
 
 //=====================================================================
@@ -117,6 +119,14 @@ void J4VTXLayer::Assemble()
 
 void J4VTXLayer::Cabling()
 {
+  if(!GetLV()) Assemble();
+
+  if (OpenParameterList()->IsLayerSD()){
+    J4VTXLayerSD* sd = new J4VTXLayerSD(this);
+    Register(sd);
+    SetSD(sd);
+  }
+
 }
 
 //=====================================================================
@@ -132,7 +142,8 @@ void J4VTXLayer::InstallIn(J4VComponent         *mother,
   // Placement function into mother object ------//
   
   SetPVPlacement();
-  
+
+  if (!GetSD()) Cabling();   
 }
 
 

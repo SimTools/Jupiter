@@ -38,6 +38,7 @@ public:
   //* SetFunctions
   //*
   // Sensitive Detector
+  inline void SetLayerSD(G4bool log) {fLayerSD = log; }
   inline void SetLadderSD(G4bool log) {fLadderSD = log; }
   inline void SetSensorSD(G4bool log) {fSensorSD = log; }
   inline void SetPixelAreaSD(G4bool log) { fPixelAreaSD = log; }
@@ -86,6 +87,7 @@ public:
   inline G4ThreeVector GetDxyzMarginSize() const { return fDxyzMargin;}
 
   // Sensitive Detector
+  inline G4bool IsLayerSD() const { return fLayerSD; }
   inline G4bool IsLadderSD() const { return fLadderSD; }
   inline G4bool IsSensorSD() const { return fSensorSD; }
   inline G4bool IsPixelAreaSD() const { return fPixelAreaSD; }
@@ -185,6 +187,7 @@ private:
 private:
 
   // Sensitive Detector
+  G4bool fLayerSD;
   G4bool fLadderSD;
   G4bool fSensorSD;
   G4bool fPixelAreaSD;

@@ -44,6 +44,7 @@ J4IT::J4IT(J4VDetectorComponent *parent,
 
 J4IT::~J4IT()
 {
+#if 0
   J4ITParameterList *list = OpenParameterList(); 
   if (fLayers){	
     G4int i;  
@@ -52,6 +53,7 @@ J4IT::~J4IT()
     } 
     if (Deregister(fLayers)) delete [] fLayers;
   }
+#endif
 }
 
 //=====================================================================

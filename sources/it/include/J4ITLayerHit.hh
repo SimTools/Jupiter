@@ -59,6 +59,7 @@ public:
   virtual void Output(G4HCofThisEvent* HCTE);
   virtual void Draw();
   virtual void Print();
+  static void SetOutput(J4Output *output) { fOutput=output; } 
     
 private: 
 

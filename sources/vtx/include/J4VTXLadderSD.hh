@@ -45,7 +45,7 @@ public:
      }
      else
      {
-        std::cerr << "J4VTXLadderSD::OutputAll: No HitBuf! " << std::endl;
+        G4cerr << "J4VTXLadderSD::OutputAll: No HitBuf! " << G4endl;
      }
   }
   

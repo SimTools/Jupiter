@@ -1,0 +1,25 @@
+
+
+Geometry
+
+  CT includes 
+   Support tube: from 40 cm to ..
+
+  CT sensitive region 
+   R from 45 cm to 155cm. ( Lever arm of 110 cm)
+   Number of layer is 50.  Each layer has 2.2 cm thickness.
+
+  Position of Outer Support tube.
+  
+
+ 
+Default value in J4ParameterList
+  
+  fSupportTubInnerR = 40*cm;                  // InnerR of Support Tub
+  fSupportTubOuterR = 44*cm;                  // OuterR of Support Tub
+
+  fCDCOuterR  = 157cm
+  fCDCHalfZ   = 160cm
+
+  
+   

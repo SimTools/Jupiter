@@ -21,11 +21,11 @@
 
 J4VTXParameterList::J4VTXParameterList()
 {
+  SetSensitiveDetector();  // SensitiveDetector must be called at first.
   SetParameters();
   SetMaterials();
   SetVisAttributes();
   SetColors();
-  SetSensitiveDetector();
 }
 //=====================================================================
 //* destructor -------------------------------------------------------
@@ -55,23 +55,36 @@ J4VTXParameterList::~J4VTXParameterList()
 //* SetMaterials ------------------------------------------------------
 void J4VTXParameterList::SetMaterials()
 {
+#if 1
   fVTXMaterial       = "Air";
-  fLayerMaterial     = "Air";
+  fLayerMaterial     = "Silicon";
+  //fLayerMaterial     = "Air";
   fLadderMaterial    = "Air";
   fSensorMaterial    = "Silicon";
   fSubstrateMaterial = "Silicon";
   fEpitaxialMaterial = "Silicon";
   fPixelAreaMaterial = "Silicon";
+#else
+  fVTXMaterial       = "vacuum";
+  fLayerMaterial     = "vacuum";
+  fLadderMaterial    = "vacuum";
+  fSensorMaterial    = "vacuum";
+  fSubstrateMaterial = "vacuum";
+  fEpitaxialMaterial = "vacuum";
+  fPixelAreaMaterial = "vacuum";
+#endif
+
 }
 
 //=====================================================================
 //* SetSensitiveDetector-----------------------------------------------
 void J4VTXParameterList::SetSensitiveDetector()
 {
+  SetLayerSD(TRUE);    // if TRUE, Layer specific configuration.
   SetLadderSD(FALSE);
   SetSensorSD(FALSE);
   SetPixelAreaSD(FALSE);
-  SetPixelSD(TRUE);
+  SetPixelSD(FALSE);
 }
 //=====================================================================
 //* SetParameters ------------------------------------------------------
@@ -86,7 +99,7 @@ void J4VTXParameterList::SetDefaults()
 {
 
   // Margin for avoiding volume intersection.
-  SetDxyzMarginSize(G4ThreeVector(0.1*mm,0.1*mm,0.1*mm));
+  SetDxyzMarginSize(G4ThreeVector(0.01*mm,0.01*mm,0.01*mm));
   SetDrMarginSize(0.5*mm);
 
   G4double  sensorDZ = 330*micrometer;
@@ -144,7 +157,8 @@ void J4VTXParameterList::SetDefaults()
   }
 
   // MaxAllowedStep
-  SetMaxAllowedStep(0.001*mm);
+  //SetMaxAllowedStep(0.001*mm);
+  SetMaxAllowedStep(0.01*mm);
 }
 //=====================================================================
 //* SetParameters ------------------------------------------------------
@@ -164,6 +178,14 @@ void J4VTXParameterList::BuildParameters()
   frOuterLayer = new G4double[fNLayers];
   
   for ( G4int ilayer = 0; ilayer < fNLayers; ilayer++){
+    for ( G4int isensor = 0; isensor < fNSensors[ilayer] ; isensor++){
+      fxyzSensor[ilayer][isensor] = G4ThreeVector(
+          0.*mm,
+	  -0.5*(fDxyzSensor.y()/2.-fDxyzEpitaxial.y()/2),
+	fDxyzSensor.z()
+   	 * ((G4double)(isensor+1) - (G4double)( fNSensors[ilayer]+1 )/2.));
+    }
+
     fDxyzLadder[ilayer] = new G4ThreeVector(
              fDxyzSensor.x()+2.*fDxyzMargin.x(),
              fDxyzSensor.y()+2.*fDxyzMargin.y(),
@@ -178,20 +200,17 @@ void J4VTXParameterList::BuildParameters()
       fangleLadder[ilayer][iladder] = -halfpi-theta*iladder+ftiltLadder;
     }
 
-    frInnerLayer[ilayer] = 
-      frLayer[ilayer]-fDxyzLadder[ilayer]->x()/2.*sin(ftiltLadder);
-
-    frOuterLayer[ilayer] = 
-      frLayer[ilayer]
-      +(fDxyzLadder[ilayer]->x()+2.*fDxyzLadder[ilayer]->y())*sin(ftiltLadder);
-
-    for ( G4int isensor = 0; isensor < fNSensors[ilayer] ; isensor++){
-      fxyzSensor[ilayer][isensor] = G4ThreeVector(
-          0.*mm,
-	  -0.5*(fDxyzSensor.y()/2.-fDxyzEpitaxial.y()/2),
-	fDxyzSensor.z()
-   	 * ((G4double)(isensor+1) - (G4double)( fNSensors[ilayer]+1 )/2.));
+    if ( !IsLayerSD() ){
+      frInnerLayer[ilayer] = 
+	frLayer[ilayer]-fDxyzLadder[ilayer]->x()/2.*sin(ftiltLadder);
+      frOuterLayer[ilayer] = 
+	frLayer[ilayer]
+	+(fDxyzLadder[ilayer]->x()+2.*fDxyzLadder[ilayer]->y())*sin(ftiltLadder);
+    }else{
+      frInnerLayer[ilayer] = frLayer[ilayer];
+      frOuterLayer[ilayer] = frLayer[ilayer]+fDxyzSensor.y();
     }
+
   }
 
   frVTXInner = frInnerLayer[0]-fDrMargin;
@@ -203,10 +222,10 @@ void J4VTXParameterList::BuildParameters()
 //* SetVtsAttributes ------------------------------------------------------
 void J4VTXParameterList::SetVisAttributes()
 {
-  fVTXVisAtt       = TRUE;
-  fLayerVisAtt     = FALSE;
+  fVTXVisAtt       = FALSE;
+  fLayerVisAtt     = TRUE;
   fLadderVisAtt    = FALSE;
-  fSensorVisAtt    = TRUE;
+  fSensorVisAtt    = FALSE;
   fSubstrateVisAtt = FALSE;
   fEpitaxialVisAtt = FALSE;
   fPixelAreaVisAtt = FALSE;

@@ -63,7 +63,8 @@ J4UnionSolid:: J4UnionSolid( const G4String& pName,
 
 J4UnionSolid::~J4UnionSolid()
 {
-#ifndef __GEANT452__
+// ifndef __GEANT452__
+#if 0
    if (fIsOwner) {
    	if (fSolidA) delete fSolidA;
    	if (fSolidB) delete fSolidB;

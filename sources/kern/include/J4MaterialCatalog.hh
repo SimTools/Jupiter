@@ -9,6 +9,7 @@
 #include "G4Element.hh"
 #include "G4Material.hh"
 #include "G4MaterialTable.hh"
+#include "G4MaterialPropertiesTable.hh"
 #include "J4Object.hh"
 
 
@@ -29,7 +30,8 @@ public:
   ~J4MaterialCatalog();
   
   inline static  J4MaterialCatalog*  OpenCatalog();
-  G4Material*    Order(const G4String& name) const;
+  G4Material*    Order(const G4String& name,
+                       G4MaterialPropertiesTable* mtable=0) const;
 
 private:  
   void  ReadMaterialCatalog();

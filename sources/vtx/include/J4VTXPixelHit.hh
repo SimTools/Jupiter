@@ -16,7 +16,7 @@
 #include "J4VHit.hh"
 #include "G4THitsCollection.hh"
 #include "G4HCofThisEvent.hh"
-
+#include "J4Output.hh"
 
 //=========================================================================
 // TypeDef
@@ -75,6 +75,7 @@ public:
 
   void SetOutPos(G4ThreeVector out)     { fOutPosition=out; }  
   void SetLocalOutPos(G4ThreeVector out){ fLocalOutPosition=out; }  
+  static void SetOutput(J4Output *output) { fOutput=output; } 
 
   G4ThreeVector         GetOrigin() { return fOrigin; }
   G4ThreeVector         GetHitPosition() ;
@@ -115,6 +116,7 @@ private:
   G4ThreeVector         fLocalOutPosition;
   G4ThreeVector         fLocalPixPosition;  
 
+  static J4Output      *fOutput; // Pointer to Output Module
   static J4VTXPixelHitAllocator fHitAllocator;
 
 };

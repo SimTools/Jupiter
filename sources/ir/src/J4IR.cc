@@ -79,7 +79,6 @@ J4IR::~J4IR()
   if(Deregister(fWSC2L)) delete fWSC2L;
   //if(Deregister(fPMNR)) delete fPMNR;
   //if(Deregister(fPMNL)) delete fPMNL;
-
 }
 
 //=====================================================================

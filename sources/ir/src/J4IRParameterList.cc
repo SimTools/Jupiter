@@ -44,10 +44,8 @@ J4IRParameterList::J4IRParameterList(const G4String& name)
 
 J4IRParameterList::~J4IRParameterList()
 {
-
   delete  fIRColor;
   fgInstance = 0;
-
 }
 
 //=====================================================================

@@ -46,7 +46,7 @@ public:
      }
      else
      {
-        std::cerr << "J4VTXPixelAreaSD::OutputAll: No HitBuf! " << std::endl;
+        G4cerr << "J4VTXPixelAreaSD::OutputAll: No HitBuf! " << G4endl;
      }
   }
 

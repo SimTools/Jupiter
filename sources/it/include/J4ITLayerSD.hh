@@ -44,7 +44,7 @@ public:
      }
      else
      {
-       std::cerr << "J4ITLayerSD::OutputAll: No HitBuf! " << std::endl;
+       G4cerr << "J4ITLayerSD::OutputAll: No HitBuf! " << G4endl;
      }
   }
   
