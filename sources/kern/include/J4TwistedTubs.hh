@@ -96,38 +96,40 @@ class J4TwistedTubs : public G4VSolid
   }
  // argument miss protection end ------------------------------------------
 
-  virtual        ~J4TwistedTubs();
+  virtual         ~J4TwistedTubs();
              
-  void           ComputeDimensions(G4VPVParameterisation   *p,
-                                   const G4int              n,
-                                   const G4VPhysicalVolume *prep);
+  void            ComputeDimensions(G4VPVParameterisation   *p,
+                                    const G4int              n,
+                                    const G4VPhysicalVolume *prep);
  
-  G4bool         CalculateExtent(const EAxis               paxis,
-                                 const G4VoxelLimits      &pvoxellimit,
-                                 const G4AffineTransform  &ptransform,
-                                       G4double           &pmin,
-                                       G4double           &pmax ) const;
+  G4bool          CalculateExtent(const EAxis               paxis,
+                                  const G4VoxelLimits      &pvoxellimit,
+                                  const G4AffineTransform  &ptransform,
+                                        G4double           &pmin,
+                                        G4double           &pmax ) const;
 
-  G4double       DistanceToIn (const G4ThreeVector &p,
-                               const G4ThreeVector &v ) const;
+  G4double        DistanceToIn (const G4ThreeVector &p,
+                                const G4ThreeVector &v ) const;
 
-  G4double       DistanceToIn (const G4ThreeVector &p ) const;
+  G4double        DistanceToIn (const G4ThreeVector &p ) const;
+   
+  G4double        DistanceToOut(const G4ThreeVector &p, 
+                                const G4ThreeVector &v,
+                                const G4bool         calcnorm=G4bool(false),
+                                      G4bool        *validnorm=0, 
+                                      G4ThreeVector *n=0 ) const;
+
+  G4double        DistanceToOut(const G4ThreeVector &p) const;
   
-  G4double       DistanceToOut(const G4ThreeVector &p, 
-                               const G4ThreeVector &v,
-                               const G4bool         calcnorm=G4bool(false),
-                                     G4bool        *validnorm=0, 
-                                     G4ThreeVector *n=0 ) const;
+  EInside         Inside       (const G4ThreeVector &p) const;
 
-  G4double       DistanceToOut(const G4ThreeVector &p) const;
-  
-  EInside        Inside       (const G4ThreeVector &p) const;
+  G4ThreeVector   SurfaceNormal(const G4ThreeVector &p) const;
 
-  G4ThreeVector  SurfaceNormal(const G4ThreeVector &p) const;
+  void            DescribeYourselfTo (G4VGraphicsScene &scene) const;
+  G4Polyhedron   *CreatePolyhedron   () const;
+  G4NURBS        *CreateNURBS        () const;
 
-  void           DescribeYourselfTo (G4VGraphicsScene &scene) const;
-  G4Polyhedron  *CreatePolyhedron   () const;
-  G4NURBS       *CreateNURBS        () const;
+  G4std::ostream &StreamInfo(G4std::ostream& os) const;
 
   //* get functions *//
   
