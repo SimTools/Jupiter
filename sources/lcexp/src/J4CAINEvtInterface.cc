@@ -120,6 +120,7 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 
   G4int id, kgen;
   G4double weight, ct,cx,cy,cs,ce,cpx,cpy,cps,csx,csy,css;
+  char genname[4];
   while(1) { 
     fInputStream.getline(input,512);
     if( fInputStream.eof() ) {
@@ -139,9 +140,10 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 #else
       std::istringstream sin(input);
 #endif
-      sin >>  id >> kgen >> weight >> ct >> cx >> cy >> cs >> 
+      sin >>  id >> kgen >> genname >> weight >> ct >> cx >> cy >> cs >> 
 	   ce >> cpx >> cpy >> cps >> csx >> csy >> css ;
 
+      
       G4bool samedir= (fGenDirection*cps >= 0.0 ? true : false );
 
       if( samedir ) {
