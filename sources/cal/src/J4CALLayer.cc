@@ -50,12 +50,16 @@ J4CALLayer::J4CALLayer(J4VDetectorComponent *parent,
 
 J4CALLayer::~J4CALLayer()
 {
+#if 0
   J4CALMiniTower* ptrJ4CALMiniTower = dynamic_cast<J4CALMiniTower*>(GetMother());
   J4CALMiniCone*  ptrJ4CALMiniCone  = dynamic_cast<J4CALMiniCone*>(ptrJ4CALMiniTower-> GetMother());
   J4CALBlock*  ptrJ4CALBlock  = dynamic_cast<J4CALBlock*>(ptrJ4CALMiniCone-> GetMother());
    const G4String& firstName = ptrJ4CALBlock->GetFirstName();
 
    G4int nlayers = ((OpenParameterList() -> GetSubLayerParam()) -> GetNLayers(firstName));
+#else
+   G4int nlayers = fSubLayers.size();
+#endif
 
    for(G4int i = 0; i < nlayers; i++){
      if (Deregister(fSubLayers[i])) delete fSubLayers[i];
