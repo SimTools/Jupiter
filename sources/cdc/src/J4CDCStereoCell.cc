@@ -8,6 +8,7 @@
 //*     
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
+//*	2004/08/26  K.Fujii	Fixed rotation direction.
 //*************************************************************************
 
 #include "J4CDCStereoCell.hh"
@@ -42,7 +43,7 @@ J4CDCStereoCell::J4CDCStereoCell(J4VDetectorComponent *parent,
    G4double motherdphi = GetDeltaPhi(parent);
    G4double step       = motherdphi / nclones;
    G4double sphi       = step * copyno;
-   fRot.rotateZ(sphi);   
+   fRot.rotateZ(-sphi);   
 }
 
 J4CDCStereoCell::J4CDCStereoCell(const J4CDCStereoCell &orig, 
@@ -52,7 +53,7 @@ J4CDCStereoCell::J4CDCStereoCell(const J4CDCStereoCell &orig,
    G4double motherdphi = GetDeltaPhi(orig.GetMother());
    G4double step       = motherdphi / (orig.GetNclones());
    G4double sphi       = step * copyno;
-   fRot.rotateZ(sphi);
+   fRot.rotateZ(-sphi);
 }
 
 

@@ -67,7 +67,6 @@ public:
      G4int                 trackID  = GetTrackID();
      G4int                 mtrackID = GetMotherTrackID();
      G4int                 cloneID  = GetCloneID(locmo);
-     std::cerr << " cloneID = " << cloneID << std::endl;
      G4ParticleDefinition *particle = GetParticle();
      G4double              tof      = GetTof();
      G4double              edep     = GetEnergyDeposit();
@@ -90,6 +89,9 @@ public:
      std::cerr << "*J4VCDCDriftRegionSD::ProcessHits -----------------------"
             << std::endl;
      std::cerr << "   SDname        : " << locat->GetName() << std::endl;
+     std::cerr << "   Cell name     : " << locmo->GetName() << std::endl;
+     std::cerr << "   Cell address  : " << (void *)locmo << std::endl;
+     std::cerr << "   CloneID       : " << cloneID << std::endl;
      std::cerr << "   TrackID       : " << trackID << std::endl;
      std::cerr << "   ParticleName  : " << particle->GetParticleName()
                                      << std::endl;

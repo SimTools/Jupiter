@@ -8,6 +8,7 @@
 //*     
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
+//*	2004/08/26  K.Fujii	Fixed rotation direction.
 //*************************************************************************
 
 #include "J4CDCSuperLayer.hh"
@@ -44,7 +45,7 @@ J4CDCSuperLayer::J4CDCSuperLayer(J4VDetectorComponent *parent,
    fOffset                  = list->GetSuperLayerPhiOffset(me);
    fNcellsPerLayer          = list->GetNcellsPerLayer(me);
 std::cerr << "J4CDCSuperLayer::SuperLayerPhiOffset = " << fOffset << std::endl;
-   fRot.rotateZ(fOffset);
+   fRot.rotateZ(-fOffset);
 }
 
 //=====================================================================
