@@ -50,7 +50,7 @@ void J4ParameterList::SetParameters()
    fEXPHallVisAtt   = FALSE;
    SetEXPHallColor(G4Color(1, 0, 1));
 
-
+#if defined(__GLC3T__)
    fBPOuterR         = 1.8*cm;                 // OuterR of BeamPipe
    fBPMargin         = 0.05*cm;                // Margin between beampipe and IR
    fIRThetaMax       = 200*mrad;               // Theta Max of IR region
@@ -91,8 +91,8 @@ void J4ParameterList::SetParameters()
 #endif
 
 
-
-#if defined(__GLD_V1__) 
+#else
+   //#if defined(__GLD_V1__) 
 
    fBPOuterR         = 1.8*cm;                 // OuterR of BeamPipe
    fBPMargin         = 0.05*cm;                // Margin between beampipe and IR

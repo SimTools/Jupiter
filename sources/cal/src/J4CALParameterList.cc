@@ -87,7 +87,11 @@ void J4CALParameterList::SetParameters()
    fBarrelPhiOffset =   0.*deg;
 
    // Endcap ------------------ 
+#if defined(__GLC3T__)
    fEndcapInnerR    =  45.*cm;
+#else
+   fEndcapInnerR    =  40.*cm;
+#endif
    fEndcapDeltaPhi  = 360.*deg;
    fEndcapPhiOffset =   0.*deg;
 
@@ -96,11 +100,22 @@ void J4CALParameterList::SetParameters()
    //fNominalEndcapTowerFrontSize = 4. *cm;   // Nominal granularity of EndcapTower
    fNominalBarrelTowerFrontSize = 12. *cm;   // Nominal granularity of BarrelTower 
    fNominalEndcapTowerFrontSize = 12. *cm;   // Nominal granularity of EndcapTower
+
+#if defined(__GLC3T__)
    fTowerHeight                 = 190.*cm;  // Tower height
    
    fBarrelTowerFrontRho = 160.*cm; // Towers must be placed in a CAL volume completely.  
    fEndcapTowerFrontZ   = 190.*cm; // Check kern/J4ParameterList.cc and 
                                    // see CalcNextTowerEdgeAngle().
+#else
+   // default: __GLD_V1__
+   fTowerHeight                 = 141.*cm;  // Tower height
+   
+   fBarrelTowerFrontRho = 210.*cm; // Towers must be placed in a CAL volume completely.  
+   fEndcapTowerFrontZ   = 270.*cm; // Check kern/J4ParameterList.cc and 
+                                   // see CalcNextTowerEdgeAngle().
+#endif
+
    fConstNTowers        = 1500;    // Temporary number of towers to check cellID.
 
    fBarrelCoverageAngle = atan2(fEndcapTowerFrontZ, fBarrelTowerFrontRho);
