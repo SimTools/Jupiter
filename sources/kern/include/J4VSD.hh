@@ -88,14 +88,14 @@ class J4VSD : public J4VSensitiveDetector
            G4int nhits = ((G4THitsCollection<HitType>*)GetHitBuf())->entries();
            G4int i;
            G4THitsCollection<HitType>* hcp = (G4THitsCollection<HitType>*)GetHitBuf();
-
+#if 0
            if (nhits) {
               std::cerr << "J4VSD::OutputAll: nhits = " << nhits 
                << " for SDName " << ((J4VHit*)hcp->operator[](0))->GetComponentName()<< std::endl;
            } else {
               std::cerr << "*****J4VSD::OutputAll: No Hit! " << std::endl;
            }
-       
+#endif
            for(i=0; i<nhits; i++)
            {
               ((J4VHit*)hcp->operator[](i))->Output(HCTE);
