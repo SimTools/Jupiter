@@ -24,6 +24,7 @@ J4CDCSenseWireHitAllocator J4CDCSenseWireHit::fHitAllocator ;
 //=========================================================================
 //* constructor -----------------------------------------------------------
 
+#if 0
 J4CDCSenseWireHit::J4CDCSenseWireHit(
                    J4VComponent         *detector,       // He is in "location" now
                    G4int                 cloneID,        // CloneID of detector
@@ -36,6 +37,20 @@ J4CDCSenseWireHit::J4CDCSenseWireHit(
                    const G4ThreeVector  &momentum,       // Momentum of perticle
                    const G4ThreeVector  &pre,            // Pre-position of track
                    const G4ThreeVector  &pos )           // Post-position of track
+#else
+J4CDCSenseWireHit::J4CDCSenseWireHit(
+                   J4VComponent         *,       // He is in "location" now
+                   G4int                 ,       // CloneID of detector
+                   G4int                 ,       // TrackID
+                   G4int                 ,       // MotherTrackID
+                   G4ParticleDefinition *,       // particle
+                   G4double              ,       // TOF 
+                   G4double              ,       // Energy Deposit
+                   G4double              ,       // Total energy
+                   const G4ThreeVector  &,       // Momentum of perticle
+                   const G4ThreeVector  &,       // Pre-position of track
+                   const G4ThreeVector  &)       // Post-position of track
+#endif
 {
   fHitPosition = GetHitPosition();
 }
@@ -66,7 +81,7 @@ G4ThreeVector J4CDCSenseWireHit::GetHitPosition() const
 //=========================================================================
 //* Output ------------------------------------------------------------------
 
-void J4CDCSenseWireHit::Output(G4HCofThisEvent* HCTE)
+void J4CDCSenseWireHit::Output(G4HCofThisEvent *)
 {
    std::cerr << "I am SenseWireHit." << std::endl;	
 	

@@ -64,7 +64,7 @@ J4CDCDriftRegionHit::~J4CDCDriftRegionHit()
 //=========================================================================
 //* Output ----------------------------------------------------------------
 
-void J4CDCDriftRegionHit::Output(G4HCofThisEvent* HCTE)
+void J4CDCDriftRegionHit::Output(G4HCofThisEvent *)
 {
 
   if (fOutput) fOutput->Output(this);

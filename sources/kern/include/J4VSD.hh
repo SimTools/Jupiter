@@ -42,8 +42,13 @@ class J4VSD : public J4VSensitiveDetector
   {  
   }
   
+#if 0
   J4VSD(const J4VSD<G4THitsCollection<HitType> >& right)
 		: J4VSensitiveDetector(right)
+#else
+  J4VSD(const J4VSD<HitType>& right)
+		: J4VSensitiveDetector(right)
+#endif
   {
   }
 	
@@ -51,7 +56,11 @@ class J4VSD : public J4VSensitiveDetector
   {
   }
 
+#if 0
   virtual const J4VSD& operator=(const J4VSD<G4THitsCollection<HitType> >& right)
+#else
+  virtual const J4VSD& operator=(const J4VSD<HitType>& right)
+#endif
   {
     return (const J4VSD&)J4VSensitiveDetector::operator=(right);    
   } 

@@ -84,9 +84,9 @@ void J4CDCEndcap::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CDCEndcap::InstallIn(J4VComponent         *mother,
-                            G4RotationMatrix     *prot, 
-                            const G4ThreeVector  &tlate ) 
+void J4CDCEndcap::InstallIn(J4VComponent         *,
+                            G4RotationMatrix     *,
+                            const G4ThreeVector  &)
 { 
   Assemble();			// You MUST call Assemble(); at first.
   				// 

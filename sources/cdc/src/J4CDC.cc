@@ -147,9 +147,9 @@ void J4CDC::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CDC::InstallIn(J4VComponent         *mother,
-                      G4RotationMatrix     *prot, 
-                      const G4ThreeVector  &tlate ) 
+void J4CDC::InstallIn(J4VComponent        *,
+                      G4RotationMatrix    *,
+                      const G4ThreeVector &) 
 { 
   Assemble();			// You MUST call Assemble(); at first.
   				// 

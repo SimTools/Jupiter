@@ -30,6 +30,12 @@ public:
   J4CDCSenseWireSD(J4VDetectorComponent* detector);
   ~J4CDCSenseWireSD();
 
+  inline virtual const J4CDCSenseWireSD & operator=(const J4VSD<J4CDCSenseWireHit> &right)
+  {
+     J4VSD<J4CDCSenseWireHit>::operator=(right);
+     return *this;
+  }
+
   virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist);
   virtual void   Initialize (G4HCofThisEvent* HCTE);
   virtual void   EndOfEvent (G4HCofThisEvent* HCTE);

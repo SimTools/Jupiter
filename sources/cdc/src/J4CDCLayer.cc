@@ -200,9 +200,9 @@ void J4CDCLayer::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CDCLayer::InstallIn(J4VComponent         *mother,
-                           G4RotationMatrix     *prot, 
-                           const G4ThreeVector  &tlate ) 
+void J4CDCLayer::InstallIn(J4VComponent        *,
+                           G4RotationMatrix    *,
+                           const G4ThreeVector &) 
 { 
   Assemble();			// You MUST call Assemble(); at first.
   				// 

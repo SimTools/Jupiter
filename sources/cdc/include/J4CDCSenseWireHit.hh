@@ -75,6 +75,7 @@ private:
 //----------------------------------------
 
 inline J4CDCSenseWireHit::J4CDCSenseWireHit(const J4CDCSenseWireHit& right)
+     : J4VTrackerHit(right) 
 {
   fHitPosition  = right.fHitPosition ;                       
 }
@@ -82,6 +83,7 @@ inline J4CDCSenseWireHit::J4CDCSenseWireHit(const J4CDCSenseWireHit& right)
 inline const J4CDCSenseWireHit& 
   J4CDCSenseWireHit::operator= (const J4CDCSenseWireHit& right)
 {         
+  J4VTrackerHit::operator=(right);
   fHitPosition  = right.fHitPosition ;                       
   return *this;
 }

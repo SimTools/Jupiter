@@ -164,7 +164,7 @@ private:
 // inline function for J4VHit
 //---------------------
 
-inline J4VHit::J4VHit(const J4VHit& right)
+inline J4VHit::J4VHit(const J4VHit& right) : G4VHit(right), J4Object(right)
 {
 
   fComponent     = right.fComponent    ;

@@ -85,9 +85,9 @@ void J4CDCSupportTub::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CDCSupportTub::InstallIn(J4VComponent         *mother,
-                                G4RotationMatrix     *prot, 
-                                const G4ThreeVector  &tlate ) 
+void J4CDCSupportTub::InstallIn(J4VComponent        *,
+                                G4RotationMatrix    *,
+                                const G4ThreeVector &)
 { 
   Assemble();			// You MUST call Assemble(); at first.
   				// 

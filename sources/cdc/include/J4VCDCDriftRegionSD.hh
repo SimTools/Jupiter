@@ -33,6 +33,13 @@ public:
 
   ~J4VCDCDriftRegionSD() {}
 
+  inline 
+  virtual const J4VCDCDriftRegionSD & operator=(const J4VSD<HitType> &right)
+  {
+     J4VSD<HitType>::operator=(right);
+     return *this;
+  }
+
 
   virtual void Initialize (G4HCofThisEvent* HCTE)
   {
@@ -41,7 +48,7 @@ public:
      MakeHitBuf(HCTE);
   }
 
-  virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
+  virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory*)
   {
 
      //In order to use Get function, you must call SetNewStep() at first.
@@ -130,7 +137,7 @@ public:
      GetHitBuf()-> PrintAllHits();
   }
 
-  virtual void   EndOfEvent (G4HCofThisEvent* HCTE) {}
+  virtual void   EndOfEvent (G4HCofThisEvent *) {}
   virtual void   DrawAll() {} 
  
   // set/get functions

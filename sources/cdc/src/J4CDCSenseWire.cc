@@ -108,9 +108,9 @@ void J4CDCSenseWire::Cabling()
 
 //* InstallIn  --------------------------------------------------------
 
-void J4CDCSenseWire::InstallIn(J4VComponent         *mother,
-                               G4RotationMatrix     *prot, 
-                               const G4ThreeVector  &tlate ) 
+void J4CDCSenseWire::InstallIn(J4VComponent        *,
+                               G4RotationMatrix    *,
+                               const G4ThreeVector &)
 {
 	
  //* Assemble its LogicalVolume...	 

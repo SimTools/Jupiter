@@ -30,6 +30,13 @@ public:
   J4CDCDriftRegionSD(J4VDetectorComponent* detector);
   ~J4CDCDriftRegionSD();
 
+  inline 
+  virtual const J4CDCDriftRegionSD & operator=(const J4VSD<J4CDCDriftRegionHit> &right)
+  {
+     J4VSD<J4CDCDriftRegionHit>::operator=(right);
+     return *this;
+  }
+
 
 private:
   

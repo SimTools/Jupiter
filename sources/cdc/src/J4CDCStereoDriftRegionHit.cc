@@ -63,7 +63,7 @@ J4CDCStereoDriftRegionHit::~J4CDCStereoDriftRegionHit()
 //=========================================================================
 //* Output ----------------------------------------------------------------
 
-void J4CDCStereoDriftRegionHit::Output(G4HCofThisEvent* HCTE)
+void J4CDCStereoDriftRegionHit::Output(G4HCofThisEvent *)
 {
 
   if (fOutput) fOutput->Output(this);

@@ -49,7 +49,7 @@ void J4CDCSenseWireSD::Initialize(G4HCofThisEvent* HCTE)
 //=====================================================================
 //* ProcessHits -------------------------------------------------------
 
-G4bool J4CDCSenseWireSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
+G4bool J4CDCSenseWireSD::ProcessHits(G4Step* aStep, G4TouchableHistory *)
 {
   //In order to use Get function, you must call SetNewStep() at first.
   
@@ -101,7 +101,7 @@ G4bool J4CDCSenseWireSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
 //=====================================================================
 //* EndOfEvent --------------------------------------------------------
 
-void J4CDCSenseWireSD::EndOfEvent(G4HCofThisEvent* HCTE)
+void J4CDCSenseWireSD::EndOfEvent(G4HCofThisEvent *)
 {			
 }
 
