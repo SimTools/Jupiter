@@ -73,7 +73,7 @@ void J4CDC::Assemble()
       
       G4double rmin = list->GetCDCInnerR();
       G4double rmax = list->GetCDCOuterR();
-      G4double len  = list->GetCDCOuterR();
+      G4double len  = list->GetCDCHalfZ();
       G4double dphi = list->GetCDCDeltaPhi();
       //G4double endcapthick = list->GetEndcapHalfThick();
   	
