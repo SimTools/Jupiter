@@ -32,7 +32,6 @@
 //=====================================================================
 // static datamember's initialize
 G4int J4VCALSubLayerSD::fgLastHCID=-1;
-G4int J4VCALSubLayerSD::fgCurrentPreHitID = -1;
 std::multimap<G4int,J4CALHit*> J4VCALSubLayerSD::fgCalHits;
 
 //=====================================================================
@@ -140,13 +139,9 @@ G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
   G4bool isEM =IsEM();
 
   //  Get particle information
-  G4int  preHitID = J4CALSD::GetCurrentPreHitID();
+  G4int  preHitID = J4CALPreHitKeeper::GetInstance()->GetCurrentPreHitID();
   //G4int  pdgcode = GetParticle()->GetPDGEncoding();
 
-  if ( fgCurrentPreHitID < 0 ) {
-    fgCurrentPreHitID = J4CALSD::GetCurrentPreHitID();
-  }
-  
   G4double  tof   = GetTof();
   G4double  edep  = GetEnergyDeposit();
   const G4ThreeVector&  Xcm   = GetPrePosition() * GetEnergyDeposit(); // energy-weighted position vector
@@ -212,7 +207,6 @@ G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
 
 void J4VCALSubLayerSD::EndOfEvent( G4HCofThisEvent* /* HCTE */ )
 {
-  fgCurrentPreHitID = -1;
   SetHCID(-1);
   fgCalHits.clear();
 }

@@ -11,16 +11,15 @@
 //*************************************************************************
 
 #include "J4TPCPostHit.hh"
+#include "J4TPCPostHitKeeper.hh"
 #include "J4CALSD.hh"
 #include "J4CALPreHit.hh"
+#include "J4CALPreHitKeeper.hh"
 #include "J4CAL.hh"
 #include "J4CALCone.hh"
 #include "J4VCALMiniTower.hh"
 #include "J4CALEM.hh"
 #include <cmath>
-
-G4int J4CALSD::fgCurrentPreHitID = -1;
-G4int J4CALSD::fgTrackRegID      = -1;
  
 //=====================================================================
 //---------------------
@@ -33,6 +32,7 @@ G4int J4CALSD::fgTrackRegID      = -1;
 J4CALSD::J4CALSD( J4VDetectorComponent* detector )
                   :J4VSD<J4CALPreHit>( detector )
 {
+  J4CALPreHitKeeper::GetInstance(); // create book keeper
 }
 
 //=====================================================================
@@ -76,7 +76,7 @@ G4bool J4CALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ )
 
   //Get perticle information
   //G4int                 preHitID = 0;
-  G4int                 postHitID = J4TPCPostHit::GetCurPostHitID();
+  G4int                 postHitID = J4TPCPostHitKeeper::GetInstance()->GetCurPostHitID();
   const G4ThreeVector&  pre       = GetPrePosition();
   const G4ThreeVector&  momentum  = GetMomentum();
   //  G4double              edep     = GetEnergyDeposit();
@@ -87,15 +87,20 @@ G4bool J4CALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ )
   G4ParticleDefinition* particle = GetParticle(); 
   
   // Create new hit
-  if ( J4TrackingAction::GetInstance()->IsNext(fgTrackRegID) ) { 
+  J4CALPreHitKeeper *phkp = J4CALPreHitKeeper::GetInstance();
+  if ( phkp->IsNext() ) { 
 
-     fgCurrentPreHitID++;
+     phkp->IncrementCurrentPreHitID();
+     G4int preHitID = phkp->GetCurrentPreHitID();
+
      // create new hit!
 
-     fCurrentPreHitPtr = new J4CALPreHit( ptrCAL, postHitID, fgCurrentPreHitID, pre, momentum, 
-					  energy, tof, trackID, particle, motherTrackID );
+     J4CALPreHit *preHitPtr = new J4CALPreHit( ptrCAL, postHitID, preHitID, pre, momentum, 
+                                               energy, tof, trackID, particle, motherTrackID );
+
+     phkp->SetCurrentPreHitPtr(preHitPtr);
      
-     ( (J4CALPreHitBuf *)GetHitBuf() ) -> insert( fCurrentPreHitPtr );
+     ( (J4CALPreHitBuf *)GetHitBuf() ) -> insert( preHitPtr );
           
   }   
   return TRUE;
@@ -106,9 +111,10 @@ G4bool J4CALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ )
 
 void J4CALSD::EndOfEvent( G4HCofThisEvent* /* PreHCTE */ )
 {			
-  SetCurrentPreHitPtr(0);
-  SetCurrentPreHitID(-1);
-  J4TrackingAction::GetInstance()->ResetTrackIDReg(fgTrackRegID);
+  J4CALPreHitKeeper *phkp = J4CALPreHitKeeper::GetInstance();
+  phkp->SetCurrentPreHitPtr(0);
+  phkp->SetCurrentPreHitID(-1);
+  phkp->Reset();
 }
 
 //=====================================================================

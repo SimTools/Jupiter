@@ -65,7 +65,6 @@ public:
 
 private:
   static G4int fgLastHCID;
-  static G4int fgCurrentPreHitID;
   static std::multimap< G4int, J4CALHit* > fgCalHits; // multimap<cellid, map<prehitid, calhit*>>
   G4int         fNTowers;
 

@@ -56,8 +56,6 @@ public:
 
 private:
   G4bool IsExiting(const G4ThreeVector &pos, const G4ThreeVector &p) const; 
-private:
-  static G4int fgTrackRegID;
   
 };
 

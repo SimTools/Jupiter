@@ -11,6 +11,7 @@
 
 #include "J4TPCDriftRegionSD.hh"
 #include "J4TPCPostHit.hh"
+#include "J4TPCPostHitKeeper.hh"
 #include "J4TPCParameterList.hh"
 #include "J4VTPCDetectorComponent.hh"
 #include "G4VSolid.hh"
@@ -18,8 +19,6 @@
 
 //#define __DEBUG__
 
-G4int J4TPCDriftRegionSD::fgTrackRegID = -1;
- 
 //=====================================================================
 //---------------------
 // class definition
@@ -31,6 +30,7 @@ G4int J4TPCDriftRegionSD::fgTrackRegID = -1;
 J4TPCDriftRegionSD::J4TPCDriftRegionSD(J4VDetectorComponent* detector)
 		   :J4VSD<J4TPCLayerHit>(detector)
 {  
+  J4TPCPostHitKeeper::GetInstance(); // create book keeper
 }
 
 //=====================================================================
@@ -67,7 +67,7 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   G4int                    trackID  = GetTrackID();
 
   if (!IsExiting(pos, p) ||
-      !J4TrackingAction::GetInstance()->IsNext(fgTrackRegID)) {
+      !J4TPCPostHitKeeper::GetInstance()->IsNext()) {
     return FALSE;
   }
 
@@ -130,7 +130,7 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
 
 void J4TPCDriftRegionSD::EndOfEvent(G4HCofThisEvent *)
 {			
-   J4TrackingAction::GetInstance()->ResetTrackIDReg(fgTrackRegID);
+   J4TPCPostHitKeeper::GetInstance()->Reset();
 }
 
 //=====================================================================
