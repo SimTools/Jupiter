@@ -19,9 +19,9 @@
 #if 0
  #define __INSTALLCDC__  
 #else
-// #define __INSTALLTPC__
+ #define __INSTALLTPC__
 #endif
-//#define __INSTALLCAL__  
+#define __INSTALLCAL__  
 #define __INSTALLSOL__  
 #define __INSTALLMUD__  
 
