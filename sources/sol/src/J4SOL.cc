@@ -121,9 +121,11 @@ void J4SOL::SetMagField()
        J4MFieldMapStore* mfManager = J4MFieldMapStore::GetInstance();
        mfManager->NameList();
        Register(mfManager);
-       fieldManager-> SetDetectorField(mfManager);
-       fieldManager-> CreateChordFinder(mfManager);
-       fieldManager-> GetChordFinder()-> SetDeltaChord(3.*mm); // if you need
+       fieldManager->SetDetectorField(mfManager);
+       fieldManager->CreateChordFinder(mfManager);
+       fieldManager->GetChordFinder()-> SetDeltaChord(3.*mm); // if you need
+       fieldManager->SetDeltaOneStep(0.0025*mm);
+       fieldManager->SetDeltaIntersection(0.001*mm);
        InstallMField(this);
    }
 }
