@@ -17,11 +17,11 @@
 #define __INSTALLVTX__  
 #define __INSTALLIT__  
 #if 0
-#define __INSTALLCDC__  
+ #define __INSTALLCDC__  
 #else
-#define __INSTALLTPC__
+// #define __INSTALLTPC__
 #endif
-#define __INSTALLCAL__  
+//#define __INSTALLCAL__  
 #define __INSTALLSOL__  
 #define __INSTALLMUD__  
 
@@ -154,6 +154,7 @@ int main(int argc, char** argv)
   mudptr->SetMother(dtcptr->GetEXPHall());
   dtcptr->AddComponent(mudptr);
 #endif
+
   //*--------------------------------------------
   //* Installation of detectors end
   //*--------------------------------------------
@@ -251,7 +252,12 @@ int main(int argc, char** argv)
 #ifdef __INSTALLCAL__
   calptr->J4VDetectorComponent::SwitchOn();
 #endif
-        
+
+  //* mud 
+#ifdef __INSTALLMUD__
+  mudptr->J4VDetectorComponent::SwitchOn();
+#endif
+
   //*--------------------------------------------
   //* Detector Switch end
   //*--------------------------------------------
