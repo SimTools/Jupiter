@@ -64,6 +64,7 @@ void J4SteppingAction::UserSteppingAction(const G4Step* astep)
 
   G4Track *atrack=astep->GetTrack();
   G4int aStepNo = atrack->GetCurrentStepNumber();
+#if 0 //2005/1/20
   if( aStepNo > 999 ) { 
     G4Track * aNonConstTrack = const_cast<G4Track*>(atrack);
     aNonConstTrack->SetTrackStatus(fStopAndKill);
@@ -76,6 +77,7 @@ void J4SteppingAction::UserSteppingAction(const G4Step* astep)
     G4cerr << G4endl;
     return;
   }
+#endif //2005/1/20
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
