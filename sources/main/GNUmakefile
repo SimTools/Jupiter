@@ -38,6 +38,7 @@ EXTRALIBS =	-L$(JUPITERROOT)/lib/$(G4SYSTEM) \
 		-lJ4tpc \
 		-lJ4cal \
 		-lJ4sol \
+		-lJ4mud \
 		-lJ4lcexp \
 		-lJ4kern \
 		$(G4LIBS)
@@ -53,6 +54,7 @@ CPPFLAGS  += -I../ir/include \
 	     -I../tpc/include \
 	     -I../cal/include \
 	     -I../sol/include \
+	     -I../mud/include \
 	     -I../lcexp/include \
 	     -I../kern/include
 

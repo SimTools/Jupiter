@@ -23,6 +23,7 @@
 #endif
 #define __INSTALLCAL__  
 #define __INSTALLSOL__  
+#define __INSTALLMUD__  
 
 
 #ifdef __USEISOCXX__
@@ -56,6 +57,7 @@
 #include "J4TPC.hh"
 #include "J4CAL.hh"
 #include "J4SOL.hh"
+#include "J4MUD.hh"
 
 TBookKeeper* TBookKeeper::fgBookKeeper = new TBookKeeper(); 
 
@@ -147,6 +149,11 @@ int main(int argc, char** argv)
   dtcptr->AddComponent(solptr);
 #endif
 
+#ifdef __INSTALLMUD__  
+  J4MUD *mudptr = new J4MUD();
+  mudptr->SetMother(dtcptr->GetEXPHall());
+  dtcptr->AddComponent(mudptr);
+#endif
   //*--------------------------------------------
   //* Installation of detectors end
   //*--------------------------------------------
@@ -288,4 +295,3 @@ int main(int argc, char** argv)
   return 0;
 
 }
-
