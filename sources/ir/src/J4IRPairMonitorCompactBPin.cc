@@ -14,7 +14,7 @@
 #include "J4IRWMaskParameterList.hh"
 
 #include "G4Cons.hh"
-#include <math.h>
+#include <cmath>
 
 
 // ====================================================================
@@ -64,7 +64,7 @@ void J4IRPairMonitorCompactBPin::Assemble()
     rmin = 0.*mm;
     r1max = 5.*mm;
     zlen  = 1.*mm;
-    G4double r2max = r1max+2.*zlen*sin(abs(angle));
+    G4double r2max = r1max+2.*zlen*std::sin(std::abs(angle));
   	
     // MakeSolid ---------------
     G4String name( GetName() );
@@ -108,7 +108,7 @@ G4ThreeVector& J4IRPairMonitorCompactBPin::GetTranslation(){
 
   G4double zpos = 
     wmList->GetWMask2ZPosition()+wmList->GetWMask2ZLength()/2.-zlen/2.;
-  G4double xpos = zpos*sin(-angle);
+  G4double xpos = zpos*std::sin(-angle);
 
   G4ThreeVector* position = new G4ThreeVector;
   position->setX(xpos);

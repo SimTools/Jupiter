@@ -13,7 +13,7 @@
 #include "J4CDCStereoDriftRegionSD.hh"
 #include "J4CDCStereoDriftRegion.hh"
 #include "J4CDCSenseWire.hh"
-#include <math.h>
+#include <cmath>
  
 //=====================================================================
 //---------------------

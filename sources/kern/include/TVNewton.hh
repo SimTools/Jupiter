@@ -59,9 +59,9 @@ class TVNewton {
         fCurr = F(fXcurr);
         fXcurr       -= fCurr/(DFdx(fXcurr)*(1.+fLambda));
         double fnext  = F(fXcurr);
-        if (fabs(fnext) <= fEpsilon ) return fXcurr;
+        if (std::fabs(fnext) <= fEpsilon ) return fXcurr;
 
-        if (fabs(fnext) > fabs(fCurr)) fLambda *= 10.;
+        if (std::fabs(fnext) > std::fabs(fCurr)) fLambda *= 10.;
         else                           fLambda /= 10.;
         fCurr = fnext;
         return Solve();

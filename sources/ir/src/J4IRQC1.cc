@@ -13,7 +13,7 @@
 #include "J4IRQC1.hh"
 
 #include "G4Tubs.hh"
-#include <math.h>
+#include <cmath>
 
 #include "J4IRQC1ParameterList.hh"
 
@@ -134,10 +134,10 @@ G4ThreeVector& J4IRQC1::GetTranslation(){
   G4double angle = list->GetCrossAngle();
   //G4double zpos  = list->GetLStar()+_QC1ZLEN_/2.;
   G4double zpos  = list->GetLStar()+qc1ZLength/2.;
-  position->setX(-zpos*sin(angle));
-  position->setZ( zpos*cos(angle));
-  //position->setX(-(_QC1ZPOS_+_QC1ZLEN_/2.)*sin(_IRCROS_));
-  //position->setZ( (_QC1ZPOS_+_QC1ZLEN_/2.)*cos(_IRCROS_));
+  position->setX(-zpos*std::sin(angle));
+  position->setZ( zpos*std::cos(angle));
+  //position->setX(-(_QC1ZPOS_+_QC1ZLEN_/2.)*std::sin(_IRCROS_));
+  //position->setZ( (_QC1ZPOS_+_QC1ZLEN_/2.)*std::cos(_IRCROS_));
   return *position;
 }
 

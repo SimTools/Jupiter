@@ -25,7 +25,7 @@ public:
                     const G4RotationMatrix &rot,        // rotation of 0.5*(phi-width of a segment)
                     const G4ThreeVector    &tlate,
                     G4int                   handedness, // right hand = 1, left hand = -1
-                    const G4double          kappa,      // tan(TwistAngle/2)/fZHalfLen
+                    const G4double          kappa,      // std::tan(TwistAngle/2)/fZHalfLen
                     const EAxis             axis0 = kXAxis,
                     const EAxis             axis1 = kZAxis,
                           G4double          axis0min = -kInfinity,
@@ -75,7 +75,7 @@ public:
 
 private:
 
-   G4double       fKappa;          // tan(TwistedAngle/2)/HalfLenZ;
+   G4double       fKappa;          // std::tan(TwistedAngle/2)/HalfLenZ;
   
 };   
 

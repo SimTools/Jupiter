@@ -13,7 +13,7 @@
 #include "J4IRQC1Cooling.hh"
 
 #include "G4Tubs.hh"
-#include <math.h>
+#include <cmath>
 
 #include "J4IRQC1ParameterList.hh"
 // ====================================================================

@@ -195,9 +195,9 @@ class J4TwistedTubs : public G4VSolid
  
   G4double fInnerStereo;       // Inner-hype stereo angle
   G4double fOuterStereo;       // Outer-hype stereo angle
-  G4double fTanInnerStereo;    // tan(innerStereoAngle)
-  G4double fTanOuterStereo;    // tan(outerStereoAngle)
-  G4double fKappa;		       // tan(fPhiTwist/2)/fZHalfLen;
+  G4double fTanInnerStereo;    // std::tan(innerStereoAngle)
+  G4double fTanOuterStereo;    // std::tan(outerStereoAngle)
+  G4double fKappa;		       // std::tan(fPhiTwist/2)/fZHalfLen;
   G4double fEndInnerRadius[2]; // Inner-hype radii of endcaps [0] -ve z, [1] +ve z
   G4double fEndOuterRadius[2]; // Outer-hype radii of endcaps [0] -ve z, [1] +ve z
   G4double fEndPhi[2];         // Phi of endcaps, [0] = -ve z, [1] = +ve z
@@ -305,18 +305,18 @@ void J4TwistedTubs::SetFields(G4double phitwist, G4double innerrad,
    fOuterRadius2 = fOuterRadius * fOuterRadius;
    
    G4int    maxi; 
-   if (fabs(fEndZ[0]) >= fabs(fEndZ[1])) {
-      fZHalfLength = fabs(fEndZ[0]);
+   if (std::fabs(fEndZ[0]) >= std::fabs(fEndZ[1])) {
+      fZHalfLength = std::fabs(fEndZ[0]);
       maxi = 0;
    } else {
-      fZHalfLength = fabs(fEndZ[1]);
+      fZHalfLength = std::fabs(fEndZ[1]);
       maxi = 1;
    }
 
    G4double parity         = (fPhiTwist > 0 ? 1 : -1); 
-   G4double tanHalfTwist   = tan(0.5 * fPhiTwist);
-   G4double innerNumerator = fabs(fInnerRadius * tanHalfTwist) * parity;
-   G4double outerNumerator = fabs(fOuterRadius * tanHalfTwist) * parity;
+   G4double tanHalfTwist   = std::tan(0.5 * fPhiTwist);
+   G4double innerNumerator = std::fabs(fInnerRadius * tanHalfTwist) * parity;
+   G4double outerNumerator = std::fabs(fOuterRadius * tanHalfTwist) * parity;
 
    fTanInnerStereo    = innerNumerator / fZHalfLength; 
    fTanOuterStereo    = outerNumerator / fZHalfLength; 
@@ -324,10 +324,10 @@ void J4TwistedTubs::SetFields(G4double phitwist, G4double innerrad,
    fTanOuterStereo2   = fTanOuterStereo * fTanOuterStereo;
    fInnerStereo       = atan2(innerNumerator,  fZHalfLength); 
    fOuterStereo       = atan2(outerNumerator,  fZHalfLength); 
-   fEndInnerRadius[0] = sqrt(fInnerRadius2 + fEndZ2[0] * fTanInnerStereo2);
-   fEndInnerRadius[1] = sqrt(fInnerRadius2 + fEndZ2[1] * fTanInnerStereo2);
-   fEndOuterRadius[0] = sqrt(fOuterRadius2 + fEndZ2[0] * fTanOuterStereo2);
-   fEndOuterRadius[1] = sqrt(fOuterRadius2 + fEndZ2[1] * fTanOuterStereo2);
+   fEndInnerRadius[0] = std::sqrt(fInnerRadius2 + fEndZ2[0] * fTanInnerStereo2);
+   fEndInnerRadius[1] = std::sqrt(fInnerRadius2 + fEndZ2[1] * fTanInnerStereo2);
+   fEndOuterRadius[0] = std::sqrt(fOuterRadius2 + fEndZ2[0] * fTanOuterStereo2);
+   fEndOuterRadius[1] = std::sqrt(fOuterRadius2 + fEndZ2[1] * fTanOuterStereo2);
 
    fKappa          = tanHalfTwist / fZHalfLength;
    fEndPhi[0]      = atan2(fEndZ[0] * tanHalfTwist, fZHalfLength);

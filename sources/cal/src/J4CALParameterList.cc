@@ -218,7 +218,7 @@ void J4CALParameterList::SetTowerParameters( G4double startlambda,
    //  
    // equation: 
    //
-   //    r = length * sqrt ( 1 + tan(lambda)*tan(lambda) )
+   //    r = length * std::sqrt ( 1 + std::tan(lambda)*std::tan(lambda) )
    // 
 
 
@@ -255,18 +255,18 @@ void J4CALParameterList::SetTowerParameters( G4double startlambda,
       // Gaps should not be placed at dipangle(lambda) = 0.
 
       tanlambda    = (0.5 * nominalwidth / length);
-      lambda       = atan(tanlambda);
+      lambda       = std::atan(tanlambda);
       ntowers++;
 
    } else { 
 
       lambda       = startlambda + kAngTolerance * 1.e3; 
-      tanlambda    = tan(lambda);
+      tanlambda    = std::tan(lambda);
 
    }
 
    tanlambda2   = tanlambda * tanlambda;
-   startr       = length * sqrt(1 + tanlambda2); 
+   startr       = length * std::sqrt(1 + tanlambda2); 
    r            = startr;
 
    width    = nominalwidth;
@@ -281,9 +281,9 @@ void J4CALParameterList::SetTowerParameters( G4double startlambda,
          break;
       }
       lambda       = nextlambda; 
-      tanlambda    = tan(lambda);
+      tanlambda    = std::tan(lambda);
       tanlambda2   = tanlambda * tanlambda;
-      r            = length * sqrt(1 + tanlambda2) ; 
+      r            = length * std::sqrt(1 + tanlambda2) ; 
       ntowers++;
    }
 
@@ -313,9 +313,9 @@ void J4CALParameterList::SetTowerParameters( G4double startlambda,
 
       r            = startr;
       width        = nominalwidth;
-      dlambda      = 2 * asin(0.5 * width / r);
+      dlambda      = 2 * std::asin(0.5 * width / r);
       centerlambda = 0; 
-      r            /= cos(0.5 * dlambda);
+      r            /= std::cos(0.5 * dlambda);
  
       paramright = new J4CALTowerParam(r, 
                                        centerlambda,
@@ -383,7 +383,7 @@ void J4CALParameterList::SetTowerParameters( G4double startlambda,
       }
             
       centerlambda = lambda + 0.5 * dlambda;
-      r = length / cos(nextlambda); 
+      r = length / std::cos(nextlambda); 
 
       // if endcap CAL, replace theta(angGOX) to lambda(angFOX)  
 
@@ -458,23 +458,23 @@ G4int J4CALParameterList::EstimateNtowers( G4double length,
    //    angA0A or angG0D = lambdamin;
    //    angA0E or angG0E = lambdamax;
    //
-   //    OX     = r = length * sqrt ( 1 + tan(lambda)*tan(lambda) )
+   //    OX     = r = length * std::sqrt ( 1 + std::tan(lambda)*std::tan(lambda) )
    //    w      = width   // width of tile at front face of tower)
    //    
    //    dn    ~= r * dlambda / w    
-   //           = length * sqrt(1 + tan(lambda) * tan(lambda)) / w   
+   //           = length * std::sqrt(1 + std::tan(lambda) * std::tan(lambda)) / w   
    //    
-   //                                                  sin(lambdamax)    
+   //                                                  std::sin(lambdamax)    
    //    n ~= length / (2*w) * [ ln ((1 + x)/(1 - x)) ]    
-   //                                                  sin(lambdamin) 
+   //                                                  std::sin(lambdamin) 
    //    
 
 
-   G4double sinlambmax = sin(lambdamax); 
-   G4double sinlambmin = sin(lambdamin); 
+   G4double sinlambmax = std::sin(lambdamax); 
+   G4double sinlambmin = std::sin(lambdamin); 
 
-   G4double ulim = log((1 + sinlambmax) / (1 - sinlambmax));   
-   G4double llim = log((1 + sinlambmin) / (1 - sinlambmin));   
+   G4double ulim = std::log((1 + sinlambmax) / (1 - sinlambmax));   
+   G4double llim = std::log((1 + sinlambmin) / (1 - sinlambmin));   
 
    return (G4int) (0.5 * length / width * ( ulim - llim ));
 }
@@ -520,13 +520,13 @@ G4double J4CALParameterList::CalcNextTowerEdgeAngle(G4double r,
    //    angXOX' = dlambda[i]  
    //    angFOX' = lambda[i]  
    //    OF      =  R = fBarrelFrontRho
-   //    OX'     = r[i] = length / cos( lambda[i] )
+   //    OX'     = r[i] = length / std::cos( lambda[i] )
    //    w       = width       // width of tile at front face of tower)
    //
-   //    sin(0.5 * dlambda[i]) = 0.5 * w / r[i]
+   //    std::sin(0.5 * dlambda[i]) = 0.5 * w / r[i]
    //
    //    0 = F( dlambda[i] )
-   //      = 2 * sin( dlambda[i] / 2) - ( W / R ) * cos( lambda[i-1] + dlambda[i] )
+   //      = 2 * std::sin( dlambda[i] / 2) - ( W / R ) * std::cos( lambda[i-1] + dlambda[i] )
    //
    //
 
@@ -539,12 +539,12 @@ class Solver : public TVNewton {
      
      G4double F(G4double x)
      {
-       return  2 * sin(0.5 * x) - (fW/fR) * cos(fLambda + x );
+       return  2 * std::sin(0.5 * x) - (fW/fR) * std::cos(fLambda + x );
      }
     
      G4double DFdx(G4double x)
      {
-       return cos(0.5 * x) + (fW/fR) * sin(fLambda + x );
+       return std::cos(0.5 * x) + (fW/fR) * std::sin(fLambda + x );
      }
 
      void SetR      (G4double r) { fR = r; }       

@@ -13,7 +13,7 @@
 #include "J4IRSD0.hh"
 
 #include "G4Tubs.hh"
-#include <math.h>
+#include <cmath>
 
 
 // ====================================================================
@@ -127,10 +127,10 @@ G4RotationMatrix* J4IRSD0::GetRotation(){
 G4ThreeVector& J4IRSD0::GetTranslation(){
   G4ThreeVector* position= new G4ThreeVector; 
   G4double angle = OpenParameterList()->GetCrossAngle();
-  position->setX(-(_SD0ZPOS_+_SD0ZLEN_/2.)*sin(angle));
-  position->setZ( (_SD0ZPOS_+_SD0ZLEN_/2.)*cos(angle));
-  //position->setX(-(_SD0ZPOS_+_SD0ZLEN_/2.)*sin(_IRCROS_));
-  //position->setZ( (_SD0ZPOS_+_SD0ZLEN_/2.)*cos(_IRCROS_));
+  position->setX(-(_SD0ZPOS_+_SD0ZLEN_/2.)*std::sin(angle));
+  position->setZ( (_SD0ZPOS_+_SD0ZLEN_/2.)*std::cos(angle));
+  //position->setX(-(_SD0ZPOS_+_SD0ZLEN_/2.)*std::sin(_IRCROS_));
+  //position->setZ( (_SD0ZPOS_+_SD0ZLEN_/2.)*std::cos(_IRCROS_));
   return *position;
 }
 //* Draw  --------------------------------------------------------

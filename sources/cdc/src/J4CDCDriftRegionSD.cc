@@ -14,7 +14,7 @@
 #include "J4CDCDriftRegionSD.hh"
 #include "J4CDCDriftRegion.hh"
 #include "J4CDCSenseWire.hh"
-#include <math.h>
+#include <cmath>
 
  
 //=====================================================================

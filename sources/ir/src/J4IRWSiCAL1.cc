@@ -14,7 +14,7 @@
 #include "J4IRWSiCALParameterList.hh"
 
 #include "G4Cons.hh"
-#include <math.h>
+#include <cmath>
 
 
 // ====================================================================

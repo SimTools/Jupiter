@@ -84,9 +84,9 @@ class J4ParticleBeam : public G4ParticleGun
            {
 	      G4ThreeVector oldzaxis(0.,0.,1.);
               fAxes[2] = zdir.unit();
-              if (fabs(fAxes[2].z()-1.) < 1.e-12) {
+              if (std::fabs(fAxes[2].z()-1.) < 1.e-12) {
                  fAxes[0].set(1.,0.,0.);
-              } else if (fabs(fAxes[2].z()+1.) < 1.e-12) {
+              } else if (std::fabs(fAxes[2].z()+1.) < 1.e-12) {
                  fAxes[0].set(-1.,0.,0.);
               } else {
                  fAxes[0] = (oldzaxis.cross(fAxes[2])).unit();

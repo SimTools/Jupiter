@@ -153,15 +153,15 @@ G4bool J4VMUDActiveSD::IsSDFront( const G4ThreeVector& pos, const G4ThreeVector&
     frontZ = ((J4MUDEndcapActive*)location)->J4MUDEndcapActive::GetFront(myID);
 #if 0
     G4double frontX           = 0;
-    frontX = frontR * tan( 0.5*ptrList->GetTrapDeltaPhi() ); 
-    if (  frontX - abs( pos.x() )  >= 0
-      &&  frontR - abs( pos.y() )  <= tolerance*kCarTolerance 
-      &&  frontZ - abs( pos.z() )  >= 0 )
+    frontX = frontR * std::tan( 0.5*ptrList->GetTrapDeltaPhi() ); 
+    if (  frontX - std::abs( pos.x() )  >= 0
+      &&  frontR - std::abs( pos.y() )  <= tolerance*kCarTolerance 
+      &&  frontZ - std::abs( pos.z() )  >= 0 )
       return true;
 #else
-    if ( abs( pos.perp() - frontR ) <= tolerance*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
+    if ( std::abs( pos.perp() - frontR ) <= tolerance*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
       return true;
-    if ( abs( abs(pos.z()) - frontZ ) <= tolerance*kCarTolerance && p.z() * pos.z() > 0. ) 
+    if ( std::abs( std::abs(pos.z()) - frontZ ) <= tolerance*kCarTolerance && p.z() * pos.z() > 0. ) 
       return true;
 #endif
   }
@@ -169,18 +169,18 @@ G4bool J4VMUDActiveSD::IsSDFront( const G4ThreeVector& pos, const G4ThreeVector&
   if ( !fIsBarrel && fIsFront ) { 
     frontR = ptrList->GetEndcapInnerR();
     frontZ = ((J4MUDFrontEndcapActive*)location)->J4MUDFrontEndcapActive::GetFront(myID);
-    if ( abs( pos.perp() - frontR ) <= tolerance*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
+    if ( std::abs( pos.perp() - frontR ) <= tolerance*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
       return true;
-    if ( abs( abs(pos.z()) - frontZ ) <= tolerance*kCarTolerance && p.z() * pos.z() > 0. ) 
+    if ( std::abs( std::abs(pos.z()) - frontZ ) <= tolerance*kCarTolerance && p.z() * pos.z() > 0. ) 
       return true;
   }
   // Endcap
   if ( !fIsBarrel && !fIsFront ) {
     frontR = ptrList -> GetEndcapInnerR(); 
     frontZ = ((J4MUDEndcapActive*)location)->J4MUDEndcapActive::GetFront(myID);
-    if ( abs( pos.perp() - frontR ) <= tolerance*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
+    if ( std::abs( pos.perp() - frontR ) <= tolerance*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
       return true;
-    if ( abs( abs(pos.z()) - frontZ ) <= tolerance*kCarTolerance && p.z() * pos.z() > 0. ) 
+    if ( std::abs( std::abs(pos.z()) - frontZ ) <= tolerance*kCarTolerance && p.z() * pos.z() > 0. ) 
       return true;
   }
    

@@ -24,8 +24,8 @@ public:
                        const G4RotationMatrix &rot,       // rot of 0.5*(phi-width of a segment)
                        const G4ThreeVector    &tlate,
                        const G4int             handedness,// right hand = 1, left hand = -1
-                       const G4double          kappa,     // tan(TwistAngle/2)/fZHalfLen
-                       const G4double          tanstereo, // tan(stereo angle)
+                       const G4double          kappa,     // std::tan(TwistAngle/2)/fZHalfLen
+                       const G4double          tanstereo, // std::tan(stereo angle)
                        const G4double          r0,        // radius at z = 0
                        const EAxis             axis0 = kPhi,
                        const EAxis             axis1 = kZAxis,
@@ -71,9 +71,9 @@ private:
 
 private:
    
-   G4double          fKappa;	      // tan(TwistedAngle/2)/HalfLenZ;
-   G4double          fTanStereo;    // tan(StereoAngle)
-   G4double          fTan2Stereo;   // tan(StereoAngle)**2
+   G4double          fKappa;	      // std::tan(TwistedAngle/2)/HalfLenZ;
+   G4double          fTanStereo;    // std::tan(StereoAngle)
+   G4double          fTan2Stereo;   // std::tan(StereoAngle)**2
    G4double          fR0;           // radius at z = 0
    G4double          fR02;          // radius**2 at z = 0
    class             Insidetype{
@@ -100,7 +100,7 @@ G4double J4HyperbolicSurface::GetRhoAtPZ(const G4ThreeVector &p, G4bool isglobal
   } else {
      tmpp = p;
   }
-  return sqrt(fR02 + tmpp.z() * tmpp.z() * fTan2Stereo); 
+  return std::sqrt(fR02 + tmpp.z() * tmpp.z() * fTan2Stereo); 
 }
 
 #endif

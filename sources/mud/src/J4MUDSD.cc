@@ -129,9 +129,9 @@ G4bool J4MUDSD::IsFront( const G4ThreeVector& pos, const G4ThreeVector& p ) cons
   J4MUDParameterList* ptrList = J4MUDParameterList::GetInstance();
   static G4double tolerance = 5.;
    
-  if ( abs( pos.perp() - ptrList->GetMUDInnerR() ) <= tolerance*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
+  if ( std::abs( pos.perp() - ptrList->GetMUDInnerR() ) <= tolerance*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
     return true;
-  if ( abs( abs(pos.z()) - ptrList->GetMUDFrontEndcapFrontZ() ) <= tolerance*kCarTolerance && p.z() * pos.z() > 0. ) 
+  if ( std::abs( std::abs(pos.z()) - ptrList->GetMUDFrontEndcapFrontZ() ) <= tolerance*kCarTolerance && p.z() * pos.z() > 0. ) 
     return true;
   
   return false;

@@ -16,7 +16,7 @@
 #include "G4Tubs.hh"
 #include "G4Cons.hh"
 #include "J4UnionSolid.hh"
-#include <math.h>
+#include <cmath>
 
 #include "J4IRQC1MField.hh"
 #include "J4IRQC2MField.hh"

@@ -110,8 +110,8 @@ void J4MUDParameterList::SetParameters()
 
   // MUD and Block, MUD is fTolerance size larger than Block ---------------------//
   fMUDInnerR                = fBarrelInnerR - fTolerance;
-  //fMUDOuterR                = fMUDHeight / cos( 0.5* fTrapDeltaPhi ) + fTolerance;
-  fMUDOuterR                = 780.0*cm;       // fMUDOuterR = fMUDHeight / cos(22.5*deg) + fTolerance
+  //fMUDOuterR                = fMUDHeight / std::cos( 0.5* fTrapDeltaPhi ) + fTolerance;
+  fMUDOuterR                = 780.0*cm;       // fMUDOuterR = fMUDHeight / std::cos(22.5*deg) + fTolerance
   fMUDEndcapFrontZ          = fEndcapFrontZ - fTolerance;
   fMUDEndcapInnerR          = fEndcapInnerR - fTolerance;
   fMUDEndcapThick           = fEndcapThick + 2*fTolerance;
@@ -121,7 +121,7 @@ void J4MUDParameterList::SetParameters()
   fMUDHalfL                 = fMUDEndcapFrontZ + fMUDEndcapThick; // Half length of MUD : 845cm
 
   fBlockInnerR              = fBarrelInnerR;
-  fBlockOuterR              = fMUDHeight / cos( 0.5*fTrapDeltaPhi );  
+  fBlockOuterR              = fMUDHeight / std::cos( 0.5*fTrapDeltaPhi );  
   fBlockEndcapFrontZ        = fEndcapFrontZ;
   fBlockEndcapInnerR        = fEndcapInnerR;
   fBlockEndcapThick         = fEndcapThick;

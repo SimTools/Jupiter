@@ -159,9 +159,9 @@ G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
     G4double cellrho = cellsphere->GetInsideRadius();
     G4double celltheta = cellsphere->GetStartThetaAngle() + 0.5*cellsphere->GetDeltaThetaAngle();
     G4double cellphi = cellsphere->GetStartPhiAngle() + 0.5*cellsphere->GetDeltaPhiAngle();
-    G4double cellX = cellrho*sin(celltheta)*cos(cellphi);
-    G4double cellY = cellrho*sin(celltheta)*sin(cellphi);
-    G4double cellZ = cellrho*cos(celltheta);
+    G4double cellX = cellrho*std::sin(celltheta)*std::cos(cellphi);
+    G4double cellY = cellrho*std::sin(celltheta)*std::sin(cellphi);
+    G4double cellZ = cellrho*std::cos(celltheta);
 
     J4CALHit *aHit = new J4CALHit( ptrSubLayerComponent, preHitID, cellID, isEM, isBarrel, edep, tof, GetParticle(), Xcm, G4ThreeVector(cellX,cellY,cellZ) );
     fgCalHits.insert( std::make_pair( cellID, aHit ) );
@@ -190,9 +190,9 @@ G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
       G4double cellrho = cellsphere->GetInsideRadius();
       G4double celltheta = cellsphere->GetStartThetaAngle() + 0.5*cellsphere->GetDeltaThetaAngle();
       G4double cellphi = cellsphere->GetStartPhiAngle() + 0.5*cellsphere->GetDeltaPhiAngle();
-      G4double cellX = cellrho*sin(celltheta)*cos(cellphi);
-      G4double cellY = cellrho*sin(celltheta)*sin(cellphi);
-      G4double cellZ = cellrho*cos(celltheta);
+      G4double cellX = cellrho*std::sin(celltheta)*std::cos(cellphi);
+      G4double cellY = cellrho*std::sin(celltheta)*std::sin(cellphi);
+      G4double cellZ = cellrho*std::cos(celltheta);
 
       J4CALHit *aHit = new J4CALHit( ptrSubLayerComponent, preHitID, cellID, isEM, isBarrel, edep, tof, GetParticle(), Xcm, G4ThreeVector(cellX,cellY,cellZ) );
       fgCalHits.insert( std::make_pair( cellID, aHit ) );

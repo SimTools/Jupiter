@@ -46,18 +46,18 @@ void J4VMUDBarrelTrap::Assemble()
      // Make Trapezoid -----//
      G4double dphi   = ptrList->GetTrapDeltaPhi();
      G4double py     = 0.5*thick;
-     G4double plx    = (front + thick)*tan(0.5*dphi);
-     G4double px     = front*tan(0.5*dphi);
+     G4double plx    = (front + thick)*std::tan(0.5*dphi);
+     G4double px     = front*std::tan(0.5*dphi);
      G4double phi    = 0.0;
 
      // ------------------------------------------------------------------------ //
      //   in Barrel:                                                             //
      //                                                                          //
      //         \                   /   OM == rmin                               //
-     //          \                 /    OA == OB == OM/cos( 0.5*arg(AOB) )       //
-     //           C ---== N ==--- D     AM == BM == OM * tan( 0.5*arg(AOB) )     //
+     //          \                 /    OA == OB == OM/std::cos( 0.5*arg(AOB) )       //
+     //           C ---== N ==--- D     AM == BM == OM * std::tan( 0.5*arg(AOB) )     //
      //            \  /   |   \  /    * MN == barrel_rmin - endcap_rmin          //
-     //             \/    |    \/       CN == DN == ON * tan( 0.5*arg(AOB) )     //
+     //             \/    |    \/       CN == DN == ON * std::tan( 0.5*arg(AOB) )     //
      //              \    |    /                                                 //
      //               A -_M_- B                                                  //
      //                \/ | \/          endcapInitialDy  == 0.5 * MN             //
@@ -95,8 +95,8 @@ void J4VMUDBarrelTrap::InstallIn( J4VComponent*        /* mother */,
   G4int    motherID = GetMother()->GetMyID();
   G4double height   = GetFront( myID )+0.5*GetThick();
   G4double phi      = ptrList->GetTrapDeltaPhi();
-  G4double px       = height*cos(phi*motherID);
-  G4double py       = height*sin(phi*motherID);
+  G4double px       = height*std::cos(phi*motherID);
+  G4double py       = height*std::sin(phi*motherID);
   G4double pz       = 0.0;
   G4ThreeVector position( px, py, pz );
   

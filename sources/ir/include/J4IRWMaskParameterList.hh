@@ -58,7 +58,7 @@ public:
 
   inline G4double GetWMask1ZPosition() const 
   { return fList->GetIRSupportInnerRadius()/
-      tan(fList->GetIRThetaMax())+GetMargin(); }
+      std::tan(fList->GetIRThetaMax())+GetMargin(); }
   inline G4double GetWMask2ZLength() const 
   { return fch2List->GetCH2MaskZPosition()-fbpList->GetBPENDZPosition(); }
   inline G4double GetWMask2ZPosition() const 
@@ -75,7 +75,7 @@ public:
   { return fwsiList->GetWSiCAL2ZPosition()-GetWMask1ZPosition();}
   inline G4double GetWMask1ZLengthB() const
   { return fList->GetIRSupportInnerRadius()/
-      tan(fList->GetIRThetaMax()-50.*mrad)
+      std::tan(fList->GetIRThetaMax()-50.*mrad)
       -GetWMask1ZPosition();}
   inline G4double GetWMask1ZLength() const
   { return ( GetWMask1ZLengthA() < GetWMask1ZLengthB() ?

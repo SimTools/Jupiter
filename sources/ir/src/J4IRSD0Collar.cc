@@ -15,7 +15,7 @@
 #include "G4Box.hh"
 #include "G4Tubs.hh"
 #include "J4UnionSolid.hh"
-#include <math.h>
+#include <cmath>
 
 // ====================================================================
 //--------------------------------
@@ -72,7 +72,7 @@ void J4IRSD0Collar::Assemble()
     G4double ANG = atan2(AY,AX);
     G4VSolid *solid2 =  new G4Tubs(name2,
 				  0.,
-				   sqrt(AX*AX+AY*AY),
+				   std::sqrt(AX*AX+AY*AY),
 				   _SD0ZLEN_/2.,
 				   0.,2.*ANG);
     G4String name3( GetName() );
@@ -109,12 +109,12 @@ G4ThreeVector& J4IRSD0Collar::GetTranslation(){
   G4double xx=0,yy=0;
 
   G4double radius = 
-    ( (_SD0INRADIUS_+_SD0THICK_)-(_SD0Y1_SUS_/cos(_SD0PHI_SUS_/2.)) )
-    *cos(_SD0PHI_SUS_/2.)
+    ( (_SD0INRADIUS_+_SD0THICK_)-(_SD0Y1_SUS_/std::cos(_SD0PHI_SUS_/2.)) )
+    *std::cos(_SD0PHI_SUS_/2.)
     - _SD0HBOX_IRON_/2.;
 
-  xx = radius*cos(GetMyID()*_SD0PHI_SUS_*2.+_SD0PHI_SUS_);
-  yy = -radius*sin(GetMyID()*_SD0PHI_SUS_*2.+_SD0PHI_SUS_);
+  xx = radius*std::cos(GetMyID()*_SD0PHI_SUS_*2.+_SD0PHI_SUS_);
+  yy = -radius*std::sin(GetMyID()*_SD0PHI_SUS_*2.+_SD0PHI_SUS_);
 
  position->setX(xx);
  position->setY(yy);

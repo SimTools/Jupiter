@@ -48,8 +48,8 @@ void J4IRQC2MField::GetLocalFieldValue(G4ThreeVector& lpos,
 				       G4bool& onlyFlag){
   onlyFlag = FALSE;
   lb.set(0.,0.,0.);
-  if ( abs(lpos.z()) < _QC2ZLEN_/2  ){
-    if( abs(lpos.x())< _QC2HBOX_/2. && abs(lpos.y()) < _QC2VBOX_/2. ){
+  if ( std::abs(lpos.z()) < _QC2ZLEN_/2  ){
+    if( std::abs(lpos.x())< _QC2HBOX_/2. && std::abs(lpos.y()) < _QC2VBOX_/2. ){
       onlyFlag = true;
       G4double radius2 = lpos.x()*lpos.x()+lpos.y()*lpos.y(); 
       if( radius2 < sqr(_QC2INRADIUS_) ){

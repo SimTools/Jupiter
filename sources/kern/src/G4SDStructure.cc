@@ -161,7 +161,7 @@ void G4SDStructure::Activate(G4String aName, G4bool sensitiveFlag)
   }
 }
 
-#if __G4VERSION__ <= 1
+#if __G4VERSION__ <= 61
 G4VSensitiveDetector* G4SDStructure::FindSensitiveDetector(G4String aName)
 #else
 G4VSensitiveDetector* G4SDStructure::FindSensitiveDetector(G4String aName, G4bool warning)
@@ -180,7 +180,7 @@ G4VSensitiveDetector* G4SDStructure::FindSensitiveDetector(G4String aName, G4boo
     }
     else
     {
-#if __G4VERSION__ <= 1
+#if __G4VERSION__ <= 61
       return tgtSDS->FindSensitiveDetector(aName);
 #else
       return tgtSDS->FindSensitiveDetector(aName,warning);

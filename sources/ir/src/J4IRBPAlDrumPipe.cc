@@ -14,7 +14,7 @@
 #include "J4IRBPParameterList.hh"
 
 #include "G4Tubs.hh"
-#include <math.h>
+#include <cmath>
 
 
 // ====================================================================

@@ -221,7 +221,7 @@ G4double J4VCDCDetectorComponent::CalcTanStereo(G4double phitwist,
                                                   G4double r,
                                                   G4double halflen)
 {
-   return r * sin(0.5 * phitwist) / halflen; 
+   return r * std::sin(0.5 * phitwist) / halflen; 
 }
 
 //=====================================================================
@@ -231,7 +231,7 @@ G4double J4VCDCDetectorComponent::CalcWaist(G4double tanstereo,
                                             G4double radius,
                                             G4double halflen) 
 {
-   return sqrt(radius * radius - 
+   return std::sqrt(radius * radius - 
                halflen * halflen * tanstereo * tanstereo); 
 } 
 

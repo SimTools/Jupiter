@@ -48,9 +48,9 @@ void J4IRSD0MField::GetLocalFieldValue(G4ThreeVector& lpos,
 				       G4bool& onlyFlag){
   onlyFlag = FALSE;
   lb.set(0.,0.,0.);
-  if ( abs(lpos.z()) < _SD0ZLEN_/2  ){
+  if ( std::abs(lpos.z()) < _SD0ZLEN_/2  ){
     G4double radius2 = lpos.x()*lpos.x()+lpos.y()*lpos.y(); 
-    if( sqrt(radius2)<(_SD0INRADIUS_+_SD0THICK_)){
+    if( std::sqrt(radius2)<(_SD0INRADIUS_+_SD0THICK_)){
       onlyFlag = true;
       if( radius2 < sqr(_SD0INRADIUS_) ){
 	lb.set(fGradient*lpos.x()*lpos.y(),

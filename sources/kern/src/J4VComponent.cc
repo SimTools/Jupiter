@@ -242,8 +242,8 @@ void J4VComponent::SetName(const G4String&       name,
 {
   // setting unique name to object. 
 
-  G4int width1 = (G4int)log10(nbrothers + 0.1) + 1;   
-  G4int width2 = (G4int)log10(nclones + 0.1) + 1;   
+  G4int width1 = (G4int)std::log10(nbrothers + 0.1) + 1;   
+  G4int width2 = (G4int)std::log10(nclones + 0.1) + 1;   
 
   G4String newname;
 

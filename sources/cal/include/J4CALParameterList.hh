@@ -15,7 +15,7 @@
 //********************************************************************
 
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <iomanip> 
 #include "globals.hh"
 #include <vector>
@@ -220,12 +220,12 @@ class J4CALParameterList : public J4VParameterList
            if (fIsBarrel) {
               radius   = J4CALParameterList::GetInstance()->GetBarrelTowerFrontRho(); 
            } else {
-              G4double absangle = 0.5 * M_PI - fabs(centerlambda);  
-              radius   = fR * sin(absangle);
+              G4double absangle = 0.5 * M_PI - std::fabs(centerlambda);  
+              radius   = fR * std::sin(absangle);
            }
 
            G4double circumference = 2 * M_PI * radius; 
-           fNphi = (G4int) (fabs(circumference) / nominalsizeinphi);
+           fNphi = (G4int) (std::fabs(circumference) / nominalsizeinphi);
            fDphi = 2 * M_PI / fNphi;
         }
        
@@ -238,10 +238,10 @@ class J4CALParameterList : public J4VParameterList
                           << std::setw(10) << fR
                           << std::setw(10) << fCenterLambda
                           << std::setw(10) << fDlambda
-                          << std::setw(10) << 2 * fR * sin(0.5 * fDlambda)
+                          << std::setw(10) << 2 * fR * std::sin(0.5 * fDlambda)
                           << std::setw(10) << fNphi
                           << std::setw(10) << fDphi 
-                          << std::setw(10) << 2 * fR * sin(0.5 * fDphi)
+                          << std::setw(10) << 2 * fR * std::sin(0.5 * fDphi)
                           << std::endl;
               }
 

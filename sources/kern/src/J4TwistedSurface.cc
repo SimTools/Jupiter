@@ -130,7 +130,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
    //    y(rho(z=0), z) = rho(z=0)*K*z
    //    z(rho(z=0), z) = z
    //    with
-   //       K = tan(fPhiTwist/2)/fZHalfLen
+   //       K = std::tan(fPhiTwist/2)/fZHalfLen
    //
    // Equation of a line:
    //
@@ -201,9 +201,9 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
    // p is origin or
    //
 
-   G4double absvz = fabs(v.z());
+   G4double absvz = std::fabs(v.z());
 
-   if ((absvz < DBL_MIN) && (fabs(p.x() * v.y() - p.y() * v.x()) < DBL_MIN)) {
+   if ((absvz < DBL_MIN) && (std::fabs(p.x() * v.y() - p.y() * v.x()) < DBL_MIN)) {
       // no intersection
 
       isvalid[0] = FALSE;
@@ -242,8 +242,8 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
           << J4endl;
 #endif 
 
-   if (fabs(a) < DBL_MIN) {
-      if (fabs(b) > DBL_MIN) { 
+   if (std::fabs(a) < DBL_MIN) {
+      if (std::fabs(b) > DBL_MIN) { 
 
          // single solution
 
@@ -351,7 +351,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
 
       // double solutions
 
-      D = sqrt(D);
+      D = std::sqrt(D);
       G4double      factor = 0.5/a;
       G4double      tmpdist[2] = {kInfinity, kInfinity};
       G4ThreeVector tmpxx[2];
@@ -365,7 +365,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
          // protection against round off error  
          //G4double protection = 1.0e-6;
          G4double protection = 0;
-         if ( b * D < 0 && fabs(bminusD / D) < protection ) {
+         if ( b * D < 0 && std::fabs(bminusD / D) < protection ) {
             G4double acovbb = (a*c)/(b*b);
             tmpdist[i] = - c/b * ( 1 - acovbb * (1 + 2*acovbb));
          } else { 
@@ -454,7 +454,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
          if (!isvalid[k]) continue;
          if (GetSolid()->Inside(gxx[k]) != ::kSurface) {
 
-            G4ThreeVector xxonsurface(xx[k].x(), fKappa * fabs(xx[k].x()) * xx[k].z() , xx[k].z());
+            G4ThreeVector xxonsurface(xx[k].x(), fKappa * std::fabs(xx[k].x()) * xx[k].z() , xx[k].z());
             G4double      deltaY  =  (xx[k] - xxonsurface).mag();
 
 #ifdef __SOLIDDEBUG__
@@ -486,7 +486,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
                   J4cerr << " gxx & distance replaced : gxx, distance " << gxx[k] << " " << distance[k] << J4endl; 
                   break;
                }
-               xxonsurface.set(xx[k].x(), fKappa * fabs(xx[k].x()) * xx[k].z() , xx[k].z());
+               xxonsurface.set(xx[k].x(), fKappa * std::fabs(xx[k].x()) * xx[k].z() , xx[k].z());
             }
             if (l == maxcount) {
                std::cerr << "J4TwistedSurface:DistanceToSurface(p,v): iteration exceeded maxloop count " 
@@ -704,7 +704,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
 
    // In order to set correct diagonal, swap A and D, C and B if needed.  
    G4ThreeVector pt(p.x(), p.y(), 0.);
-   G4double      rc = fabs(p.x());
+   G4double      rc = std::fabs(p.x());
    G4ThreeVector surfacevector(rc, rc * fKappa * p.z(), 0.); 
    G4int         pside = AmIOnLeftSide(pt, surfacevector); 
    G4double      test  = (A.z() - C.z()) * parity * pside;  
@@ -805,8 +805,8 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
 
    // if calculated distance = 0, return  
 
-   if (fabs(distToACB) <= halftol || fabs(distToCAD) <= halftol) {
-      xx = (fabs(distToACB) < fabs(distToCAD) ? xxacb : xxcad); 
+   if (std::fabs(distToACB) <= halftol || std::fabs(distToCAD) <= halftol) {
+      xx = (std::fabs(distToACB) < std::fabs(distToCAD) ? xxacb : xxcad); 
       areacode[0] = kInside;
       gxx[0] = ComputeGlobalPoint(xx);
       distance[0] = 0;
@@ -876,14 +876,14 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
 #ifdef __BOUNDARYCHECK__     
       // boundary check 
       G4ThreeVector xxt(xx.x(), xx.y(), 0.);
-      G4double      xxrc     = fabs(xx.x());
+      G4double      xxrc     = std::fabs(xx.x());
       G4ThreeVector xxsurfacevector(xxrc, xxrc * fKappa * xx.z(), 0.);
       G4int         xxpside  = AmIOnLeftSide(xxt, xxsurfacevector);
       G4double      xxtest   = pside * xxpside;
       G4int         areacode = 0;
 
       if (xxtest < 0) {
-         if (fabs(xx.x() - fAxisMin[0]) < fabs(xx.x() -fAxisMax[0])) {
+         if (std::fabs(xx.x() - fAxisMin[0]) < std::fabs(xx.x() -fAxisMax[0])) {
             // fAxisMin[0] : kAxisX minimum.
             areacode |= (kAxis0 & kAxisMin);
             distance[0] = DistanceToBoundary(areacode, xx, p);
@@ -946,11 +946,11 @@ G4double J4TwistedSurface::DistanceToPlane(const G4ThreeVector &p,
    }
 
    // if p is on surface, return 0.
-   if (fabs(distToanm) <= halftol) {
+   if (std::fabs(distToanm) <= halftol) {
       xx = xxanm;
       n  = nanm * parity;
       return 0;
-   } else if (fabs(distTocmn) <= halftol) {
+   } else if (std::fabs(distTocmn) <= halftol) {
       xx = xxcmn;
       n  = ncmn * parity;
       return 0;
@@ -1112,26 +1112,26 @@ void J4TwistedSurface::SetCorners(J4TwistedTubs *solid)
       G4double x, y, z;
       
       // corner of Axis0min and Axis1min
-      x = endInnerRad[zmin]*cos(endPhi[zmin]);
-      y = endInnerRad[zmin]*sin(endPhi[zmin]);
+      x = endInnerRad[zmin]*std::cos(endPhi[zmin]);
+      y = endInnerRad[zmin]*std::sin(endPhi[zmin]);
       z = endZ[zmin];
       SetCorner(kCorner0Min1Min, x, y, z);
       
       // corner of Axis0max and Axis1min
-      x = endOuterRad[zmin]*cos(endPhi[zmin]);
-      y = endOuterRad[zmin]*sin(endPhi[zmin]);
+      x = endOuterRad[zmin]*std::cos(endPhi[zmin]);
+      y = endOuterRad[zmin]*std::sin(endPhi[zmin]);
       z = endZ[zmin];
       SetCorner(kCorner0Max1Min, x, y, z);
       
       // corner of Axis0max and Axis1max
-      x = endOuterRad[zmax]*cos(endPhi[zmax]);
-      y = endOuterRad[zmax]*sin(endPhi[zmax]);
+      x = endOuterRad[zmax]*std::cos(endPhi[zmax]);
+      y = endOuterRad[zmax]*std::sin(endPhi[zmax]);
       z = endZ[zmax];
       SetCorner(kCorner0Max1Max, x, y, z);
       
       // corner of Axis0min and Axis1max
-      x = endInnerRad[zmax]*cos(endPhi[zmax]);
-      y = endInnerRad[zmax]*sin(endPhi[zmax]);
+      x = endInnerRad[zmax]*std::cos(endPhi[zmax]);
+      y = endInnerRad[zmax]*std::sin(endPhi[zmax]);
       z = endZ[zmax];
       SetCorner(kCorner0Min1Max, x, y, z);
 

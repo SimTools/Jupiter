@@ -6,7 +6,7 @@
 //
 //=============================================
 
-#include <math.h>
+#include <cmath>
 
 #define _SD0MARGIN_ 0.01*cm
 
@@ -30,8 +30,8 @@
 // SUS Trap   : Full Length
 // X1 Longer side ,  X2 Shorter side
 #define _SD0Y1_SUS_  5.*cm
-#define _SD0X1_SUS_  (_SD0INRADIUS_+_SD0THICK_)*sin(_SD0PHI_SUS_/2.)*2.
-#define _SD0X2_SUS_  ((_SD0INRADIUS_+_SD0THICK_-_SD0Y1_SUS_/cos(_SD0PHI_SUS_/2.))*sin(_SD0PHI_SUS_/2.)*2.)
+#define _SD0X1_SUS_  (_SD0INRADIUS_+_SD0THICK_)*std::sin(_SD0PHI_SUS_/2.)*2.
+#define _SD0X2_SUS_  ((_SD0INRADIUS_+_SD0THICK_-_SD0Y1_SUS_/std::cos(_SD0PHI_SUS_/2.))*std::sin(_SD0PHI_SUS_/2.)*2.)
 
 #define _SD0MAT_SUS_ "Iron"
 

@@ -12,7 +12,7 @@
 //*************************************************************************
 
 #include <iomanip>
-#include <math.h>
+#include <cmath>
 #include "J4VCDCDriftRegionHit.hh"
 #include "J4VCDCDriftRegion.hh"
 

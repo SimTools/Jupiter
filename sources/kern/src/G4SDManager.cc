@@ -101,7 +101,7 @@ void G4SDManager::Activate(G4String dName, G4bool activeFlag)
   treeTop->Activate(pathName,activeFlag);
 }
 
-#if __G4VERSION__ <= 1
+#if __G4VERSION__ <= 61
 G4VSensitiveDetector* G4SDManager::FindSensitiveDetector(G4String dName)
 #else
 G4VSensitiveDetector* G4SDManager::FindSensitiveDetector(G4String dName, G4bool warning)
@@ -109,7 +109,7 @@ G4VSensitiveDetector* G4SDManager::FindSensitiveDetector(G4String dName, G4bool 
 {
   G4String pathName = dName;
   if( pathName(0) != '/' ) pathName.prepend("/");
-#if __G4VERSION__ <= 1
+#if __G4VERSION__ <= 61
   return treeTop->FindSensitiveDetector(pathName);
 #else
   return treeTop->FindSensitiveDetector(pathName, warning);

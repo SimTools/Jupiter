@@ -13,7 +13,7 @@
 #include "J4IRBeamExit.hh"
 
 #include "G4Tubs.hh"
-#include <math.h>
+#include <cmath>
 
 #include "J4IRQC1ParameterList.hh"
 
@@ -107,8 +107,8 @@ G4ThreeVector& J4IRBeamExit::GetTranslation(){
   J4IRParameterList* list = OpenParameterList();
   G4double angle = list->GetCrossAngle();
   G4double zpos  = list->GetLStar()+qc1ZLength/2.;
-  position->setX( zpos*sin(angle));
-  position->setZ( zpos*cos(angle));
+  position->setX( zpos*std::sin(angle));
+  position->setZ( zpos*std::cos(angle));
   return *position;
 }
 

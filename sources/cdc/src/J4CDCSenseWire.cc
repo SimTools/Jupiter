@@ -47,8 +47,8 @@ J4CDCSenseWire::J4CDCSenseWire(J4VDetectorComponent *parent,
    
    if (layertype != "A") {
       G4double halftwist    = 0.5 * GetTwistedAngle();
-      G4double sinhalftwist = sin(halftwist);
-      G4double coshalftwist = sqrt((1 + sinhalftwist)*(1 - sinhalftwist));
+      G4double sinhalftwist = std::sin(halftwist);
+      G4double coshalftwist = std::sqrt((1 + sinhalftwist)*(1 - sinhalftwist));
 
       G4double wireEndX = endwirer * coshalftwist;
       G4double wireEndY = endwirer * sinhalftwist;

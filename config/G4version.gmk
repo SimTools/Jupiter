@@ -1,2 +1,2 @@
-  G4VER  := $(shell file $(G4INSTALL) |sed -e 's/.*geant4\.[0-9]\.\([0-9]\).*/\1/')
+  G4VER  := $(shell file $(G4INSTALL) |sed -e 's/.*geant4\.\([0-9]\)\.\([0-9]\).*/\1\2/')
   CPPFLAGS += -D__G4VERSION__="$(G4VER)"	

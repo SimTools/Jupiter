@@ -157,12 +157,12 @@ G4bool J4TPCDriftRegionSD::IsExiting(const G4ThreeVector &pos,
   J4TPCParameterList *list = J4TPCParameterList::GetInstance();
   static G4double tol = 10.;
     
-  if (abs(pos.perp() - list->GetOuterSupportTubInnerR()) <= tol*kCarTolerance &&
+  if (std::abs(pos.perp() - list->GetOuterSupportTubInnerR()) <= tol*kCarTolerance &&
       p.x() * pos.x() + p.y() * pos.y() > 0.) {
      return TRUE;
   }
   static G4double zend = list->GetPadPlaneFrontZ() + 0.5*list->GetTPCHalfZ();
-  if (abs(abs(pos.z()) - zend) <= tol*kCarTolerance && p.z() * pos.z() > 0.) {
+  if (std::abs(std::abs(pos.z()) - zend) <= tol*kCarTolerance && p.z() * pos.z() > 0.) {
      return TRUE;
   }
   return FALSE;

@@ -10,7 +10,7 @@
 
 #include "J4PrimaryGeneratorAction.hh"
 
-#include <math.h>
+#include <cmath>
 #include "G4Event.hh"
 #include "J4ParticleBeam.hh"
 #include "G4ParticleTable.hh"

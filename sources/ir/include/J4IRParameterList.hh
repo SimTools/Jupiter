@@ -43,7 +43,7 @@ public:
 
   inline G4bool IsCompact() 
   { // G4cout << "ASOASO " << GetCrossAngle()/mrad << G4endl;  
-    return ( abs(GetCrossAngle()) > 9.*mrad ? TRUE : FALSE);}
+    return ( std::abs(GetCrossAngle()) > 9.*mrad ? TRUE : FALSE);}
   inline G4bool IsPairMonitorSD()
   { return fPairMonSD; }
   inline void SetPairMonitorSD(G4bool log){ fPairMonSD = log; }
@@ -95,9 +95,9 @@ public:
 
   // Caluculated Values
   inline G4double GetIRBeamPipeZLength()const{ 
-    return 2.*(tan(M_PI/2.-GetIRThetaMax())*GetIRMinimumRadius());}
+    return 2.*(std::tan(M_PI/2.-GetIRThetaMax())*GetIRMinimumRadius());}
   inline G4double GetIRDrumFaceZPosition()const{
-    return tan(M_PI/2.-GetIRThetaMax())*GetIRSupportInnerRadius();}
+    return std::tan(M_PI/2.-GetIRThetaMax())*GetIRSupportInnerRadius();}
   inline G4double GetIRConeZLength()const{
     return GetIRDrumFaceZPosition()-GetIRBeamPipeZLength()/2.;}
   inline G4double GetIRDrumZLength()const{

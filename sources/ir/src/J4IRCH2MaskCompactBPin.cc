@@ -14,7 +14,7 @@
 #include "J4IRCH2MaskParameterList.hh"
 
 #include "G4Cons.hh"
-#include <math.h>
+#include <cmath>
 
 
 // ====================================================================
@@ -63,7 +63,7 @@ void J4IRCH2MaskCompactBPin::Assemble()
     G4double rmin = 0.*mm;
     G4double r1max = 5.*mm;
     G4double zlen = ch2List->GetCH2MaskZLength();
-    G4double r2max = r1max+2.*zlen*sin(abs(angle));
+    G4double r2max = r1max+2.*zlen*std::sin(std::abs(angle));
     
     G4cout << r1max/mm <<" " << r2max/mm << " " << zlen/mm << G4endl;
   	
@@ -110,7 +110,7 @@ G4ThreeVector& J4IRCH2MaskCompactBPin::GetTranslation(){
 
   G4double zpos = 
     ch2List->GetCH2MaskZPosition();
-  G4double xpos = zpos*sin(-angle);
+  G4double xpos = zpos*std::sin(-angle);
 
   G4ThreeVector* position = new G4ThreeVector;
   position->setX(xpos);

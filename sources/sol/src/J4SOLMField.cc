@@ -43,7 +43,7 @@ void J4SOLMField::GetLocalFieldValue(G4ThreeVector &position,
   G4double zBfield    = fParameterList->GetBField();	
   G4double maxBRad_sq = maxBRad * maxBRad;
   
-  if(  abs(position.z()) < maxBZ 
+  if(  std::abs(position.z()) < maxBZ 
        && (sqr(position.x())+sqr(position.y())) < maxBRad_sq ) {  
      bfield.setZ(zBfield); 
   }

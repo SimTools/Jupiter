@@ -176,14 +176,14 @@ class J4ParameterList : public J4VParameterList
 G4double J4ParameterList::GetVTXHalfZ() const   
 {
    G4double costheta  = GetVTXZcoverage();
-   G4double cottheta = costheta / sqrt((1 + costheta) * (1 - costheta)); 
+   G4double cottheta = costheta / std::sqrt((1 + costheta) * (1 - costheta)); 
    return GetVTXOuterR() * cottheta; 
 }
 
 G4double J4ParameterList::GetITHalfZ() const   
 {
    G4double costheta  = GetITZcoverage();
-   G4double cottheta = costheta / sqrt((1 + costheta) * (1 - costheta)); 
+   G4double cottheta = costheta / std::sqrt((1 + costheta) * (1 - costheta)); 
    return GetITOuterR() * cottheta; 
 }
 

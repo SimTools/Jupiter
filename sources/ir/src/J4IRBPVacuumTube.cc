@@ -15,7 +15,7 @@
 #include "J4IRWMaskParameterList.hh"
 
 #include "G4Tubs.hh"
-#include <math.h>
+#include <cmath>
 
 
 // ====================================================================

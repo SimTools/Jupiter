@@ -423,7 +423,7 @@ G4double J4VSurface::DistanceToPlane(const G4ThreeVector &p,
    //      xx = p - t*n
    //
    //         where
-   //         t = n * (p - x0) / abs(n)
+   //         t = n * (p - x0) / std::abs(n)
    //
    G4double t;
    G4ThreeVector n = n0.unit();

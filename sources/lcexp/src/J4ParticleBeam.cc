@@ -121,16 +121,16 @@ void J4ParticleBeam::SetParticleMomentum(G4ParticleMomentum aMomentum)
      G4double mass =  particle_definition->GetPDGMass();
      G4double p = aMomentum.mag();
      particle_momentum_direction =  aMomentum.unit();
-     if ((particle_energy>0.0)&&(abs(particle_energy+mass-sqrt(p*p+mass*mass))>keV)) {
+     if ((particle_energy>0.0)&&(std::abs(particle_energy+mass-std::sqrt(p*p+mass*mass))>keV)) {
         std::cout << "J4ParticleBeam::" << particle_definition->GetParticleName() << std::endl;
         std::cout << "  KineticEnergy and Momentum could be inconsistent" << std::endl;
         std::cout << " (Momentum:" << p/GeV << " GeV/c";
         std::cout << "  Mass:" << mass/GeV << " GeV/c/c)" << std::endl;
         std::cout << "  KineticEnergy is overwritten!! ";
         std::cout << particle_energy/GeV << "->";
-        std::cout << (sqrt(p*p+mass*mass)-mass)/GeV << "GeV" << std::endl;
+        std::cout << (std::sqrt(p*p+mass*mass)-mass)/GeV << "GeV" << std::endl;
      }
-     particle_energy = sqrt(p*p+mass*mass)-mass;
+     particle_energy = std::sqrt(p*p+mass*mass)-mass;
   }
 }
 
@@ -146,7 +146,7 @@ void J4ParticleBeam::GenerateIsotopicBeam(G4Event* evt)
 #endif
 	G4double costheta = RandFlat::shoot(fCosThetaRange[0],
                                        fCosThetaRange[1]);
-   // G4double costheta = cos((2 * G4UniformRand() -1.) * M_PI);
+   // G4double costheta = std::cos((2 * G4UniformRand() -1.) * M_PI);
    if (fIsFlatProfile) {
 	   std::cerr << "beam profile  : phi = " << phi 
              << " rad, flat position " << std::endl;
@@ -155,9 +155,9 @@ void J4ParticleBeam::GenerateIsotopicBeam(G4Event* evt)
              << " rad, gaussian position " << std::endl;
    }
 
-	G4double sintheta = sqrt((1-costheta)*(1+costheta));
-	G4double mvx      = fMeanMomentum * sintheta * cos(phi);
-	G4double mvy      = fMeanMomentum * sintheta * sin(phi);
+	G4double sintheta = std::sqrt((1-costheta)*(1+costheta));
+	G4double mvx      = fMeanMomentum * sintheta * std::cos(phi);
+	G4double mvy      = fMeanMomentum * sintheta * std::sin(phi);
    G4double mvz      = fMeanMomentum * costheta;
    G4ThreeVector mv(mvx,mvy,mvz);
 	RefFrame ref;
@@ -283,7 +283,7 @@ void J4ParticleBeam::GeneratePrimaryVertex(G4Event* evt)
       // Set mean momentum...
       G4double mass   = particle_definition->GetPDGMass();
       G4double energy = particle_energy + mass;
-      G4double pmom   = sqrt((energy - mass)*(energy + mass));
+      G4double pmom   = std::sqrt((energy - mass)*(energy + mass));
       fMeanMomentum   = pmom;
   
       // ------------------------------

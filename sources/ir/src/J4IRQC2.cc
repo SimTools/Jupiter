@@ -14,7 +14,7 @@
 
 
 #include "G4Box.hh"
-#include <math.h>
+#include <cmath>
 
 
 // ====================================================================
@@ -153,10 +153,10 @@ G4RotationMatrix* J4IRQC2::GetRotation(){
 G4ThreeVector& J4IRQC2::GetTranslation(){
   G4ThreeVector* position= new G4ThreeVector; 
   G4double angle = OpenParameterList()->GetCrossAngle();
-  position->setX(-(_QC2ZPOS_+_QC2ZLEN_/2.)*sin(angle));
-  position->setZ( (_QC2ZPOS_+_QC2ZLEN_/2.)*cos(angle));
-  //position->setX(-(_QC2ZPOS_+_QC2ZLEN_/2.)*sin(_IRCROS_));
-  //position->setZ( (_QC2ZPOS_+_QC2ZLEN_/2.)*cos(_IRCROS_));
+  position->setX(-(_QC2ZPOS_+_QC2ZLEN_/2.)*std::sin(angle));
+  position->setZ( (_QC2ZPOS_+_QC2ZLEN_/2.)*std::cos(angle));
+  //position->setX(-(_QC2ZPOS_+_QC2ZLEN_/2.)*std::sin(_IRCROS_));
+  //position->setZ( (_QC2ZPOS_+_QC2ZLEN_/2.)*std::cos(_IRCROS_));
   return *position;
 }
 //* Draw  --------------------------------------------------------

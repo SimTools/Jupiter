@@ -6,7 +6,7 @@
 //
 //=============================================
 
-#include <math.h>
+#include <cmath>
 
 #define _QC2MARGIN_ 1.e-6*mm
 
@@ -51,7 +51,7 @@
 // IronBox3 ( Trap )
 #define _QC2NIRON3_ 4
 #define _QC2PZ_IRON3_    _QC2ZLEN_
-#define _QC2PLTX_IRON3_  sqrt(pow((26.666-6.666),2.)+pow((51.666-35),2.))*mm
+#define _QC2PLTX_IRON3_  std::sqrt(std::pow((26.666-6.666),2.)+std::pow((51.666-35),2.))*mm
 
 // Iron Collar2 (x4)
 #endif

@@ -194,18 +194,18 @@ void J4VTXParameterList::BuildParameters()
     G4double theta = twopi/fNLadders[ilayer];
     for ( G4int iladder = 0; iladder < fNLadders[ilayer]; iladder++){
       fxyzLadder[ilayer][iladder].set(
-             frLayer[ilayer]*cos(iladder*theta),
-             frLayer[ilayer]*sin(iladder*theta),
+             frLayer[ilayer]*std::cos(iladder*theta),
+             frLayer[ilayer]*std::sin(iladder*theta),
              0.*mm);
       fangleLadder[ilayer][iladder] = -halfpi-theta*iladder+ftiltLadder;
     }
 
     if ( !IsLayerSD() ){
       frInnerLayer[ilayer] = 
-	frLayer[ilayer]-fDxyzLadder[ilayer]->x()/2.*sin(ftiltLadder);
+	frLayer[ilayer]-fDxyzLadder[ilayer]->x()/2.*std::sin(ftiltLadder);
       frOuterLayer[ilayer] = 
 	frLayer[ilayer]
-	+(fDxyzLadder[ilayer]->x()+2.*fDxyzLadder[ilayer]->y())*sin(ftiltLadder);
+	+(fDxyzLadder[ilayer]->x()+2.*fDxyzLadder[ilayer]->y())*std::sin(ftiltLadder);
     }else{
       frInnerLayer[ilayer] = frLayer[ilayer];
       frOuterLayer[ilayer] = frLayer[ilayer]+fDxyzSensor.y();

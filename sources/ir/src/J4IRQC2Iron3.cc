@@ -15,7 +15,7 @@
 #include "G4Tubs.hh"
 #include "G4Trap.hh"
 #include "J4UnionSolid.hh"
-#include <math.h>
+#include <cmath>
 
 // ====================================================================
 //--------------------------------
@@ -60,7 +60,7 @@ void J4IRQC2Iron3::Assemble()
     // MakeSolid ---------------
     G4String name1( GetName() );
     name1 += ".IronBox";
-    G4double y1 = _QC2HBOX_IRON2_*sin(pi/4.);
+    G4double y1 = _QC2HBOX_IRON2_*std::sin(pi/4.);
     G4double x2 = _QC2PLTX_IRON3_;
     G4double x1 =  x2+y1;
     G4double Talpha = (x2-x1)/y1/2.;
@@ -80,7 +80,7 @@ void J4IRQC2Iron3::Assemble()
     G4double ANG = atan2(AY,AX);
     G4VSolid *solid2 =  new G4Tubs(name2,
 				  0.,
-				   sqrt(AX*AX+AY*AY),
+				   std::sqrt(AX*AX+AY*AY),
 				   _QC2PZ_IRON3_/2.,
 				   0.,2.*ANG);
     G4String name3( GetName() );
@@ -138,16 +138,16 @@ G4RotationMatrix* J4IRQC2Iron3::GetRotation(){
 G4ThreeVector& J4IRQC2Iron3::GetTranslation(){
   G4ThreeVector* position= new G4ThreeVector; 
 
-   G4double y1 = _QC2HBOX_IRON2_*sin(pi/4.);
+   G4double y1 = _QC2HBOX_IRON2_*std::sin(pi/4.);
    G4double x2 = _QC2PLTX_IRON3_;
    G4double x1 =  x2+y1;
    G4double dx = x1 - (x1+x2)/4.;
    G4double dy = y1/2.;  
 
  G4double xx = (80.*mm-
-		(cos(_QC2PHI_COLLAR_)*dx-sin(_QC2PHI_COLLAR_)*(-dy)) );
+		(std::cos(_QC2PHI_COLLAR_)*dx-std::sin(_QC2PHI_COLLAR_)*(-dy)) );
  G4double yy = (51.666*mm-
-		(sin(_QC2PHI_COLLAR_)*dx+cos(_QC2PHI_COLLAR_)*(-dy)) );
+		(std::sin(_QC2PHI_COLLAR_)*dx+std::cos(_QC2PHI_COLLAR_)*(-dy)) );
 
  switch(GetMyID()%4){
   case 0:

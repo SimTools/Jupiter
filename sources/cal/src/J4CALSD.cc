@@ -141,10 +141,10 @@ G4bool J4CALSD::IsExiting( const G4ThreeVector &pos, const G4ThreeVector &p  ) c
   J4CALParameterList* ptrList = J4CALParameterList::GetInstance();
   static G4double tol = 10.;
     
-  if ( abs( pos.perp() - ptrList->GetCALOuterR() ) <= tol*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0.) 
+  if ( std::abs( pos.perp() - ptrList->GetCALOuterR() ) <= tol*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0.) 
     return true;
 
-  if ( abs( abs( pos.z() ) - ptrList->GetCALOuterHalfZ() ) <= tol*kCarTolerance && p.z() * pos.z() > 0.)
+  if ( std::abs( std::abs( pos.z() ) - ptrList->GetCALOuterHalfZ() ) <= tol*kCarTolerance && p.z() * pos.z() > 0.)
      return true;
 
   return false;

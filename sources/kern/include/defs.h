@@ -43,6 +43,7 @@
 
 #include <stdio.h>
 #include <string>
+
 #include "G4Types.hh"
 
 #define G4RWDEFAULT_CAPACITY (64)
@@ -54,6 +55,8 @@
   #define TRUE 1
 #endif
 
+#define CLHEP_ABS_DEFINED
+#define CLHEP_SQR_DEFINED
 #define CLHEP_MAX_MIN_DEFINED
 #include <CLHEP/config/TemplateFunctions.h>
 

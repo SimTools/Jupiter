@@ -323,12 +323,12 @@ G4double J4MUDParameterList::GetEndcapActiveHeight( G4int layerID ) const
 
 G4double J4MUDParameterList::GetFrontEndcapAbsHeight( G4int /*layerID*/ ) const
 {
-  return GetFrontEndcapOuterR() * cos( 0.5*GetTrapDeltaPhi() );
+  return GetFrontEndcapOuterR() * std::cos( 0.5*GetTrapDeltaPhi() );
 }
 
 G4double J4MUDParameterList::GetFrontEndcapActiveHeight( G4int /*layerID*/ ) const
 {
-  return GetFrontEndcapOuterR() * cos( 0.5*GetTrapDeltaPhi() );
+  return GetFrontEndcapOuterR() * std::cos( 0.5*GetTrapDeltaPhi() );
 }
 
 G4double J4MUDParameterList::GetFrontEndcapAbsFront( G4int layerID ) const

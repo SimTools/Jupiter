@@ -13,7 +13,7 @@
 #include "J4IRSD0SUS.hh"
 
 #include "G4Trap.hh"
-#include <math.h>
+#include <cmath>
 
 
 // ====================================================================
@@ -108,11 +108,11 @@ G4ThreeVector& J4IRSD0SUS::GetTranslation(){
   G4ThreeVector* position= new G4ThreeVector; 
 
   G4double radius = 
-    (_SD0INRADIUS_+_SD0THICK_-0.5*_SD0Y1_SUS_/cos(_SD0PHI_SUS_/2.))
-    *cos(_SD0PHI_SUS_/2.);
+    (_SD0INRADIUS_+_SD0THICK_-0.5*_SD0Y1_SUS_/std::cos(_SD0PHI_SUS_/2.))
+    *std::cos(_SD0PHI_SUS_/2.);
 
-  position->setX(radius*cos(GetMyID()*_SD0PHI_SUS_+_SD0PHI_SUS_));
-  position->setY(-radius*sin(GetMyID()*_SD0PHI_SUS_+_SD0PHI_SUS_));
+  position->setX(radius*std::cos(GetMyID()*_SD0PHI_SUS_+_SD0PHI_SUS_));
+  position->setY(-radius*std::sin(GetMyID()*_SD0PHI_SUS_+_SD0PHI_SUS_));
   return *position;
 }
 //* Draw  --------------------------------------------------------

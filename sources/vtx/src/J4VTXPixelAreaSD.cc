@@ -13,7 +13,7 @@
 
 #include "J4VTXPixelAreaSD.hh"
 #include "G4VProcess.hh"
-#include <math.h>
+#include <cmath>
 
 //=====================================================================
 //---------------------
@@ -78,7 +78,7 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step*              aStep,
     const G4ThreeVector &orgPDir = GetTrack()->GetVertexMomentumDirection();
     if ( &orgPDir != NULL ) {
       G4double mass = GetTrack()->GetDynamicParticle()->GetMass();
-      G4double mom =  sqrt( orgkinE*orgkinE+2*orgkinE*mass );
+      G4double mom =  std::sqrt( orgkinE*orgkinE+2*orgkinE*mass );
       origP = 
 	G4ThreeVector(mom*orgPDir.x(),mom*orgPDir.y(),mom*orgPDir.z());
     }

@@ -59,13 +59,13 @@ public:
   { return fbpList->GetBPDrumRadius()+fbpList->GetBPDrumThick(); }
   inline G4double GetWSiCAL1Thick() const
   { return GetWSiCAL1Radius()/
-    tan(50.*mrad)*tan(fList->GetIRThetaMax())-GetWSiCAL1Radius();}
+    std::tan(50.*mrad)*std::tan(fList->GetIRThetaMax())-GetWSiCAL1Radius();}
   inline G4double GetWSiCAL1ZLength() const
   { return fList->GetIRSupportInnerRadius()/
-    tan(fList->GetIRThetaMax())
-      -GetWSiCAL1Radius()/tan(50.*mrad); }
+    std::tan(fList->GetIRThetaMax())
+      -GetWSiCAL1Radius()/std::tan(50.*mrad); }
   inline G4double GetWSiCAL1ZPosition() const
-  { return GetWSiCAL1Radius()/tan(50.*mrad); }
+  { return GetWSiCAL1Radius()/std::tan(50.*mrad); }
 
   inline G4double GetWSiCAL2Radius() const
   { return fbpList->GetBPDrumRadius()+fbpList->GetBPDrumThick(); }
