@@ -106,13 +106,17 @@ void J4IRParameterList::SetDefaults()
   // L*
 #ifdef __GLD_V1__
   SetLStar(4300*mm);
+  // Z Maximum length
+  SetIRZMax(900*cm); // Near end of QC1
+  // Z Mid length
+  SetIRZMid(850*cm);
 #else
   SetLStar(3500*mm);
-#endif
   // Z Maximum length
   SetIRZMax(800*cm); // Near end of QC1
   // Z Mid length
   SetIRZMid(500*cm);
+#endif
   // Support Tube
 #ifdef __GLD_V1__
   SetIRSupportInnerRadius(38*cm);
