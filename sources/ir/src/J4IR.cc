@@ -11,8 +11,7 @@
 //*************************************************************************
 
 #include "J4IR.hh"
-#include "J4IRParameter.hh"
-
+#include "J4IRParameterList.hh"
 #include "G4Box.hh"
 #include "G4Tubs.hh"
 #include "G4Cons.hh"
@@ -58,18 +57,19 @@ J4IR::~J4IR()
 void J4IR::Assemble() 
 {   
   if(!GetLV()){
-  	
+    
+    J4IRParameterList *paramlist = J4IRParameterList::GetInstance();   	
     // Calcurate parameters ----------
-    G4double innersupporttubrad = _IRINNERSUPPORTTUBRAD_;
-    G4double outerbeampiperad   = _IROUTERBEAMPIPERAD_;
-    G4double thetamax           = _IRTHETAMAX_;
+    G4double innersupporttubrad = paramlist->GetSupportTubInnerR();
+    G4double outerbeampiperad   = paramlist->GetBeampipeOuterR();
+    G4double thetamax           = paramlist->GetThetaMax();
     G4double beampipehalfzlen   = tan(M_PI/2 - thetamax) * outerbeampiperad;
     G4double cylinderfrontz     = tan(M_PI/2 - thetamax) * innersupporttubrad;
-    G4double conehalfz          = (cylinderfrontz -  beampipehalfzlen) / 2.0;	
-    G4double cylinderhalfz      = (_IRZMID_ - cylinderfrontz) / 2.0;
-    G4double boxhalfx           = _IRBOXHALFX_;
-    G4double boxhalfy           = _IRBOXHALFY_;
-    G4double boxhalfz           = (_IRZMAX_ - _IRZMID_) / 2.0;
+    G4double conehalfz          = 0.5*(cylinderfrontz -  beampipehalfzlen);	
+    G4double cylinderhalfz      = 0.5*(paramlist->GetZMid() - cylinderfrontz);
+    G4double boxhalfx           = paramlist->GetIRBoxHalfX();
+    G4double boxhalfy           = paramlist->GetIRBoxHalfY();
+    G4double boxhalfz           = 0.5*(paramlist->GetZMax() - paramlist->GetZMid());
     G4double coneglobalz        = beampipehalfzlen + conehalfz;
     G4double cylinderglobalz    = coneglobalz + conehalfz + cylinderhalfz;
     G4double boxglobalz         = cylinderglobalz + cylinderhalfz + boxhalfz;
@@ -139,10 +139,10 @@ void J4IR::Assemble()
 
 
     // MakeLogicalVolume ------------- 
-    MakeLVWith(OpenMaterialStore()->Order(_IRMATERIAL_)); 
+    MakeLVWith(OpenMaterialStore()->Order(paramlist->GetMaterial())); 
 
     // SetVisAttribute ---------------
-    PaintLV(_IRVISATT_, G4Color(1, 0, 1));
+    PaintLV(paramlist->GetVisAtt(), *(paramlist->GetColor()));
     
  
   	

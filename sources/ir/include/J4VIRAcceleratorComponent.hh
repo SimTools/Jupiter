@@ -14,7 +14,6 @@
 
 #include "J4IRMaterialStore.hh"
 #include "J4VAcceleratorComponent.hh"
-#include "J4IRParameter.hh"
 
 //=====================================================================
 //---------------------
@@ -26,19 +25,17 @@ class J4VIRAcceleratorComponent : public J4VAcceleratorComponent
 
 public:
   //default constructor...
-  J4VIRAcceleratorComponent( const G4String       &name, 
-  			  J4VAcceleratorComponent *parent    = 0,
-                          G4int                 nclones   = 1,
-                          G4int                 nbrothers = 1, 
-                          G4int                 me        = 0,
-                          G4int                 copyno    = -1 );
+  J4VIRAcceleratorComponent( const G4String          &name, 
+  			     J4VAcceleratorComponent *parent    = 0,
+                             G4int                    nclones   = 1,
+                             G4int                    nbrothers = 1, 
+                             G4int                    me        = 0,
+                             G4int                    copyno    = -1 );
 
   virtual ~J4VIRAcceleratorComponent();
-#if 0 		          
   J4VIRAcceleratorComponent(J4VIRAcceleratorComponent& right);
   virtual const J4VIRAcceleratorComponent& 
   		operator=(const J4VIRAcceleratorComponent& right);    
-#endif
       
 protected:    
   J4VMaterialStore* 	 OpenMaterialStore();
@@ -57,22 +54,13 @@ private:
 
 
 inline J4VIRAcceleratorComponent::J4VIRAcceleratorComponent(J4VIRAcceleratorComponent& right)
+                                 :J4VAcceleratorComponent(right)  
 {
-
-  fMaterialStore = right.fMaterialStore;
-  fSubGroup      = right.fSubGroup;
-          
 }
 
 inline const J4VIRAcceleratorComponent& 
 J4VIRAcceleratorComponent::operator=(const J4VIRAcceleratorComponent& right)
 {
-
-  fMaterialStore = right.fMaterialStore;
-  fSubGroup      = right.fSubGroup;
-  
-  return *this;
-            
 }
 
 #endif
