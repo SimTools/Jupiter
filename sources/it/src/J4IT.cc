@@ -11,6 +11,7 @@
 //*************************************************************************
 
 #include "J4IT.hh"
+#include "J4ITParameterList.hh"
 
 
 // ====================================================================
@@ -43,10 +44,10 @@ J4IT::J4IT(J4VDetectorComponent *parent,
 
 J4IT::~J4IT()
 {
-	
+  J4ITParameterList *list = J4ITParameterList::GetInstance(); 
   if (fLayers){	
     G4int i;  
-    for (i = 0; i < _ITLAYERNLAYERS_ ; i++) {
+    for (i = 0; i < list->GetNlayers(); i++) {
      if(Deregister(fLayers[i])) delete fLayers [i];
     } 
     if (Deregister(fLayers)) delete [] fLayers;
@@ -60,28 +61,30 @@ void J4IT::Assemble()
 {   
   if(!GetLV()){
   	
-    G4double rmin = _ITIR_;
-    G4double rmax = _ITOR_;
-    G4double len  = _ITLEN_;
-    G4double dphi = _ITDPHI_;
+    J4ITParameterList *list = J4ITParameterList::GetInstance(); 
+    G4double rmin = list->GetITInnerR(); 
+    G4double rmax = list->GetITOuterR();
+    G4double len  = list->GetITHalfZ();
+    G4double dphi = list->GetITDeltaPhi();
   	
     // MakeSolid ----------//
     OrderNewTubs (rmin, rmax, len, dphi);
     
     // MakeLogicalVolume --//  
-    MakeLVWith(OpenMaterialStore()->Order(_ITMATERIAL_));
+    MakeLVWith(OpenMaterialStore()->Order(list->GetITMaterial()));
     
     // SetVisAttribute ----//
-    PaintLV(_ITVISATT_, G4Color(1, 0, 0));
+    PaintLV(list->GetITVisAtt(), list->GetITColor());
   	
     // Install daughter PV //
     // Install Layer       //
   		  
-    fLayers = new J4ITLayer* [_ITLAYERNLAYERS_];
+    G4int  nlayers = list->GetNlayers();
+    fLayers = new J4ITLayer* [nlayers];
     Register(fLayers);
     G4int i;  
-    for (i = 0; i < _ITLAYERNLAYERS_ ; i++) {
-      fLayers [i] = new J4ITLayer(this,_ITLAYERNCLONES_ , _ITLAYERNLAYERS_ , i );
+    for (i = 0; i < nlayers ; i++) {
+      fLayers [i] = new J4ITLayer(this, 1 , nlayers , i );
       Register(fLayers[i]);
       fLayers [i]->InstallIn(this);  
       

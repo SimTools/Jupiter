@@ -11,6 +11,7 @@
 //*************************************************************************
 
 #include "J4ITLayer.hh"
+#include "J4ITParameterList.hh"
 
 #include "G4Tubs.hh"
 
@@ -41,15 +42,12 @@ J4ITLayer::J4ITLayer(J4VDetectorComponent* parent,
 {   
 
   // Define Layer parameters ----------------//    
-    G4double startR      = _ITLAYER1IR_;
-    G4double incrementR  = _ITLAYERINCREMENTR_;
-    G4double layerThick  = _ITLAYERTHICK_;
-    G4double startLen    = _ITLAYER1LEN_;
-    G4double incrementZ  = _ITLAYERINCREMENTZ_;
 
-    fRmin = startR + incrementR * me;
-    fRmax = (startR + incrementR * me) + layerThick; 
-    fLen  = startLen + incrementZ * me;
+    J4ITParameterList * list = J4ITParameterList::GetInstance();
+
+    fRmin     = list->GetLayerR(me);
+    fRmax     = fRmin + list->GetLayerThick(); 
+    fLen      = list->GetLayerZ(me);
     fTotalPhi = ((G4Tubs *)parent->GetLV()->GetSolid())->GetDeltaPhiAngle();
     fOffset   = 0.;
     
@@ -93,15 +91,17 @@ void J4ITLayer::Assemble()
   if(!GetLV())
   {	  
     // define geometry
+
+    J4ITParameterList * list = J4ITParameterList::GetInstance();
       
     // MakeSolid ----------//
     OrderNewTubs (fRmin, fRmax, fLen, fTotalPhi );
     
     // MakeLogicalVolume --//  
-    MakeLVWith(OpenMaterialStore()-> Order(_ITLAYERMATERIAL_));
+    MakeLVWith(OpenMaterialStore()-> Order(list->GetLayerMaterial()));
     
     // SetVisAttribute ----//
-    PaintLV( _ITLAYERVISATT_ , G4Color(1.,0.5,1.));    
+    PaintLV(list->GetLayerVisAtt() , list->GetLayerColor());    
         
     // Install daughter PV //
   
@@ -114,6 +114,7 @@ void J4ITLayer::Assemble()
 
 void J4ITLayer::Cabling()
 {
+ 
 }
 
 //=====================================================================
