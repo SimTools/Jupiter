@@ -28,12 +28,14 @@
 #include "J4TrackingAction.hh"
 #include "TBookKeeper.hh"
 
+#if 0
 #include "J4ParameterListStore.hh"
 #include "J4ParameterList.hh"
 #include "J4VTXParameterList.hh"
 #include "J4ITParameterList.hh"
 #include "J4CDCParameterList.hh"
 #include "J4SOLParameterList.hh"
+#endif
 
 #ifdef G4VIS_USE
 #include "J4VisManager.hh"
@@ -80,12 +82,14 @@ int main(int argc, char** argv)
   G4RunManager* runManager = new G4RunManager;  G4cout << G4endl;
 //  runManager->SetVerboseLevel(2);
 
+#if 0
   J4ParameterListStore *paramlistStore = new J4ParameterListStore();
 
   //---------------------------------------------
   // set mandatory user initialization classes...
   
   J4VTXParameterList *vtxlist = new J4VTXParameterList();
+#endif
 
   //*--------------------------------------------
   //* Install detector components...

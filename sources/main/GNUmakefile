@@ -30,7 +30,6 @@ EXTRALIBS =	-L$(JUPITERROOT)/lib/$(G4SYSTEM) \
 		-lJ4ir \
 		-lJ4bd \
 		-lJ4it \
-		-lJ4vtx \
 		-lJ4cdc \
 		-lJ4cal \
 		-lJ4sol \
