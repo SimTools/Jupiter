@@ -81,7 +81,6 @@ class J4CALParameterList : public J4VParameterList
    //*Tower -------------------------------------------------------------
    inline G4double GetBarrelTowerFrontRho() const { return fBarrelTowerFrontRho; }
    inline G4double GetEndcapTowerFrontZ()   const { return fEndcapTowerFrontZ;   }
-   inline G4double GetTowerHeight()         const { return fTowerHeight;         }
    inline G4int    GetConstNTowers()        const { return fConstNTowers;        }
 
    //*EM ----------------------------------------------------------------
@@ -197,8 +196,7 @@ class J4CALParameterList : public J4VParameterList
                                             G4double width,
                                             G4double lastlambda); 
 
-   virtual void      SetTowerParameters(G4double towerheight,
-                                        G4double startlambda,
+  virtual void      SetTowerParameters( G4double startlambda,
                                         G4double endlambda,
                                         G4double length,
                                         G4double width,
@@ -211,12 +209,11 @@ class J4CALParameterList : public J4VParameterList
      public: 
 
         J4CALTowerParam (G4double r, 
-                         G4double height, 
                          G4double centerlambda, 
                          G4double dlambda, 
                          G4double nominalsizeinphi,
                          G4double isbarrel) 
-                        : fR(r), fHeight(height), fCenterLambda(centerlambda), 
+                         : fR(r), fCenterLambda(centerlambda), 
                           fDlambda(dlambda), fIsBarrel(isbarrel)
         {
            G4double radius;
@@ -239,7 +236,6 @@ class J4CALParameterList : public J4VParameterList
                 std::cerr << std::setprecision(5) 
                           << std::setw(10) << fIsBarrel
                           << std::setw(10) << fR
-                          << std::setw(10) << fHeight
                           << std::setw(10) << fCenterLambda
                           << std::setw(10) << fDlambda
                           << std::setw(10) << 2 * fR * sin(0.5 * fDlambda)
@@ -251,7 +247,6 @@ class J4CALParameterList : public J4VParameterList
 
         inline G4bool     IsBarrel()   const { return fIsBarrel;     }
         inline G4double   GetR()       const { return fR;            }
-        inline G4double   GetHeight()  const { return fHeight;       }
         inline G4double   GetLambda()  const { return fCenterLambda; }
         inline G4int      GetNphi()    const { return fNphi;         }
         inline G4double   GetDphi()    const { return fDphi;         }
@@ -263,7 +258,6 @@ class J4CALParameterList : public J4VParameterList
      private:
 
         G4double   fR;            //  Radius of front face 
-        G4double   fHeight;       //  Height of tower 
         G4double   fCenterLambda; //  Azimutial angle of the center of tower from X-Y plane
         G4double   fDlambda;      //  Azimutial width  
         G4int      fNphi;         //  Number of segments in phi  
@@ -345,7 +339,6 @@ class J4CALParameterList : public J4VParameterList
    G4double  fNominalEndcapTowerFrontSize;
    G4double  fBarrelTowerFrontRho;
    G4double  fEndcapTowerFrontZ;
-   G4double  fTowerHeight;
    G4int     fConstNTowers;
 
    // EM
