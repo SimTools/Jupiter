@@ -136,7 +136,7 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
   // =====================================================================
   // 
   
-   ofs << "-1 *******_Start_of_event_" << event << "_*******" <<G4endl;
+   ofs << "*******_Start_of_event_" << event << "_*******" <<G4endl;
      
      
    ofs << "0 "<< event << G4endl;
@@ -147,7 +147,7 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
      
    G4cerr << "EventAction::OutputAll finished " << G4endl;
   
-   ofs << "-2 *******_End_of_event_" << event << "_*******" <<G4endl;
+   ofs << "*******_End_of_event_" << event << "_*******" <<G4endl;
 
    fEventTimer->Stop();
    G4cerr << "**********************************************" << G4endl;
