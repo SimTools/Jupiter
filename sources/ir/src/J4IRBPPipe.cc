@@ -97,9 +97,9 @@ void J4IRBPPipe::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4IRBPPipe::InstallIn(J4VComponent *mother,
-                             G4RotationMatrix     *prot, 
-                             const G4ThreeVector  &tlate )
+void J4IRBPPipe::InstallIn(J4VComponent         *, // mother
+                           G4RotationMatrix     *, // prot
+                           const G4ThreeVector  &) // tlate
 { 
   Assemble();			// You MUST call Assemble(); at first.
   				// 

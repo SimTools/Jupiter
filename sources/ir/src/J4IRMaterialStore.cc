@@ -23,7 +23,7 @@
 
 
 G4Material* J4IRMaterialStore::Create(const G4String& name, 
-         G4MaterialPropertiesTable *mtable)
+                                      G4MaterialPropertiesTable*) // mtable
 {  	
 
   G4Material* material= 0;
@@ -31,7 +31,11 @@ G4Material* J4IRMaterialStore::Create(const G4String& name,
   G4double A, Z;
   G4String mname;
   G4double density;
+#if 0
   G4int nel,natoms,ncomponents;
+#else
+  G4int nel,natoms;
+#endif
   const G4double expTemp=STP_Temperature+20.*kelvin;
 
   if(name == "Cupper") { 		// Cupper

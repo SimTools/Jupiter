@@ -113,6 +113,7 @@ G4ThreeVector& J4IRBeamExit::GetTranslation(){
 }
 
 
+#if 0
 //=====================================================================
 void J4IRBeamExit::InstallIn(J4VIRAcceleratorComponent *mother,
                              G4RotationMatrix     *prot, 
@@ -120,6 +121,7 @@ void J4IRBeamExit::InstallIn(J4VIRAcceleratorComponent *mother,
 { 
   J4VIRAcceleratorComponent::InstallIn(mother,prot,tlate);
 }
+#endif
 //=====================================================================
 //* Draw  --------------------------------------------------------
 void J4IRBeamExit::Draw()

@@ -46,7 +46,10 @@ J4IRQC1MField::J4IRQC1MField(G4double beamE, G4double k):J4VMField()
 
 //=====================================================================
 //* constructor -------------------------------------------------------
-J4IRQC1MField::J4IRQC1MField(G4double beamE, G4double grad, G4String tag):J4VMField()
+J4IRQC1MField::J4IRQC1MField(G4double,       // beamE
+                             G4double grad, 
+                             G4String tag) 
+             : J4VMField()
 {   
   fGradient = grad;
   G4cout << tag << "DDDDDDDDDDDDDDDDDDDDDD  " << fGradient*meter/tesla << G4endl;

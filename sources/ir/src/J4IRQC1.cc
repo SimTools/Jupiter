@@ -143,9 +143,9 @@ G4ThreeVector& J4IRQC1::GetTranslation(){
 
 
 //=====================================================================
-void J4IRQC1::InstallIn(J4VIRAcceleratorComponent *mother,
-                             G4RotationMatrix     *prot, 
-                             const G4ThreeVector  &tlate )
+void J4IRQC1::InstallIn(J4VComponent         *mother,
+                        G4RotationMatrix     *prot, 
+                        const G4ThreeVector  &tlate )
 { 
   J4VIRAcceleratorComponent::InstallIn(mother,prot,tlate);
   InstallMField(this);
