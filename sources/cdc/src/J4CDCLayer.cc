@@ -38,6 +38,7 @@ J4CDCLayer::J4CDCLayer(J4VDetectorComponent *parent,
            :J4VCDCDetectorComponent(fFirstName, parent, nclones,
                                     nbrothers, me, copyno),
             fCell(0), fStereoCells(0), fOffset(0), fTwistedAngle(0), 
+            fStereoAngle(0), 
             fShieldWidth(0), fRmin(0), fRmax(0), fLayerType("W")
 {
    J4CDCParameterList *list = OpenParameterList();
@@ -59,7 +60,7 @@ J4CDCLayer::J4CDCLayer(J4VDetectorComponent *parent,
    G4double motherRmin = GetInnerRadius(parent);
    G4double motherRmax = GetOuterRadius(parent);
    G4double cellthick  = list->GetCellThick();
-   if (list->IsAxialInnermost() || nbrothers == 1) {
+   if (list->IsOddSuperLyrOutermost() || nbrothers == 1) {
       switch (me) {
          case 0 : // axial
             fLayerType = "A";
@@ -219,10 +220,10 @@ G4int J4CDCLayer::GetGlobalLayerNumber()
    J4CDCParameterList *list = OpenParameterList();  
    G4int superlayerno = GetMother()->GetMyID();
    G4int nsuperlayers = list->GetNlayersPerSuperLayer(superlayerno);
-   if (list->IsAxialInnermost()) {
+   if (list->IsOddSuperLyrOutermost()) {
       return superlayerno * nsuperlayers + GetMyID();
    } else {
-      if (superlayerno == 0) return 0; // innermost layer
+      if (superlayerno == 0) return 0; // innermost layer is odd superlayer
       return (superlayerno - 1) * nsuperlayers + GetMyID() + 1;
    }
 }

@@ -115,7 +115,7 @@ void J4CDCParameterList::SetParameters()
    
    
    // SuperLayer
-   fIsAxialInnermost       = TRUE; // innermost superlayer is small.
+   fIsOddSuperLyrOutermost = TRUE;  // Outermost superlayer is small.
    fNlayersPerSuperLayer   = 3;
    fNsuperLayers           = (fNlayers - 1) / fNlayersPerSuperLayer + 1;
    fSuperLayerInnerGap     = 4.*cm;
@@ -166,6 +166,7 @@ void J4CDCParameterList::SetParameters()
 //* SetVisAttributes --------------------------------------------------
 void J4CDCParameterList::SetVisAttributes()
 {
+#if 0
    fCDCVisAtt         = TRUE;
    fEndcapVisAtt      = TRUE;
    fSupportTubVisAtt  = TRUE;
@@ -178,6 +179,23 @@ void J4CDCParameterList::SetVisAttributes()
    fStereoCellVisAtt  = FALSE; 
    fStereoDriftRegionVisAtt = FALSE;
    fDummyDriftRegionVisAtt  = FALSE;
+
+#else
+   fCDCVisAtt         = TRUE;
+   fEndcapVisAtt      = TRUE;
+   fSupportTubVisAtt  = TRUE;
+   fSuperLayerVisAtt  = FALSE;
+   fLayerVisAtt       = FALSE;
+   fCellVisAtt        = FALSE; 
+   fDriftRegionVisAtt = FALSE;
+   fSenseWireVisAtt   = FALSE;
+   
+   fStereoCellVisAtt  = FALSE; 
+   fStereoDriftRegionVisAtt = FALSE;
+   fDummyDriftRegionVisAtt  = FALSE;
+
+#endif
+
 }
 
 //=====================================================================
@@ -202,7 +220,7 @@ void J4CDCParameterList::SetColors()
 G4int J4CDCParameterList::GetLayerNumber(G4int superlayerid, 
                                          G4int myid) const
 {
-   if (fIsAxialInnermost) {
+   if (fIsOddSuperLyrOutermost) {
       return superlayerid * 3 + myid;
    } else {
       if (superlayerid == 0) return 0;

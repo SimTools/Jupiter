@@ -35,9 +35,9 @@ J4CDCStereoCell::J4CDCStereoCell(J4VDetectorComponent *parent,
                                     G4int  nbrothers, 
                                     G4int  me,
                                     G4int  copyno ) :
-           J4VCDCDetectorComponent( fFirstName, parent, nclones,
-                                    nbrothers, me, copyno  )
-           ,fDriftRegions(0) //, fDummyDriftRegions(0) 
+           J4VCDCCell(fFirstName, parent, nclones,
+                      nbrothers, me, copyno  ),
+           fDriftRegions(0) //, fDummyDriftRegions(0) 
 {
    G4double motherdphi = GetDeltaPhi(parent);
    G4double step       = motherdphi / nclones;
@@ -47,7 +47,7 @@ J4CDCStereoCell::J4CDCStereoCell(J4VDetectorComponent *parent,
 
 J4CDCStereoCell::J4CDCStereoCell(const J4CDCStereoCell &orig, 
                                        G4int copyno)
-                :J4VCDCDetectorComponent(orig, copyno)
+                :J4VCDCCell(orig, copyno)
 {
    G4double motherdphi = GetDeltaPhi(orig.GetMother());
    G4double step       = motherdphi / (orig.GetNclones());

@@ -37,12 +37,11 @@ J4CDCStereoDriftRegion::J4CDCStereoDriftRegion(J4VDetectorComponent *parent,
                                    G4int                 nbrothers, 
                                    G4int                 me,
                                    G4int                 copyno ) :
-  		  J4VCDCDetectorComponent( fFirstName, parent, nclones,
-                                           nbrothers, me, copyno ), 
-                  fSenseWire(0)
+  		  J4VCDCDriftRegion( fFirstName, parent, nclones,
+                                           nbrothers, me, copyno ) 
 {
 #if 0
-   G4cerr << "J4CDCDriftRegion:: -----------------------------" << G4endl;
+   G4cerr << "J4CDCStereoDriftRegion:: -----------------------------" << G4endl;
    G4cerr << " motherendrmin = " << GetInnerRadius(parent) << G4endl;
    G4cerr << " motherendrmax = " << GetOuterRadius(parent) << G4endl;
    G4cerr << " motherendr    = " << 0.5*(GetInnerRadius(parent)
@@ -55,6 +54,12 @@ J4CDCStereoDriftRegion::J4CDCStereoDriftRegion(J4VDetectorComponent *parent,
 #endif
 }
 
+J4CDCStereoDriftRegion::J4CDCStereoDriftRegion(
+                        const J4CDCStereoDriftRegion &orig,
+                              G4int                   copyno ) :
+  		  J4VCDCDriftRegion( orig, copyno )
+{
+}
 
 //=====================================================================
 //* destructor --------------------------------------------------------
@@ -77,6 +82,7 @@ void J4CDCStereoDriftRegion::Assemble()
      G4double halfzlen    = GetZHalfLength(GetMother());
      G4double motherdphi  = GetDeltaPhi(GetMother());
      G4double twistedAng  = GetTwistedAngle();
+
              
      G4int    myid        = GetMyID();
      G4double thick       = list->GetDriftRegionThick();
@@ -85,6 +91,14 @@ void J4CDCStereoDriftRegion::Assemble()
                             + thick * (myid) + dummythick;
      G4double endouterrad = motherRmin
                             + thick * (myid + 1) + dummythick;
+
+     fTanStereo = CalcTanStereo(twistedAng, 
+                                    0.5 * (endinnerrad + endouterrad),
+                                    halfzlen);
+     fRwaist      = CalcWaist(fTanStereo, 
+                              0.5 * (endinnerrad + endouterrad),
+                              halfzlen);
+
 #if 0
      G4cerr << "J4CDCDriftRegion::Assemble -----------------------------" << G4endl;
      G4cerr << " motherendrmin = " << motherRmin << G4endl;

@@ -41,18 +41,17 @@ J4CDCDriftRegionHit::J4CDCDriftRegionHit(
      const G4ThreeVector  &momentum,      // Momentum of perticle
      const G4ThreeVector  &pre,           // Pre-position of track
      const G4ThreeVector  &pos,           // Post-position of track
+     G4double              rotangle,      // rotation angle of cell 
      const G4ThreeVector  &wireEndpz,     // wire position at +ve z endcap
      const G4ThreeVector  &wireEndmz,     // wire position at -ve z endcap
-     const G4double       &rotangle,      // rotation angle of cell 
+     const G4double        tanstereo,     // stereo angle of cell 
+     const G4double        rwaist,        // waist radius of sense-wire plane
      const G4int           hitnumber)     // unique hit number
- 	: J4VHit(detector, cloneID, trackID, mothertrackID, particle, tof, edep, 
-            totalE, momentum, pre, pos, hitnumber), 
-          fRotAngle(rotangle)
- 		
+ 	: J4VCDCDriftRegionHit(detector, cloneID, trackID, mothertrackID, particle,
+                               tof, edep, totalE, momentum, pre, pos, rotangle,
+                               wireEndpz, wireEndmz, tanstereo, rwaist, 
+                               hitnumber)
 {
-  fWireEnd[0] = wireEndmz;
-  fWireEnd[1] = wireEndpz;
-  fHitPosition = GetHitPosition();
 }
 
 //=========================================================================
@@ -63,22 +62,6 @@ J4CDCDriftRegionHit::~J4CDCDriftRegionHit()
 }
 
 //=========================================================================
-//* GetHitPosition --------------------------------------------------
-
-G4ThreeVector J4CDCDriftRegionHit::GetHitPosition() const
-{
-  G4ThreeVector pre  = GetPrePosition();
-  G4ThreeVector post = GetPostPosition();
-  G4double x = (pre.x() + post.x()) / 2.0 ;
-  G4double y = (pre.y() + post.y()) / 2.0 ;
-  G4double z = (pre.z() + post.z()) / 2.0 ;
-  
-  G4ThreeVector hit(x, y, z);
-  return hit;
-}
-
-
-//=========================================================================
 //* Output ----------------------------------------------------------------
 
 void J4CDCDriftRegionHit::Output(G4HCofThisEvent* HCTE)
@@ -86,33 +69,44 @@ void J4CDCDriftRegionHit::Output(G4HCofThisEvent* HCTE)
 
   if (fOutput) fOutput->Output(this);
 
-  J4VCDCDetectorComponent *cpt 
-            = (J4VCDCDetectorComponent *)GetComponent();
-  G4int wireNo  = cpt->GetMyID();
-  G4int layerNo = ((J4CDCDriftRegion *)cpt)->GetGlobalLayerNumber();
-  G4int cellID  = GetCloneID();
+  J4VCDCDriftRegion *cpt = (J4VCDCDriftRegion *)GetComponent();
 
-  G4String pid  = GetParticle()->GetParticleName();
-  G4int    pdid = GetParticle()->GetPDGEncoding();   
+  G4int         wireNo   = cpt->GetMyID();
+  G4int         layerNo  = cpt->GetGlobalLayerNumber();
+  G4double      dphi     = cpt->GetDeltaPhi(cpt);
+  G4double      sphi     = -0.5 * dphi;
+
+  G4int         cellID   = GetCloneID();
+  G4String      pname    = GetParticle()->GetParticleName();
+  G4int         pdid     = GetParticle()->GetPDGEncoding();   
+  G4ThreeVector pre      = GetPrePosition();
+  G4ThreeVector post     = GetPostPosition();
+
+  G4double      gwirephi;  // global phi position of wire
+  G4double      rwire;     // global r position of wire   
+  G4double      driftlen;  // drift length
+
+  if (fIsRoundDriftRegion) { 
+
+     G4double   rmin     = cpt->GetInnerRadius(cpt); 
+     G4double   rmax     = cpt->GetOuterRadius(cpt); 
+     G4double   ghitphi  = fHitPosition.getPhi();
+
+     rwire    = (rmax + rmin) * 0.5;
+     gwirephi = fWireEnd[1].getPhi();
+     driftlen = rwire * ( ghitphi - gwirephi);
   
-  G4double dphi = cpt->GetDeltaPhi(cpt);
-  G4double sphi = -0.5 * dphi;
-  
-  G4double rmin = cpt->GetInnerRadius(cpt); 
-  G4double rmax = cpt->GetOuterRadius(cpt); 
-  
-  G4double rwire    = (rmax + rmin) * 0.5;
-  G4double gwirephi = fWireEnd[1].getPhi();
-  G4double ghitphi  = fHitPosition.getPhi();
-  G4double cellphi  = fRotAngle - sphi;
-  while (cellphi < 0)      cellphi += 2*M_PI;
-  while (cellphi > 2*M_PI) cellphi -= 2*M_PI;   
-  
-  G4double driftphi = ghitphi - gwirephi;
-  G4double driftlen = rwire * driftphi;
-  
-  G4ThreeVector pre  = GetPrePosition();
-  G4ThreeVector post = GetPostPosition();
+     G4double cellphi  = fRotAngle - sphi;
+     while (cellphi < 0)      cellphi += 2*M_PI;
+     while (cellphi > 2*M_PI) cellphi -= 2*M_PI;   
+
+  } else {
+
+     G4ThreeVector xx;
+     driftlen = DistanceToWire(fHitPosition, xx);
+     rwire    = xx.getRho(); 
+     gwirephi = xx.getPhi();
+  } 
   
   // output hitdata to output file ....
 	
@@ -156,36 +150,11 @@ void J4CDCDriftRegionHit::Output(G4HCofThisEvent* HCTE)
          << G4std::setw(18) << fWireEnd[1].x() << " "
          << G4std::setw(18) << fWireEnd[1].y() << " "
          << G4std::setw(18) << fWireEnd[1].z() << " "
+         << G4std::setw(18) << fTanStereo << " "
+         << G4std::setw(18) << fRwaist << " "
          << G4std::setiosflags(G4std::ios::floatfield) << setprecision(8)
          << G4endl;
   }
 }
 
-//=========================================================================
-//* Draw ------------------------------------------------------------------
-
-void J4CDCDriftRegionHit::Draw()
-{
-}
-
-//=========================================================================
-//* Print -----------------------------------------------------------------
-
-void J4CDCDriftRegionHit::Print()
-{
-
-  G4cout << G4std::setiosflags(G4std::ios::fixed);
-  G4cout << G4std::setw(20) << GetComponentName() << " " << G4endl;
-  G4cout << " track#=" << GetTrackID()
-	 << " charge=" << GetCharge()
-	 << " position(mm)= " << G4std::setprecision(2) 
-	 << G4std::setw(8) << fHitPosition.x() *(1./mm) << " "
-	 << G4std::setw(8) << fHitPosition.y() *(1./mm) << " "
-	 << G4std::setw(8) << fHitPosition.z() *(1./mm) << " "
-	 << " energy(GeV)= " << G4std::setprecision(2) 
-	 << G4std::setw(6) << GetTotalEnergy() *(1./GeV) << " "
-         << " TOF(ns)= " << G4std::setw(4) << G4std::setprecision(1) 
-         << GetTof() /ns 
-         << G4endl;  
-}
 

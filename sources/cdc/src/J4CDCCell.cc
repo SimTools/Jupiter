@@ -39,12 +39,24 @@ J4CDCCell::J4CDCCell(J4VDetectorComponent *parent,
                                     G4int  nbrothers, 
                                     G4int  me,
                                     G4int  copyno ) :
-           J4VCDCDetectorComponent( fFirstName, parent, nclones,
-                                    nbrothers, me, copyno  ),
+           J4VCDCCell( fFirstName, parent, nclones,
+                       nbrothers, me, copyno ),
            fDriftRegions(0), //fDummyDriftRegions(0), 
            fRmin(0), fRmax(0)
 {
    G4double shieldwidth = GetShieldWidth();
+   fRmin = GetInnerRadius(parent) + shieldwidth;
+   fRmax = GetOuterRadius(parent);
+}
+
+J4CDCCell::J4CDCCell(const J4CDCCell &orig,
+                           G4int      copyno ) :
+           J4VCDCCell( orig, copyno ),
+           fDriftRegions(0), //fDummyDriftRegions(0), 
+           fRmin(0), fRmax(0)
+{
+   G4double shieldwidth = GetShieldWidth();
+   J4VDetectorComponent *parent = (J4VDetectorComponent*)orig.GetMother();
    fRmin = GetInnerRadius(parent) + shieldwidth;
    fRmax = GetOuterRadius(parent);
 }

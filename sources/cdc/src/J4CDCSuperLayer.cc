@@ -41,8 +41,8 @@ J4CDCSuperLayer::J4CDCSuperLayer(J4VDetectorComponent *parent,
                       fLayers(0), fOffset(0), fNcellsPerLayer(0) 
 {
    J4CDCParameterList *list = OpenParameterList();
-   fOffset         = list->GetSuperLayerSPhi(me);
-   fNcellsPerLayer = list->GetNcellsPerLayer(me);
+   fOffset                  = list->GetSuperLayerSPhi(me);
+   fNcellsPerLayer          = list->GetNcellsPerLayer(me);
    fRot.rotateZ(list->GetSuperLayerSPhi(me));
 }
 
@@ -68,9 +68,9 @@ void J4CDCSuperLayer::Assemble()
       // define geometry
       J4CDCParameterList *list = OpenParameterList();
 
-      G4double rmin = list->GetSuperLayerIR(GetMyID());
-      G4double rmax = list->GetSuperLayerOR(GetMyID());
-      G4double len  = list->GetSuperLayerHalfZ();
+      G4double rmin      = list->GetSuperLayerIR(GetMyID());
+      G4double rmax      = list->GetSuperLayerOR(GetMyID());
+      G4double len       = list->GetSuperLayerHalfZ();
       G4double motherphi = list->GetCDCDPhi();
          
       // MakeSolid ----------//
@@ -85,30 +85,23 @@ void J4CDCSuperLayer::Assemble()
               list->GetSuperLayerColor());
       
       // Install daughter PV //
-      // Install Layers       //
+      // Install Layers      //
 
-      if (!(list->IsAxialInnermost()) && GetMyID() == 0) {
-         // isolated superlayer! (innermost)
+      if ( (!(list->IsOddSuperLyrOutermost()) && GetMyID() == 0) ||
+           ( (list->IsOddSuperLyrOutermost())
+                  && (GetMyID() == list->GetNsuperLayers() - 1)) ) {
+         // isolated superlayer! (innermost or outermost)
+
          fLayers = new J4CDCLayer* [1];
          Register(fLayers);
          fLayers[0] = new J4CDCLayer(this, 1, 1, 0);
          Register(fLayers[0]);
          fLayers [0]->InstallIn(this);
          SetDaughter(fLayers[0]);
-      } else if ((list->IsAxialInnermost())
-                 && (GetMyID() == list->GetNsuperLayers() - 1)) {
-         // isolated superlayer! (outermost)
-         fLayers = new J4CDCLayer* [1];
-         Register(fLayers);
-         fLayers[0] = new J4CDCLayer(this, 1, 1, 0);
-         Register(fLayers[0]);
-         fLayers[0]->InstallIn(this);
-         SetDaughter(fLayers[0]);
-         // Instal daughter end
+
       } else {
+
          G4int nlayers = list->GetNlayersPerSuperLayer(GetMyID());
-         G4cerr << "J4CDCSuperLayer::Assemble: nlayers, MyID = "
-            << nlayers << " " << GetMyID() <<  G4endl;
          fLayers = new J4CDCLayer* [nlayers];
          Register(fLayers);
          for (G4int i = 0; i < nlayers; i++) {
@@ -118,6 +111,8 @@ void J4CDCSuperLayer::Assemble()
             SetDaughter(fLayers[i]);
          }
       }
+
+      // Instal daughter end
    }
 }
 

@@ -37,9 +37,14 @@ J4CDCDriftRegion::J4CDCDriftRegion(J4VDetectorComponent *parent,
                                    G4int                 nbrothers, 
                                    G4int                 me,
                                    G4int                 copyno ) :
-  		  J4VCDCDetectorComponent( fFirstName, parent, nclones,
-                                           nbrothers, me, copyno ), 
-                  fSenseWire(0)
+  		  J4VCDCDriftRegion( fFirstName, parent, nclones,
+                                           nbrothers, me, copyno ) 
+{   
+}
+
+J4CDCDriftRegion::J4CDCDriftRegion(const J4CDCDriftRegion &orig,
+                                         G4int             copyno ) :
+  		  J4VCDCDriftRegion( orig, copyno ) 
 {   
 }
 
@@ -71,6 +76,8 @@ void J4CDCDriftRegion::Assemble()
      G4double dummythick = list->GetDummyDriftRegionThick();
      G4double rmin       = motherRmin + thick * (myid) + dummythick;
      G4double rmax       = motherRmin + thick * (myid + 1) + dummythick;
+
+     fRwaist             = 0.5 * (rmin + rmax);
        
     // MakeSolid ----------//
     OrderNewTubs (rmin, rmax, len, dphi );
