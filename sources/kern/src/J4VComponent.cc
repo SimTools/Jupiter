@@ -25,6 +25,7 @@
 #endif
 
 #include "G4Tubs.hh"
+#include "G4Cons.hh"
 #include "J4SubtractionSolid.hh"
 #include "G4Box.hh"
 
@@ -423,7 +424,9 @@ void J4VComponent::OrderNewTubs( G4double rmin,
                                  G4double totalphi,
                                  G4double endcaphalfthickness,
                                  G4double endcaprmin,
-                                 G4double sphi )
+                                 G4double sphi,
+                                 G4double leftrmin,
+                                 G4double rightrmin )
 {
 
   if (fSolid) {
@@ -458,29 +461,54 @@ void J4VComponent::OrderNewTubs( G4double rmin,
     G4RotationMatrix rotation;
     G4Transform3D lefttransform   (rotation, lefttranslation);
     
-    G4String cylindername(GetName());
+    G4String cylindername(GetName());                       //* description of ccenter
     cylindername += ".Cylinder";
     std::cerr << "Make " << cylindername << std::endl;
     G4double cylinderlen = halfzlen - endcaphalfthickness * 2;
     G4Tubs*  cylinder    
         = new G4Tubs( cylindername, rmin, rmax, cylinderlen, sphi, dphi );
 
-    G4String leftendcapname(GetName());
+    G4String leftendcapname(GetName());                     //* description of left
     leftendcapname += ".LeftEndcap";
     std::cerr << "Make " << leftendcapname << std::endl;
-    G4Tubs* leftendcap 
-        = new G4Tubs( leftendcapname, endcaprmin, rmax, endcaphalfthickness, sphi, dphi );
+
+    G4VSolid* leftendcap;
+
+    if (leftrmin < 0) {
+
+      leftendcap 
+          = new G4Tubs( leftendcapname, endcaprmin, rmax, endcaphalfthickness, sphi, dphi );
+    } else {
+
+      leftendcap 
+          = new G4Cons( leftendcapname, leftrmin, rmax, endcaprmin, rmax, endcaphalfthickness, sphi, dphi );
+
+    }
     
-    G4String cupname(GetName());
+    G4String cupname(GetName());                            //* description of uniting
     cupname += ".Cup";
     std::cerr << "Make " << cupname << std::endl;
     J4UnionSolid*  cup = new J4UnionSolid ( cupname, cylinder, leftendcap, lefttransform );
         
-    G4String rightendcapname(GetName());
+    G4String rightendcapname(GetName());                    //* description of right
     rightendcapname += ".RightEndcap";
     std::cerr << "Make " << rightendcapname << std::endl;
-    G4Tubs* rightendcap 
-        = new G4Tubs( rightendcapname, endcaprmin, rmax, endcaphalfthickness, sphi, dphi );
+
+    G4VSolid* rightendcap;
+
+    if (rightrmin < 0) {
+
+      rightendcap 
+          = new G4Tubs( rightendcapname, endcaprmin, rmax, endcaphalfthickness, sphi, dphi );
+
+    } else {
+
+      rightendcap
+          = new G4Cons( rightendcapname, endcaprmin, rmax, rightrmin, rmax, endcaphalfthickness, sphi, dphi );
+
+    }
+
+                                                            //* description of uniting
     
     G4ThreeVector    righttranslation ( 0., 0., -(halfzlen - endcaphalfthickness));
     G4Transform3D    righttransform   (rotation, righttranslation);

@@ -10,6 +10,8 @@
 //*	2002/05/15  K.Hoshina	Original version.
 //*	2004/06/10  K.Fujii	Added SetName that correctly overrides
 //*				that of J4VNamed.
+//*     2004/07/29  Y.Ichikawa  Modified OrderNewTubs to allow endcaps
+//*                             made of G4Cons.
 //*************************************************************************
 
 //_________________________________________________________________________
@@ -127,24 +129,27 @@ protected:
   virtual void OrderNewTubs ( G4double rmin,
   			      G4double rmax,
   			      G4double halfzlen,
-  			      G4double totalphi = 360.*deg,
+  			      G4double totalphi            = 360.*deg,
   			      G4double endcaphalfthickness = 0.,
-  			      G4double endcaprmin = DBL_MAX,
-  			      G4double sphi = DBL_MAX);	// If sphi=DBL_MAX,
-  			      				// sphi is replaced
-  			      				// to -(dphi/2.).
+  			      G4double endcaprmin          = DBL_MAX,
+  			      G4double sphi                = DBL_MAX,
+                              G4double leftrmin  = -999.,
+                              G4double rightrmin = -999. );
+                              // If sphi=DBL_MAX, sphi is replaced by -dphi/2.
+                              // If leftrmmin or rightrmin or both are positvie
+                              // corresponding endcap(s) become(s) G4Cons. 
                             
   virtual void OrderNewBox ( G4double             outerboxhalfx,
                              G4double             outerboxhalfy,
                              G4double             outerboxhalfz,
-                             G4double             innertubrad = 0,
+                             G4double             innertubrad   = 0,
                              G4RotationMatrix    *ptubrot = 0,
                              const G4ThreeVector &tubtlate = 0,
                              G4double             innerboxhalfx = 0,
                              G4double             innerboxhalfy = 0,
                              G4double             innerboxhalfx = 0,
-                             G4RotationMatrix    *pboxrot = 0,
-                             const G4ThreeVector &boxtlate = 0 );
+                             G4RotationMatrix    *pboxrot       = 0,
+                             const G4ThreeVector &boxtlate      = 0 );
 
 
 private:
