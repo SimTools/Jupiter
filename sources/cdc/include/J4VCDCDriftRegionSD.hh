@@ -62,9 +62,11 @@ public:
 
      //Get perticle information
      J4VCDCDriftRegion    *locat    = (J4VCDCDriftRegion *)GetComponent();
+     G4int                 depth    = locat->GetMother()->GetMyDepth() - locat->GetMyDepth();
+     J4VComponent         *locmo    = GetComponent(depth);
      G4int                 trackID  = GetTrackID();
      G4int                 mtrackID = GetMotherTrackID();
-     G4int                 cloneID  = GetCloneID(locat->GetMother());
+     G4int                 cloneID  = GetCloneID(locmo);
      std::cerr << " cloneID = " << cloneID << std::endl;
      G4ParticleDefinition *particle = GetParticle();
      G4double              tof      = GetTof();
