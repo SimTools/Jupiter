@@ -32,9 +32,9 @@ public:
                              G4int  copyno    = -1 );
   virtual ~J4CALCone();
 
-  virtual void  InstallIn(J4VComponent         *mother,
-                          G4RotationMatrix     *prot  = 0,
-                          const G4ThreeVector  &tlate = 0 );
+  virtual void  InstallIn( J4VComponent         *mother,
+                           G4RotationMatrix     *prot  = 0,
+                           const G4ThreeVector  &tlate = 0 );
   virtual void	Draw()      ;
   virtual void	Print() const ;
 
@@ -45,7 +45,7 @@ private:
   void  Cabling ();
   
 private:  
-  static G4String	fFirstName;
+  static const G4String& fFirstName;
 
   J4CALTower           *fTower;
   G4bool                fIsBarrel;
@@ -53,5 +53,3 @@ private:
 };
 
 #endif
-
-

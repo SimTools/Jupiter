@@ -20,8 +20,7 @@
 
 //=====================================================================
 //---------------------
-// class definition
-//---------------------
+// class definition //---------------------
 
 class J4CALEM;
 class J4CALHD;
@@ -49,7 +48,7 @@ private:
   void  Cabling ();
   
 private:  
-  static G4String   fFirstName;
+  static const G4String&   fFirstName;
   
   J4CALEM          *fEMcal;
   J4CALHD          *fHDcal;

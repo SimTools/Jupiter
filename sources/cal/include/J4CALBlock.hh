@@ -15,7 +15,6 @@
 
 #include "J4VCALDetectorComponent.hh"
 #include "J4CALHit.hh"
-//class J4CALMiniCone;
 
 //=====================================================================
 //---------------------
@@ -34,49 +33,22 @@ public:
                           G4int  copyno    = -1 );
   virtual ~J4CALBlock();
 
-  virtual void	InstallIn(J4VComponent        *mother,
-                          G4RotationMatrix    *prot  = 0,
-                          const G4ThreeVector &tlate = 0 );
+  virtual void	InstallIn( J4VComponent        *mother,
+                           G4RotationMatrix    *prot  = 0,
+                           const G4ThreeVector &tlate = 0 );
   virtual void	Draw(); 
   virtual void	Print() const ;
 
-//  inline G4int      GetNsectionsInPhi();
-//  inline G4int      GetNsectionsInTheta();   
+  inline const G4String&  GetFirstName()   { return fFirstName;  }  
 
-  inline G4String&  GetFirstName()   { return fFirstName;  }  
-  //  inline G4int      GetNMiniCones()  { return nMiniCones;  }  
-  //  inline G4int      GetNMiniTowers() { return nMiniTowers; }  
-
-//private:
 protected:
   void 	Assemble();    
   void  Cabling ();
   
 protected:  
-  G4String        fFirstName;
-  //G4String        fFirstName;
-  J4CALBlock*     fBlock;
-
-//  G4double        rmin;
-//  G4double        rmax;
-//  G4int           nMiniCones;
-//  G4int           nMiniTowers;
-
-//  std::vector<J4CALMiniCone *> fMiniCones;
+  G4String      fFirstName;
+  J4CALBlock*   fBlock;
 
 };
 
-// =====================================================
-// inline finctions ------------------------------------
-//G4int J4CALBlock::GetNsectionsInPhi()
-//{
-   // mother component : Tower
-//   return GetMother()->GetNclones();
-//}
-
-//G4int J4CALBlock::GetNsectionsInTheta()
-//{
-   // grand mother component : Cone 
-//   return GetMother()->GetMother()->GetNbrothers();
-//}
 #endif

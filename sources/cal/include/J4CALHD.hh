@@ -41,35 +41,15 @@ public:
   virtual void	Draw()      ;
   virtual void	Print() const ;
 
-//  inline G4int      GetNsectionsInPhi();
-//  inline G4int      GetNsectionsInTheta();   
-
-//  static G4String   GetFirstName() { return fFirstName; }  
-
 //private:
   void 	Assemble();    
 //  void  Cabling ();
   
 private:  
- //static G4String   fFirstName;
- static G4String     firstName;
+ static const G4String&   firstName;
 
   // For input array
   std::vector<J4CALMiniCone *>  fMiniCones;
 };
 
-
-// =====================================================
-// inline finctions ------------------------------------
-//G4int J4CALHD::GetNsectionsInPhi()
-//{
-   // mother component : Tower
-//   return GetMother()->GetNclones();
-//}
-
-//G4int J4CALHD::GetNsectionsInTheta()
-//{
-   // grand mother component : Cone 
- //  return GetMother()->GetMother()->GetNbrothers();
-//}
 #endif

@@ -43,16 +43,15 @@ public:
      }
      else
      {
-       std::cerr << "J4CALSubLayerSD::OutputAll: No HitBuf! " << std::endl;
+       G4cerr << "J4CALSubLayerSD::OutputAll: No HitBuf! " << G4endl;
      }
   }
   
   // set/get functions
    
 private:
-  
-  J4CALHit      **fCalHits; 
-  //std::vector< std::vector<J4CALHit *> > fCalHits;
+  J4CALHit    **fCalHits; 
+  G4int       fTowerNClones;
 
 };
 

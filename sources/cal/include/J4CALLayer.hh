@@ -33,9 +33,9 @@ public:
                              G4int  copyno    = -1 );
   virtual ~J4CALLayer();
 
-  virtual void  InstallIn(J4VComponent         *mother,
-                          G4RotationMatrix     *prot  = 0,
-                          const G4ThreeVector  &tlate = 0 );
+  virtual void  InstallIn( J4VComponent         *mother,
+                           G4RotationMatrix     *prot  = 0,
+                           const G4ThreeVector  &tlate = 0 );
   virtual void	Draw()      ;
   virtual void	Print() const ;
 
@@ -44,10 +44,8 @@ private:
   void  Cabling ();
   
 private:  
-  static G4String   fFirstName;
+  static const G4String&         fFirstName;
   std::vector<J4CALSubLayer *>   fSubLayers;
-//  std::vector<J4CALSubLayerSD *> fSubLayersSD;
-  J4CALSubLayerSD*  fSubLayersSD;
 
 };
 

@@ -19,7 +19,6 @@
 #include "G4HCofThisEvent.hh"
 #include "G4ParticleDefinition.hh"
 
-
 //=========================================================================
 // TypeDef
 
@@ -31,16 +30,21 @@ typedef G4THitsCollection<J4CALHit> J4CALHitBuf;
 //---------------------
 // class definition
 //---------------------
- 
 
 class J4CALHit : public J4VHit {
 
 public:
   J4CALHit();
-  J4CALHit(J4VComponent         *detector,   
-           G4int                 thetaNumber,
-           G4int                 phiNumber,
-           G4bool                isbarrel,
+
+  J4CALHit(
+           J4VComponent         *detector,
+           G4int                 ConeID,
+           G4int                 TowerID,
+           G4int                 MiniConeID,
+           G4int                 MiniTowerID,
+           G4int                 LayerID,
+           G4int                 SubLayerID,
+           G4bool                isBarrel,
            G4bool                isEM,
            G4double              edep,
            G4double              tof,
@@ -48,55 +52,71 @@ public:
            G4int                 mothertrackID,
            G4int                 trackID,
            G4ParticleDefinition *particle);
-  	 	            
+
   virtual ~J4CALHit();
+
+  //inline J4CALHit(const J4CALHit& right){};
   
-  void* operator new    (size_t    );
-  void  operator delete (void* aHit);
+  //inline const J4CALHit& 
+  //     operator=(const J4CALHit& right);
+
+  inline void* operator new    (size_t);
+  inline void  operator delete (void* aHit);
 
   virtual void Output(G4HCofThisEvent* HCTE);
   virtual void Draw();
   virtual void Print();
 
   // getters
-  inline G4int         GetThetaNumber()    const { return fThetaNumber;   }
-  inline G4int         GetPhiNumber()      const { return fPhiNumber;     }
-  inline G4int         GetMotherTrackID()  const { return fMotherTrackID; }
-  inline G4int         GetTrackID()        const { return fTrackID;       }
-  inline G4bool        IsBarrel()          const { return fIsBarrel;      }
-  inline G4bool        IsCAL()              const { return fIsCAL;          }
-  inline G4double      GetEnergyDeposit()  const { return fEnergyDep;     }
-  inline G4double      GetTof()            const { return fTof;           }
+  inline G4int  GetConeID()          const { return fConeID;        }
+  inline G4int  GetTowerID()         const { return fTowerID;       }
+  inline G4int  GetMiniConeID()      const { return fMiniConeID;    }
+  inline G4int  GetMiniTowerID()     const { return fMiniTowerID;   }
+  inline G4int  GetLayerID()         const { return fLayerID;       }
+  inline G4int  GetSubLayerID()      const { return fSubLayerID;    }
+  inline G4int  GetMotherTrackID()   const { return fMotherTrackID; }
+  inline G4int  GetTrackID()         const { return fTrackID;       }
+  inline G4bool IsBarrel()           const { return fIsBarrel;      }
+  inline G4bool IsEM()               const { return fIsEM;          }
+  inline G4double GetEnergyDeposit() const { return fEnergyDep;     }
+  inline G4double GetTof()           const { return fTof;           }
   inline G4ThreeVector GetInjectionPoint() const { return fInjectionPoint; }
   inline G4ParticleDefinition * GetParticle() const { return fParticle; }
 
   // setters 
-  inline void SetThetaNumber  (G4int n) { fThetaNumber   = n; }
-  inline void SetPhiNumber    (G4int n) { fPhiNumber     = n; }
-  inline void SetMotherTrackID(G4int n) { fMotherTrackID = n; }
-  inline void SetTrackID      (G4int n) { fTrackID       = n; }
-  inline void SetEnergyDeposit(G4double x) { fEnergyDep  = x; }
-  inline void SetTof          (G4double x) { fTof        = x; }
-  inline void SetInjectionPoint(G4ThreeVector p)   { fInjectionPoint = p; }
-  inline void SetParticle(G4ParticleDefinition *p) { fParticle       = p; }
-
-  inline void AccumulateEdep(G4double ed) { fEnergyDep += ed; }
-  static void SetOutput(J4Output *output) { fOutput=output; } 
+  inline void SetConeID(G4int n)           { fConeID        = n; }
+  inline void SetTowerID(G4int n)          { fTowerID       = n; }
+  inline void SetMiniConeID(G4int n)       { fMiniConeID    = n; }
+  inline void SetMiniTowerID(G4int n)      { fMiniTowerID   = n; }
+  inline void SetLayerID(G4int n)          { fLayerID       = n; }
+  inline void SetSubLayerID(G4int n)       { fSubLayerID    = n; }
+  inline void SetMotherTrackID(G4int n)    { fMotherTrackID = n; }
+  inline void SetTrackID(G4int n)          { fTrackID       = n; }
+  inline void SetEnergyDeposit(G4double x) { fEnergyDep     = x; }
+  inline void SetTof(G4double x)           { fTof           = x; }
+  inline void SetInjectionPoint(G4ThreeVector p) { fInjectionPoint = p; }
+  inline void SetParticle(G4ParticleDefinition *p) { fParticle     = p; }
+  inline void AccumulateEdep(G4double ed)  { fEnergyDep += ed; }
+  static void SetOutput(J4Output *output)  { fOutput=output; } 
     
 private: 
 
   static J4CALHitAllocator  fHitAllocator;
   static J4Output          *fOutput;       // Pointer to Output Module
 
-  G4int                     fThetaNumber; 
-  G4int                     fPhiNumber;
-  G4bool                    fIsBarrel;
-  G4bool                    fIsCAL;
-  G4double                  fEnergyDep;
-  G4double                  fTof;
-  G4ThreeVector             fInjectionPoint;
-  G4int                     fMotherTrackID;
-  G4int                     fTrackID;
+  G4int          fConeID; 
+  G4int          fTowerID; 
+  G4int          fMiniConeID; 
+  G4int          fMiniTowerID; 
+  G4int          fLayerID; 
+  G4int          fSubLayerID; 
+  G4bool         fIsBarrel;
+  G4bool         fIsEM;
+  G4double       fEnergyDep;
+  G4double       fTof;
+  G4ThreeVector  fInjectionPoint;
+  G4int          fMotherTrackID;
+  G4int          fTrackID;
   G4ParticleDefinition     *fParticle;
   
 };
@@ -109,20 +129,22 @@ private:
 //----------------------------------------
 // Allocator
 
-inline void* J4CALHit::operator new(size_t)
+//const J4CALHit& 
+//       J4CALHit::operator=(const J4CALHit& right)
+//{
+//  return *this;
+//}
+
+void* J4CALHit::operator new(size_t)
 {
-  
   void* aHit;
-  aHit= (void*)fHitAllocator.MallocSingle();
+  aHit = (void*)fHitAllocator.MallocSingle();
   return aHit;
 }
 
-inline void J4CALHit::operator delete(void* aHit)
+void J4CALHit::operator delete(void* aHit)
 {
   fHitAllocator.FreeSingle((J4CALHit*) aHit);
 }
 
-
-
 #endif
-

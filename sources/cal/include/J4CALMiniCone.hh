@@ -44,10 +44,8 @@ private:
   void  Cabling ();
   
 private:  
-  static G4String  fFirstName;
-
-  J4CALMiniTower        *fMiniTower;
-  // G4bool             fIsBarrel;
+  static const G4String&  fFirstName;
+  std::vector <J4CALMiniTower *> fMiniTowers;
   
 };
 

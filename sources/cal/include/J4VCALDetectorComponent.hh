@@ -56,7 +56,7 @@ private:
 
 
 inline J4VCALDetectorComponent::J4VCALDetectorComponent(J4VCALDetectorComponent& right)
-                               :J4VDetectorComponent(right)
+ :J4VDetectorComponent(right)
 {
 
 }

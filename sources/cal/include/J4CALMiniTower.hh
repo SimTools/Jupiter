@@ -40,16 +40,12 @@ public:
   virtual void	Draw()      ;
   virtual void	Print() const ;
 
-  //  inline virtual G4bool IsBarrel() const 
-  //         { return ((J4CALMiniCone *)GetMother())->IsBarrel(); }  
-  //         { return ((J4CALCone *)GetMother())->IsBarrel(); }  
-  
 private:
   void 	Assemble();    
   void  Cabling ();
   
 private:  
-  static G4String   fFirstName;
+  static const G4String&   fFirstName;
    
   std::vector<J4CALLayer *> fLayers;
   //G4bool fIsBarrel;

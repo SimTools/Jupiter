@@ -43,7 +43,8 @@ public:
      }
      else
      {
-       std::cerr << "J4CALSD::OutputAll: No HitBuf! " << std::endl;
+       //std::cerr << "J4CALSD::OutputAll: No HitBuf! " << std::endl;
+       //G4cerr << "J4CALSD::OutputAll: No HitBuf! " << G4endl;
      }
   }
   
@@ -52,7 +53,7 @@ public:
 private:
 
   //std::vector< std::vector<J4CALHit *> > fCalHits;
-  J4CALHit       **fCalHits;
+  J4CALHit       *fCalHits;
 
 };
 
