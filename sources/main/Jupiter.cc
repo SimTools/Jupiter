@@ -49,8 +49,8 @@
 #include "J4CAL.hh"
 #include "J4SOL.hh"
 
-#define __INSTALLIR__  
-#define __INSTALLBD__  
+//#define __INSTALLIR__  
+//#define __INSTALLBD__  
 #define __INSTALLVTX__  
 #define __INSTALLIT__  
 #define __INSTALLCDC__  
