@@ -20,7 +20,7 @@
 //---------------------
 
 J4CALHitAllocator J4CALHit::fHitAllocator ;
-J4Output*             J4CALHit::fOutput = 0 ;
+J4Output*         J4CALHit::fOutput = 0 ;
 
 //=========================================================================
 //* constructor -----------------------------------------------------------
@@ -30,7 +30,7 @@ J4CALHit::J4CALHit(
                    G4int                 thetaNumber,    // section No. in theta  
                    G4int                 phiNumber,      // section No. in phi
                    G4bool                isbarrel,       // (0, 1) = (endcap, barrel) 
-                   G4bool                isEM,           // (0, 1) = (EM, Hadron) 
+                   G4bool                isCAL,           // (0, 1) = (EM, Hadron) 
                    G4double              edep,           // Energy Deposit
                    G4double              tof,            // TOF 
                    const G4ThreeVector  &pre,            // Pre-position of track
@@ -39,7 +39,7 @@ J4CALHit::J4CALHit(
                    G4ParticleDefinition *particle)       // My particle definision 
 
              : J4VHit(detector), fThetaNumber(thetaNumber), fPhiNumber(phiNumber),
-               fIsBarrel(isbarrel), fIsEM(isEM), fEnergyDep(edep), fTof(tof), fInjectionPoint(pre), 
+               fIsBarrel(isbarrel), fIsCAL(isCAL), fEnergyDep(edep), fTof(tof), fInjectionPoint(pre), 
                fMotherTrackID(mothertrackID), fTrackID(trackID), fParticle(particle) 
 {
 }
@@ -69,7 +69,7 @@ void J4CALHit::Output(G4HCofThisEvent* HCTE)
      ofs << std::setw(7) << fThetaNumber << " " 
          << std::setw(7) << fPhiNumber << " " 
          << std::setw(3) << fIsBarrel << " " 
-         << std::setw(3) << fIsEM << " " 
+         << std::setw(3) << fIsCAL << " " 
          << std::setw(7) << fMotherTrackID << " " 
          << std::setw(7) << fTrackID << " " 
          << std::setw(6) << fParticle->GetPDGEncoding() << " " 
@@ -111,4 +111,3 @@ void J4CALHit::Print()
          << fTof /ns 
          << std::endl;  
 }
-

@@ -60,5 +60,3 @@ J4VMaterialStore* J4VCALDetectorComponent::OpenMaterialStore()
     
    return fMaterialStore;
 }
-
-

@@ -11,7 +11,8 @@
 //*************************************************************************
 
 #include "J4CALParameterList.hh"
-#include "./algorithm"
+//#include "J4CALSubLayerParameterList.hh"
+#include <algorithm>
 
 J4CALParameterList    * J4CALParameterList::fgInstance = 0;
 
@@ -29,7 +30,8 @@ J4CALParameterList* J4CALParameterList::GetInstance()
 //* protected constructor ---------------------------------------------
 
 J4CALParameterList::J4CALParameterList(const G4String& name)
-                  :J4VParameterList(name)
+  : J4VParameterList(name), 
+    fSubLayerParameterList(0)
 {
    fgInstance = this;
    
@@ -55,12 +57,19 @@ void J4CALParameterList::SetMaterials()
    fCALMaterial          = "Air";
    fConeMaterial         = "Air";
    fTowerMaterial        = "Air";
-   fEMMaterial           = "Lead";
-   fHDMaterial           = "Lead";
+   fEMMaterial           = "Air";
+   fHDMaterial           = "Air";
+   fMiniConeMaterial     = "Air";
+   fMiniTowerMaterial    = "Air";
+   fLayerMaterial        = "Air";
 #else
    fCALMaterial          = "vacuum";
    fConeMaterial         = "vacuum";
-   fTowerMaterial        = "vacuum";
+   fEMMaterial           = "vacuum";
+   fHDMaterial           = "vacuum";
+   fMiniConeMaterial     = "vacuum";
+   fMiniTowerMaterial    = "vacuum";
+   fLayerMaterial        = "vacuum";
 #endif
 }
 
@@ -90,8 +99,10 @@ void J4CALParameterList::SetParameters()
 
    // Tower -------------------
 
-   fNominalBarrelTowerFrontSize = 4. *cm;   // Nominal granularity of BarrelTower 
-   fNominalEndcapTowerFrontSize = 4. *cm;   // Nominal granularity of EndcapTower
+   //fNominalBarrelTowerFrontSize = 4. *cm;   // Nominal granularity of BarrelTower 
+   //fNominalEndcapTowerFrontSize = 4. *cm;   // Nominal granularity of EndcapTower
+   fNominalBarrelTowerFrontSize = 12. *cm;   // Nominal granularity of BarrelTower 
+   fNominalEndcapTowerFrontSize = 12. *cm;   // Nominal granularity of EndcapTower
    fTowerHeight                 = 190.*cm;  // Tower height
    
    fBarrelTowerFrontRho = 160.*cm; // Towers must be placed in a CAL volume completely.  
@@ -119,13 +130,22 @@ void J4CALParameterList::SetParameters()
 
    ShowTowerParameters();
 
-   // EM -------------------
+   // MiniCone -------------
+   fEMMiniConeNClones = 3;
+   fHDMiniConeNClones = 1;
 
-   fEMThickness = 26. *cm;
+   // MiniCone -------------
+   fEMMiniTowerNClones = 3;
+   fHDMiniTowerNClones = 1;
+
+   // EM -------------------
+   fEMNLayers = 38;
+  // fEMThickness = 26. *cm;
 
    // HD -------------------
-
-   fHDThickness = 156. *cm;
+   //fHDNLayers = 64.;
+   fHDNLayers = 130;
+   //fHDThickness = 156. *cm;
 
 }
 
@@ -526,13 +546,17 @@ void J4CALParameterList::ShowTowerParameters()
 //* SetVisAttributes --------------------------------------------------
 void J4CALParameterList::SetVisAttributes()
 {
-   fCALVisAtt          = FALSE;
-   fBarrelVisAtt       = FALSE;
-   fEndcapVisAtt       = FALSE;
-   fConeVisAtt         = FALSE;
-   fTowerVisAtt        = TRUE;
-   fEMVisAtt           = TRUE;
-   fHDVisAtt           = TRUE;
+   fCALVisAtt         = FALSE;
+   fBarrelVisAtt      = FALSE;
+   fEndcapVisAtt      = FALSE;
+   fConeVisAtt        = FALSE;
+   fTowerVisAtt       = TRUE;
+   fEMVisAtt          = FALSE;
+   fHDVisAtt          = FALSE;
+   fMiniConeVisAtt    = FALSE;
+   fMiniTowerVisAtt   = FALSE;
+   fLayerVisAtt       = FALSE;
+   fSubLayerVisAtt    = FALSE;
 }
 
 //=====================================================================
@@ -542,10 +566,14 @@ void J4CALParameterList::SetColors()
    SetCALColor(G4Color(0., 0., 1.));
    SetBarrelColor(G4Color(0., 0., 1.));
    SetEndcapColor(G4Color(0., 0., 1.));
-   SetConeColor(G4Color(1., 1., 0.));
-   SetTowerColor(G4Color(1., 1., 0.));
-   SetEMColor(G4Color(1., 1., 0.));
-   SetHDColor(G4Color(1., 1., 0.));
+   //SetConeColor(G4Color(1., 1., 0.));
+   SetConeColor(G4Color(1., 0., 0.));
+   SetTowerColor(G4Color(0., 1., 0.));
+   //   SetTowerColor(G4Color(1., 1., 0.));
+   SetEMColor(G4Color(0., 0., 1.));
+   SetHDColor(G4Color(1., 0., 0.));
+   SetMiniConeColor(G4Color(1., 1., 0.));
+   SetMiniTowerColor(G4Color(0., 1., 0.));
+   SetLayerColor(G4Color(0., 1., 0.));
+   SetSubLayerColor(G4Color(0., 1., 0.));
 }
-
-

@@ -11,17 +11,18 @@
 //*************************************************************************
 
 #include "J4CALEM.hh"
-#include "J4CALEMSD.hh"
+//#include "J4CALEMSD.hh"
 #include "J4CALParameterList.hh"
 #include "G4Sphere.hh"
-
+#include "J4CALMiniCone.hh"
+//#include "J4CALBlock.hh"
 
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
 
-G4String J4CALEM::fFirstName("EM");
+G4String J4CALEM::firstName("EM");
 
 //=====================================================================
 //---------------------
@@ -32,13 +33,15 @@ G4String J4CALEM::fFirstName("EM");
 //* constructor -------------------------------------------------------
 
 J4CALEM::J4CALEM(J4VDetectorComponent *parent,
-                                        G4int  nclones,
-                                        G4int  nbrothers, 
-                                        G4int  me,
-                                        G4int  copyno ) :
-             J4VCALDetectorComponent( fFirstName, parent, nclones,
-                                      nbrothers, me, copyno  )
+                                G4int  nclones,
+                                G4int  nbrothers, 
+                                G4int  me,
+                                G4int  copyno ) 
+  //: J4VCALDetectorComponent( fFirstName, parent, nclones,
+   //                                 nbrothers, me, copyno  )
+  : J4CALBlock( firstName, this, parent, nclones, nbrothers, me, copyno )
 {   
+  //std::cout << __FILE__ << __LINE__ << std::endl;
 }
 
 //=====================================================================
@@ -46,6 +49,11 @@ J4CALEM::J4CALEM(J4VDetectorComponent *parent,
 
 J4CALEM::~J4CALEM()
 {
+  J4CALParameterList* list = OpenParameterList();
+  G4int nMiniCones = list->GetEMMiniConeNClones();
+  for(int i = 0; i < nMiniCones;i++){
+    if(Deregister(fMiniCones[i])) delete fMiniCones[i];
+  }
 }
 
 //=====================================================================
@@ -53,45 +61,52 @@ J4CALEM::~J4CALEM()
 
 void J4CALEM::Assemble() 
 {   
-   if(!GetLV()){
- 
-      J4CALParameterList *list = OpenParameterList();
+  if(!GetLV()){
 
-      G4Sphere *mothertower = (G4Sphere *)(GetMother()->GetSolid());
+    J4CALParameterList* ptrList = OpenParameterList();
+    J4CALSubLayerParameterList* subList = ptrList -> GetSubLayerParam();
+  
+    G4Sphere *mother  = (G4Sphere *)(GetMother()->GetSolid()); 
 
-      G4double rmin   = mothertower->GetInsideRadius();
-      G4double rmax   = rmin + list->GetEMThickness(); 
-      G4double stheta = mothertower->GetStartThetaAngle();
-      G4double dtheta = mothertower->GetDeltaThetaAngle();
-      G4double sphi   = mothertower->GetStartPhiAngle();
-      G4double dphi   = mothertower->GetDeltaPhiAngle();
-  	
-      // MakeSolid ----------//
-      G4Sphere* em = new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta);
-      Register(em);
-      SetSolid(em);
-    
-      // MakeLogicalVolume --//  
-      MakeLVWith(OpenMaterialStore()->Order(list->GetEMMaterial()));
-    
-      // SetVisAttribute ----//
-      PaintLV(list->GetEMVisAtt(), list->GetEMColor());
+    G4int nMiniCones  = ptrList->GetEMMiniConeNClones(); 
+    G4double sphi     = mother->GetStartPhiAngle();
+    G4double dphi     = mother->GetDeltaPhiAngle();
+    G4double EMThickness = (ptrList->GetEMNLayers())*(subList->GetTotalLayerSize("EM"));
+    G4double rmin   = mother->GetInsideRadius();
+    G4double rmax   = rmin + EMThickness; 
+    G4double dtheta = mother->GetDeltaThetaAngle(); 
+    G4double stheta = mother->GetStartThetaAngle();
 
-      // Install daughter PV //
-   }
+    G4Sphere* block = new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta);
+    Register(block);
+    SetSolid(block);
+
+    MakeLVWith(OpenMaterialStore()->Order(ptrList->GetEMMaterial()));
+
+    PaintLV(ptrList->GetEMVisAtt(), ptrList->GetEMColor());
+      
+//    J4CALBlock::Assemble();
+ for(G4int i = 0; i < nMiniCones; i++){
+   J4CALMiniCone* minicone = new J4CALMiniCone(fBlock,1,nMiniCones,i);
+   fMiniCones.push_back(minicone);
+   Register(minicone);
+   minicone->InstallIn(fBlock);
+   SetDaughter(minicone);
+ }
+  }
 }
 
 //=====================================================================
 //* Cabling  ----------------------------------------------------------
 
-void J4CALEM::Cabling()
-{
-   if (!GetSD()) {
-      J4CALEMSD* sd = new J4CALEMSD(this);
-      Register(sd);
-      SetSD(sd);
-   }
-}
+//void J4CALEM::Cabling()
+//{
+//   if (!GetSD()) {
+//      J4CALEMSD* sd = new J4CALEMSD(this);
+//      Register(sd);
+//      SetSD(sd);
+//   }
+//}
 
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
@@ -104,10 +119,9 @@ void J4CALEM::InstallIn(J4VComponent         *mother,
   				// 
   
    // Placement function into mother object...
-
    SetPVPlacement();
    
-   Cabling(); 
+  // Cabling(); 
   
 }
 
@@ -116,16 +130,9 @@ void J4CALEM::InstallIn(J4VComponent         *mother,
 void J4CALEM::Draw()
 {
    // set visualization attributes
-  
 }
 	
 //* Print  --------------------------------------------------------
 void J4CALEM::Print() const
 {
 }
-
-	
-	
-
-
-

@@ -11,7 +11,7 @@
 //*************************************************************************
 
 #include "J4CAL.hh"
-
+#include "J4CALSD.hh"
 
 // ====================================================================
 //--------------------------------
@@ -44,6 +44,7 @@ J4CAL::J4CAL(J4VDetectorComponent *parent,
 
 J4CAL::~J4CAL()
 {
+#ifndef __GEANT452__
    if (fCones) {
       J4CALParameterList *list = OpenParameterList(); 
       for (G4int i=0; i < list->GetNcones(); i++) {
@@ -51,6 +52,7 @@ J4CAL::~J4CAL()
       }
       if (Deregister(fCones)) delete [] fCones;
    }
+#endif
 }
 
 //=====================================================================
@@ -59,27 +61,31 @@ J4CAL::~J4CAL()
 void J4CAL::Assemble() 
 {   
    if(!GetLV()){
-      J4CALParameterList *list = OpenParameterList(); 
+      J4CALParameterList *ptrList = OpenParameterList(); 
   	
-      G4double rmin        = list->GetCALInnerR();
-      G4double rmax        = list->GetCALOuterR();
-      G4double len         = list->GetCALOuterHalfZ();
-      G4double dphi        = list->GetCALDeltaPhi();
-      G4double endcaprmin  = list->GetEndcapInnerR();
-      G4double endcaphalfz = 0.5 * (len - list->GetCALInnerHalfZ());
+      G4double rmin        = ptrList->GetCALInnerR();
+      G4double rmax        = ptrList->GetCALOuterR();
+      G4double len         = ptrList->GetCALOuterHalfZ();
+      G4double dphi        = ptrList->GetCALDeltaPhi();
+      G4double endcaprmin  = ptrList->GetEndcapInnerR();
+      G4double endcaphalfz = 0.5 * (len - ptrList->GetCALInnerHalfZ());
   	
       // MakeSolid ----------//
       OrderNewTubs (rmin, rmax, len, dphi, endcaphalfz, endcaprmin);
     
       // MakeLogicalVolume --//  
-      MakeLVWith(OpenMaterialStore()->Order(list->GetCALMaterial()));
+      MakeLVWith(OpenMaterialStore()->Order(ptrList->GetCALMaterial()));
     
       // SetVisAttribute ----//
-      PaintLV(list->GetCALVisAtt(), list->GetCALColor());
+      PaintLV(ptrList->GetCALVisAtt(), ptrList->GetCALColor());
   	
       // Install daughter PV //
-  		  
-      G4int ncones = list->GetNcones();
+      //////////////////////////////////////////////////////////////////////
+      //* for one cone printing ---------------------- 	  
+      //G4int ncones = 1;
+      //* for whole tower printing -------------------
+      G4int ncones = ptrList->GetNcones();
+      //////////////////////////////////////////////////////////////////////
       fCones       = new J4CALCone* [ncones];
       Register(fCones);
       for (G4int i=0; i<ncones; i++) {
@@ -88,9 +94,7 @@ void J4CAL::Assemble()
          fCones[i] ->InstallIn(this);
          SetDaughter(fCones[i]);
       }
-
    }
-      
 }
 
 //=====================================================================
@@ -98,6 +102,11 @@ void J4CAL::Assemble()
 
 void J4CAL::Cabling()
 {
+  if ( !GetSD() ) {
+    J4CALSD* sd = new J4CALSD(this);
+    Register(sd);
+    SetSD(sd);
+  }
 }
 
 //=====================================================================
@@ -111,7 +120,6 @@ void J4CAL::InstallIn(J4VComponent         *mother,
   				// 
   
   // Placement function into mother object...
-  
   SetPVPlacement();
   
 }
@@ -128,8 +136,3 @@ void J4CAL::Draw()
 void J4CAL::Print() const
 {
 }
-
-	
-	
-
-
