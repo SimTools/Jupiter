@@ -69,8 +69,9 @@ void J4CALTower::Assemble()
       G4double sphi   = - 0.5 * dphi;
   	
       // MakeSolid ----------//
-
-      SetSolid(new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta));
+      G4Sphere* tower = new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta);
+      Register(tower);
+      SetSolid(tower);
     
       // MakeLogicalVolume --//  
       MakeLVWith(OpenMaterialStore()->Order(list->GetTowerMaterial()));

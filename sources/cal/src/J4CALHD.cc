@@ -67,8 +67,9 @@ void J4CALHD::Assemble()
       G4double dphi   = mothertower->GetDeltaPhiAngle();
   	
       // MakeSolid ----------//
-
-      SetSolid(new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta));
+      G4Sphere* hd = new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta);
+      Register(hd);
+      SetSolid(hd);
     
       // MakeLogicalVolume --//  
       MakeLVWith(OpenMaterialStore()->Order(list->GetHDMaterial()));

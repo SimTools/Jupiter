@@ -67,8 +67,9 @@ void J4CALEM::Assemble()
       G4double dphi   = mothertower->GetDeltaPhiAngle();
   	
       // MakeSolid ----------//
-
-      SetSolid(new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta));
+      G4Sphere* em = new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta);
+      Register(em);
+      SetSolid(em);
     
       // MakeLogicalVolume --//  
       MakeLVWith(OpenMaterialStore()->Order(list->GetEMMaterial()));

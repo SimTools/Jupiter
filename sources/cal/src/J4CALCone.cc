@@ -74,8 +74,9 @@ void J4CALCone::Assemble()
       G4double stheta = theta - 0.5 * dtheta;
   	
       // MakeSolid ----------//
-
-      SetSolid(new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta));
+      G4Sphere* cone = new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta);
+      Register(cone);
+      SetSolid(cone);
 
       // MakeLogicalVolume --//  
       MakeLVWith(OpenMaterialStore()->Order(list->GetConeMaterial()));
