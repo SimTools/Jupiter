@@ -16,6 +16,7 @@
 
 #include "G4Types.hh"
 #include "G4ios.hh"
+#include <vector>
 
 #ifdef __THEBE__
 #include <fstream>
@@ -46,6 +47,18 @@ class J4TrackingAction : public G4UserTrackingAction
     inline G4int    GetStoredDebugPrintID() const { return fStoredDebugPrintID; }
 #endif
 
+    static void  SetCurTrackID(G4int &detid, G4int trackid)
+    { 
+       if (detid < 0) {
+          fgRegs.push_back(trackid);
+          detid = fgRegs.size() - 1;
+       } else {
+          fgRegs[detid] = trackid;
+       }
+    }
+
+    static G4int GetCurTrackID(G4int detid) { return fgRegs[detid]; }
+
   private:
 
     G4int            fCurrentTrackID;        // 1 : charged particle only 
@@ -58,7 +71,9 @@ class J4TrackingAction : public G4UserTrackingAction
                                              // N  : output Nth track 
 #endif
 
-    J4TrackingActionMessenger * fMessenger;
+    J4TrackingActionMessenger *fMessenger;
+
+    static std::vector<G4int>       fgRegs;
 
 };
 

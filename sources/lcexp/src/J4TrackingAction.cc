@@ -16,9 +16,7 @@
 #include "G4Track.hh"
 #include "J4Global.hh"
 
-#if 1
-#include "J4CALSD.hh"
-#endif
+std::vector<G4int> J4TrackingAction::fgRegs;
 
 //=====================================================================
 //* Constructor -------------------------------------------------------
@@ -50,14 +48,13 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 
   fCurrentTrackID = aTrack->GetTrackID();
 
-#if 1
   // Reset current track ID for PreHit makeing upon starting of a new track
 
-  if (J4CALSD::GetCurrentTrackID() != INT_MAX
-              && fCurrentTrackID < J4CALSD::GetCurrentTrackID()) {
-     J4CALSD::SetCurrentTrackID(INT_MAX);
+  using namespace std;
+  vector<G4int>::iterator iter;
+  for (iter = fgRegs.begin(); iter != fgRegs.end(); iter++) {
+     if (*iter != INT_MAX && fCurrentTrackID < *iter) *iter = INT_MAX;
   }
-#endif
   
 #ifdef G4_STORE_TRAJECTORY
 //  if (fpTrackingManager && fpTrackingManager->GetStoreTrajectory()) { 
