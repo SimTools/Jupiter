@@ -25,7 +25,7 @@
 J4VMaterialStore* J4EXPHall::fMaterialStore = 0;
 
 G4String J4EXPHall::fProjectName("JLC");
-G4String J4EXPHall::fEXPName("EXPName");
+G4String J4EXPHall::fEXPName("/EXPName");
 
 //=====================================================================
 //---------------------
