@@ -68,6 +68,9 @@ void J4ITParameterList::SetParameters()
    
    // Layer
    fNlayers             = 5;
+#ifdef __GLD_V1__
+   fNlayers             = 4;
+#endif
    fLayerPhiOffset      = new G4double[fNlayers];
    fLayerPhiOffset[0]   = 0.*rad; // 
    fLayerPhiOffset[1]   = 0.*rad; //
@@ -79,12 +82,12 @@ void J4ITParameterList::SetParameters()
    fLayerRspacing       = 7.0*cm;
 #if 1
    fLayerHalfZincrement = 14.5*cm;
-   fLayerDeltaPhi       = 360.*cm;
+   fLayerDeltaPhi       = 360.*deg;
    fFirstLayerHalfZ     = 18.5*cm;
    fFirstLayerInnerR    = 9.0*cm;
 #else
    fLayerHalfZincrement = 14.0*cm;
-   fLayerDeltaPhi       = 360.*cm;
+   fLayerDeltaPhi       = 360.*deg;
    fFirstLayerHalfZ     = 20.0*cm;
    fFirstLayerInnerR    = 10.0*cm;
 #endif
