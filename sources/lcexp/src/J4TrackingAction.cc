@@ -18,7 +18,6 @@
 
 #if 1
 #include "J4CALSD.hh"
-#include <limits>
 #endif
 
 //=====================================================================
@@ -51,12 +50,12 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 
   fCurrentTrackID = aTrack->GetTrackID();
 
-#if 0
+#if 1
   // Reset current track ID for PreHit makeing upon starting of a new track
 
-  if (J4CALSD::GetCurrentTrackID() != __INT_MAX__
+  if (J4CALSD::GetCurrentTrackID() != INT_MAX
               && fCurrentTrackID < J4CALSD::GetCurrentTrackID()) {
-     J4CALSD::SetCurrentTrackID(__INT_MAX__);
+     J4CALSD::SetCurrentTrackID(INT_MAX);
   }
 #endif
   

@@ -17,10 +17,9 @@
 #include "J4CALMiniTower.hh"
 #include "J4CALEM.hh"
 #include <cmath>
-#include <limits>
 
 G4int J4CALSD::fgCurrentPreHitID = -1;
-G4int J4CALSD::fgCurrentTrackID = __INT_MAX__;
+G4int J4CALSD::fgCurrentTrackID  = INT_MAX;
  
 //=====================================================================
 //---------------------
