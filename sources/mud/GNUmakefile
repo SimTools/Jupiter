@@ -8,3 +8,5 @@ name     := J4mud
 
 include $(JUPITERROOT)/config/common.gmk
 
+CPPFLAGS += -D__MUDREPLICA__
+CPPFLAGS += -D__FRONTENDCAP__
