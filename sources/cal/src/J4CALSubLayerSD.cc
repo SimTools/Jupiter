@@ -15,7 +15,6 @@
 //*************************************************************************
 #include "J4CALCone.hh"
 #include "J4CALTower.hh"
-#include "J4CALBlock.hh"
 #include "J4CALMiniCone.hh"
 #include "J4CALMiniTower.hh"
 #include "J4CALLayer.hh"
@@ -45,14 +44,16 @@ std::multimap<G4int,J4CALHit*> J4CALSubLayerSD::fgCalHits;
 J4CALSubLayerSD::J4CALSubLayerSD( J4VDetectorComponent* ptrDetector )
   : J4VSD<J4CALHit>( ptrDetector ),
     fConeID(-1), fTowerID(-1), fMiniConeID(-1), fMiniTowerID(-1), fLayerID(-1), fSubLayerID(-1),
-    fIsBarrel(-1), fIsEM(-1)
-{ }
+    fIsBarrel(-1)
+{
+}
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
 J4CALSubLayerSD::~J4CALSubLayerSD()
-{ }
+{
+}
 
 //=====================================================================
 //* Initialize --------------------------------------------------------
@@ -66,8 +67,9 @@ void J4CALSubLayerSD::Initialize( G4HCofThisEvent* HCTE )
   
   //create hit collection(s) and
   //push H.C. to "Hit Collection of This Event"
-  //MakeHitBuf( HCTE );
-
+#if 0
+  MakeHitBuf( HCTE );
+#else
   G4THitsCollection<J4CALHit>* hitbuf; 
   hitbuf = new G4THitsCollection<J4CALHit>( SensitiveDetectorName, collectionName[0] ) ;
   SetHitBuf( (G4VHitsCollection*)hitbuf );
@@ -81,6 +83,7 @@ void J4CALSubLayerSD::Initialize( G4HCofThisEvent* HCTE )
   HCTE->AddHitsCollection( fgLastHCID, GetHitBuf() );
   // Don't "delete" fCalHits[i]!
   // Geant4 deletes hit objects at the end of the run.
+#endif
   
   timer.Stop();
 }
@@ -96,6 +99,11 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
   //In order to use Get function, you must call SetNewStep() at first.
   SetNewStep( aStep );
 
+#if 0
+  J4CALSubLayer *cp  = (J4CALSubLayer *)GetComponent();
+  if (cp->IsEM()) std::cerr << "!!!!!! EM Hit !!!!!!!" << std::endl;
+#endif
+
   // don't process e/mu/gamma/pi/p with no edep
   G4String pname = GetParticleName();
   G4bool checkable = (pname=="e-") || (pname=="e+") || (pname=="gamma") ||
@@ -110,31 +118,38 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
   const G4int LayerDepth     = 1;
   const G4int MiniTowerDepth = 2;
   const G4int MiniConeDepth  = 3;
+#if 0
   const G4int BlockDepth     = 4;
+#endif
   const G4int TowerDepth     = 5;
   const G4int ConeDepth      = 6;
 
   // poiters for components -------------------------------------
-  J4VComponent*  ptrSubLayerComponent  = GetComponent();
+  J4CALSubLayer* ptrSubLayerComponent  = (J4CALSubLayer *)GetComponent();
   J4VComponent*  ptrLayerComponent     = GetComponent( LayerDepth );
   J4VComponent*  ptrMiniTowerComponent = GetComponent( MiniTowerDepth );
   J4VComponent*  ptrMiniConeComponent  = GetComponent( MiniConeDepth );
+#if 0
   J4VComponent*  ptrBlockComponent     = GetComponent( BlockDepth );
+#endif
   J4VComponent*  ptrTowerComponent     = GetComponent( TowerDepth );
   J4VComponent*  ptrConeComponent      = GetComponent( ConeDepth );
 
   G4int  coneID      = ptrConeComponent      -> GetMyID();
   G4int  towerID     = GetCloneID( ptrTowerComponent );
   G4int  miniConeID  = ptrMiniConeComponent  -> GetMyID();
+#ifndef __REPLICA__
   G4int  miniTowerID = ptrMiniTowerComponent -> GetMyID();
-  //G4int  miniTowerID = GetCloneID( ptrMiniTowerComponent );  // double replica problem
+#else
+  G4int  miniTowerID = GetCloneID( ptrMiniTowerComponent );  // double replica problem
+#endif
   G4int  layerID     = ptrLayerComponent     -> GetMyID();
   G4int  subLayerID  = ptrSubLayerComponent  -> GetMyID();
 
   // flag for checking Barrel or Endcap -------------------------
   G4bool isBarrel    = ( (J4CALCone *)ptrConeComponent ) -> IsBarrel();
   // flag for checking EM or HD ---------------------------------
-  G4bool isEM = ((J4CALBlock*)ptrBlockComponent) -> IsEM();
+  G4bool isEM = ptrSubLayerComponent->IsEM();
 
   //  Get particle information
   G4int  preHitID = J4CALSD::GetCurrentPreHitID();

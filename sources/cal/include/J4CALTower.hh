@@ -27,7 +27,7 @@ class J4CALHD;
 class J4CALTower : public J4VCALDetectorComponent {	
 
 public:
-  J4CALTower(J4VDetectorComponent *parent    = 0,
+  J4CALTower(J4VDetectorComponent *parent     = 0,
                              G4int  nclones   = 1,
                              G4int  nbrothers = 1, 
                              G4int  me        = 0,
@@ -48,7 +48,7 @@ private:
   void  Cabling ();
   
 private:  
-  static const G4String&   fFirstName;
+  static const G4String   fFirstName;
   
   J4CALEM          *fEMcal;
   J4CALHD          *fHDcal;

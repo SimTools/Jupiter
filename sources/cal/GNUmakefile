@@ -8,3 +8,5 @@ name     := J4cal
 
 include $(JUPITERROOT)/config/common.gmk
 
+CPPFLAGS += -D__REPLICA__
+#CPPFLAGS += -D__DRAWONETOWER__

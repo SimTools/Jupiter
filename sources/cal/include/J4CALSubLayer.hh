@@ -14,7 +14,9 @@
 //*************************************************************************
 #include "J4VCALDetectorComponent.hh"
 #include "J4CALCone.hh"
+#if 0
 #include "J4CALBlock.hh"
+#endif
 
 class J4VDetectorComponent;
 class J4CALSubLayerSD;
@@ -27,7 +29,8 @@ class J4CALSubLayer;
 class J4CALSubLayer : public J4VCALDetectorComponent {
 
 public:
-  J4CALSubLayer( J4VDetectorComponent  *parent   = 0,
+  J4CALSubLayer( J4VDetectorComponent *parent    = 0,
+                               G4bool  isem      = true,
                                 G4int  nclones   = 1,
                                 G4int  nbrothers = 1, 
                                 G4int  me        = 0,
@@ -54,8 +57,7 @@ public:
   inline G4int  GetMyLayerID();
   inline G4int  GetNSubLayers();
   inline G4int  GetMySubLayerID();
-  inline G4bool GetIsBarrel();
-  inline G4bool GetIsEM();
+  inline G4bool IsBarrel();
 #endif
   
 private:
@@ -63,7 +65,7 @@ private:
   void  Cabling ();
   
 private:  
-  static const G4String& fFirstName;
+  static const G4String fFirstName;
 
 };
 
@@ -128,18 +130,20 @@ G4int J4CALSubLayer::GetMySubLayerID()
   return GetMyID();
 }
 
-G4bool J4CALSubLayer::GetIsBarrel()
+G4bool J4CALSubLayer::IsBarrel()
 {
   return ( (J4CALCone*)GetMother()->GetMother()->GetMother()->GetMother()->GetMother()->GetMother() )->IsBarrel();
 }
 
-G4bool J4CALSubLayer::GetIsEM()
+#if 0
+G4bool J4CALSubLayer::IsEM()
 {
   const G4String& firstName = ( (J4CALBlock*)GetMother()->GetMother()->GetMother()->GetMother() ) -> GetFirstName();
   if ( firstName == "EM" ) return true;
   else return false;
   //return ( (J4CALBlock*)GetMother()->GetMother()->GetMother()->GetMother() ) -> IsEM();
 }
+#endif
 #endif
 
 #endif

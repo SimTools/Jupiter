@@ -24,7 +24,8 @@ class J4CALMiniTower;
 class J4CALMiniCone : public J4VCALDetectorComponent {	
 
 public:
-  J4CALMiniCone(J4VDetectorComponent *parent    = 0,
+  J4CALMiniCone(J4VDetectorComponent *parent  = 0,
+                            G4bool isem       = true,
                              G4int  nclones   = 1,
                              G4int  nbrothers = 1, 
                              G4int  me        = 0,
@@ -44,8 +45,12 @@ private:
   void  Cabling ();
   
 private:  
-  static const G4String&  fFirstName;
+  static const G4String  fFirstName;
+#ifndef __REPLICA__
   std::vector <J4CALMiniTower *> fMiniTowers;
+#else
+  J4CALMiniTower *fMiniTower;
+#endif
   
 };
 

@@ -45,7 +45,7 @@ private:
   void  Cabling ();
   
 private:  
-  static const G4String& fFirstName;
+  static const G4String fFirstName;
 
   J4CALTower           *fTower;
   G4bool                fIsBarrel;

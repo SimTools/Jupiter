@@ -28,10 +28,11 @@ class J4CALMiniTower : public J4VCALDetectorComponent {
 
 public:
   J4CALMiniTower(J4VDetectorComponent *parent    = 0,
-                             G4int  nclones   = 1,
-                             G4int  nbrothers = 1, 
-                             G4int  me        = 0,
-                             G4int  copyno    = -1 );
+                               G4bool  isem      = true,
+                                G4int  nclones   = 1,
+                                G4int  nbrothers = 1, 
+                                G4int  me        = 0,
+                                G4int  copyno    = -1 );
   virtual ~J4CALMiniTower();
 
   virtual void  InstallIn(J4VComponent         *mother,
@@ -45,7 +46,7 @@ private:
   void  Cabling ();
   
 private:  
-  static const G4String&   fFirstName;
+  static const G4String     fFirstName;
    
   std::vector<J4CALLayer *> fLayers;
   //G4bool fIsBarrel;

@@ -14,12 +14,14 @@
 #include "J4CALCone.hh"
 #include "J4Timer.hh"
 
+//#define __DRAWONETOWER__
+
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
 
-const G4String& J4CAL::fFirstName( "CAL" );
+const G4String J4CAL::fFirstName = "CAL";
 
 //=====================================================================
 //---------------------
@@ -89,12 +91,15 @@ void J4CAL::Assemble()
       PaintLV( ptrList->GetCALVisAtt(), ptrList->GetCALColor() );
   	
       // Install daughter PV //
+#ifdef __DRAWONETOWER__
       //////////////////////////////////////////////////////////////////////
       //* for one cone printing ---------------------- 	  
-      //G4int ncones = 1;
+      G4int ncones = 1;
+#else
       //* for whole tower printing -------------------
       G4int ncones = ptrList->GetNcones();
       //////////////////////////////////////////////////////////////////////
+#endif
       fCones = new J4CALCone* [ncones];
       Register(fCones);
       for ( G4int i = 0; i < ncones; i++ ) {

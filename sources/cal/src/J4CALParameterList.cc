@@ -15,6 +15,8 @@
 #include "TVNewton.hh"
 #include "geomdefs.hh"
 
+//#define __DRAWONETOWER__
+
 J4CALParameterList* J4CALParameterList::fgInstance = 0;
 
 //=====================================================================
@@ -62,6 +64,13 @@ void J4CALParameterList::SetMaterials()
    fMiniConeMaterial     = "Air";
    fMiniTowerMaterial    = "Air";
    fLayerMaterial        = "Air";
+
+   J4CALSubLayerParameterList *subList = GetSubLayerParam();
+
+   fEMActiveLayerMaterial= subList->GetLayerMaterial("EM",1);//"Scintillator";
+   fEMAbsLayerMaterial   = subList->GetLayerMaterial("EM",0);//"Lead";
+   fHDActiveLayerMaterial= subList->GetLayerMaterial("HD",1);//"Scintillator";
+   fHDAbsLayerMaterial   = subList->GetLayerMaterial("HD",0);//"Lead";
 #else
    fCALMaterial          = "vacuum";
    fConeMaterial         = "vacuum";
@@ -70,6 +79,10 @@ void J4CALParameterList::SetMaterials()
    fMiniConeMaterial     = "vacuum";
    fMiniTowerMaterial    = "vacuum";
    fLayerMaterial        = "vacuum";
+   fEMActiveLayerMaterial= "vacuum";
+   fEMAbsLayerMaterial   = "vacuum";
+   fHDActiveLayerMaterial= "vacuum";
+   fHDAbsLayerMaterial   = "vacuum";
 #endif
 }
 
@@ -121,17 +134,27 @@ void J4CALParameterList::SetParameters()
    fBarrelCoverageAngle = atan2(fEndcapTowerFrontZ, fBarrelTowerFrontRho);
    // as a dip angle(lambda)
 
+   J4CALSubLayerParameterList *subList = GetSubLayerParam();
+
    // EM ------------------
-   //fEMNLayers          = 10;
-   fEMNLayers          = 38;
-   fEMMiniConeNClones  = 3;
-   fEMMiniTowerNClones = 3;
+   //fEMNLayers            = 10;
+   fEMNLayers              = 38;
+   fEMNSubLayers           = 2;
+   fEMAbsLayerThickness    = subList->GetLayerSize("EM",0);//4.*mm;
+   fEMActiveLayerThickness = subList->GetLayerSize("EM",1);//1.*mm;
+   fEMThickness            = (fEMAbsLayerThickness+fEMActiveLayerThickness)*fEMNLayers;
+   fEMMiniConeNClones      = 3;
+   fEMMiniTowerNClones     = 3;
 
    // HD -------------
-   //fHDNLayers          = 10;
-   fHDNLayers          = 130;
-   fHDMiniTowerNClones = 1;
-   fHDMiniConeNClones  = 1;
+   //fHDNLayers            = 10;
+   fHDNLayers              = 130;
+   fHDNSubLayers           = 2;
+   fHDAbsLayerThickness    = subList->GetLayerSize("HD",0);//8.*mm;
+   fHDActiveLayerThickness = subList->GetLayerSize("HD",1);//2.*mm;
+   fHDThickness            = (fHDAbsLayerThickness+fHDActiveLayerThickness)*fHDNLayers;
+   fHDMiniTowerNClones   = 1;
+   fHDMiniConeNClones    = 1;
 
    // Number of Barrel types
    fNIsBarrel          = 2;
@@ -570,9 +593,10 @@ void J4CALParameterList::ShowTowerParameters()
 //* SetVisAttributes --------------------------------------------------
 void J4CALParameterList::SetVisAttributes()
 {
-  fCALVisAtt         = TRUE;//FALSE;
+   fCALVisAtt         = TRUE;//FALSE;
    fBarrelVisAtt      = FALSE;
    fEndcapVisAtt      = FALSE;
+#ifndef __DRAWONETOWER__
    fConeVisAtt        = TRUE;//FALSE;
    fTowerVisAtt       = TRUE;//FALSE; 
    fEMVisAtt          = FALSE;//TRUE;
@@ -581,6 +605,16 @@ void J4CALParameterList::SetVisAttributes()
    fMiniTowerVisAtt   = FALSE;
    fLayerVisAtt       = FALSE;
    fSubLayerVisAtt    = FALSE;
+#else
+   fConeVisAtt        = TRUE;//FALSE;
+   fTowerVisAtt       = TRUE;//FALSE; 
+   fEMVisAtt          = TRUE;
+   fHDVisAtt          = TRUE;
+   fMiniConeVisAtt    = TRUE;
+   fMiniTowerVisAtt   = TRUE;
+   fLayerVisAtt       = TRUE;
+   fSubLayerVisAtt    = TRUE;
+#endif
 }
 
 //=====================================================================

@@ -27,6 +27,7 @@ class J4CALLayer : public J4VCALDetectorComponent {
 
 public:
   J4CALLayer(J4VDetectorComponent  *parent    = 0,
+                            G4bool  isem      = true,
                              G4int  nclones   = 1,
                              G4int  nbrothers = 1, 
                              G4int  me        = 0,
@@ -44,7 +45,7 @@ private:
   void  Cabling ();
   
 private:  
-  static const G4String&         fFirstName;
+  static const G4String          fFirstName;
   std::vector<J4CALSubLayer *>   fSubLayers;
 
 };

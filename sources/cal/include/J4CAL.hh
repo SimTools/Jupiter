@@ -43,8 +43,8 @@ private:
   void  Cabling ();
   
 private:  
-  static const G4String& fFirstName;
-  J4CALCone**            fCones;
+  static const G4String fFirstName;
+  J4CALCone**           fCones;
   
 };
 

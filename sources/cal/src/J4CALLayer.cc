@@ -11,22 +11,46 @@
 //*     2004/10/07  H.Ono       Parametrized
 //*************************************************************************
 
-#include "J4VCALDetectorComponent.hh"
 #include "J4CALLayer.hh"
 #include "J4CALSubLayer.hh"
-#include "J4CALMiniTower.hh"
-#include "J4CALMiniCone.hh"
-#include "J4CALBlock.hh"
 #include "J4CALParameterList.hh"
-#include "J4CALSubLayerSD.hh"
 #include "G4Sphere.hh"
+
+//#define __NOSUBLAYER__
+#ifdef __NOSUBLAYER__
+#include "J4VSD.hh"
+#include "J4CALHit.hh"
+class J4CALLayerSD : public J4VSD<J4CALHit> {
+public:
+  J4CALLayerSD(J4VDetectorComponent *det) : J4VSD<J4CALHit>(det) {}
+
+  virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
+  {
+     SetNewStep(aStep);
+     J4CALLayer *cp = (J4CALLayer *)GetComponent(0);
+     if (cp->IsEM()) {
+        std::cerr << "Layer got an EM hit! -----------------" << std::endl;
+     } else {
+        std::cerr << "Layer got an HD hit! -----------------" << std::endl;
+     }
+     return true;
+  }
+  virtual void   Initialize (G4HCofThisEvent* HCTE) {}
+  virtual void   EndOfEvent (G4HCofThisEvent* HCTE) {}
+
+  virtual void   DrawAll () {}
+  virtual void   PrintAll() {}
+
+  virtual void   OutputAll(G4HCofThisEvent* HCTE) {}
+};
+#endif
 
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
 
-const G4String& J4CALLayer::fFirstName( "Layer" );
+const G4String J4CALLayer::fFirstName = "Layer";
 
 //=====================================================================
 //---------------------
@@ -36,24 +60,25 @@ const G4String& J4CALLayer::fFirstName( "Layer" );
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CALLayer::J4CALLayer( J4VDetectorComponent *parent,
-                                       G4int  nclones,
-                                       G4int  nbrothers, 
-                                       G4int  me,
-                                       G4int  copyno )
- : J4VCALDetectorComponent( fFirstName, parent, nclones,
-                                  nbrothers, me, copyno ) 
-{ }
+J4CALLayer::J4CALLayer(J4VDetectorComponent *parent,
+                                     G4bool  isem,
+                                      G4int  nclones,
+                                      G4int  nbrothers, 
+                                      G4int  me,
+                                      G4int  copyno)
+          : J4VCALDetectorComponent(fFirstName, isem, parent, nclones,
+                                    nbrothers, me, copyno)
+{
+}
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
 J4CALLayer::~J4CALLayer()
 {
- G4int nLayers = fSubLayers.size();
-
-   for ( G4int i = 0; i < nLayers; i++ ) {
-     if ( Deregister(fSubLayers[i]) ) delete fSubLayers[i];
+   G4int nLayers = fSubLayers.size();
+   for (G4int i = 0; i < nLayers; i++) {
+     if (Deregister(fSubLayers[i])) delete fSubLayers[i];
    }
 }
 
@@ -62,17 +87,11 @@ J4CALLayer::~J4CALLayer()
 
 void J4CALLayer::Assemble() 
 {   
-   if ( !GetLV() ) {
+   if (!GetLV()) {
  
      J4CALParameterList *ptrList = OpenParameterList();
-     J4CALSubLayerParameterList *subList = ptrList -> GetSubLayerParam();
-
-     J4CALMiniTower* ptrMiniTower = dynamic_cast<J4CALMiniTower*>( GetMother() );
-     J4CALMiniCone* ptrMiniCone = dynamic_cast<J4CALMiniCone*>( ptrMiniTower->GetMother());
-     J4CALBlock* ptrBlock = dynamic_cast<J4CALBlock*>(ptrMiniCone->GetMother());
-     const G4String& firstName = ptrBlock->GetFirstName();
      
-     G4Sphere *motherTower = (G4Sphere *)( GetMother()->GetSolid() );
+     G4Sphere *motherTower = (G4Sphere *)(GetMother()->GetSolid());
 
      G4double stheta = motherTower->GetStartThetaAngle();
      G4double dtheta = motherTower->GetDeltaThetaAngle();
@@ -80,11 +99,26 @@ void J4CALLayer::Assemble()
      G4double dphi   = motherTower->GetDeltaPhiAngle();
      G4double rstart = motherTower->GetInsideRadius();
 
+     G4int nSubLayers   = IsEM() ? ptrList->GetEMNSubLayersPerLayer()
+                                 : ptrList->GetHDNSubLayersPerLayer();
      G4int myID = GetMyID();
-     G4double thickness = subList -> GetTotalLayerSize(firstName);
+     G4double thickness = IsEM() ? ptrList->GetEMActiveLayerThickness()
+                                   * (nSubLayers-1)
+                                   + ptrList->GetEMAbsLayerThickness()
+                                 : ptrList->GetHDActiveLayerThickness()
+                                   * (nSubLayers-1)
+                                   + ptrList->GetHDAbsLayerThickness();
      G4double rmin      = rstart + myID * thickness;
      G4double rmax      = rmin + thickness;
+
+     // MakeSolid ----------//
+     G4Sphere* layer = new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta);
+     Register(layer);
+     SetSolid(layer);
+
+     // MakeLogicalVolume --//  
      const G4String& material  = ptrList -> GetLayerMaterial();
+     MakeLVWith(OpenMaterialStore()->Order(material));
 
 #if 0
      G4cerr << __FILE__ << " " << __LINE__ << " : "
@@ -95,28 +129,21 @@ void J4CALLayer::Assemble()
             << "type=" << firstName 
             << G4endl;
 #endif
-
-     // MakeSolid ----------//
-     G4Sphere* layer = new G4Sphere( GetName(), rmin, rmax, sphi, dphi, stheta, dtheta );
-     Register( layer );
-     SetSolid( layer );
-
-     // MakeLogicalVolume --//  
-     MakeLVWith( OpenMaterialStore()->Order(material) );
    
      // SetVisAttribute ----//
-     PaintLV( ptrList->GetLayerVisAtt(), ptrList->GetLayerColor() );
+     PaintLV(ptrList->GetLayerVisAtt(), ptrList->GetLayerColor());
 
      // Make J4CALSubLayer objects --- //
-     G4int nSubLayers = subList->GetNLayers(firstName);
 
-     for ( G4int i = 0; i < nSubLayers; i++ ) {
-       J4CALSubLayer* ptrSubLayer = new J4CALSubLayer( this, 1, nSubLayers, i );
-       fSubLayers.push_back( ptrSubLayer );
-       Register( ptrSubLayer );
-       ptrSubLayer -> InstallIn( this );
-       SetDaughter( ptrSubLayer );
-    }
+#ifndef __NOSUBLAYER__
+     for (G4int i = 0; i < nSubLayers; i++) {
+        J4CALSubLayer* ptrSubLayer = new J4CALSubLayer(this, IsEM(), 1, nSubLayers, i);
+        fSubLayers.push_back(ptrSubLayer);
+        Register(ptrSubLayer);
+        ptrSubLayer -> InstallIn(this);
+        SetDaughter(ptrSubLayer);
+     }
+#endif
   }
 }
 
@@ -125,14 +152,21 @@ void J4CALLayer::Assemble()
 
 void J4CALLayer::Cabling()
 {
+#ifdef __NOSUBLAYER__
+   if (!GetSD()) {
+      J4CALLayerSD *sd = new J4CALLayerSD(this);
+      Register(sd);
+      SetSD(sd);
+   }
+#endif
 }
 
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CALLayer::InstallIn(J4VComponent*         /* mother */,
-                            G4RotationMatrix*    /* prot   */, 
-                            const G4ThreeVector& /* tlate  */) 
+void J4CALLayer::InstallIn(J4VComponent        * /* mother */,
+                           G4RotationMatrix    * /* prot   */, 
+                           const G4ThreeVector & /* tlate  */) 
 { 
    Assemble();			// You MUST call Assemble(); at first.
 
@@ -140,7 +174,9 @@ void J4CALLayer::InstallIn(J4VComponent*         /* mother */,
    SetPVPlacement();
 
    // Cabling function for SD object... 
-   //Cabling(); 
+#ifdef __NOSUBLAYER__
+   Cabling(); 
+#endif
 }
 
 

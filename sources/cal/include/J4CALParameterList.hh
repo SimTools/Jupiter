@@ -86,10 +86,14 @@ class J4CALParameterList : public J4VParameterList
    inline G4int    GetConstNTowers()        const { return fConstNTowers;        }
 
    //*EM ----------------------------------------------------------------
-   inline G4double GetEMThickness()       const { return fEMThickness;    }
+   inline G4double GetEMThickness()            const { return fEMThickness;    }
+   inline G4double GetEMActiveLayerThickness() const { return fEMActiveLayerThickness;    }
+   inline G4double GetEMAbsLayerThickness()    const { return fEMAbsLayerThickness;    }
 
    //*HD ---------------------------------------------------------
-   inline G4double GetHDThickness()       const { return fHDThickness;    }
+   inline G4double GetHDThickness()            const { return fHDThickness;    }
+   inline G4double GetHDActiveLayerThickness() const { return fHDActiveLayerThickness;    }
+   inline G4double GetHDAbsLayerThickness()    const { return fHDAbsLayerThickness;    }
 
    //*IsBarrel
    inline G4int   GetNIsBarrel()          const { return fNIsBarrel; }
@@ -109,6 +113,10 @@ class J4CALParameterList : public J4VParameterList
    //*Layer
    inline G4int GetEMNLayers()                const { return fEMNLayers; } 
    inline G4int GetHDNLayers()                const { return fHDNLayers; } 
+
+   //*SubLayer
+   inline G4int GetEMNSubLayersPerLayer()    const { return fEMNSubLayers; } 
+   inline G4int GetHDNSubLayersPerLayer()    const { return fHDNSubLayers; } 
 
    //*Materials ---------------------------------------------------------
    inline G4String GetCALMaterial()          const { return fCALMaterial;    }
@@ -346,9 +354,13 @@ class J4CALParameterList : public J4VParameterList
 
    // EM
    G4double  fEMThickness;
+   G4double  fEMAbsLayerThickness;
+   G4double  fEMActiveLayerThickness;
 
    // HD
    G4double  fHDThickness;
+   G4double  fHDAbsLayerThickness;
+   G4double  fHDActiveLayerThickness;
 
    // Barrel, endcap types for isBarrel
    G4int     fNIsBarrel;
@@ -368,6 +380,8 @@ class J4CALParameterList : public J4VParameterList
    G4double  fNLayers;
    G4int     fEMNLayers;
    G4int     fHDNLayers;
+   G4int     fEMNSubLayers;
+   G4int     fHDNSubLayers;
    
 };
 

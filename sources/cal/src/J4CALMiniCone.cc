@@ -12,7 +12,6 @@
 
 #include "J4CALMiniCone.hh"
 #include "J4CALMiniTower.hh"
-#include "J4CALBlock.hh"
 #include "J4CALParameterList.hh"
 #include "G4Sphere.hh"
 
@@ -21,7 +20,7 @@
 // constants (detector parameters)
 //--------------------------------
 
-const G4String& J4CALMiniCone::fFirstName( "MiniCone" );
+const G4String  J4CALMiniCone::fFirstName = "MiniCone";
 
 //=====================================================================
 //---------------------
@@ -31,13 +30,14 @@ const G4String& J4CALMiniCone::fFirstName( "MiniCone" );
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CALMiniCone::J4CALMiniCone( J4VDetectorComponent *parent,
-                                             G4int  nclones,
-                                             G4int  nbrothers, 
-                                             G4int  me,
-                                             G4int  copyno )
-: J4VCALDetectorComponent( fFirstName, parent, nclones,
-                                 nbrothers, me, copyno )
+J4CALMiniCone::J4CALMiniCone(J4VDetectorComponent *parent,
+                                           G4bool  isem,
+                                            G4int  nclones,
+                                            G4int  nbrothers, 
+                                            G4int  me,
+                                            G4int  copyno)
+             : J4VCALDetectorComponent(fFirstName, isem, parent,
+                                       nclones, nbrothers, me, copyno)
 {   
 }
 
@@ -46,20 +46,14 @@ J4CALMiniCone::J4CALMiniCone( J4VDetectorComponent *parent,
 
 J4CALMiniCone::~J4CALMiniCone()
 {
-  J4CALParameterList* ptrList = OpenParameterList();
-  const G4String& firstName = dynamic_cast<J4CALBlock *>( GetMother() )->GetFirstName();
-
-  G4int nMiniTowers = 0;
-
-  if ( firstName == "EM" ) {
-     nMiniTowers = ptrList -> GetEMMiniTowerNClones();
-  } else {
-     nMiniTowers = ptrList -> GetHDMiniTowerNClones();
+#ifndef __REPLICA__
+  G4int nMiniTowers = fMiniTowers.size();
+  for (G4int i = 0; i < nMiniTowers; i++) {
+    if (fMiniTowers[i] && Deregister(fMiniTowers[i])) delete fMiniTowers[i];
   }
- 
-  for ( G4int i = 0; i < nMiniTowers; i++ ) {
-   if ( Deregister( fMiniTowers[i] ) ) delete fMiniTowers[i];
-  }
+#else
+  if (fMiniTower && Deregister(fMiniTower)) delete fMiniTower;
+#endif
 }
 
 //=====================================================================
@@ -67,22 +61,19 @@ J4CALMiniCone::~J4CALMiniCone()
 
 void J4CALMiniCone::Assemble() 
 {   
-  if ( !GetLV() ) {
+  if (!GetLV()) {
  
     J4CALParameterList *ptrList = OpenParameterList();
-    //J4CALSubLayerParameterList* subList = ptrList -> GetSubLayerParam();
       
-    G4Sphere* mother = (G4Sphere *)( GetMother()->GetSolid() );
+    G4Sphere* mother = (G4Sphere *)(GetMother()->GetSolid());
 
-    const G4String& firstName = dynamic_cast<J4CALBlock*>( GetMother() ) -> GetFirstName();
-    
     G4double rmin = mother -> GetInsideRadius();
     G4double rmax = mother -> GetOuterRadius();
     G4int nLayers = 0;
     G4int ntheta  = 0;
     G4int nphi    = 0;
       
-    if ( firstName == "EM" ) {
+    if (IsEM()) {
       nLayers = ptrList -> GetEMNLayers();
       nphi    = ptrList -> GetEMMiniTowerNClones();
       ntheta  = ptrList -> GetEMMiniConeNClones();
@@ -95,29 +86,35 @@ void J4CALMiniCone::Assemble()
     G4int myID = GetMyID();
     G4double sphi   = mother->GetStartPhiAngle();
     G4double dphi   = mother->GetDeltaPhiAngle();
-    G4double dtheta = ( mother->GetDeltaThetaAngle() ) / ntheta;
-    G4double stheta = ( mother->GetStartThetaAngle() ) + myID * dtheta;
+    G4double dtheta = (mother->GetDeltaThetaAngle()) / ntheta;
+    G4double stheta = (mother->GetStartThetaAngle()) + myID * dtheta;
 
     // MakeSolid ----------//
     G4Sphere* minicone = new G4Sphere( GetName(), rmin, rmax, sphi, dphi, stheta, dtheta );
-    Register( minicone );
-    SetSolid( minicone );
+    Register(minicone);
+    SetSolid(minicone);
 
     // MakeLogicalVolume --//  
-    MakeLVWith( OpenMaterialStore()->Order( ptrList->GetConeMaterial()) );
+    MakeLVWith(OpenMaterialStore()->Order(ptrList->GetConeMaterial()));
     
     // SetVisAttribute ----//
-    PaintLV( ptrList->GetMiniConeVisAtt(), ptrList->GetMiniConeColor() );
+    PaintLV(ptrList->GetMiniConeVisAtt(), ptrList->GetMiniConeColor());
   	
     // Install daughter PV //
-    //fMiniTower = new J4CALMiniTower( this, nphi );
-    for ( G4int i = 0; i < nphi; i++ ) {
-      J4CALMiniTower* minitower = new J4CALMiniTower( this, 1, nphi, i );
-      fMiniTowers.push_back( minitower );
-      Register( minitower );
-      minitower -> InstallIn( this );
-      SetDaughter( minitower );
+#ifndef __REPLICA__
+    for (G4int i = 0; i < nphi; i++) {
+      J4CALMiniTower* minitower = new J4CALMiniTower(this, IsEM(), 1, nphi, i);
+      fMiniTowers.push_back(minitower);
+      Register(minitower);
+      minitower->InstallIn(this);
+      SetDaughter(minitower);
     }
+#else
+    fMiniTower = new J4CALMiniTower(this, IsEM(), nphi);
+    Register(fMiniTower);
+    fMiniTower->InstallIn(this);
+    SetDaughter(fMiniTower);
+#endif
   }
 }
 
