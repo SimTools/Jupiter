@@ -25,7 +25,7 @@ J4Output*         J4CALHit::fgOutput = 0;
 //=========================================================================
 //* constructor -----------------------------------------------------------
 J4CALHit::J4CALHit()
-  : J4VHit(0), fPreHitID(0), fCellID(0), fIsEM(0), fIsBarrel(0), fEdep(0), fTof(0), fXcm(0)
+  : J4VHit(0), fPreHitID(0), fPreTrkID(0), fCellID(0), fIsEM(0), fIsBarrel(0), fEdep(0), fTof(0), fXcm(0)
 { }
 
 J4CALHit::J4CALHit( J4VComponent* ptrDetector,    // He is in "location" now
@@ -59,15 +59,9 @@ void J4CALHit::Output( G4HCofThisEvent* /* HCTE */ )
     const G4String& errorMessage = "J4CALHit::Output(): write error.";
     G4cerr << errorMessage << G4endl;
   } else {
-    ofs << "iPiTiCiTMcMtiLiSiEiBETXYZ: "
-	<< std::setw(3) << fPreHitID << " "
+    ofs << std::setw(3) << fPreHitID << " "
 	<< std::setw(5) << fPreTrkID << " "
-	<< std::setw(3) << TVAddress::GetCellConeID( fCellID ) << " "
-	<< std::setw(3) << TVAddress::GetCellTowerID( fCellID ) << " "
-	<< std::setw(3) << TVAddress::GetCellMiniConeID( fCellID, fIsEM ) << " "
-	<< std::setw(3) << TVAddress::GetCellMiniTowerID( fCellID, fIsEM ) << " "
-	<< std::setw(3) << TVAddress::GetCellLayerID( fCellID, fIsEM ) << " "
-	<< std::setw(3) << TVAddress::GetCellSubLayerID( fCellID, fIsEM ) << " "
+	<< std::setw(8) << fCellID << " "
 	<< std::setw(2) << (G4int)fIsEM << " "
 	<< std::setw(2) << (G4int)fIsBarrel << " "
 	<< std::setw(12) << fEdep << " "
@@ -89,6 +83,4 @@ void J4CALHit::Draw()
 //* Print -----------------------------------------------------------------
 
 void J4CALHit::Print()
-{
-
-}
+{ }
