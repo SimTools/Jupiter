@@ -94,6 +94,8 @@ void J4VTXLayer::Assemble()
     // make first ladder object (MUST define copyNo as 0)
     fLadders[0] = new J4VTXLadder(this,numOfLadders, 1, 0, 0);
     Register(fLadders[0]);
+    fLadders[0]->InstallIn(this);  
+    SetDaughter(fLadders[0]);
 
     // copy ladder objects (copyNo must start from 1)
     G4int copyNo;
@@ -103,7 +105,7 @@ void J4VTXLayer::Assemble()
     }
     
     // install ladder objects...    
-    for (copyNo = 0 ; copyNo < numOfLadders; copyNo++) {
+    for (copyNo = 1 ; copyNo < numOfLadders; copyNo++) {
        fLadders[copyNo]->InstallIn(this);  
        SetDaughter(fLadders[copyNo]);
     }

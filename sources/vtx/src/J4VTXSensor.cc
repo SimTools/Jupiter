@@ -78,7 +78,8 @@ void J4VTXSensor::Assemble()
 
     // SetVisAttribute ----//
     PaintLV(list->GetSensorVisAtt() , list->GetSensorColor());    
-     SetMaxAllowedStep(list->GetMaxAllowedStep());
+
+    SetMaxAllowedStep(list->GetMaxAllowedStep());
         
     // Install daughter PV //
     // Install Sensor      //
@@ -112,6 +113,8 @@ void J4VTXSensor::InstallIn(J4VComponent         *mother,
    Assemble();			// You MUST call Assemble(); at first.
    G4int layerID        = GetMother()->GetMother()->GetMyID();
    G4int sensorID       = GetCopyNo();
+
+  cout << " Sensor === GetCopyNo" << sensorID << endl;
 
    G4ThreeVector xyzSensor  = 
    OpenParameterList()->GetSensorPosition(layerID,sensorID);  

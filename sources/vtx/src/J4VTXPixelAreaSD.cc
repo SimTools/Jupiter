@@ -68,15 +68,20 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   G4int                 mothertrackID   = GetMotherTrackID();
   G4ParticleDefinition *particle        = GetParticle();
 
-  J4VComponent  *pixelArea   = GetComponent();
-  J4VComponent  *epitaxial   = pixelArea->GetMother();
+  J4VComponent  *pixelarea   = GetComponent();
+  J4VComponent  *epitaxial   = pixelarea->GetMother();
   J4VComponent  *sensor      = epitaxial->GetMother();
   J4VComponent  *ladder      = sensor->GetMother();
   J4VComponent  *layer       = ladder->GetMother();
 
+  G4VPhysicalVolume* pixelareaPV = pixelarea->GetPV();
+  G4VPhysicalVolume* epitaxialPV = pixelareaPV->GetMother();
+  G4VPhysicalVolume* sensorPV = epitaxialPV->GetMother();
+  G4VPhysicalVolume* ladderPV = sensorPV->GetMother();
+
   G4int iLayer    =  layer->GetMyID();
-  G4int iLadder   =  GetCloneID(ladder);
-  G4int iSensor   =  GetCloneID(sensor);
+  G4int iLadder   =  ladderPV->GetCopyNo();
+  G4int iSensor   =  sensorPV->GetCopyNo();
 
   G4double             edep      = GetEnergyDeposit();
   G4ThreeVector        trkP      = GetMomentum();

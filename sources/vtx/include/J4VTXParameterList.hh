@@ -47,13 +47,13 @@ public:
   inline G4double GetMaxAllowedStep(){ return fStepSize; }
 
   // Materials
-  inline void GetVTXMaterial(G4String mat) {fVTXMaterial=mat;}
-  inline void GetLayerMaterial(G4String mat){ fLayerMaterial=mat;}
-  inline void GetLadderMaterial(G4String mat){fLadderMaterial=mat;}
-  inline void GetSensorMaterial(G4String mat){ fSensorMaterial=mat;}
-  inline void GetSubstrateMaterial(G4String mat){fSubstrateMaterial=mat;}
-  inline void GetEpitaxialMaterial(G4String mat){fEpitaxialMaterial=mat;}
-  inline void GetPixelAreaMaterial(G4String mat){fPixelAreaMaterial=mat;}
+  inline void SetVTXMaterial(G4String mat) {fVTXMaterial=mat;}
+  inline void SetLayerMaterial(G4String mat){ fLayerMaterial=mat;}
+  inline void SetLadderMaterial(G4String mat){fLadderMaterial=mat;}
+  inline void SetSensorMaterial(G4String mat){ fSensorMaterial=mat;}
+  inline void SetSubstrateMaterial(G4String mat){fSubstrateMaterial=mat;}
+  inline void SetEpitaxialMaterial(G4String mat){fEpitaxialMaterial=mat;}
+  inline void SetPixelAreaMaterial(G4String mat){fPixelAreaMaterial=mat;}
 
   // Margin for avoiding volume intersection.
   inline void SetDxyzMarginSize(G4ThreeVector size){fDxyzMargin=size;}

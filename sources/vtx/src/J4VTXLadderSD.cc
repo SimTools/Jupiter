@@ -61,9 +61,7 @@ G4bool J4VTXLadderSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   G4ParticleDefinition *particle        = GetParticle();
 
   G4int layerID = GetComponent()->GetMother()->GetMyID();
-  G4int ladderID =  GetCloneID();
-
-  cout << " ll " << layerID << " ll " << ladderID << endl;
+  G4int ladderID = GetCloneID();
 
   G4double             edep      = GetEnergyDeposit();
   G4ThreeVector        trkP      = GetMomentum();

@@ -54,8 +54,9 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
 {
   //In order to use Get function of J4VSensitiveDetector,
   // you must call SetNewStep() at first.
-
   SetNewStep(aStep);
+  // volume information must be gotten from "PreStepPoint"
+ 
   //Only when a charged particle has just come into a sensitive detector,
   //create a new hit
   //if(GetCharge() == 0.) return FALSE;
@@ -65,14 +66,25 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
   G4int                 mothertrackID   = GetMotherTrackID();
   G4ParticleDefinition *particle        = GetParticle();
 
-  J4VComponent  *pixelarray  = GetComponent()->GetMother();
-  J4VComponent  *sensor      = pixelarray->GetMother()->GetMother()->GetMother();
+  J4VComponent  *pixel       = GetComponent();
+  J4VComponent  *pixelarray  = pixel->GetMother();
+  J4VComponent  *pixelarea   = pixelarray->GetMother();
+  J4VComponent  *epitaxial   = pixelarea->GetMother();
+  J4VComponent  *sensor      = epitaxial->GetMother();
   J4VComponent  *ladder      = sensor->GetMother();
   J4VComponent  *layer       = ladder->GetMother();
 
-  G4int iLayer    =  layer->GetMyID();
-  G4int iLadder   =  GetCloneID(ladder);
-  G4int iSensor   =  GetCloneID(sensor);
+  // Pixel -> PixelArray -> PixelArea -> Epitaxial -> Sensor -> Ladder
+  G4VPhysicalVolume* pixelPV = pixel->GetPV();
+  G4VPhysicalVolume* pixelarrayPV = pixelPV->GetMother();
+  G4VPhysicalVolume* pixelareaPV = pixelarrayPV->GetMother();
+  G4VPhysicalVolume* epitaxialPV = pixelareaPV->GetMother();
+  G4VPhysicalVolume* sensorPV = epitaxialPV->GetMother();
+  G4VPhysicalVolume* ladderPV = sensorPV->GetMother();
+
+  G4int iLayer = layer->GetMyID();
+  G4int iLadder = ladderPV->GetCopyNo();
+  G4int iSensor = sensorPV->GetCopyNo();
   G4int iPixelIDT =  GetCloneID(pixelarray);
   G4int iPixelIDP =  GetCloneID();
 

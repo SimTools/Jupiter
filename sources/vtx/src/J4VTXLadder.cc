@@ -100,6 +100,8 @@ void J4VTXLadder::Assemble()
     // make first sensor object (MUST define copyNo as 0)
     fSensors[0] = new J4VTXSensor(this, numOfSensors, 1, 0, 0);
     Register(fSensors[0]);
+    fSensors[0]->InstallIn(this);  
+    SetDaughter(fSensors[0]);
 
     // copy sensor objects (copyNo must start from 1)
     G4int copyNo;
@@ -109,7 +111,7 @@ void J4VTXLadder::Assemble()
     }
     
     // install sensor objects...    
-    for (copyNo = 0 ; copyNo < numOfSensors; copyNo++) {
+    for (copyNo = 1 ; copyNo < numOfSensors; copyNo++) {
        fSensors[copyNo]->InstallIn(this);  
        SetDaughter(fSensors[copyNo]);
     }
