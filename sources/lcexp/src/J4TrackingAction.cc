@@ -23,7 +23,6 @@ J4TrackingAction::J4TrackingAction()
                 : fCurrentTrackID(INT_MAX),
                   fStoredTrajectoryID(1),
                   fMessenger(0),
-                  fRegs(2),
                   fTrackCounts(INT_MIN) 
 {
    if (fgInstance) {
