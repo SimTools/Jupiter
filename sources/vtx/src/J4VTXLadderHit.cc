@@ -67,7 +67,7 @@ void J4VTXLadderHit::Output(G4HCofThisEvent* HCTE)
 	
   // output hitdata to output file ....
   
-  ofstream& ofs = GetOutputFileStream();
+  G4std::ofstream& ofs = GetOutputFileStream();
   if(! ofs.good()) {
     G4String errorMessage= "J4VTXLadderHit::Output(): write error.";
     G4Exception(errorMessage);
