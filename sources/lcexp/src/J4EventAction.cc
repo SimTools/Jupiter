@@ -60,7 +60,11 @@ J4EventAction::~J4EventAction()
 }
 
 /////////////////////////////////////////////////////////////////
+#ifdef __THEBE__
 void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
+#else
+void J4EventAction::BeginOfEventAction(const G4Event*)
+#endif
 /////////////////////////////////////////////////////////////////
 {
   // printout primary information

@@ -61,7 +61,7 @@ public:
     void         SetGenElectron(G4bool flag);
     void         SetGenPositron(G4bool flag);
     void         SetGenGamma(G4bool flag);
-    inline void  SetFileName(char *file);
+    inline void  SetFileName(const char *file);
     inline void  SetVerboseLevel(G4int level) { fVerboseLevel=level; }
 
     inline G4bool   GetGenGamma()     { return fGenGamma; }
@@ -95,7 +95,7 @@ private:
 // inline function
 //---------------------
 
-void J4CAINEvtInterface::SetFileName(char *file)                             
+void J4CAINEvtInterface::SetFileName(const char *file)                             
 {                    
    fFileName = file;
    if (fInputStream.is_open()) fInputStream.close();

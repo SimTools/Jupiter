@@ -6,7 +6,6 @@
 //    K.Hoshina, 29-May-2002  
 // ********************************************************************
 
-#include "./strstream"
 #include <iostream>
 #include <iomanip>
 

@@ -23,7 +23,7 @@
 
 
 G4Material* J4SOLMaterialStore::Create(const G4String& name,
-	G4MaterialPropertiesTable *mtable) 
+	G4MaterialPropertiesTable *) 
 {  	
 
   G4Material* material= 0;

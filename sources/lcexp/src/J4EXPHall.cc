@@ -82,13 +82,19 @@ void J4EXPHall::Assemble()
 
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
-void J4EXPHall::InstallIn(J4VComponent         *mother,
-                          G4RotationMatrix     *prot, 
-                          const G4ThreeVector  &tlate ) 
+void J4EXPHall::InstallIn(J4VComponent        *,
+                          G4RotationMatrix    *, 
+                          const G4ThreeVector &) 
 {
 }
 
 //=====================================================================
+//* OutputAll ---------------------------------------------------------
+void J4EXPHall::OutputAll(G4HCofThisEvent* HCTE)
+{
+   J4VComponent::OutputAll(HCTE);
+}
+
 //* OutputAll ---------------------------------------------------------
 void J4EXPHall::OutputAll(G4HCofThisEvent* HCTE, std::ofstream & ofs)
 {

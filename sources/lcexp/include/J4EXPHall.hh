@@ -37,10 +37,11 @@ public:
                           G4RotationMatrix     *prot  = 0,
                           const G4ThreeVector  &tlate = 0 );
 
-  virtual void   OutputAll(G4HCofThisEvent *HCTE, std::ofstream &ofs) ;
+  virtual void   OutputAll(G4HCofThisEvent *HCTE);
+  virtual void   OutputAll(G4HCofThisEvent *HCTE, std::ofstream &ofs);
 
-  virtual void   Draw() ;
-  virtual void   Print() const ;
+  virtual void   Draw();
+  virtual void   Print() const;
 
 
   const G4ThreeVector &GetSizeOfEXPHall() const { return fSizeOfEXPHall; }

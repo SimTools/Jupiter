@@ -60,7 +60,7 @@ public:
     void OpenHEPEvtFile(G4String file="");
     void GeneratePrimaryVertex(G4Event* evt);
 
-    inline void     SetFileName(char *file); 
+    inline void     SetFileName(const char *file); 
     inline void     SetNskipEvents(G4int n) { fNskipEvents = n; }
     inline G4String GetFileName() const { return fFileName; } 
     inline G4int    GetNskipEvents()    { return fNskipEvents; }
@@ -81,7 +81,7 @@ private:
 // inline function
 //---------------------
 
-void J4HEPEvtInterface::SetFileName(char *file)
+void J4HEPEvtInterface::SetFileName(const char *file)
 {
    fFileName = file;
    if (fInputStream.is_open()) fInputStream.close();

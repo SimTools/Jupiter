@@ -25,7 +25,7 @@ J4RunAction::J4RunAction(const G4String& fname)
 
 
 ////////////////////////////////////////////////////////
-void J4RunAction::BeginOfRunAction(const G4Run* aRun)
+void J4RunAction::BeginOfRunAction(const G4Run* /* aRun */)
 ////////////////////////////////////////////////////////
 {
   fOfs.open(fHitFileName.c_str(), std::ios::out);

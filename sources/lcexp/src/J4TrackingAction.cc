@@ -115,7 +115,7 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 
 //=====================================================================
 //* PostUserTrackingAction --------------------------------------------
-void J4TrackingAction::PostUserTrackingAction(const G4Track* aTrack)
+void J4TrackingAction::PostUserTrackingAction(const G4Track* /* aTrack */)
 {
 
 #ifdef __THEBE__
