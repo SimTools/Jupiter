@@ -65,7 +65,7 @@ public:
   inline G4bool        IsBarrel()    const { return fIsBarrel; }
   inline G4double      GetEdep()     const { return fEdep;     }
   inline G4double      GetTof()      const { return fTof;      }
-  inline G4ThreeVector GetXcm()      const { return fEdep>0 ? fXcm/fEdep : 0; } // note: this returns position vector
+  inline G4ThreeVector GetXcm()      const { return fXcm; } // note: this returns energy * position vector
  
   inline void SetPreHitID( G4int id )    { fPreHitID = id;}
   inline void SetPreTrkID( G4int id )    { fPreTrkID = id;}
