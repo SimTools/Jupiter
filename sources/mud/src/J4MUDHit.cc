@@ -23,7 +23,7 @@ J4Output*         J4MUDHit::fgOutput = 0;
 //=========================================================================
 //* constructor -----------------------------------------------------------
 J4MUDHit::J4MUDHit()
-: fBlockID(0), fLayerID(0), fIsBarrel(0), fIsFront(0)
+: fBlockID(0), fLayerID(0), fIsBarrel(0), fIsFront(0), fPreHitID(0)
 {}
 
 J4MUDHit::J4MUDHit( J4VComponent         *detector,       // He is in "location" now
@@ -31,6 +31,7 @@ J4MUDHit::J4MUDHit( J4VComponent         *detector,       // He is in "location"
                     G4int                 layerID,        // layerID 
                     G4bool                isBarrel,       // Barrel or Endcap
                     G4bool                isFront,        // frontEndcap or not
+                    G4int                 preHitID,       // preHitID at MUD front
                     G4int                 trackID,        // TrackID
                     G4int                 mothertrackID,  // MotherTrackID
                     G4ParticleDefinition *particle,       // particle
@@ -40,10 +41,8 @@ J4MUDHit::J4MUDHit( J4VComponent         *detector,       // He is in "location"
                     const G4ThreeVector  &momentum,       // Momentum of perticle
                     const G4ThreeVector  &pre,            // Pre-position of track
                     const G4ThreeVector  &pos )           // Post-position of track
-//: J4VTrackerHit( detector, trackID, mothertrackID, particle, tof, edep, totalE, momentum, pre, pos )
- : J4VHit( detector, trackID, mothertrackID, particle, tof, edep, totalE, momentum, pre, pos ), 
-//: J4VHit( detector ),
-   fBlockID(blockID), fLayerID(layerID), fIsBarrel(isBarrel), fIsFront(isFront)
+: J4VHit( detector, trackID, mothertrackID, particle, tof, edep, totalE, momentum, pre, pos ), 
+  fBlockID(blockID), fLayerID(layerID), fIsBarrel(isBarrel), fIsFront(isFront), fPreHitID(preHitID)
 { }
 
 //=========================================================================
@@ -63,29 +62,29 @@ void J4MUDHit::Output( G4HCofThisEvent* /* HCTE */ )
     G4Exception(errorMessage);
   } else {
 
-     G4ThreeVector pre  = GetPrePosition();
-     G4ThreeVector post = GetPostPosition();
+     const G4ThreeVector& pre  = GetPrePosition();
+     //const G4ThreeVector& post = GetPostPosition();
 
-     ofs << std::setw(1) << GetComponent()->GetMother()->GetMyID() << " " 
-         << std::setw(1) << GetComponent()->GetMyID() << " " 
+     ofs << std::setw(1) << GetBlockID() << " " 
+         << std::setw(1) << GetLayerID() << " " 
          << std::setw(1) << GetIsBarrel() << " " 
          << std::setw(1) << GetIsFront() << " " 
+         << std::setw(5) << GetPreHitID() << " "
          << std::setw(7) << GetTrackID() << " " 
          << std::setw(7) << GetMotherTrackID() << " " 
          << std::setw(6) << GetPDGEncoding() << " " 
+         //<< std::setw(6) << GetParticleName() << " " 
          << std::setw(2) << GetCharge() << " " 
          << std::setiosflags(std::ios::scientific) << std::setprecision(14)
-         << std::setw(18) << pre.x() << " " 
-         << std::setw(18) << pre.y() << " " 
-         << std::setw(18) << pre.z() << " "
-//         << std::setw(18) << post.x() << " " 
-//         << std::setw(18) << post.y() << " " 
-//         << std::setw(18) << post.z() << " "
-//         << std::setw(18) << GetMomentum().x() << " " 
-//         << std::setw(18) << GetMomentum().y() << " "
-//         << std::setw(18) << GetMomentum().z() << " " 
-//         << std::setw(18) << GetTotalEnergy() << " " 
+         << std::setw(20) << pre.x() << " " 
+         << std::setw(20) << pre.y() << " " 
+         << std::setw(20) << pre.z() << " "
+//         << std::setw(20) << GetMomentum().x() << " " 
+//         << std::setw(20) << GetMomentum().y() << " "
+//         << std::setw(20) << GetMomentum().z() << " " 
+//         << std::setw(20) << GetTotalEnergy() << " " 
          << std::setw(18) << GetEnergyDeposit() << " " 
+         << std::setw(18) << GetTotalEnergy() << " " 
          << std::setw(18) << GetTof() << " "
          << std::setiosflags(std::ios::floatfield) 
          << std::setprecision(8)
