@@ -41,7 +41,11 @@ G4int G4HCtable::Registor(G4String SDname,G4String HCname)
   return HClist.size();
 }
 
+#if __G4VERSION__ >= 1
 G4int G4HCtable::GetCollectionID(G4String HCname) const
+#else
+G4int G4HCtable::GetCollectionID(G4String HCname) 
+#endif  
 {
   G4int i = -1;
   if(HCname.index("/")==std::string::npos) // HCname only
@@ -72,6 +76,7 @@ G4int G4HCtable::GetCollectionID(G4String HCname) const
   return i;
 }
 
+#if __G4VERSION__ >= 1
 G4int G4HCtable::GetCollectionID(G4VSensitiveDetector* aSD) const
 {
   if(aSD->GetNumberOfCollections()<1)
@@ -96,5 +101,6 @@ G4int G4HCtable::GetCollectionID(G4VSensitiveDetector* aSD) const
   { if(SDlist[k]==aSD->GetName()) return k; }
   return -1;
 }
+#endif
 
 

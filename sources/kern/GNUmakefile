@@ -12,4 +12,5 @@ include $(G4INSTALL)/config/interactivity.gmk
 include $(G4INSTALL)/config/analysis.gmk
 
 include $(JUPITERROOT)/config/common.gmk
+include $(JUPITERROOT)/config/G4version.gmk
 

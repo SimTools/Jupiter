@@ -277,7 +277,7 @@ void J4VComponent::SetName(const G4String&       name,
     }
   } 
   J4Named::SetName(newname);
-#if 1
+#if 0
   if ( J4CommandArguments::VerboseLevel() > 10 ) {
     std::cerr << " My name is " << GetName() << std::endl;
   }
