@@ -220,9 +220,9 @@ void J4CALParameterList::SetTowerParameters( G4double towerheight,
 
    } else { 
 
-      lambda       = startlambda;
+      lambda       = startlambda + kAngTolerance * 1.e3; 
       tanlambda    = tan(lambda);
-      
+
    }
 
    tanlambda2   = tanlambda * tanlambda;
@@ -292,7 +292,7 @@ void J4CALParameterList::SetTowerParameters( G4double towerheight,
 
 
    } else { 
-      lambda = startlambda;
+      lambda = startlambda + kAngTolerance * 1.e3; 
       r      = startr;
    }
 
