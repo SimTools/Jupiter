@@ -139,7 +139,7 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
    ofs << "*******_Start_of_event_" << event << "_*******" <<G4endl;
      
      
-   ofs << "0 "<< event << G4endl;
+   ofs << event << G4endl;
   
    G4cerr << "EventAction::EndOfEvent is called " << G4endl;
      
