@@ -28,6 +28,8 @@
 // class definition
 //---------------------
 
+G4int J4CALSubLayerSD::fLastHCID=-1;
+
 //=====================================================================
 //* constructor -------------------------------------------------------
 
@@ -58,13 +60,26 @@ void J4CALSubLayerSD::Initialize( G4HCofThisEvent* HCTE )
 {
   //create hit collection(s) and
   //push H.C. to "Hit Collection of This Event"
-  
+
+
   static G4int timerID = -1;
   J4Timer timer( timerID, "J4CALSubLayerSD", "Initialize()" );
   timer.Start();
 
-  MakeHitBuf(HCTE);  
+//  MakeHitBuf(HCTE);  
 
+  G4THitsCollection<J4CALHit>* hitbuf; 
+  hitbuf = new G4THitsCollection<J4CALHit>(SensitiveDetectorName, collectionName[0]) ;
+  SetHitBuf((G4VHitsCollection*)hitbuf);      
+  if ( fLastHCID < 0  ) {
+//     G4int hcID = GetCollectionID(0); 
+    fLastHCID=GetCollectionID(0); 
+  }
+  else {
+    fLastHCID++;
+  }
+  HCTE->AddHitsCollection(fLastHCID, GetHitBuf());
+   
   // Don't "delete" fCalHits[i]!
   // Geant4 deletes hit objects at
   // the end of the run.
@@ -200,6 +215,7 @@ G4bool J4CALSubLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* /* ROhist
 
 void J4CALSubLayerSD::EndOfEvent(G4HCofThisEvent* /* HCTE */ )
 {			
+   fLastHCID=-1;  // Reset HCID of SubLayerSD
 }
 
 //=====================================================================

@@ -58,7 +58,7 @@ public:
 private:
   J4CALHit    **fCalHits; 
   G4int       fTowerNClones;
-
+  static G4int  fLastHCID;
 };
 
 #endif
