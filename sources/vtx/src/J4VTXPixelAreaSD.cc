@@ -26,7 +26,7 @@ J4VTXPixelAreaSD::J4VTXPixelAreaSD(J4VDetectorComponent* detector)
               fSTrack(0), fSLayer(0), fSLadder(0), fSSensor(0), 
               fSColNo(0)     
 {
-  cout << " XXXX PixelAreaSD XXXX " << endl;
+  G4cout << " XXXX PixelAreaSD XXXX " << G4endl;
 }
 
 //=====================================================================
@@ -43,7 +43,7 @@ void J4VTXPixelAreaSD::Initialize(G4HCofThisEvent* HCTE)
 {
   //create hit collection(s) and
   //push H.C. to "Hit Collection of This Event"
-  //cout << " XXXX PixelAreaSD InitializeXXXX " << endl;
+  //cout << " XXXX PixelAreaSD InitializeXXXX " << G4endl;
   MakeHitBuf(HCTE);  
   InitID();
   fSColNo = -1;
@@ -56,7 +56,7 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
 {
   //In order to use Get function of J4VSensitiveDetector,
   // you must call SetNewStep() at first.
-  //cout << " XXXX PixelAreaSD ProcessHits XXXX " << endl;
+  //G4cout << " XXXX PixelAreaSD ProcessHits XXXX " << G4endl;
 
   SetNewStep(aStep);
   //Only when a charged particle has just come into a sensitive detector,

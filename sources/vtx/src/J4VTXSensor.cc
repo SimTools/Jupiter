@@ -114,7 +114,7 @@ void J4VTXSensor::InstallIn(J4VComponent         *mother,
    G4int layerID        = GetMother()->GetMother()->GetMyID();
    G4int sensorID       = GetCopyNo();
 
-  cout << " Sensor === GetCopyNo" << sensorID << endl;
+  G4cout << " Sensor === GetCopyNo" << sensorID << G4endl;
 
    G4ThreeVector xyzSensor  = 
    OpenParameterList()->GetSensorPosition(layerID,sensorID);  

@@ -72,7 +72,7 @@ void J4VTXPixelAreaHit::Output(G4HCofThisEvent* HCTE)
 	
   // output hitdata to output file ....
   
-  ofstream& ofs = GetOutputFileStream();
+  G4std::ofstream& ofs = GetOutputFileStream();
   if(! ofs.good()) {
     G4String errorMessage= "J4VTXPixelAreaHit::Output(): write error.";
     G4Exception(errorMessage);
@@ -96,7 +96,7 @@ void J4VTXPixelAreaHit::Output(G4HCofThisEvent* HCTE)
      ofs << "PixelArea " 
          << trk  << "\t" << pid << "\t" << charge << "\t" << dE
 	 <<"\t" <<  fLayerID  <<"\t" << fLadderID <<"\t"<< fSensorID
-	 <<"\t" <<  xin << "\t" << yin << "\t" << zin << endl;
+	 <<"\t" <<  xin << "\t" << yin << "\t" << zin << G4endl;
 #endif
   }
 }

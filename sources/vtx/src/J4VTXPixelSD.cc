@@ -25,7 +25,7 @@ J4VTXPixelSD::J4VTXPixelSD(J4VDetectorComponent* detector)
               fSTrack(0), fSLayer(0), fSLadder(0), fSSensor(0), 
               fSTpixel(0), fSPpixel(0), fSColNo(0)     
 {
-  cout << " XXXX PixelSD XXXX " << endl;
+  G4cout << " XXXX PixelSD XXXX " << G4endl;
 }
 
 //=====================================================================

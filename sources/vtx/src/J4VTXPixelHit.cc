@@ -78,7 +78,7 @@ void J4VTXPixelHit::Output(G4HCofThisEvent* HCTE)
 	
   // output hitdata to output file ....
   
-  ofstream& ofs = GetOutputFileStream();
+  G4std::ofstream& ofs = GetOutputFileStream();
   if(! ofs.good()) {
     G4String errorMessage= "J4VTXPixelHit::Output(): write error.";
     G4Exception(errorMessage);
@@ -104,7 +104,8 @@ void J4VTXPixelHit::Output(G4HCofThisEvent* HCTE)
          << trk  << " " << pid << " " << charge << " " << dE
 	 <<" " <<  fLayerID  <<" " << fLadderID <<" "<< fSensorID
          <<" " << fPixThetaID <<" " << fPixPhiID
-	 <<" " <<  xin << " " << yin << " " << zin << endl;
+	 <<" " <<  xin << " " << yin << " " << zin << G4endl;
+
 #endif
   }
 }
