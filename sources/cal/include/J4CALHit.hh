@@ -57,7 +57,7 @@ public:
 
   
   //  inline G4int         GetPreHitID()      const { return fPreHitID; }
-  //  inline TVAddress*    GetAddress()       const { return fAddress;  }
+  inline TVAddress*    GetAddress()       const { return fAddress;  }
   inline G4double      GetCellEdep() const { return fCellEdep; }
   inline G4double      GetCellTof()  const { return fCellTof;  }
   inline G4ThreeVector GetCellXcm()  const { return fCellXcm;  }
