@@ -31,7 +31,8 @@ J4CALParameterList* J4CALParameterList::GetInstance()
 //* protected constructor ---------------------------------------------
 
 J4CALParameterList::J4CALParameterList( const G4String& name )
-  : J4VParameterList(name),  fSubLayerParameterList(0) 
+  : J4VParameterList(name)
+  //: J4VParameterList(name),  fSubLayerParameterList(0) 
 {
    fgInstance = this;
    
@@ -144,6 +145,9 @@ void J4CALParameterList::SetParameters()
    fHDMiniTowerNClones = 1;
    fHDMiniConeNClones  = 1;
       
+   // SubLeyars -----------
+   fNSubLayers = 2;
+
    // Thickness of AbsLayer ------------
    fEMAbsLayerThickness = 4. *mm;
    fHDAbsLayerThickness = 8. *mm;
@@ -152,6 +156,7 @@ void J4CALParameterList::SetParameters()
    fEMActiveLayerThickness = 1. *mm;
    fHDActiveLayerThickness = 2. *mm;
 
+   
    // Number of Barrel types
    fNIsBarrel          = 2;
 
