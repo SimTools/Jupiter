@@ -39,6 +39,11 @@ J4TPCHalf::J4TPCHalf(J4VDetectorComponent *parent,
 {   
 }
 
+J4TPCHalf::J4TPCHalf(const J4TPCHalf &orig, G4int copyno)
+         : J4VTPCDetectorComponent(orig, copyno)
+{
+}
+
 //=====================================================================
 //* destructor --------------------------------------------------------
 
@@ -139,6 +144,7 @@ void J4TPCHalf::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
+#if 0
 void J4TPCHalf::InstallIn(J4VComponent        *,
                           G4RotationMatrix    *,
                           const G4ThreeVector &) 
@@ -164,6 +170,18 @@ void J4TPCHalf::InstallIn(J4VComponent        *,
     SetPVPlacement(rotMat, tlate);
   }
 }
+#else
+void J4TPCHalf::InstallIn(J4VComponent        *,
+                          G4RotationMatrix    *rotp,
+                          const G4ThreeVector &tlate) 
+{ 
+  Assemble();			// You MUST call Assemble(); at first.
+  
+  // Placement function into mother object...
+
+  SetPVPlacement(rotp, tlate);
+}
+#endif
 
 
 

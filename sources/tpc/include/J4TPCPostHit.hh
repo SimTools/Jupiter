@@ -54,11 +54,11 @@ public:
   void  operator delete (void* aHit);
 
   virtual void Output(G4HCofThisEvent* HCTE);
-  static void SetCurPostHitPtr(J4TPCPostHit *hitp = 0) { fgCurPostHitPtr = hitp; }
-  static J4TPCPostHit *GetCurPostHitPtr() { return fgCurPostHitPtr; }
-  inline virtual G4int GetPostHitID() const { return fPostHitID; } 
-  static G4int GetCurPostHitID()      { return fgNhits; }
-  static  void SetOutput(J4Output *output) { fgOutput = output; }
+  static  void SetCurPostHitPtr(J4TPCPostHit *hitp = 0) { fgCurPostHitPtr = hitp; }
+  static  J4TPCPostHit *GetCurPostHitPtr()   { return fgCurPostHitPtr; }
+  inline  virtual G4int GetPostHitID() const { return fPostHitID;      } 
+  static          G4int GetCurPostHitID()    { return fgNhits;         }
+  static  void SetOutput(J4Output *output)   { fgOutput = output;      }
   virtual void Draw();
   virtual void Print();
     

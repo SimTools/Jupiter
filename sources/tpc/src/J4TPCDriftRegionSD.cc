@@ -15,6 +15,8 @@
 #include "G4VSolid.hh"
 #include "G4RotationMatrix.hh"
 
+//#define __DEBUG__
+
 G4int J4TPCDriftRegionSD::fgTrackRegID = -1;
  
 //=====================================================================
@@ -109,7 +111,13 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
     new J4TPCPostHit(location, trackID, mothertrackID, particle,
        			        tof, etot, p, pos);
  
+#ifdef __DEBUG__
+  G4int nhits = static_cast<J4TPCPostHitBuf *>(GetHitBuf())->insert(hitp);
+  G4cerr << " posthit id (fgNhits) = " << hitp->GetPostHitID() << G4endl;
+  G4cerr << " posthit id (entries) = " << nhits - 1            << G4endl;
+#else
   static_cast<J4TPCPostHitBuf *>(GetHitBuf())->insert(hitp);
+#endif
 
   return TRUE;
 } 

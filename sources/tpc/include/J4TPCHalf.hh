@@ -32,6 +32,7 @@ public:
                            G4int  nbrothers = 1, 
                            G4int  me        = 0,
                            G4int  copyno    = -1 );
+  J4TPCHalf(const J4TPCHalf &orig, G4int copyno);
   virtual ~J4TPCHalf();
 
   virtual void  InstallIn(J4VComponent         *mother,

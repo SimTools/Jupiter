@@ -19,9 +19,9 @@
 //---------------------
 
 J4TPCPostHitAllocator J4TPCPostHit::fgHitAllocator;
-J4Output*             J4TPCPostHit::fgOutput = 0;
-G4int                 J4TPCPostHit::fgNhits = 0;
-J4TPCPostHit         *J4TPCPostHit::fgCurPostHitPtr = 0;
+J4Output*             J4TPCPostHit::fgOutput        =  0;
+G4int                 J4TPCPostHit::fgNhits         = -1;
+J4TPCPostHit         *J4TPCPostHit::fgCurPostHitPtr =  0;
 
 
 //=========================================================================

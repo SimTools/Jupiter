@@ -73,13 +73,37 @@ void J4TPC::Assemble()
     fTPCHalfs = new J4TPCHalf* [2];
     Register(fTPCHalfs);
 
+#if 0
     for (G4int i = 0; i < 2; i++) {
       fTPCHalfs [i] = new J4TPCHalf(this, 1, 2, i);
       Register(fTPCHalfs[i]);
       fTPCHalfs [i]->InstallIn(this);
       SetDaughter(fTPCHalfs[i]);
     }  
+#else
+    // Create positive Z half first
 
+    fTPCHalfs [0] = new J4TPCHalf(this, 1, 1, 0, 0);
+    Register(fTPCHalfs[0]);
+    G4ThreeVector tlatepz(0., 0., +0.5 * len); 
+    fTPCHalfs [0]->InstallIn(this, 0, tlatepz);
+    SetDaughter(fTPCHalfs[0]);
+
+    // Then create negative Z half as a copy
+    // Make sure that the original has been InstalledIn before
+    // making a copy, or the copy will have no parts in it
+
+    fTPCHalfs [1] = new J4TPCHalf(*fTPCHalfs[0], 1);
+    Register(fTPCHalfs[1]);
+    G4ThreeVector tlatemz(0., 0., -0.5 * len); 
+    G4RotationMatrix *rotp = new G4RotationMatrix();
+    G4ThreeVector xv(1., 0., 0);
+    G4ThreeVector yv(0.,-1., 0);
+    G4ThreeVector zv(0., 0.,-1);
+    rotp->rotateAxes(xv, yv, zv);
+    fTPCHalfs [1]->InstallIn(this, rotp, tlatemz);
+    SetDaughter(fTPCHalfs[1]);
+#endif
   }
 }
 

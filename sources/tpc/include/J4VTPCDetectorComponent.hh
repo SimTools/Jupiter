@@ -25,12 +25,14 @@ class J4VTPCDetectorComponent : public J4VDetectorComponent
 
 public:
   //default constructor...
-  J4VTPCDetectorComponent( const G4String       &name, 
-  			  J4VDetectorComponent *parent    = 0,
+  J4VTPCDetectorComponent(const G4String       &name, 
+                          J4VDetectorComponent *parent    = 0,
                           G4int                 nclones   = 1,
                           G4int                 nbrothers = 1, 
                           G4int                 me        = 0,
                           G4int                 copyno    = -1 );
+  J4VTPCDetectorComponent(const J4VTPCDetectorComponent &orig,
+                                                  G4int  copyno);
 #if 0
   J4VTPCDetectorComponent(J4VTPCDetectorComponent& right);
   virtual const J4VTPCDetectorComponent& 

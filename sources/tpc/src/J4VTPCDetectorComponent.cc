@@ -37,6 +37,12 @@ J4VTPCDetectorComponent::J4VTPCDetectorComponent(
 { 
 }
 
+J4VTPCDetectorComponent::J4VTPCDetectorComponent(
+                                const J4VTPCDetectorComponent &orig,
+                                                        G4int  copyno)
+                       : J4VDetectorComponent(orig, copyno)
+{
+}
 
 //=====================================================================
 //* destructor --------------------------------------------------------
