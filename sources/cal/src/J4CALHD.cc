@@ -20,7 +20,7 @@
 // constants (detector parameters)
 //--------------------------------
 
-G4String J4CALHD::firstName("HD");
+const G4String& J4CALHD::firstName( "HD" );
 
 //=====================================================================
 //---------------------
@@ -30,14 +30,12 @@ G4String J4CALHD::firstName("HD");
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CALHD::J4CALHD(J4VDetectorComponent *parent,
-                                G4int  nclones,
-                                G4int  nbrothers, 
-                                G4int  me,
-                                G4int  copyno ) 
-  //: J4VCALDetectorComponent( fFirstName, parent, nclones,
-  //                                 nbrothers, me, copyno  )
-  : J4CALBlock( firstName, this, parent, nclones, nbrothers, me, copyno )
+J4CALHD::J4CALHD( J4VDetectorComponent *parent,
+                                 G4int  nclones,
+                                 G4int  nbrothers, 
+                                 G4int  me,
+                                 G4int  copyno ) 
+ : J4CALBlock( firstName, this, parent, nclones, nbrothers, me, copyno )
 {   
 }
 
@@ -46,10 +44,10 @@ J4CALHD::J4CALHD(J4VDetectorComponent *parent,
 
 J4CALHD::~J4CALHD()
 {
-  J4CALParameterList* list = OpenParameterList();
-  G4int nMiniCones = list->GetHDMiniConeNClones();
-  for(int i = 0; i < nMiniCones;i++){
-    if(Deregister(fMiniCones[i])) delete fMiniCones[i];
+  J4CALParameterList* ptrList = OpenParameterList();
+  G4int nMiniCones = ptrList -> GetHDMiniConeNClones();
+  for( G4int i = 0; i < nMiniCones; i++ ){
+    if( Deregister(fMiniCones[i]) ) delete fMiniCones[i];
   }
 }
 
@@ -58,41 +56,39 @@ J4CALHD::~J4CALHD()
 
 void J4CALHD::Assemble() 
 {   
-  if(!GetLV()){
+ if ( !GetLV() ) {
 
-    J4CALParameterList* list = OpenParameterList();
-    J4CALSubLayerParameterList* subList = list -> GetSubLayerParam();
+    J4CALParameterList* ptrList = OpenParameterList();
+    J4CALSubLayerParameterList* subList = ptrList -> GetSubLayerParam();
   
-    G4Sphere *mother  = (G4Sphere *)(GetMother()->GetSolid()); 
+    G4Sphere *mother = (G4Sphere *)(GetMother()->GetSolid()); 
 
-    G4int nMiniCones  = list->GetHDMiniConeNClones(); 
+    const G4int    nMiniCones  = ptrList -> GetHDMiniConeNClones(); 
+    const G4double EMThickness = (ptrList->GetEMNLayers())*(subList->GetTotalLayerSize("EM"));
+    // const G4double HDThickness = (ptrList->GetHDNLayers())*(subList->GetTotalLayerSize("HD"));
 
-    G4double EMThickness = (list->GetEMNLayers())*(subList->GetTotalLayerSize("EM"));
-    G4double HDThickness = (list->GetHDNLayers())*(subList->GetTotalLayerSize("HD"));
+    G4double rmin   = mother -> GetInsideRadius() + EMThickness;
+    G4double rmax   = mother -> GetOuterRadius();
+    G4double sphi   = mother -> GetStartPhiAngle();
+    G4double dphi   = mother -> GetDeltaPhiAngle();
+    G4double stheta = mother -> GetStartThetaAngle();
+    G4double dtheta = mother -> GetDeltaThetaAngle();
 
-    G4double rmin = mother->GetInsideRadius() + EMThickness;
-    G4double rmax = mother->GetOuterRadius();
-    G4double sphi = mother->GetStartPhiAngle();
-    G4double dphi = mother->GetDeltaPhiAngle();
-    G4double stheta = mother->GetStartThetaAngle();
-    G4double dtheta = mother->GetDeltaThetaAngle();
+    G4Sphere* block = new G4Sphere( GetName(), rmin, rmax, sphi, dphi, stheta, dtheta );
+    Register( block );
+    SetSolid( block );
 
-    G4Sphere* block = new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta);
-    Register(block);
-    SetSolid(block);
+    MakeLVWith( OpenMaterialStore()->Order(ptrList->GetHDMaterial()) );
 
-    MakeLVWith(OpenMaterialStore()->Order(list->GetHDMaterial()));
-
-    PaintLV(list->GetHDVisAtt(), list->GetHDColor());
+    PaintLV( ptrList->GetHDVisAtt(), ptrList->GetHDColor() );
       
-    //    J4CALBlock::Assemble();
-   for(G4int i = 0; i < nMiniCones; i++){
-     J4CALMiniCone* minicone = new J4CALMiniCone(fBlock,1,nMiniCones,i);
-     fMiniCones.push_back(minicone);
-     Register(minicone);
-     minicone->InstallIn(fBlock);
-     SetDaughter(minicone);
-  }
+    for ( G4int i = 0; i < nMiniCones; i++ ) {
+      J4CALMiniCone* minicone = new J4CALMiniCone( fBlock, 1, nMiniCones, i );
+      fMiniCones.push_back( minicone );
+      Register( minicone );
+      minicone -> InstallIn( fBlock );
+      SetDaughter( minicone );
+    }
   }
 }
 
@@ -111,20 +107,15 @@ void J4CALHD::Assemble()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CALHD::InstallIn(J4VComponent         *mother,
-                        G4RotationMatrix     *prot, 
-                        const G4ThreeVector  &tlate ) 
+void J4CALHD::InstallIn( J4VComponent         *mother,
+                         G4RotationMatrix     *prot, 
+                         const G4ThreeVector  &tlate ) 
 { 
    Assemble();			// You MUST call Assemble(); at first.
-  				// 
   
    // Placement function into mother object...
-
-   //SetPVPlacement();
    SetPVPlacement();
    
-  // Cabling(); 
-  
 }
 
 

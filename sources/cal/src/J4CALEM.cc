@@ -11,18 +11,16 @@
 //*************************************************************************
 
 #include "J4CALEM.hh"
-//#include "J4CALEMSD.hh"
 #include "J4CALParameterList.hh"
 #include "G4Sphere.hh"
 #include "J4CALMiniCone.hh"
-//#include "J4CALBlock.hh"
 
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
 
-G4String J4CALEM::firstName("EM");
+const G4String& J4CALEM::firstName( "EM" );
 
 //=====================================================================
 //---------------------
@@ -37,11 +35,8 @@ J4CALEM::J4CALEM(J4VDetectorComponent *parent,
                                 G4int  nbrothers, 
                                 G4int  me,
                                 G4int  copyno ) 
-  //: J4VCALDetectorComponent( fFirstName, parent, nclones,
-   //                                 nbrothers, me, copyno  )
-  : J4CALBlock( firstName, this, parent, nclones, nbrothers, me, copyno )
+ : J4CALBlock( firstName, this, parent, nclones, nbrothers, me, copyno )
 {   
-  //std::cout << __FILE__ << __LINE__ << std::endl;
 }
 
 //=====================================================================
@@ -49,10 +44,10 @@ J4CALEM::J4CALEM(J4VDetectorComponent *parent,
 
 J4CALEM::~J4CALEM()
 {
-  J4CALParameterList* list = OpenParameterList();
-  G4int nMiniCones = list->GetEMMiniConeNClones();
-  for(int i = 0; i < nMiniCones;i++){
-    if(Deregister(fMiniCones[i])) delete fMiniCones[i];
+  J4CALParameterList* ptrList = OpenParameterList();
+  G4int nMiniCones = ptrList->GetEMMiniConeNClones();
+  for( G4int i = 0; i < nMiniCones;i++ ){
+    if( Deregister(fMiniCones[i]) ) delete fMiniCones[i];
   }
 }
 
@@ -86,13 +81,13 @@ void J4CALEM::Assemble()
     PaintLV(ptrList->GetEMVisAtt(), ptrList->GetEMColor());
       
 //    J4CALBlock::Assemble();
- for(G4int i = 0; i < nMiniCones; i++){
-   J4CALMiniCone* minicone = new J4CALMiniCone(fBlock,1,nMiniCones,i);
-   fMiniCones.push_back(minicone);
-   Register(minicone);
-   minicone->InstallIn(fBlock);
-   SetDaughter(minicone);
- }
+    for(G4int i = 0; i < nMiniCones; i++){
+      J4CALMiniCone* minicone = new J4CALMiniCone( fBlock, 1, nMiniCones, i );
+      fMiniCones.push_back( minicone );
+      Register( minicone );
+      minicone->InstallIn( fBlock );
+      SetDaughter( minicone );
+    }
   }
 }
 
@@ -111,12 +106,11 @@ void J4CALEM::Assemble()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CALEM::InstallIn(J4VComponent         *mother,
-                        G4RotationMatrix     *prot, 
-                        const G4ThreeVector  &tlate ) 
+void J4CALEM::InstallIn( J4VComponent         *mother,
+                         G4RotationMatrix     *prot, 
+                         const G4ThreeVector  &tlate ) 
 { 
    Assemble();			// You MUST call Assemble(); at first.
-  				// 
   
    // Placement function into mother object...
    SetPVPlacement();

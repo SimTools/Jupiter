@@ -11,7 +11,6 @@
 //*************************************************************************
 
 #include "J4CALBlock.hh"
-//#include "J4CALBlockSD.hh"
 #include "J4CALParameterList.hh"
 #include "G4Sphere.hh"
 #include "J4CALMiniCone.hh"
@@ -31,19 +30,16 @@
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-//J4CALBlock::J4CALBlock(const G4String&  firstName,
 J4CALBlock::J4CALBlock( const G4String&  firstName,
                             J4CALBlock*  ptrBlock,
                    J4VDetectorComponent  *parent,
                                   G4int  nclones,
                                   G4int  nbrothers, 
                                   G4int  me,
-                                  G4int  copyno ) : 
- J4VCALDetectorComponent( firstName, parent, nclones,
-                                     nbrothers, me, copyno  ),
+                                  G4int  copyno ) 
+: J4VCALDetectorComponent( firstName, parent, nclones,
+                                 nbrothers, me, copyno  ),
  fFirstName(firstName), fBlock(ptrBlock)
-  //,rmin(0.), rmax(0.)
-  //,nMiniCones(1), nMiniTowers(1), fMiniCones(0)
 {   
 }
 
@@ -95,11 +91,6 @@ void J4CALBlock::Assemble()
 
 void J4CALBlock::Cabling()
 {
-  // if (!GetSD()) {
-  //    J4CALBlockSD* sd = new J4CALBlockSD(this);
-  //    Register(sd);
-  //    SetSD(sd);
-   //}
 }
 
 //=====================================================================
@@ -110,15 +101,11 @@ void J4CALBlock::InstallIn(J4VComponent      *mother,
                         const G4ThreeVector  &tlate ) 
 { 
   Assemble();			// You MUST call Assemble(); at first.
-  				// 
   
    // Placement function into mother object...
-
   SetPVPlacement();
-   //SetPVPlacement();
    
    //Cabling(); 
-  
 }
 
 

@@ -20,7 +20,7 @@
 // constants (detector parameters)
 //--------------------------------
 
-G4String J4CALCone::fFirstName("Cone");
+const G4String& J4CALCone::fFirstName( "Cone" );
 
 //=====================================================================
 //---------------------
@@ -30,16 +30,16 @@ G4String J4CALCone::fFirstName("Cone");
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CALCone::J4CALCone(J4VDetectorComponent *parent,
-                                        G4int  nclones,
-                                        G4int  nbrothers, 
-                                        G4int  me,
-                                        G4int  copyno )
+J4CALCone::J4CALCone( J4VDetectorComponent *parent,
+                                    G4int  nclones,
+                                    G4int  nbrothers, 
+                                    G4int  me,
+                                    G4int  copyno )
  : J4VCALDetectorComponent( fFirstName, parent, nclones,
                             nbrothers, me, copyno ), fTower(0) 
 {   
-   J4CALParameterList                  *list     = OpenParameterList();  	
-   J4CALParameterList::J4CALTowerParam *curparam = list->GetTowerParam(me); 
+   J4CALParameterList *ptrList = OpenParameterList();  	
+   J4CALParameterList::J4CALTowerParam *curparam = ptrList->GetTowerParam(me); 
    fIsBarrel = curparam->IsBarrel(); 
 }
 
@@ -48,7 +48,7 @@ J4CALCone::J4CALCone(J4VDetectorComponent *parent,
 
 J4CALCone::~J4CALCone()
 {
-   if (Deregister(fTower)) delete fTower;
+   if ( Deregister(fTower) ) delete fTower;
 }
 
 //=====================================================================
@@ -62,8 +62,8 @@ void J4CALCone::Assemble()
       J4CALParameterList::J4CALTowerParam *curparam = ptrList->GetTowerParam(GetMyID());
       
       J4CALSubLayerParameterList* subList = ptrList->GetSubLayerParam();  	
-      G4double EMThickness = (ptrList->GetEMNLayers()) * (subList->GetTotalLayerSize("EM"));
-      G4double HDThickness = (ptrList->GetHDNLayers()) * (subList->GetTotalLayerSize("HD"));
+      const G4double EMThickness = (ptrList->GetEMNLayers()) * (subList->GetTotalLayerSize("EM"));
+      const G4double HDThickness = (ptrList->GetHDNLayers()) * (subList->GetTotalLayerSize("HD"));
       
       G4double rmin   = curparam->GetR();
       G4double rmax   = rmin + EMThickness + HDThickness; 
@@ -86,10 +86,10 @@ void J4CALCone::Assemble()
       PaintLV(ptrList->GetConeVisAtt(), ptrList->GetConeColor());
   	
       // Install daughter PV //
-      fTower = new J4CALTower(this, nphi);  
-      Register(fTower);
-      fTower->InstallIn(this);
-      SetDaughter(fTower);
+      fTower = new J4CALTower( this, nphi );  
+      Register( fTower );
+      fTower->InstallIn( this );
+      SetDaughter( fTower );
 
    }
 }
@@ -104,16 +104,14 @@ void J4CALCone::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CALCone::InstallIn(J4VComponent         *mother,
-                            G4RotationMatrix     *prot, 
-                            const G4ThreeVector  &tlate ) 
+void J4CALCone::InstallIn( J4VComponent         *mother,
+                           G4RotationMatrix     *prot, 
+                           const G4ThreeVector  &tlate ) 
 { 
    Assemble();			// You MUST call Assemble(); at first.
-  				// 
   
    // Placement function into mother object...
    SetPVPlacement();
-  
 }
 
 //* Draw  --------------------------------------------------------
