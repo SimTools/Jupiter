@@ -119,10 +119,11 @@ void J4TPCDriftRegion::InstallIn(J4VComponent        *,
   				// 
   
   // Placement function into mother object...
-  G4double z = - OpenParameterList()->GetCentralMembraneHalfThick() / 2
-               - OpenParameterList()->GetEndcapHalfThick()
-               - OpenParameterList()->GetPadPlaneHalfThick();
-
+  J4TPCParameterList *list = OpenParameterList();
+  G4double z = list->GetCentralMembraneHalfThick() / 2
+             - list->GetEndcapHalfThick()
+             - list->GetPadPlaneHalfThick();
+              
   G4ThreeVector tlate(0., 0., z);
   SetPVPlacement(0, tlate);
 

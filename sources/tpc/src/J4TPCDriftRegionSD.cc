@@ -59,10 +59,10 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   
   SetNewStep(aStep);
 
-  const G4ThreeVector    &pos      = GetPostPosition();
-  G4ThreeVector           p        = GetMomentum();
-  J4VComponent*          location  = GetComponent();
-  G4int                  trackID       = GetTrackID();
+  const G4ThreeVector     &pos      = GetPostPosition();
+  G4ThreeVector            p        = GetMomentum();
+  J4VComponent*            location = GetComponent();
+  G4int                    trackID  = GetTrackID();
 #if 1
   const G4RotationMatrix  *rotp     = GetRotation();
   G4ThreeVector            localp   = rotp ? rotp->inverse() * p : p;

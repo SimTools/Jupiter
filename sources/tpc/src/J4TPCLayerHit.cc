@@ -25,18 +25,18 @@ J4Output*              J4TPCLayerHit::fOutput = 0;
 //* constructor -----------------------------------------------------------
 
 J4TPCLayerHit::J4TPCLayerHit(
-                   J4VComponent         *detector,       // He is in "location" now
-                   G4int                 trackID,        // TrackID
-                   G4int                 mothertrackID,  // MotherTrackID
-                   G4ParticleDefinition *particle,       // particle
-                   G4double              tof,            // TOF 
-                   G4double              edep,           // Energy Deposit
-                   G4double              totalE,         // Total energy
-                   const G4ThreeVector  &momentum,       // Momentum of perticle
-                   const G4ThreeVector  &pre,            // Pre-position of track
-                   const G4ThreeVector  &pos )           // Post-position of track
+               J4VComponent         *detector,       // He is in "location" now
+               G4int                 trackID,        // TrackID
+               G4int                 mothertrackID,  // MotherTrackID
+               G4ParticleDefinition *particle,       // particle
+               G4double              tof,            // TOF 
+               G4double              edep,           // Energy Deposit
+               G4double              totalE,         // Total energy
+               const G4ThreeVector  &momentum,       // Momentum of perticle
+               const G4ThreeVector  &pre,            // Pre-position of track
+               const G4ThreeVector  &pos )           // Post-position of track
              : J4VTrackerHit(detector, trackID, mothertrackID, particle,
-                      tof, edep, totalE, momentum, pre, pos)
+                             tof, edep, totalE, momentum, pre, pos)
 {
 }
 
@@ -65,7 +65,8 @@ void J4TPCLayerHit::Output(G4HCofThisEvent *)
      G4ThreeVector pre  = GetPrePosition();
      G4ThreeVector post = GetPostPosition();
 
-     ofs << std::setw(1) << GetComponent()->GetMyID() << " " 
+     ofs << "Layer "
+         << std::setw(1) << GetComponent()->GetMyID() << " " 
          << std::setw(7) << GetTrackID() << " " 
          << std::setw(7) << GetMotherTrackID() << " " 
          << std::setw(6) << GetPDGEncoding() << " " 
@@ -103,8 +104,6 @@ void J4TPCLayerHit::Draw()
 
 void J4TPCLayerHit::Print()
 {
-
-
   G4cout << std::setiosflags(std::ios::fixed);
   G4cout << std::setw(20) << GetComponentName() << " " << G4endl;
   G4cout << " track#=" << GetTrackID()

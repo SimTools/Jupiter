@@ -65,27 +65,22 @@ void J4TPCPostHit::Output(G4HCofThisEvent *)
     G4Exception(errorMessage);
   } else {
 
-     G4ThreeVector pre  = GetPrePosition();
-     G4ThreeVector post = GetPostPosition();
+     G4ThreeVector pos = GetPostPosition();
 
-     ofs << std::setw(7) << fPostHitID << " "
-         << std::setw(1) << GetComponent()->GetMyID() << " " 
+     ofs << "PostHit " 
+         << std::setw(7) << fPostHitID << " "
          << std::setw(7) << GetTrackID() << " " 
          << std::setw(7) << GetMotherTrackID() << " " 
          << std::setw(6) << GetPDGEncoding() << " " 
          << std::setw(2) << GetCharge() << " " 
          << std::setiosflags(std::ios::scientific) << std::setprecision(14)
-         << std::setw(18) << pre.x() << " " 
-         << std::setw(18) << pre.y() << " " 
-         << std::setw(18) << pre.z() << " "
-         << std::setw(18) << post.x() << " " 
-         << std::setw(18) << post.y() << " " 
-         << std::setw(18) << post.z() << " "
+         << std::setw(18) << pos.x() << " " 
+         << std::setw(18) << pos.y() << " " 
+         << std::setw(18) << pos.z() << " "
          << std::setw(18) << GetMomentum().x() << " " 
          << std::setw(18) << GetMomentum().y() << " "
          << std::setw(18) << GetMomentum().z() << " " 
          << std::setw(18) << GetTotalEnergy() << " " 
-         << std::setw(18) << GetEnergyDeposit() << " " 
          << std::setw(18) << GetTof() << " "
          << std::setiosflags(std::ios::floatfield) 
          << std::setprecision(8)
