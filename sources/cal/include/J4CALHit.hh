@@ -45,7 +45,8 @@ public:
             G4bool        isBarrel,
             G4double      edep,
             G4double      tof,
-	    const G4ThreeVector& xcm );
+	    const G4ThreeVector& xcm,
+	    const G4ThreeVector& xcell );
   
   virtual ~J4CALHit();
 
@@ -65,7 +66,8 @@ public:
   inline G4bool        IsBarrel()    const { return fIsBarrel; }
   inline G4double      GetEdep()     const { return fEdep;     }
   inline G4double      GetTof()      const { return fTof;      }
-  inline G4ThreeVector GetXcm()      const { return fXcm; } // note: this returns energy * position vector
+  inline G4ThreeVector GetXcell()    const { return fXcell;    }
+  inline G4ThreeVector GetXcm()      const { return fXcm;      } // note: this returns energy * position vector
  
   inline void SetPreHitID( G4int id )    { fPreHitID = id;}
   inline void SetPreTrkID( G4int id )    { fPreTrkID = id;}
@@ -75,6 +77,7 @@ public:
   inline void SetEdep( G4double x )      { fEdep     = x; }
   inline void SetTof( G4double x )       { fTof      = x; }
   inline void SetXcm( G4ThreeVector v )  { fXcm      = v; }
+  inline void SetXcell( G4ThreeVector v ){ fXcell    = v; }
 
   inline void AddEdep( G4double ed )     { fEdep += ed; }
   inline void AddXcm( G4ThreeVector v )  { fXcm += v;  } // note: v should be edep*position vector
@@ -92,6 +95,7 @@ private:
   G4double        fEdep;
   G4double        fTof;
   G4ThreeVector   fXcm;
+  G4ThreeVector   fXcell;
 };
 
 //----------------------------------------

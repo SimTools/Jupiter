@@ -58,7 +58,7 @@ void J4CALPreHit::Output( G4HCofThisEvent* /* PreHCTE */ )
     G4cerr << errorMessage << G4endl;
   } else {
     ofs << std::setw(3)  << fPreHitID << " "
-      //<< std::setw(7)  << fTrackID << " "
+        << std::setw(5)  << fTrackID << " "
 	<< std::setw(12) << fEnergy << " "
         << std::setw(7)  << fMomentum.x() << " "
 	<< std::setw(7)  << fMomentum.y() << " "
@@ -85,7 +85,6 @@ void J4CALPreHit::Draw()
 
 void J4CALPreHit::Print()
 {
-  //std::cout << std::setw(20) << GetComponentName() << " " //<< std::endl;
   std::cout << " charge=" << fParticle->GetPDGCharge()
             << " energy(GeV)= " << std::setprecision(2)
             << std::setw(6) << fEdep *(1./GeV) << " "
