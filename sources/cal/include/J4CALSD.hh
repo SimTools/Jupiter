@@ -15,6 +15,7 @@
  
 #include "J4VSD.hh"
 #include "J4CALPreHit.hh"
+#include "J4TrackingAction.hh"
 
 //=====================================================================
 //---------------------
@@ -57,18 +58,18 @@ public:
   // set/get functions
   inline J4CALPreHit* GetCurrentPreHitPtr() const { return fCurrentPreHitPtr; }
   inline static G4int GetCurrentPreHitID() { return fgCurrentPreHitID; }
-  inline static G4int GetCurrentTrackID()  { return fgCurrentTrackID; }
+  inline static G4int GetCurrentTrackID()  { return J4TrackingAction::GetCurTrackID(fgTrackRegID); }
 
 private:
   inline void SetCurrentPreHitPtr( J4CALPreHit* p ) { fCurrentPreHitPtr = p; }
   inline static void SetCurrentPreHitID( G4int n )  { fgCurrentPreHitID = n; }
-  inline static void SetCurrentTrackID( G4int n )   { fgCurrentTrackID  = n; }
+  inline static void SetCurrentTrackID( G4int n )   { J4TrackingAction::SetCurTrackID(fgTrackRegID, n); }
    
 private:
   //J4CALPreHit  *fCalPreHits;
   J4CALPreHit*  fCurrentPreHitPtr;
   static G4int  fgCurrentPreHitID;
-  static G4int  fgCurrentTrackID;
+  static G4int  fgTrackRegID;
 };
 
 #endif
