@@ -18,13 +18,10 @@
 #include "J4MUDBarrelActive.hh"
 #include "J4MUDBarrelActiveSD.hh"
 #include "J4UnionSolid.hh"
+#include "J4MUDFrontEndcapAbs.hh"
+#include "J4MUDFrontEndcapActive.hh"
+#include "J4MUDFrontEndcapActiveSD.hh"
 #include "G4Tubs.hh"
-
-#ifdef __FRONTENDCAP__
- #include "J4MUDFrontEndcapAbs.hh"
- #include "J4MUDFrontEndcapActive.hh"
- #include "J4MUDFrontEndcapActiveSD.hh"
-#endif
 
 // ====================================================================
 //--------------------------------
@@ -69,7 +66,7 @@ J4MUDBlock::~J4MUDBlock()
   }
   if ( Deregister( fBarrelActive ) ) delete [] fBarrelActive;
   
-#ifdef __FRONTENDCAP__
+#ifdef __GLD_V1__
   for ( G4int i = 0; i < 2*ptrList->GetFrontEndcapNAbsLayers(); i++ ) {
      if ( Deregister( fFrontEndcapAbs[i] ) ) delete fFrontEndcapAbs [i];
    }
@@ -90,66 +87,53 @@ void J4MUDBlock::Assemble()
   if ( !GetLV() ) {
   	
     J4MUDParameterList* ptrList = OpenParameterList(); 
-    G4double rmin             = ptrList->GetMUDInnerR(); 
-    G4double rmax             = ptrList->GetMUDOuterR();
-    G4double endcap           = 0.5*( ptrList->GetEndcapThick() );
-    G4double endcaprmin       = ptrList->GetEndcapInnerR();
+    G4double rmin               = ptrList->GetBlockInnerR(); 
+    G4double rmax               = ptrList->GetBlockOuterR();
+    G4double endcapHalf         = 0.5*( ptrList->GetBlockEndcapThick() );
+    G4double endcaprmin         = ptrList->GetBlockEndcapInnerR();
 
-#ifdef __FRONTENDCAP__
+#ifdef __GLD_V1__
+    G4int    myID               = GetMyID();
+    G4double dphi               = ptrList->GetTrapDeltaPhi();
+    G4double sphi               = dphi*myID - 0.5*dphi;
 
- #ifdef __MUDREPLICA__
-    G4double dphi             = ptrList->GetMUDDeltaPhi();
-    G4double sphi             = 0.0;
- #else
-    G4int    myID             = GetMyID();
-    G4double dphi             = ptrList->GetTrapDeltaPhi();
-    G4double sphi             = dphi*myID - 0.5*dphi;
- #endif
- 
-    G4double len              = ptrList->GetMUDHalfL() - ptrList->GetEndcapThick();
-    G4double endcapfront      = ptrList -> GetEndcapFrontZ();
-    G4double frontEndcap      = 0.5*( ptrList->GetFrontEndcapThick() );
-    G4double frontEndcaprmin  = ptrList->GetEndcapInnerR();
-    G4double frontEndcaprmax  = ptrList->GetFrontEndcapOuterR();
-    G4double frontEndcapFront = ptrList->GetFrontEndcapFrontZ();
+    G4double halfLength         = ptrList->GetBlockHalfL() - ptrList->GetBlockEndcapThick();
+    G4double endcapfront        = ptrList->GetBlockEndcapFrontZ();
+    G4double frontEndcapHalf    = 0.5*(ptrList->GetBlockFrontEndcapThick());
+    G4double frontEndcaprmin    = ptrList->GetBlockEndcapInnerR();
+    G4double frontEndcaprmax    = ptrList->GetBlockFrontEndcapOuterR();
+    G4double frontEndcapFront   = ptrList->GetBlockFrontEndcapFrontZ();
 
     G4String  barrelName( GetName() ); barrelName += ".Barrel";
-    G4VSolid* ptrBarrel = new G4Tubs( barrelName, rmin, rmax, len, sphi, dphi );
+    G4VSolid* ptrBarrel = new G4Tubs( barrelName, rmin, rmax, halfLength, sphi, dphi );
     G4String  endcapName( GetName() ); endcapName += ".Endcap";
-    G4VSolid* ptrEndcap = new G4Tubs( endcapName, endcaprmin, rmax, endcap, sphi, dphi );
+    G4VSolid* ptrEndcap = new G4Tubs( endcapName, endcaprmin, rmax, endcapHalf, sphi, dphi );
     G4String  frontEndcapName( GetName() ); frontEndcapName += ".FrontEndcap";
-    G4VSolid* ptrFrontEndcap = new G4Tubs( frontEndcapName, frontEndcaprmin, frontEndcaprmax, frontEndcap, sphi, dphi );
+    G4VSolid* ptrFrontEndcap = new G4Tubs( frontEndcapName, frontEndcaprmin, frontEndcaprmax, frontEndcapHalf, sphi, dphi );
 
+    // Make MUDBlock solid using UnionSolid -------------------------------------------------//
     G4String solid1name( GetName() ); solid1name += ".solid1";
-    G4ThreeVector tlate1( 0, 0, frontEndcapFront+frontEndcap );
+    G4ThreeVector tlate1( 0, 0, frontEndcapFront+frontEndcapHalf );
     G4VSolid* solid1 = new J4UnionSolid( solid1name, ptrBarrel, ptrFrontEndcap, 0, tlate1 );
-    
     G4String solid2name( GetName() ); solid2name += ".solid2";
-    G4ThreeVector tlate2( 0, 0, -1*(frontEndcapFront+frontEndcap) );
+    G4ThreeVector tlate2( 0, 0, -1*(frontEndcapFront+frontEndcapHalf) );
     G4VSolid* solid2 = new J4UnionSolid( solid2name, solid1, ptrFrontEndcap, 0, tlate2 );
-    
     G4String solid3name( GetName() ); solid3name += ".solid3";
-    G4ThreeVector tlate3( 0, 0, endcapfront+endcap );
+    G4ThreeVector tlate3( 0, 0, endcapfront+endcapHalf );
     G4VSolid* solid3 = new J4UnionSolid( solid3name, solid2, ptrEndcap, 0, tlate3 );
-    G4ThreeVector tlate4( 0, 0, -1*(endcapfront+endcap) );
+    G4ThreeVector tlate4( 0, 0, -1*(endcapfront+endcapHalf) );
     G4VSolid* ptrBlockSolid = new J4UnionSolid( GetName(), solid3, ptrEndcap, 0, tlate4 );
     Register(ptrBlockSolid);
     SetSolid(ptrBlockSolid);
+    
 #else
-
-    G4double len     = ptrList->GetMUDHalfL();
-
- #ifdef __MUDREPLICA__
-    G4double dphi             = ptrList->GetMUDDeltaPhi();
-    G4double sphi             = -0.5*45*deg;
- #else
-    G4int    myID             = GetMyID();
-    G4double dphi             = ptrList->GetTrapDeltaPhi();
-    G4double sphi             = dphi*myID - 0.5*dphi;
- #endif
+    G4double len     = ptrList->GetBlockHalfL();
+    G4int    myID    = GetMyID();
+    G4double dphi    = ptrList->GetTrapDeltaPhi();
+    G4double sphi    = dphi*myID - 0.5*dphi;
  
     // MakeSolid ----------//
-    OrderNewTubs( rmin, rmax, len, dphi, endcap, endcaprmin, sphi );
+    OrderNewTubs( rmin, rmax, len, dphi, endcapHalf, endcaprmin, sphi );
 #endif
 
     // MakeLogicalVolume --//  
@@ -201,7 +185,7 @@ void J4MUDBlock::Assemble()
       SetDaughter( fBarrelActive[i] );
     }
 
-#ifdef __FRONTENDCAP__
+#ifdef __GLD_V1__
     const G4int nFrontEndcapAbs    = ptrList->GetFrontEndcapNAbsLayers();
     const G4int nFrontEndcapActive = ptrList->GetFrontEndcapNActiveLayers();
     fFrontEndcapAbs    = new J4MUDFrontEndcapAbs*    [2*nFrontEndcapAbs];
@@ -239,12 +223,7 @@ void J4MUDBlock::InstallIn( J4VComponent*        /* mother */,
 { 
   Assemble();			// You MUST call Assemble(); at first.
 
-#ifdef __MUDREPLICA__
-  G4double dphi = OpenParameterList()->GetTrapDeltaPhi();
-  SetPVReplica( kPhi, dphi );
-#else
   SetPVPlacement();
-#endif
 
- Cabling();
+  Cabling();
 }
