@@ -38,6 +38,7 @@ public:
             G4int                 layerID       = 0,
             G4bool                isBarrel      = 0,
             G4bool                isFront       = 0,
+	    G4int                 preHitID      = 0,
             G4int                 trackID       = 0,
             G4int                 mothertrackID = 0,
             G4ParticleDefinition* particle      = 0,
@@ -46,7 +47,7 @@ public:
             G4double              totalE        = 0,
             const G4ThreeVector & momentum      = 0,
             const G4ThreeVector & pre           = 0,
-            const G4ThreeVector & pos           = 0  );	
+            const G4ThreeVector & post          = 0  );
   	 	            
   //J4MUDHit( const J4MUDHit& right );
   
@@ -68,21 +69,26 @@ public:
   static J4Output*         fgOutput;       // Pointer to Output Module
 
 // Setter/Getter
-  inline G4bool GetBlockID()  const { return fBlockID;  }
-  inline G4bool GetLayerID()  const { return fLayerID;  }
-  inline G4bool GetIsBarrel() const { return fIsBarrel; }
-  inline G4bool GetIsFront()  const { return fIsFront;  }
+  inline G4int  GetBlockID()  const   { return fBlockID;  }
+  inline G4int  GetLayerID()  const   { return fLayerID;  }
+  inline G4bool GetIsBarrel() const   { return fIsBarrel; }
+  inline G4bool GetIsFront()  const   { return fIsFront;  }
+  inline G4int  GetPreHitID() const   { return fPreHitID; }
   
   inline void SetBlockID( G4int i )   { fBlockID  = i; }
   inline void SetLayerID( G4int i )   { fLayerID  = i; }
   inline void SetIsBarrel( G4bool b ) { fIsBarrel = b; }
   inline void SetIsFront( G4bool b )  { fIsFront  = b; }
 
+  //inline void AddEdep( G4double e )   { fEdep += e;    }
+
 private:
-  G4int  fBlockID; 
-  G4int  fLayerID;
-  G4bool fIsBarrel;
-  G4bool fIsFront;
+  G4int    fBlockID; 
+  G4int    fLayerID;
+  G4bool   fIsBarrel;
+  G4bool   fIsFront;
+  G4int    fPreHitID;
+  G4double fEdep;
 
 };
   
