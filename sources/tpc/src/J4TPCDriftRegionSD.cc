@@ -65,13 +65,8 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   G4ThreeVector            p        = GetMomentum();
   J4VComponent*            location = GetComponent();
   G4int                    trackID  = GetTrackID();
-  const G4RotationMatrix  *rotp     = GetRotation();
-  G4ThreeVector            localp   = rotp ? rotp->inverse() * p : p;
-  G4ThreeVector            localpos = (rotp ? rotp->inverse()
-                                    * (pos - GetTranslation())
-                                    : (pos - GetTranslation()));
 
-  if (!IsExiting(localpos, localp) || !J4TrackingAction::IsNext(fgTrackRegID)) {
+  if (!IsExiting(pos, p) || !J4TrackingAction::IsNext(fgTrackRegID)) {
     return FALSE;
   }
 
@@ -81,16 +76,6 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   G4ParticleDefinition  *particle      = GetParticle();
   G4double               tof           = GetTof();
   G4double               etot          = GetTotalEnergy();
-  
-#if 0  
-  G4cerr << "SDname       = " << GetComponent()->GetName()   << G4endl 
-  	 << "TrackID      = " << trackID                     << G4endl 
-  	 << "ParticleName = " << particle->GetParticleName() << G4endl
-  	 << "PreStepPoint = " << pre.x() << " " 
-  	                      << pre.y() << " " << pre.z()   << G4endl 
-         << "PreStepR     = " << pre.perp()                  << G4endl 
-         << "PostStepR    = " << pos.perp()                  << G4endl;
-#endif
 
 #if 0
   // write only if hit is not in layer
@@ -112,6 +97,28 @@ G4bool J4TPCDriftRegionSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   G4cerr << " posthit id (entries) = " << nhits - 1            << G4endl;
 #else
   static_cast<J4TPCPostHitBuf *>(GetHitBuf())->insert(hitp);
+#endif
+  
+#ifdef __DEBUG__
+  const G4ThreeVector     &pre      = GetPrePosition();
+  G4cerr << "SDname       = "  << GetComponent()->GetName()   << G4endl 
+  	 << "TrackID      = "  << trackID                     << G4endl 
+  	 << "Mom TrackID  = "  << mothertrackID               << G4endl 
+  	 << "ParticleName = "  << particle->GetParticleName() << G4endl
+  	 << "Etot         = "  << etot/GeV      << " [GeV]"   << G4endl
+  	 << "P            = (" << p.x()/GeV     << ", " 
+  	                       << p.y()/GeV     << ", " 
+                               << p.z()/GeV     << ") [GeV]"  << G4endl 
+  	 << "PreStepPoint = (" << pre.x()/cm    << ", " 
+  	                       << pre.y()/cm    << ", " 
+                               << pre.z()/cm    << ") [cm]"   << G4endl 
+  	 << "PosStepPoint = (" << pos.x()/cm    << ", " 
+  	                       << pos.y()/cm    << ", " 
+                               << pos.z()/cm    << ") [cm]"   << G4endl 
+         << "PreStepR     = "  << pre.perp()/cm << " [cm]"    << G4endl 
+         << "PreStepZ     = "  << pre.z()/cm    << " [cm]"    << G4endl 
+         << "PostStepR    = "  << pos.perp()/cm << " [cm]"    << G4endl
+         << "PostStepZ    = "  << pos.z()/cm    << " [cm]"    << G4endl;
 #endif
 
   return TRUE;
@@ -145,12 +152,13 @@ G4bool J4TPCDriftRegionSD::IsExiting(const G4ThreeVector &pos,
                                      const G4ThreeVector &p) const
 {
   J4TPCParameterList *list = J4TPCParameterList::GetInstance();
+  static G4double tol = 10.;
     
-  if (abs(pos.perp() - list->GetOuterSupportTubInnerR()) <= kCarTolerance &&
+  if (abs(pos.perp() - list->GetOuterSupportTubInnerR()) <= tol*kCarTolerance &&
       p.x() * pos.x() + p.y() * pos.y() > 0.) {
      return TRUE;
   }
-  if (abs(abs(pos.z()) - list->GetPadPlaneFrontZ()) <= kCarTolerance &&
+  if (abs(abs(pos.z()) - list->GetPadPlaneFrontZ()) <= tol*kCarTolerance &&
       p.z() * pos.z() > 0.) {
      return TRUE;
   }
