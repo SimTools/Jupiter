@@ -58,7 +58,7 @@ void J4MUDParameterList::SetParameters()
   fBarrelInnerR    = 450.0*cm;
   fBarrelOuterR    = 700.0*cm;
   fEndcapFrontZ    = 430.0*cm;
-  fEndcapInnerR    = 40.0*cm;
+  fEndcapInnerR    = 44.0*cm;
   fEndcapThickness = 415.0*cm;
   fDeltaPhi        = 360.*deg;
   fNBarrelLayers   = 5;
