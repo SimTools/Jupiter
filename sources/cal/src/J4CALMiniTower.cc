@@ -185,7 +185,7 @@ void J4CALMiniTower::InstallIn( J4VComponent       *    mother,
 #if 0
       SetPVReplica(kPhi, step);
 #else
-      G4double off  = ((G4Sphere *)GetMother()->GetSolid())->GetStartPhiAngle() + 0.5*step;
+      G4double off  = ((G4Sphere *)mother->GetSolid())->GetStartPhiAngle() + 0.5*step;
       SetPVReplica(kPhi, step, off);
 #endif
    } else {
