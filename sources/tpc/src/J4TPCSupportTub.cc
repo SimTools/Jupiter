@@ -59,8 +59,9 @@ void J4TPCSupportTub::Assemble()
     OrderNewTubs (fRmin, fRmax, fLen, fTotalPhi);
    
     // MakeLogicalVolume --//
-    G4String material = !GetMyID() ? list->GetInnerSupportTubMaterial() : 
-                                     list->GetOuterSupportTubMaterial() ; 
+    G4String material = (fRmin < list->GetInnerSupportTubOuterR())
+                               ? list->GetInnerSupportTubMaterial(): 
+                                 list->GetOuterSupportTubMaterial(); 
 
     MakeLVWith(OpenMaterialStore()->Order(material));
     
