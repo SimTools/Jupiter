@@ -56,13 +56,14 @@ public:
   void  operator delete (void* aHit);
 
   virtual void Output(G4HCofThisEvent* HCTE);
+  static  void SetOutput(J4Output *output) { fOutput = output; }
   virtual void Draw();
   virtual void Print();
     
 private: 
 
   static J4TPCLayerHitAllocator  fHitAllocator;
-  static J4Output              *fOutput;       // Pointer to Output Module
+  static J4Output               *fOutput;       // Pointer to Output Module
   
 };
 
