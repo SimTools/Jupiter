@@ -11,6 +11,7 @@
 
 #include "J4TPCParameterList.hh"
 
+
 J4TPCParameterList * J4TPCParameterList::fgInstance = 0;
 
 //=====================================================================
@@ -86,19 +87,18 @@ void J4TPCParameterList::SetParameters()
    fOuterSupportTubHalfThick = 4.1175*cm;
 
    // Layer
-#if 1  
-   fNlayers             = 200;
-   fLayerThick          = 0.001*mm;
-   fFirstLayerInnerR    = 5.0*mm;
-#elif 1
-   fNlayers             = 50;
-   fLayerThick          = 0.001*mm;
+#ifdef __GLC3T__   
+   fNlayers             = 130;
    fFirstLayerInnerR    = 5.0*mm;
 #else
+   fNlayers             = 200;
+   fFirstLayerInnerR    = 5.0*mm;
+#endif
+#if 0
    fNlayers             = 5;
-   fLayerThick          = 0.001*mm;
    fFirstLayerInnerR    = 10.*cm;
 #endif
+   fLayerThick          = 0.001*mm;   // temporary, it should be more thick.
    fT0detThick          = 0.56*mm;
 
    // CentralMembrane
@@ -121,7 +121,7 @@ void J4TPCParameterList::SetVisAttributes()
 {
    fTPCVisAtt             = FALSE;
    fTPCHalfVisAtt         = FALSE;
-   fLayerVisAtt           = TRUE;
+   fLayerVisAtt           = FALSE;
    fEndcapVisAtt          = TRUE;
    fSupportTubVisAtt      = TRUE;
    fCentralMembraneVisAtt = TRUE;
