@@ -52,6 +52,13 @@ class J4VCDCDriftRegionHit : public J4VTrackerHit
   inline  J4VCDCDriftRegionHit(const J4VCDCDriftRegionHit &right);
   
   virtual ~J4VCDCDriftRegionHit();
+
+  virtual const G4ThreeVector & GetWireEnd  (G4int i=0) const
+  {
+     return fWireEnd[i];
+  }
+  virtual G4double  GetTanStereo() const { return fTanStereo; }
+  virtual G4double  GetRwaist   () const { return fRwaist;    }
   
   virtual void Output(G4HCofThisEvent *HCTE) = 0;
   virtual void Draw() {}
