@@ -11,6 +11,7 @@
 //*     
 //* (Update Record)
 //*     2004/08/30  Ono Hiroaki J4CALPreHit class for CAL front infomation
+//*     2004/11/01  Allister Sanchez  Remove redundant data/functions which are in J4VHit.
 //*************************************************************************
 
 #include "J4VHit.hh"
@@ -43,7 +44,8 @@ public:
 	       G4double              edep,
 	       G4double              tof,
 	       G4int                 trackID,
-               G4ParticleDefinition* particle );
+               G4ParticleDefinition* particle,
+	       G4int                 motherTrackID );
 
   virtual ~J4CALPreHit();
   //  inline const J4CALPreHit& operator=( const J4CALPreHit& right );
@@ -57,21 +59,21 @@ public:
 
   // getters
   inline G4int         GetPreHitID()         const { return fPreHitID;       }
-  inline G4ThreeVector GetInjectionPoint()   const { return fInjectionPoint; }
-  inline G4ThreeVector GetMomentum()         const { return fMomentum;       }
-  inline G4double      GetKineticEnergy()    const { return fEnergy;         }
-  inline G4double      GetTof()              const { return fTof;            }
-  inline G4int         GetTrackID()          const { return fTrackID;        }
-  inline G4ParticleDefinition* GetParticle() const { return fParticle;       }
+  inline G4ThreeVector GetInjectionPoint()   const { return GetPrePosition(); }
+  //inline G4ThreeVector GetMomentum()         const { return fMomentum;       }
+  //inline G4double      GetKineticEnergy()    const { return fEnergy;         }
+  //inline G4double      GetTof()              const { return fTof;            }
+  //inline G4int         GetTrackID()          const { return fTrackID;        }
+  //inline G4ParticleDefinition* GetParticle() const { return fParticle;       }
   
   // setters
   inline void SetPreHitID( G4int n )                 { fPreHitID       = n; }
-  inline void SetInjectionPoint( G4ThreeVector p )   { fInjectionPoint = p; }
-  inline void SetMomentum( const G4ThreeVector& p )  { fMomentum       = p; }
-  inline void SetKineticEnergy( G4double x )         { fEnergy = x; } 
-  inline void SetTof( G4double x )                   { fTof            = x; }
-  inline void SetTrackID( G4int n )                  { fTrackID        = n; }
-  inline void SetParticle( G4ParticleDefinition *p ) { fParticle       = p; }
+  inline void SetInjectionPoint( G4ThreeVector p )   { SetPrePosition(p); }
+  //inline void SetMomentum( const G4ThreeVector& p )  { fMomentum       = p; }
+  //inline void SetKineticEnergy( G4double x )         { fEnergy = x; } 
+  //inline void SetTof( G4double x )                   { fTof            = x; }
+  //inline void SetTrackID( G4int n )                  { fTrackID        = n; }
+  //inline void SetParticle( G4ParticleDefinition *p ) { fParticle       = p; }
 
   static void SetOutput( J4Output *output )          { fgPreOutput = output; } 
     
@@ -79,12 +81,13 @@ public:
   static J4Output             *fgPreOutput;       // Pointer to Output Module
 
   G4int                  fPreHitID;
-  G4ThreeVector          fInjectionPoint;
-  G4ThreeVector          fMomentum;
-  G4double               fEnergy;
-  G4double               fTof;
-  G4int                  fTrackID;
-  G4ParticleDefinition  *fParticle;
+  // The following data are available from J4VHit
+  //G4ThreeVector          fInjectionPoint; // fPrePosition in J4VHit
+  //G4ThreeVector          fMomentum;
+  //G4double               fEnergy;  // fTotalEnergy in J4VHit
+  //G4double               fTof;
+  //G4int                  fTrackID;
+  //G4ParticleDefinition  *fParticle;
 };
 
 //=====================================================================
