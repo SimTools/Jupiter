@@ -91,7 +91,7 @@ void J4CDCParameterList::SetParameters()
    fNlayers           = 10;
    fTwistedAngle      = new G4double[fNlayers];
    fLayerPhiOffset    = new G4double[fNlayers];
-#if 0
+#if 1
    fIsAxialOnly       = FALSE; // TRUE: Axial only, FALSE: with Stereo cell
 #else
    fIsAxialOnly       = TRUE; // TRUE: Axial only, FALSE: with Stereo cell
