@@ -94,7 +94,7 @@ void J4Timer::PrintAllAccumulatedTimes()
          AccumulatedTime *timer = fgTimers[i];
 #ifdef __USEISOCXX__
          G4std::stringstream name;
-         name << timer->GetClassName() << ":" << timer->GetTimerName() << G4std::ends;
+         name << timer->GetClassName() << ":" << timer->GetTimerName();
          G4cerr << " * " << G4std::setw(40) << name.str()
                 << G4std::setw(12) <<  timer->GetAccumulatedRealElapsed()
                 << G4std::setw(12) <<  timer->GetAccumulatedSystemElapsed()
