@@ -4,8 +4,8 @@
 #ifndef J4HEPEVTINTERFACE
 #define J4HEPEVTINTERFACE
 
-#include "g4std/fstream"
-#include "g4std/vector"
+#include "./fstream"
+#include "./vector"
 #include "globals.hh"
 #include "G4VPrimaryGenerator.hh"
 #include "G4HEPEvtParticle.hh"
@@ -68,8 +68,8 @@ public:
 private:
 
     G4String                          fFileName;
-    G4std::ifstream                   fInputStream;
-    G4std::vector<G4HEPEvtParticle*>  fHPlist;
+    std::ifstream                   fInputStream;
+    std::vector<G4HEPEvtParticle*>  fHPlist;
     G4int                             fNskipEvents;
 
     J4HEPEvtMessenger                *fMessenger;

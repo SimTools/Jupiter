@@ -58,6 +58,7 @@ public:
      G4int                 trackID  = GetTrackID();
      G4int                 mtrackID = GetMotherTrackID();
      G4int                 cloneID  = GetCloneID();
+     G4cerr << " cloneID = " << cloneID << G4endl;
      G4ParticleDefinition *particle = GetParticle();
      G4double              tof      = GetTof();
      G4double              edep     = GetEnergyDeposit();
@@ -76,7 +77,7 @@ public:
      G4ThreeVector         wireAtPZ = rot.inverse()*(wireEndp) - tlate;
      G4ThreeVector         wireAtMZ = rot.inverse()*(wireEndm) - tlate;
 
-#ifdef __DEBUG__
+#if 1
      G4cerr << "*J4VCDCDriftRegionSD::ProcessHits -----------------------"
             << G4endl;
      G4cerr << "   SDname        : " << locat->GetName() << G4endl;

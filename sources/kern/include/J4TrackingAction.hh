@@ -52,7 +52,7 @@ class J4TrackingAction : public G4UserTrackingAction
     G4int            fStoredTrajectoryID;    // 1 : charged particle only 
                                              // 2 : all particles
 #ifdef __THEBE__
-    G4std::ofstream  fErrorOfs;              // for debugprint 
+    std::ofstream  fErrorOfs;              // for debugprint 
     G4int            fStoredDebugPrintID;    // -2 : no output
                                              // -1 : output last track
                                              // N  : output Nth track 

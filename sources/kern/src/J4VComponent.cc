@@ -594,20 +594,20 @@ G4String J4VComponent::GetNewName(const G4String &middlename, // component class
                                   G4String       *parentname) // parent component name
 {
 #ifdef __USEISOCXX__
-  G4std::stringstream ost;
+  std::stringstream ost;
 #else
   char tmpstr[1024];
-  G4std::strstream ost(tmpstr, 1024);
+  std::strstream ost(tmpstr, 1024);
 #endif
   if (parentname) ost << *parentname << ":";
   ost << middlename;
-  if (width1) ost << G4std::setw(width1) << G4std::setfill('0') << myID;
+  if (width1) ost << std::setw(width1) << std::setfill('0') << myID;
   if (width2) ost << "_" 
-                  << G4std::setw(width2) << G4std::setfill('0') << cloneID;
+                  << std::setw(width2) << std::setfill('0') << cloneID;
 #ifdef __USEISOCXX__
   G4String tempname(ost.str());
 #else
-  ost << G4std::ends;
+  ost << std::ends;
   G4String tempname(tmpstr);
 #endif
   return tempname;

@@ -21,7 +21,7 @@
 #include "G4ios.hh"
 #include "G4Tokenizer.hh"
 
-#include "g4std/iomanip"               
+#include "./iomanip"               
 
 //-------------------------------------------------------------
 J4HEPEvtMessenger::J4HEPEvtMessenger(J4HEPEvtInterface * hepevt)

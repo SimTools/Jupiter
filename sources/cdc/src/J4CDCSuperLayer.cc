@@ -43,7 +43,8 @@ J4CDCSuperLayer::J4CDCSuperLayer(J4VDetectorComponent *parent,
    J4CDCParameterList *list = OpenParameterList();
    fOffset                  = list->GetSuperLayerPhiOffset(me);
    fNcellsPerLayer          = list->GetNcellsPerLayer(me);
-   fRot.rotateZ(list->GetSuperLayerPhiOffset(me));
+std::cerr << "J4CDCSuperLayer::SuperLayerPhiOffset = " << fOffset << std::endl;
+   fRot.rotateZ(fOffset);
 }
 
 //=====================================================================

@@ -92,6 +92,7 @@ void J4CDCParameterList::SetParameters()
    fTwistedAngle      = new G4double[fNlayers];
    fLayerPhiOffset    = new G4double[fNlayers];
    fIsAxialOnly       = FALSE; // TRUE: Axial only, FALSE: with Stereo cell
+   //fIsAxialOnly       = TRUE; // TRUE: Axial only, FALSE: with Stereo cell
    
    fTwistedAngle[0]   =  0.   *rad; // axial
    fTwistedAngle[1]   =  0.512*rad; // stereo
@@ -115,9 +116,12 @@ void J4CDCParameterList::SetParameters()
    fLayerPhiOffset[8] = -0.016*rad; // stereo 
    fLayerPhiOffset[9] =  0.   *rad; // axial 
    
-   
    // SuperLayer
+#if 0
    fIsOddSuperLyrOutermost = TRUE;  // Outermost superlayer is small.
+#else
+   fIsOddSuperLyrOutermost = FALSE; //
+#endif
    fNlayersPerSuperLayer   = 3;
    fNsuperLayers           = (fNlayers - 1) / fNlayersPerSuperLayer + 1;
    fSuperLayerInnerGap     = 4.*cm;
@@ -132,12 +136,12 @@ void J4CDCParameterList::SetParameters()
    fNcellsParLayer[1]      = 63;
    fNcellsParLayer[2]      = 84;
    fNcellsParLayer[3]      = 105;
-
+   
    fSuperLayerPhiOffset[0] =  0    *rad;
    fSuperLayerPhiOffset[1] =  0    *rad;
    fSuperLayerPhiOffset[2] = -0.016*rad;
    fSuperLayerPhiOffset[3] =  0.016*rad;
-   
+
    // DriftRegion
 
    fMeasPlaneHalfThick     = 0.0015*cm; // thickness of hypothetical measurement plane

@@ -10,8 +10,8 @@
 #include "G4ios.hh"
 #include "G4Tokenizer.hh"
 
-#include "g4std/iomanip"               
-#include "g4std/strstream"
+#include "./iomanip"               
+#include "./strstream"
 
 J4TrackingActionMessenger::J4TrackingActionMessenger(J4TrackingAction * tracking)
   :fTrackingAction(tracking)

@@ -92,7 +92,7 @@ void J4EXPHall::InstallIn(J4VComponent         *mother,
 
 //=====================================================================
 //* OutputAll ---------------------------------------------------------
-void J4EXPHall::OutputAll(G4HCofThisEvent* HCTE, G4std::ofstream & ofs)
+void J4EXPHall::OutputAll(G4HCofThisEvent* HCTE, std::ofstream & ofs)
 {
 
    

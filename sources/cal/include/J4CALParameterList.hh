@@ -16,9 +16,9 @@
 
 #include <iomanip> 
 #include "globals.hh"
-#include "g4std/vector"
-#include "g4std/functional"
-#include "g4std/algorithm"
+#include "./vector"
+#include "./functional"
+#include "./algorithm"
 #include "G4Material.hh"
 #include "G4Color.hh"
 #include "J4ParameterList.hh"
@@ -185,16 +185,16 @@ class J4CALParameterList : public J4VParameterList
 
         void      ShowData() 
                   {
-                      G4cerr << G4std::setprecision(5) 
-                             << G4std::setw(10) << fIsBarrel
-                             << G4std::setw(10) << fR
-                             << G4std::setw(10) << fHeight
-                             << G4std::setw(10) << fCenterLambda
-                             << G4std::setw(10) << fDlambda
-                             << G4std::setw(10) << 2 * fR * sin(0.5 * fDlambda)
-                             << G4std::setw(10) << fNphi
-                             << G4std::setw(10) << fDphi 
-                             << G4std::setw(10) << 2 * fR * sin(0.5 * fDphi)
+                      G4cerr << std::setprecision(5) 
+                             << std::setw(10) << fIsBarrel
+                             << std::setw(10) << fR
+                             << std::setw(10) << fHeight
+                             << std::setw(10) << fCenterLambda
+                             << std::setw(10) << fDlambda
+                             << std::setw(10) << 2 * fR * sin(0.5 * fDlambda)
+                             << std::setw(10) << fNphi
+                             << std::setw(10) << fDphi 
+                             << std::setw(10) << 2 * fR * sin(0.5 * fDphi)
                              << G4endl;
                   }
 
@@ -220,8 +220,8 @@ class J4CALParameterList : public J4VParameterList
         G4bool     fIsBarrel;     //  TRUE/FALSE = BarrelCAL/EndcapCAL 
    };
 
-   typedef G4std::pair<G4double, J4CALTowerParam * > J4CALTowerParamPair; 
-   typedef G4std::vector<J4CALTowerParamPair>        J4CALTowerParamVector; 
+   typedef std::pair<G4double, J4CALTowerParam * > J4CALTowerParamPair; 
+   typedef std::vector<J4CALTowerParamPair>        J4CALTowerParamVector; 
 
    J4CALTowerParamVector  GetTowerParamVector()  const { return fTowerParamVector; }
    J4CALTowerParam       *GetTowerParam(G4int i) const { return fTowerParamVector[i].second; }

@@ -11,7 +11,7 @@
 //*************************************************************************
 
 #include "J4CALParameterList.hh"
-#include "g4std/algorithm"
+#include "./algorithm"
 
 J4CALParameterList    * J4CALParameterList::fgInstance = 0;
 
@@ -516,7 +516,7 @@ void J4CALParameterList::ShowTowerParameters()
 
    for (G4int i=0; i < GetNcones(); i++) {
 
-      G4cerr << G4std::setw(4) << i ;
+      G4cerr << std::setw(4) << i ;
       GetTowerParam(i)->ShowData();
 
    }

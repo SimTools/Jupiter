@@ -41,11 +41,21 @@ void J4AttMFieldMap::InstallMField(J4VComponent* component)
   G4ThreeVector xOOt(0.,0.,0.);
   G4RotationMatrix xOOr;
   
+#ifndef __GEANT45__
+  while(pv){
+    xOOt = xOOt+pv->GetObjectTranslation();
+    xOOr = xOOr*(pv->GetObjectRotationValue());
+    component = component->GetMother();
+    if(!component) break;
+    pv        = component->GetPV();
+  }
+#else
   while( pv != NULL ){
     xOOt = xOOt+pv->GetObjectTranslation();
     xOOr = xOOr*(pv->GetObjectRotationValue());
     pv = pv->GetMother();
   }
+#endif
   //delete pv; 
 
   G4ThreeVector xOOtOrigin(0.,0.,0.);

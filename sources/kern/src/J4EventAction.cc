@@ -67,7 +67,7 @@ void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
 #ifdef __THEBE__
    if ( J4Global::GetErrorOutputUnit() == "Event" ) {
       if ( !fErrorOfs.is_open() ) {
-         fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), G4std::ios::out);
+         fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), std::ios::out);
          if(! fErrorOfs.good()) {
             G4String errorMessage=
             "*** EventAction::BeginOfEventAction():fail to open a file ("
@@ -89,7 +89,7 @@ void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
       primaryVertex-> Print();  
    }
    G4cout << "%%%%%%%% Primary Information end EventNo = " 
-          << anEvent->GetEventID() << " %%%%%%%%%" <<G4endl << G4std::flush;
+          << anEvent->GetEventID() << " %%%%%%%%%" <<G4endl << std::flush;
 #endif  
 
    J4DetectorConstruction::GetEXPHall()->UnlockOutput();
@@ -123,7 +123,7 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
   
   G4cerr << "EventAction :: HCTE = "<< HCTE->GetNumberOfCollections()<<G4endl;
   
-  G4std::ofstream& ofs= ((J4RunAction*)usrRunAction)-> GetOutputFileStream();
+  std::ofstream& ofs= ((J4RunAction*)usrRunAction)-> GetOutputFileStream();
   if(! ofs.good()) {
     G4String errorMessage= "EventAction::EndOfEventAction(): write error.";
     G4Exception(errorMessage);
@@ -160,15 +160,15 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
   // end of event.......
 
 #ifdef __USEISOCXX__
-   G4std::stringstream tmpstr;
-   tmpstr << "seeds/seed.evt." << G4std::setw(5) << G4std::setfill('0')
-      << event << G4std::ends;
+   std::stringstream tmpstr;
+   tmpstr << "seeds/seed.evt." << std::setw(5) << std::setfill('0')
+      << event << std::ends;
    HepRandom::saveEngineStatus(tmpstr.str().data());
 #else
    char tmpchar[1024];
-   G4std::strstream tmpstr(tmpchar, 1024);
-   tmpstr << "seeds/seed.evt." << G4std::setw(5) << G4std::setfill('0')
-          << event << G4std::ends;
+   std::strstream tmpstr(tmpchar, 1024);
+   tmpstr << "seeds/seed.evt." << std::setw(5) << std::setfill('0')
+          << event << std::ends;
    HepRandom::saveEngineStatus(tmpchar);
 #endif
 

@@ -57,7 +57,7 @@ void J4ITLayerHit::Output(G4HCofThisEvent* HCTE)
   if (fOutput) fOutput->Output(this);
   // output hitdata to output file ....
         
-  G4std::ofstream& ofs = GetOutputFileStream();
+  std::ofstream& ofs = GetOutputFileStream();
   if (! ofs.good()) {
     G4String errorMessage= "J4ITLayerHit::Output(): write error.";
     G4Exception(errorMessage);
@@ -66,26 +66,26 @@ void J4ITLayerHit::Output(G4HCofThisEvent* HCTE)
      G4ThreeVector pre  = GetPrePosition();
      G4ThreeVector post = GetPostPosition();
 
-     ofs << G4std::setw(1) << GetComponent()->GetMyID() << " " 
-         << G4std::setw(7) << GetTrackID() << " " 
-         << G4std::setw(7) << GetMotherTrackID() << " " 
-         << G4std::setw(6) << GetPDGEncoding() << " " 
-         << G4std::setw(2) << GetCharge() << " " 
-         << G4std::setiosflags(G4std::ios::scientific) << G4std::setprecision(14)
-         << G4std::setw(18) << pre.x() << " " 
-         << G4std::setw(18) << pre.y() << " " 
-         << G4std::setw(18) << pre.z() << " "
-         << G4std::setw(18) << post.x() << " " 
-         << G4std::setw(18) << post.y() << " " 
-         << G4std::setw(18) << post.z() << " "
-         << G4std::setw(18) << GetMomentum().x() << " " 
-         << G4std::setw(18) << GetMomentum().y() << " "
-         << G4std::setw(18) << GetMomentum().z() << " " 
-         << G4std::setw(18) << GetTotalEnergy() << " " 
-         << G4std::setw(18) << GetEnergyDeposit() << " " 
-         << G4std::setw(18) << GetTof() << " "
-         << G4std::setiosflags(G4std::ios::floatfield) 
-         << G4std::setprecision(8)
+     ofs << std::setw(1) << GetComponent()->GetMyID() << " " 
+         << std::setw(7) << GetTrackID() << " " 
+         << std::setw(7) << GetMotherTrackID() << " " 
+         << std::setw(6) << GetPDGEncoding() << " " 
+         << std::setw(2) << GetCharge() << " " 
+         << std::setiosflags(std::ios::scientific) << std::setprecision(14)
+         << std::setw(18) << pre.x() << " " 
+         << std::setw(18) << pre.y() << " " 
+         << std::setw(18) << pre.z() << " "
+         << std::setw(18) << post.x() << " " 
+         << std::setw(18) << post.y() << " " 
+         << std::setw(18) << post.z() << " "
+         << std::setw(18) << GetMomentum().x() << " " 
+         << std::setw(18) << GetMomentum().y() << " "
+         << std::setw(18) << GetMomentum().z() << " " 
+         << std::setw(18) << GetTotalEnergy() << " " 
+         << std::setw(18) << GetEnergyDeposit() << " " 
+         << std::setw(18) << GetTof() << " "
+         << std::setiosflags(std::ios::floatfield) 
+         << std::setprecision(8)
          << G4endl;
   }
 
@@ -106,13 +106,13 @@ void J4ITLayerHit::Print()
 {
 
 
-  G4cout << G4std::setiosflags(G4std::ios::fixed);
-  G4cout << G4std::setw(20) << GetComponentName() << " " << G4endl;
+  G4cout << std::setiosflags(std::ios::fixed);
+  G4cout << std::setw(20) << GetComponentName() << " " << G4endl;
   G4cout << " track#=" << GetTrackID()
          << " charge=" << GetCharge()
-         << " energy(GeV)= " << G4std::setprecision(2) 
-         << G4std::setw(6) << GetTotalEnergy() *(1./GeV) << " "
-         << " TOF(ns)= " << G4std::setw(4) << G4std::setprecision(1) 
+         << " energy(GeV)= " << std::setprecision(2) 
+         << std::setw(6) << GetTotalEnergy() *(1./GeV) << " "
+         << " TOF(ns)= " << std::setw(4) << std::setprecision(1) 
          << GetTof() /ns 
          << G4endl;  
 }

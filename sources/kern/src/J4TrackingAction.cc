@@ -77,7 +77,7 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
          }
 
          if ( !fErrorOfs.is_open()) {
-            fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), G4std::ios::out);
+            fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), std::ios::out);
             if(! fErrorOfs.good()) {
                G4String errorMessage=
                "*** J4TrackingAction::PreUserTrackingAction:fail to open a file ("
@@ -94,7 +94,7 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
          // Only in the case of G4Global::StoredNEvents == 0, it works correctly 
 
          if (callNo == 0) {
-            fErrorOfs.open("/dev/null", G4std::ios::out);
+            fErrorOfs.open("/dev/null", std::ios::out);
             if(! fErrorOfs.good()) {
                G4String errorMessage=
                "*** J4TrackingAction::PreUserTrackingAction:fail to open a file (/dev/null) .";

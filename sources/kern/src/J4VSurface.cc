@@ -164,7 +164,7 @@ G4int J4VSurface::AmIOnLeftSide(const G4ThreeVector &me,
           << J4endl;
    J4cerr << "         //# NAME , returncode  : " << fName << " " 
                        << fAmIOnLeftSide.amIOnLeftSide <<  J4endl;
-   J4cerr << "         //# me, vec    : " << G4std::setprecision(14) << me 
+   J4cerr << "         //# me, vec    : " << std::setprecision(14) << me 
                                           << " " << vec  << J4endl;
    J4cerr << "         //# met, vect  : " << met << " " << vect  << J4endl;
    J4cerr << "         //# ivec, rvec : " << ivect << " " << rvect << J4endl;
@@ -749,7 +749,7 @@ void J4VSurface::SetBoundary(const G4int         &axiscode,
    } else {
 
       J4cerr << "   J4VSurface::SetBoundary: invalid axiscode "
-             << G4std::hex << axiscode << G4std::dec
+             << std::hex << axiscode << std::dec
              << " . abort. " << J4endl;
       abort();
    }

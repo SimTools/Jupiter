@@ -35,8 +35,8 @@
 #ifndef G4CAINEvtInterface_h
 #define G4CAINEvtInterface_h 1
 
-#include "g4std/fstream"
-#include "g4std/vector"
+#include "./fstream"
+#include "./vector"
 #include "globals.hh"
 #include "G4VPrimaryGenerator.hh"
 #include "G4ParticleDefinition.hh"
@@ -74,7 +74,7 @@ public:
 private:
 
     G4String              fFileName;
-    G4std::ifstream       fInputStream;
+    std::ifstream       fInputStream;
     G4int                 fNread;
     G4ParticleDefinition *fGamma;
     G4ParticleDefinition *fElectron;

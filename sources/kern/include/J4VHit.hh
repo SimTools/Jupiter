@@ -96,7 +96,7 @@ public:
   inline virtual void SetPrePosition   (const G4ThreeVector& pre){ fPrePosition    = pre; }
   inline virtual void SetPostPosition  (const G4ThreeVector& pos){ fPostPosition   = pos; }
   inline virtual void SetHitNumber     (G4int hno)               { fHitNumber      = hno; }
-  static void         SetOutputFileStream(G4std::ofstream& ofs)  { fOfs = &ofs; }
+  static void         SetOutputFileStream(std::ofstream& ofs)  { fOfs = &ofs; }
   
   // inclement functions
   inline virtual void AddEdep          (G4double edep)           { fEnergyDeposit += edep;}  
@@ -138,7 +138,7 @@ public:
   inline virtual       G4int                 GetPDGEncoding()   const { return fParticle->GetPDGEncoding(); }
   inline virtual const G4String&             GetParticleName()  const { return fParticle->GetParticleName();}
   
-  static G4std::ofstream& GetOutputFileStream() { return *fOfs; } 
+  static std::ofstream& GetOutputFileStream() { return *fOfs; } 
      
 private:
   J4VComponent*         fComponent        ; // the Hit occured in 
@@ -154,7 +154,7 @@ private:
   G4ThreeVector         fPostPosition     ; // Post-position of track
   G4int                 fHitNumber        ; // Hit Number per track
   
-  static G4std::ofstream* fOfs;
+  static std::ofstream* fOfs;
   
 
 };

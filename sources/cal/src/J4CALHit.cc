@@ -60,28 +60,28 @@ void J4CALHit::Output(G4HCofThisEvent* HCTE)
   if (fOutput) fOutput->Output(this);
   // output hitdata to output file ....
         
-  G4std::ofstream& ofs = GetOutputFileStream();
+  std::ofstream& ofs = GetOutputFileStream();
   if (! ofs.good()) {
     G4String errorMessage= "J4CALHit::Output(): write error.";
     G4Exception(errorMessage);
   } else {
 
-     ofs << G4std::setw(7) << fThetaNumber << " " 
-         << G4std::setw(7) << fPhiNumber << " " 
-         << G4std::setw(3) << fIsBarrel << " " 
-         << G4std::setw(3) << fIsEM << " " 
-         << G4std::setw(7) << fMotherTrackID << " " 
-         << G4std::setw(7) << fTrackID << " " 
-         << G4std::setw(6) << fParticle->GetPDGEncoding() << " " 
-         << G4std::setw(2) << fParticle->GetPDGCharge() << " " 
-         << G4std::setiosflags(G4std::ios::scientific) << G4std::setprecision(14)
-         << G4std::setw(18) << fEnergyDep << " " 
-         << G4std::setw(18) << fTof << " "
-         << G4std::setw(18) << fInjectionPoint.x() << " " 
-         << G4std::setw(18) << fInjectionPoint.y() << " " 
-         << G4std::setw(18) << fInjectionPoint.z() << " "
-         << G4std::setiosflags(G4std::ios::floatfield) 
-         << G4std::setprecision(8)
+     ofs << std::setw(7) << fThetaNumber << " " 
+         << std::setw(7) << fPhiNumber << " " 
+         << std::setw(3) << fIsBarrel << " " 
+         << std::setw(3) << fIsEM << " " 
+         << std::setw(7) << fMotherTrackID << " " 
+         << std::setw(7) << fTrackID << " " 
+         << std::setw(6) << fParticle->GetPDGEncoding() << " " 
+         << std::setw(2) << fParticle->GetPDGCharge() << " " 
+         << std::setiosflags(std::ios::scientific) << std::setprecision(14)
+         << std::setw(18) << fEnergyDep << " " 
+         << std::setw(18) << fTof << " "
+         << std::setw(18) << fInjectionPoint.x() << " " 
+         << std::setw(18) << fInjectionPoint.y() << " " 
+         << std::setw(18) << fInjectionPoint.z() << " "
+         << std::setiosflags(std::ios::floatfield) 
+         << std::setprecision(8)
          << G4endl;
   }
 
@@ -101,13 +101,13 @@ void J4CALHit::Draw()
 void J4CALHit::Print()
 {
 
-  G4cout << G4std::setiosflags(G4std::ios::fixed);
-  G4cout << G4std::setw(20) << GetComponentName() << " " << G4endl;
+  G4cout << std::setiosflags(std::ios::fixed);
+  G4cout << std::setw(20) << GetComponentName() << " " << G4endl;
   G4cout << " track#=" << fTrackID
          << " charge=" << fParticle->GetPDGCharge()
-         << " energy(GeV)= " << G4std::setprecision(2) 
-         << G4std::setw(6) << fEnergyDep *(1./GeV) << " "
-         << " TOF(ns)= " << G4std::setw(4) << G4std::setprecision(1) 
+         << " energy(GeV)= " << std::setprecision(2) 
+         << std::setw(6) << fEnergyDep *(1./GeV) << " "
+         << " TOF(ns)= " << std::setw(4) << std::setprecision(1) 
          << fTof /ns 
          << G4endl;  
 }

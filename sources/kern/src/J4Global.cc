@@ -20,7 +20,7 @@
 //--------------------------------
 
 J4Global*        J4Global::fGlobal   = 0;
-G4std::ofstream* J4Global::fErrorOfs = 0;
+std::ofstream* J4Global::fErrorOfs = 0;
 G4int            J4Global::fErrorCounter = 1;
 G4int            J4Global::fErrorNevents = 1;
 G4int            J4Global::fErrorOutputDeviceID = 1;
@@ -53,7 +53,7 @@ J4Global::~J4Global()
 
 // ====================================================================
 //* GetErrrorOutputStream   -------------------------------------------
-G4std::ostream& J4Global::GetErrorOutputStream()
+std::ostream& J4Global::GetErrorOutputStream()
 {
    switch (fErrorOutputDeviceID) {
       case 0:
@@ -75,7 +75,7 @@ G4std::ostream& J4Global::GetErrorOutputStream()
 
 // ====================================================================
 //* GetEndl   ---------------------------------------------------------
-G4std::ostream& J4Global::GetEndl(G4std::ostream& outs)
+std::ostream& J4Global::GetEndl(std::ostream& outs)
 {
    switch (fErrorOutputDeviceID) {
       case 0:
@@ -83,7 +83,7 @@ G4std::ostream& J4Global::GetEndl(G4std::ostream& outs)
          break;
       case 1:
          if (fErrorOfs && fErrorOfs->is_open()) {
-            return (outs << G4endl << G4std::flush);
+            return (outs << G4endl << std::flush);
          } else {
             return (outs << G4endl);
          }

@@ -45,6 +45,7 @@ J4CDCLayer::J4CDCLayer(J4VDetectorComponent *parent,
    G4int globallayerno = GetGlobalLayerNumber();
    fOffset             = list->GetLayerPhiOffset(globallayerno);
    fTwistedAngle       = list->GetLayerPhiTwist(globallayerno);
+std::cerr << "J4CDCLayer::LayerPhiOffset = " << fOffset << std::endl;
    fRot.rotateZ(fOffset);
 
 #if 0   

@@ -135,9 +135,9 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
       }
 
 #ifdef __USEISOCXX__
-      G4std::istringstream sin(input);
+      std::istringstream sin(input);
 #else
-      G4std::istrstream sin(input);
+      std::istrstream sin(input);
 #endif
       sin >>  id >> kgen >> weight >> ct >> cx >> cy >> cs >> 
 	   ce >> cpx >> cpy >> cps >> csx >> csy >> css ;
@@ -180,12 +180,12 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
       break;
   default:
 #ifdef  __USEISOCXX__
-    G4std::stringstream sout;
+    std::stringstream sout;
 #else
     char tmpstr[1024];
-    G4std::ostrstream sout(tmpstr, 1024);
+    std::ostrstream sout(tmpstr, 1024);
 #endif
-    sout << "Error: Undefined particle id " << id << " is obtained" << G4std::ends;
+    sout << "Error: Undefined particle id " << id << " is obtained" << std::ends;
 #ifdef __USEISOCXX__
     G4Exception(sout.str());
 #else

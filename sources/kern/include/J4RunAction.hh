@@ -38,7 +38,7 @@ public:
   void     SetHitFileName(const G4String& fname) { fHitFileName= fname; }
   G4String GetHitFileName() const                { return fHitFileName; }
 
-  G4std::ofstream& GetOutputFileStream() { return fOfs; }
+  std::ofstream& GetOutputFileStream() { return fOfs; }
 
   // methods
   virtual void BeginOfRunAction(const G4Run* aRun);
@@ -46,7 +46,7 @@ public:
 
 private:
   G4String        fHitFileName;
-  G4std::ofstream fOfs;
+  std::ofstream fOfs;
 };
 
 #endif

@@ -37,7 +37,7 @@ public:
                           G4RotationMatrix     *prot  = 0,
                           const G4ThreeVector  &tlate = 0 );
 
-  virtual void   OutputAll(G4HCofThisEvent *HCTE, G4std::ofstream &ofs) ;
+  virtual void   OutputAll(G4HCofThisEvent *HCTE, std::ofstream &ofs) ;
 
   virtual void   Draw() ;
   virtual void   Print() const ;

@@ -1152,7 +1152,7 @@ G4double J4TwistedTubs::DistanceToOut( const G4ThreeVector& p ) const
 //=====================================================================
 //* StreamInfo --------------------------------------------------------
 
-G4std::ostream& J4TwistedTubs::StreamInfo(G4std::ostream& os) const
+std::ostream& J4TwistedTubs::StreamInfo(std::ostream& os) const
 {
   //
   // Stream object contents to an output stream

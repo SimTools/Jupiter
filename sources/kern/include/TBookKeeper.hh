@@ -12,7 +12,7 @@
 //*	2001/03/27  K.Hoshina	Original version.
 //*************************************************************************
 
-#include "g4std/vector"
+#include "./vector"
 #include "G4ios.hh"
 
 
@@ -45,7 +45,7 @@ private:
 
 public:
 
-  typedef G4std::vector<TBookKeeper::TPair* > TBook;
+  typedef std::vector<TBookKeeper::TPair* > TBook;
 
   TBookKeeper()
   {

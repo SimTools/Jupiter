@@ -20,7 +20,7 @@
 #include "G4ios.hh"
 #include "G4Tokenizer.hh"
 
-#include "g4std/iomanip"               
+#include "./iomanip"               
 
 J4ParticleBeamMessenger::J4ParticleBeamMessenger(J4ParticleBeam * fPtclBeam)
   :fParticleBeam(fPtclBeam),fShootIon(false)

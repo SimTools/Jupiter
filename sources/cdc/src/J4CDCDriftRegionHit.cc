@@ -84,45 +84,45 @@ void J4CDCDriftRegionHit::Output(G4HCofThisEvent* HCTE)
 
   // output hitdata to output file ....
 	
-  G4std::ofstream& ofs = GetOutputFileStream();
+  std::ofstream& ofs = GetOutputFileStream();
   if (! ofs.good()) {
     G4String errorMessage= "J4CDCDriftRegionHit::Output(): write error.";
     G4Exception(errorMessage);
   } else {
-     ofs << G4std::setw(1) << layerNo << " " 
-         << G4std::setw(1) << wireNo << " " 
-         << G4std::setw(3) << cellID << " " 
-         << G4std::setw(7) << GetTrackID() << " " 
-         << G4std::setw(7) << GetMotherTrackID() << " " 
-         << G4std::setw(7) << GetHitNumber() << " " 
-         << G4std::setw(6) << pdid << " " 
-         << G4std::setw(2) << GetCharge() << " " 
-         << G4std::setiosflags(G4std::ios::scientific) 
-         << G4std::setprecision(14)
-         << G4std::setw(18) << dphi << " " 
-         << G4std::setw(18) << sphi << " "
-         << G4std::setw(18) << pre.x() << " " 
-         << G4std::setw(18) << pre.y() << " " 
-         << G4std::setw(18) << pre.z() << " "
-         << G4std::setw(18) << post.x() << " " 
-         << G4std::setw(18) << post.y() << " " 
-         << G4std::setw(18) << post.z() << " "
-         << G4std::setw(18) << GetMomentum().x() << " " 
-         << G4std::setw(18) << GetMomentum().y() << " "
-         << G4std::setw(18) << GetMomentum().z() << " " 
-         << G4std::setw(18) << GetTotalEnergy() << " " 
-         << G4std::setw(18) << GetEnergyDeposit() << " " 
-         << G4std::setw(18) << GetTof() << " "
-         << G4std::setw(18) << fWireEnd[0].x() << " "
-         << G4std::setw(18) << fWireEnd[0].y() << " "
-         << G4std::setw(18) << fWireEnd[0].z() << " "
-         << G4std::setw(18) << fWireEnd[1].x() << " "
-         << G4std::setw(18) << fWireEnd[1].y() << " "
-         << G4std::setw(18) << fWireEnd[1].z() << " "
-         << G4std::setw(18) << fTanStereo << " "
-         << G4std::setw(18) << fRwaist << " "
-         << G4std::setiosflags(G4std::ios::floatfield) 
-         << G4std::setprecision(8)
+     ofs << std::setw(1) << layerNo << " " 
+         << std::setw(1) << wireNo << " " 
+         << std::setw(3) << cellID << " " 
+         << std::setw(7) << GetTrackID() << " " 
+         << std::setw(7) << GetMotherTrackID() << " " 
+         << std::setw(7) << GetHitNumber() << " " 
+         << std::setw(6) << pdid << " " 
+         << std::setw(2) << GetCharge() << " " 
+         << std::setiosflags(std::ios::scientific) 
+         << std::setprecision(14)
+         << std::setw(18) << dphi << " " 
+         << std::setw(18) << sphi << " "
+         << std::setw(18) << pre.x() << " " 
+         << std::setw(18) << pre.y() << " " 
+         << std::setw(18) << pre.z() << " "
+         << std::setw(18) << post.x() << " " 
+         << std::setw(18) << post.y() << " " 
+         << std::setw(18) << post.z() << " "
+         << std::setw(18) << GetMomentum().x() << " " 
+         << std::setw(18) << GetMomentum().y() << " "
+         << std::setw(18) << GetMomentum().z() << " " 
+         << std::setw(18) << GetTotalEnergy() << " " 
+         << std::setw(18) << GetEnergyDeposit() << " " 
+         << std::setw(18) << GetTof() << " "
+         << std::setw(18) << fWireEnd[0].x() << " "
+         << std::setw(18) << fWireEnd[0].y() << " "
+         << std::setw(18) << fWireEnd[0].z() << " "
+         << std::setw(18) << fWireEnd[1].x() << " "
+         << std::setw(18) << fWireEnd[1].y() << " "
+         << std::setw(18) << fWireEnd[1].z() << " "
+         << std::setw(18) << fTanStereo << " "
+         << std::setw(18) << fRwaist << " "
+         << std::setiosflags(std::ios::floatfield) 
+         << std::setprecision(8)
          << G4endl;
   }
 

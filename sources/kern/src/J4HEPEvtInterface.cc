@@ -6,7 +6,7 @@
 //    K.Hoshina, 29-May-2002  
 // ********************************************************************
 
-#include "g4std/strstream"
+#include "./strstream"
 #include <iostream>
 #include <iomanip>
 
@@ -82,7 +82,7 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
   
 #ifdef __THEBE__
 #ifdef __DUMPREADDATA__  
-  G4std::ofstream ofs;
+  std::ofstream ofs;
   ofs.open("readpythia_event.data");
 #endif
 #endif
@@ -113,16 +113,16 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
                      
 #ifdef __THEBE__
 #ifdef __DUMPREADDATA__  
-        ofs << G4std::setw(10) << ISTHEP 
-            << G4std::setw(10) << IDHEP 
-            << G4std::setw(10) << JDAHEP1 
-            << G4std::setw(10) << JDAHEP2
-            << G4std::setiosflags(G4std::ios::scientific) << G4std::setprecision(8) 
-            << G4std::setw(16) << PHEP1 
-            << G4std::setw(16) << PHEP2 
-            << G4std::setw(16) << PHEP3 
-            << G4std::setw(16) << PHEP5 
-            << G4std::resetiosflags(G4std::ios::scientific) << G4endl;
+        ofs << std::setw(10) << ISTHEP 
+            << std::setw(10) << IDHEP 
+            << std::setw(10) << JDAHEP1 
+            << std::setw(10) << JDAHEP2
+            << std::setiosflags(std::ios::scientific) << std::setprecision(8) 
+            << std::setw(16) << PHEP1 
+            << std::setw(16) << PHEP2 
+            << std::setw(16) << PHEP3 
+            << std::setw(16) << PHEP5 
+            << std::resetiosflags(std::ios::scientific) << G4endl;
 #endif
 #endif
 
@@ -153,14 +153,14 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
                  
 #ifdef __THEBE__
 #ifdef __DUMPREADDATA__
-    ofs << G4std::setw(10) << ISTHEP
-        << G4std::setw(10) << IDHEP
-        << G4std::setw(10) << JDAHEP1
-        << G4std::setw(10) << JDAHEP2
-        << G4std::setw(16) << PHEP1
-        << G4std::setw(16) << PHEP2
-        << G4std::setw(16) << PHEP3
-        << G4std::setw(16) << PHEP5 << G4endl;
+    ofs << std::setw(10) << ISTHEP
+        << std::setw(10) << IDHEP
+        << std::setw(10) << JDAHEP1
+        << std::setw(10) << JDAHEP2
+        << std::setw(16) << PHEP1
+        << std::setw(16) << PHEP2
+        << std::setw(16) << PHEP3
+        << std::setw(16) << PHEP5 << G4endl;
 #endif
 #endif
      

@@ -11,8 +11,8 @@
 //*	2001/02/18  K.Hoshina	Original version.
 //*************************************************************************
 
-#include "g4std/iomanip"
-#include "g4std/fstream"
+#include "./iomanip"
+#include "./fstream"
 #include "J4VTXSensorHit.hh"
 
 //=========================================================================
@@ -78,7 +78,7 @@ void J4VTXSensorHit::Output(G4HCofThisEvent* HCTE)
 	
   // output hitdata to output file ....
   
-  G4std::ofstream& ofs = GetOutputFileStream();
+  std::ofstream& ofs = GetOutputFileStream();
   if(! ofs.good()) {
     G4String errorMessage= "J4VTXSensorHit::Output(): write error.";
     G4Exception(errorMessage);
@@ -149,14 +149,14 @@ void J4VTXSensorHit::Print()
   G4ThreeVector fHitPosition=GetHitPosition();
 
   G4int prec = G4cerr.precision(2);
-  G4cerr << G4std::setiosflags(G4std::ios::fixed);
+  G4cerr << std::setiosflags(std::ios::fixed);
   G4cerr << " track#=" << GetTrackID()
 	 << " position(mm)= " 
-	 << G4std::setw(8) << fHitPosition.x() *(1./mm) << " "
-	 << G4std::setw(8) << fHitPosition.y() *(1./mm) << " "
-	 << G4std::setw(8) << fHitPosition.z() *(1./mm) << " "
+	 << std::setw(8) << fHitPosition.x() *(1./mm) << " "
+	 << std::setw(8) << fHitPosition.y() *(1./mm) << " "
+	 << std::setw(8) << fHitPosition.z() *(1./mm) << " "
 	 << " Edep(keV)= " 
-	 << G4std::setw(6) << GetEnergyDeposit() *(1./keV) << " "
+	 << std::setw(6) << GetEnergyDeposit() *(1./keV) << " "
          << G4endl;  
 
   G4cerr.precision(prec);

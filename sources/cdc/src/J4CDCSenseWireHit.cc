@@ -85,17 +85,17 @@ void J4CDCSenseWireHit::Draw()
 void J4CDCSenseWireHit::Print()
 {
 
-  G4cout << G4std::setiosflags(G4std::ios::fixed);
-  G4cout << G4std::setw(20) << GetComponentName() << " " << G4endl;
+  G4cout << std::setiosflags(std::ios::fixed);
+  G4cout << std::setw(20) << GetComponentName() << " " << G4endl;
   G4cout << " track#=" << GetTrackID()
          << " charge=" << GetCharge()
-         << " position(mm)= " << G4std::setprecision(2) 
-         << G4std::setw(8) << fHitPosition.x() *(1./mm) << " "
-         << G4std::setw(8) << fHitPosition.y() *(1./mm) << " "
-         << G4std::setw(8) << fHitPosition.z() *(1./mm) << " "
-         << " energy(GeV)= " << G4std::setprecision(2) 
-         << G4std::setw(6) << GetTotalEnergy() *(1./GeV) << " "
-         << " TOF(ns)= " << G4std::setw(4) << G4std::setprecision(1) 
+         << " position(mm)= " << std::setprecision(2) 
+         << std::setw(8) << fHitPosition.x() *(1./mm) << " "
+         << std::setw(8) << fHitPosition.y() *(1./mm) << " "
+         << std::setw(8) << fHitPosition.z() *(1./mm) << " "
+         << " energy(GeV)= " << std::setprecision(2) 
+         << std::setw(6) << GetTotalEnergy() *(1./GeV) << " "
+         << " TOF(ns)= " << std::setw(4) << std::setprecision(1) 
          << GetTof() /ns 
          << G4endl;  
 }

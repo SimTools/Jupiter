@@ -41,16 +41,16 @@
 #ifndef __tpordvec
 #define __tpordvec
 
-#include "g4std/vector"
-#include "g4std/set"
-#include "g4std/functional"
+#include "./vector"
+#include "./set"
+#include "./functional"
 //#include "g4rw/defs.h"
 #include "defs.h"
 
 template<class T>
-class G4RWTPtrOrderedVector : public G4std::vector<T*>
+class G4RWTPtrOrderedVector : public std::vector<T*>
 {
-  typedef G4std::vector<T*> std_pvector;
+  typedef std::vector<T*> std_pvector;
   typedef typename std_pvector::iterator iterator;
   typedef typename std_pvector::const_iterator const_iterator;
 

@@ -28,7 +28,7 @@ J4RunAction::J4RunAction(const G4String& fname)
 void J4RunAction::BeginOfRunAction(const G4Run* aRun)
 ////////////////////////////////////////////////////////
 {
-  fOfs.open(fHitFileName.c_str(), G4std::ios::out);
+  fOfs.open(fHitFileName.c_str(), std::ios::out);
   if (! fOfs.good()) {
     G4String errorMessage=
       "*** RunAction::BeginOfRunAtcion(): fail to open a file (" 

@@ -21,7 +21,7 @@
 
 #ifdef __THEBE__
 #define J4cerr J4Global::GetErrorOutputStream()
-#define J4endl G4endl; if (J4Global::GetErrorOutputDeviceID()) J4cerr<<G4std::flush
+#define J4endl G4endl; if (J4Global::GetErrorOutputDeviceID()) J4cerr<<std::flush
 #else 
 #define J4cerr G4cerr
 #define J4endl G4endl
@@ -38,15 +38,15 @@ public:
   
   static J4Global*        GetGlobal()               { return fGlobal;      }    
   
-  static G4std::ostream&  GetErrorOutputStream();
-  static G4std::ostream&  GetEndl(G4std::ostream& outs);
+  static std::ostream&  GetErrorOutputStream();
+  static std::ostream&  GetEndl(std::ostream& outs);
   static G4int            GetErrorCounter()        { return fErrorCounter; }
   static G4int            GetErrorNevents()        { return fErrorNevents; }
   static G4int            GetErrorOutputDeviceID() { return fErrorOutputDeviceID; }
   static G4String         GetErrorOutputFilename() { return fErrorOutputFilename; }
   static G4String         GetErrorOutputUnit()     { return fErrorOutputUnit; }
        
-  static void             SetErrorOutputStream(G4std::ofstream& ofs) 
+  static void             SetErrorOutputStream(std::ofstream& ofs) 
                                                    { fErrorOfs = &ofs;     }
   static void             SetErrorNevents(G4int n) { fErrorNevents = n;    }
   static void             SetErrorOutputDeviceID(G4int i)
@@ -59,7 +59,7 @@ public:
   
 private:
   static J4Global          *fGlobal;
-  static G4std::ofstream   *fErrorOfs;
+  static std::ofstream   *fErrorOfs;
   static G4int              fErrorCounter;
   static G4int              fErrorNevents;
   static G4int              fErrorOutputDeviceID;   // 0: cerr, 1:fileoutput

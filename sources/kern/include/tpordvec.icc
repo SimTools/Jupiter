@@ -101,7 +101,7 @@ void G4RWTPtrOrderedVector<T>::clear()
 template<class T >
 void G4RWTPtrOrderedVector<T>::clearAndDestroy() 
 {
-  G4std::set<T*,G4std::greater<T*> > tmp;
+  std::set<T*,std::greater<T*> > tmp;
   for (size_t sz=0;sz<rwsize;sz++)
     {
       T* current;
@@ -109,7 +109,7 @@ void G4RWTPtrOrderedVector<T>::clearAndDestroy()
       if ( current )
          tmp.insert(current);
     }
-  typename G4std::set<T*,G4std::greater<T*> >::iterator it;
+  typename std::set<T*,std::greater<T*> >::iterator it;
   for(it=tmp.begin();it!=tmp.end();it++)
     {
       delete *it;

@@ -15,7 +15,7 @@
 #include <iomanip>
 #include "J4VHit.hh"
 
-G4std::ofstream* J4VHit::fOfs = 0;
+std::ofstream* J4VHit::fOfs = 0;
 
 //=========================================================================
 //* constructor -----------------------------------------------------------

@@ -190,8 +190,8 @@ EInside J4HyperbolicSurface::Inside(const G4ThreeVector &gp)
       << J4endl;
    J4cerr << "         Name : " << GetName() << J4endl;
    J4cerr << "         distanceToOut : " << distanceToOut << J4endl;
-   J4cerr << "         areacode      : " << G4std::hex << fInside.inside 
-                                         << G4std::dec << J4endl;
+   J4cerr << "         areacode      : " << std::hex << fInside.inside 
+                                         << std::dec << J4endl;
    J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
           << J4endl;
 #endif
@@ -810,7 +810,7 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
          distance[0] = DistanceToBoundary(areacode[0], xx, p);
          J4cerr << "      J4HyperbolicSurface:DistanceToSurface(p) ~~~~~~~~~~~~~~" << J4endl;
          J4cerr << "         xx is out of boundary." << J4endl;
-         J4cerr << "         areacode : " << G4std::hex << areacode[0] << G4std::dec << J4endl;
+         J4cerr << "         areacode : " << std::hex << areacode[0] << std::dec << J4endl;
          J4cerr << "         xx : " << xx << J4endl;
          J4cerr << "         p : " << p << J4endl;
          J4cerr << "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << J4endl;
