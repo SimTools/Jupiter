@@ -1,0 +1,7 @@
+pushd $G4INSTALL/source/
+make
+pushd $G4INSTALL/../development/Jupiter/
+make
+popd
+popd
+

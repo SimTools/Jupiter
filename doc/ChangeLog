@@ -1,0 +1,164 @@
+M... Modified R...Replaced A...Added D...Deleted
+------------------------------------------------------------------
+2002/11/01 K.Fujii	 Version 2.0.00
+------------------------------------------------------------------
+No change. Just replaced the main stream of /proj/soft/CVSMASTER
+------------------------------------------------------------------
+2002/10/30 K.Fujii	 Version 1.8.00
+------------------------------------------------------------------
+Merged with version 1.6 of the main CVS tree.
+The following is the note added by K.Hoshina to the main tree:
+------------------------------------------------------------------
+-2002/10/30 K.Hoshina    Version 1.6.00 
+------------------------------------------------------------------
+-M J4HEPEvtInterface
+-        Added numberOfSkipEvents command to HEPEvt interface.
+-        Type  
+-        >  /jupiter/hepevt/numberOfSkipEvents [n]
+-        then J4HEPEvtInterface will skip n events before beamOn.  
+-        If you want to unset this option, call the command with n=0.
+-
+-M J4EventAction
+-        Random seed is saved event by event.
+-        Default seed filename is "Config.conf".
+-        To read the seed file, type
+-        > /random/resetEngineFrom [seed file name]
+-
+-A J4Output (by Miyamoto)
+-        Output class  
+-
+-A J4TwistedTubs, J4TwistedSurface, J4FlatSurface, J4HyperbolicSurface
+-        Solid class for Stereo Cells.
+-        They are alpha version, still remaining sum bugs.   
+-
+------------------------------------------------------------------
+2002/10/28 K.Fujii	 Version 1.7.01 
+------------------------------------------------------------------
+Separated Detector Solenoid Magnet component
+------------------------------------------------------------------
+2002/10/27 K.Fujii	 Version 1.7.00 
+------------------------------------------------------------------
+Rearranged directory structure so that Jupiter.cc now lives in
+an independent directory and kern now  creates an independent
+lib: libJ4kern.a to be used by Jupiter and Baby.
+Makefiles and config files have been updated accordingly.
+------------------------------------------------------------------
+2002/07/02 K.Hoshina	 Version 1.5.01 
+------------------------------------------------------------------
+Bug fixed for array of J4VComponent. 
+------------------------------------------------------------------
+2002/06/30 K.Hoshina	 Version 1.5.00 
+------------------------------------------------------------------
+Bug fix for automatic naming facility.
+Added BookKeeping facility.  Debugged data file (pythia_event.data evt 297) . This fixed sudden
+memory leak at event 297.
+
+A TBookKeeper 
+ 	TBookKeeper manages owner of new objects. You must 
+        register/deregister your new object.
+
+M J4Object
+	Added Register(child), Deregister(child).
+	(child : some object newed in the J4Object)
+
+------------------------------------------------------------------
+2002/06/06 K.Hoshina	 Version 1.4.00 
+------------------------------------------------------------------
+Bug fix version
+
+M J4VComponent
+	modified OutputAll, IsOn, IsOff functions and removed
+        fIsDaughterOn flag.
+------------------------------------------------------------------
+2002/05/18 K.Hoshina	 Version 1.4.00 
+------------------------------------------------------------------
+Modified code around copy-placement in vtx.
+If you prefer original one, delete CXXFLAGS += -D__HOSHINA__
+from source/vtx/GNUmakefile.
+ 
+------------------------------------------------------------------
+2002/05/15 K.Hoshina	 Version 1.4.00 
+------------------------------------------------------------------
+Moved almost all datamembers and methods from J4VDetectorComponent
+to J4VComponent. Some argument of pure virtual method are replaced
+from J4VDetectorCoponent* to J4VComponent* .
+
+A J4VComponent
+        Base class for Detector & Accelerator components.
+        Renamed GetDCPtrByName() as GetComponentPtrByName()
+	Added GetFamilyMembers() (returns pointer array of all components)  
+M J4VDetectorComponent and its derived classes
+        Changed argument of InstallIn() function
+M J4VSensitiveDetector and its derived classes
+        Changed argument of constructor
+        Renamed GetDetectorComponent() as GetComponent()
+	Moved fHitNumber from static public to static private 
+        Removed SetHitNumber() static method
+M J4VHit and its derived classes
+        Changed argment of constructor
+        Renamed GetDetectorComponent() as GetComponent()
+
+------------------------------------------------------------------
+2002/05/02 K.Hoshina	 Version 1.3.00 
+------------------------------------------------------------------
+Installed IR & BeamDerivery Area
+
+A J4VAcceleratorComponent
+        Base class for Accelerator components
+M J4VDetectorComponent:
+        Changed arguments of constractor (added copy number) 
+        Changed arguments of InstallIn() function 
+
+
+------------------------------------------------------------------
+2002/03/12 K.Hoshina	 Version 1.2.01 
+------------------------------------------------------------------
+Minor change for geant4.4.0
+
+A copied tpordvec.h, tpordvec.icc, defs.h from geant4.3.2
+
+M J4Object.h, J4TypeDef.h
+        include "tpordvec.h" in kern directory.
+
+M config/mkg4include.pl
+        modified for geant4.4.0
+
+
+------------------------------------------------------------------
+2002/01/23 K.Hoshina	 Version 1.2.00 
+------------------------------------------------------------------
+Remaked CVS Repositry
+
+=================================================================
+2001/09/04 K.Hoshina	 Version 0.1.01
+------------------------------------------------------------------
+M J4CDCDriftRegionHit::Output
+        Output data format changed.
+	
+M J4PrimaryGeneratorAction::GeneratePrimaries
+        Added Mu+ beam option.
+        Momentum of Mu+ distributes from 10MeV to 350.01GeV.
+	
+R J4PrimaryGeneratorAction::IsSetHEPEvtGenerator
+        !!! ATTENTION !!!
+        Renamed from GetHepEvtGenerator in order to avoid 
+        confusion(the function doesn't return J4HepEvtGenerator).
+	
+M Jupiter.cc
+        Added Mu+ beam option.
+        Call SetHepEvtGenerator method before setting your
+        J4PrimaryGeneratorAction into your UserAction.
+	
+------------------------------------------------------------------
+2001/09/04 K.Hoshina	 Version 0.1.01
+------------------------------------------------------------------
+R J4VDetectorComponent::OrderNewTubs
+        !!! ATTENTION !!!
+        OrderNewTubs is replaced. 
+        Argument "G4double endcapthickness" is added and the
+        number of areguments has changed.
+	
+------------------------------------------------------------------
+2001/06/08 K.Hoshina	 Version 0.1.00
+------------------------------------------------------------------
+First public alpha for developers use only.

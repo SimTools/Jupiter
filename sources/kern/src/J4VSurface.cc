@@ -1,0 +1,669 @@
+ /*
+ *  J4VSurface.cc
+ *  
+ *
+ *  Created by Kotoyo Hoshina on Thu Aug 01 2002.
+ *  Copyright (c) 2001 __MyCompanyName__. All rights reserved.
+ *
+ */
+
+#include "J4VSurface.hh"
+
+//#define __SOLIDDEBUG__
+
+const G4int  J4VSurface::kOutside        = 0x00000000;
+const G4int  J4VSurface::kInside         = 0x10000000;
+const G4int  J4VSurface::kBoundary       = 0x20000000;
+const G4int  J4VSurface::kCorner         = 0x40000000;
+const G4int  J4VSurface::kCorner0Min1Min = 0x40000101; 
+const G4int  J4VSurface::kCorner0Max1Min = 0x40000201;
+const G4int  J4VSurface::kCorner0Max1Max = 0x40000202; 
+const G4int  J4VSurface::kCorner0Min1Max = 0x40000102; 
+const G4int  J4VSurface::kAxisMin        = 0x00000101; 
+const G4int  J4VSurface::kAxisMax        = 0x00000202; 
+const G4int  J4VSurface::kAxisX          = 0x00000404;
+const G4int  J4VSurface::kAxisY          = 0x00000808;
+const G4int  J4VSurface::kAxisZ          = 0x00000C0C;
+const G4int  J4VSurface::kAxisRho        = 0x00001010;
+const G4int  J4VSurface::kAxisPhi        = 0x00001414;
+
+// mask
+const G4int  J4VSurface::kAxis0          = 0x0000FF00;
+const G4int  J4VSurface::kAxis1          = 0x000000FF;
+const G4int  J4VSurface::kSizeMask       = 0x00000303;
+const G4int  J4VSurface::kAxisMask       = 0x0000FCFC;
+const G4int  J4VSurface::kAreaMask       = 0XF0000000;
+
+//=====================================================================
+//* constructor -------------------------------------------------------
+
+J4VSurface::J4VSurface(const G4String &name)
+           :fName(name)
+{
+
+   fAxis[0]    = kUndefined;
+   fAxis[1]    = kUndefined;
+   fAxisMin[0] = kInfinity;
+   fAxisMin[1] = kInfinity;
+   fAxisMax[0] = kInfinity;
+   fAxisMax[1] = kInfinity;
+   fHandedness = 1;
+
+   G4int i;
+   for (i=0; i<4; i++) {
+      fCorners[i].set(kInfinity, kInfinity, kInfinity);
+      fNeighbours[i] = 0;
+   }
+}
+
+J4VSurface::J4VSurface(const G4String         &name,
+                       const G4RotationMatrix &rot,
+                       const G4ThreeVector    &tlate,
+                             G4int             handedness,
+                       const EAxis             axis0 ,
+                       const EAxis             axis1 ,
+                             G4double          axis0min,
+                             G4double          axis1min,
+                             G4double          axis0max,
+                             G4double          axis1max )
+           :fName(name)
+{
+   fAxis[0]    = axis0;
+   fAxis[1]    = axis1;
+   fAxisMin[0] = axis0min;
+   fAxisMin[1] = axis1min;
+   fAxisMax[0] = axis0max;
+   fAxisMax[1] = axis1max;
+   fHandedness = handedness;
+   fRot        = rot;
+   fTrans      = tlate;
+
+   G4int i;
+   for (i=0; i<4; i++) {
+      fCorners[i].set(kInfinity, kInfinity, kInfinity);
+      fNeighbours[i] = 0;
+   }
+}
+
+//=====================================================================
+//* destructor --------------------------------------------------------
+J4VSurface::~J4VSurface()
+{
+
+}
+
+//=====================================================================
+//* DistanceToPlane -------------------------------------------------
+G4double J4VSurface::DistanceToPlane(const G4ThreeVector &p,
+                                     const G4ThreeVector &x0,
+                                     const G4ThreeVector &t1,
+                                     const G4ThreeVector &t2,
+                                           G4ThreeVector &xx,
+                                           G4ThreeVector &n)
+{
+   // DistanceToPlane (static)
+   // 
+   // Calculate distance to plane in local coordinate,
+   // then return distance and global intersection points.
+   //
+   // p          - location of flying particle   
+   // x0         - reference point of surface
+   // t1         - 1st. vector lying on the plane 
+   // t2         - 2nd. vector lying on the plane
+   // xx         - a foot of perpendicular line from p to the plane 
+   // t          - distance from xx to p
+   // n          - a unit normal of this plane from plane to p. 
+   //
+   // equation of plane:
+   //      n*(x - x0) = 0;
+   //
+   // vector to xx:
+   //      xx = p - t*n
+   //
+   //         where
+   //         t = n * (p - x0) / abs(n)
+   //
+
+   G4double t;
+   n = t1.cross(t2);
+   n = n.unit();
+   t = n * (p - x0);
+   xx = p - t * n;
+   return t;
+}
+
+//=====================================================================
+//* AmIOnLeftSide -----------------------------------------------------
+G4int J4VSurface::AmIOnLeftSide(G4ThreeVector ai, 
+                                G4ThreeVector vec,
+                                G4bool        withtol) 
+{
+   static G4RotationMatrix unitrot;  // unit matrix
+   static const G4RotationMatrix rottol    = unitrot.rotateZ(0.5*kAngTolerance);
+   static const G4RotationMatrix invrottol = unitrot.rotateZ(-0.5*kAngTolerance);
+
+   ai  = ai.unit();
+   vec = vec.unit();
+   
+   if (withtol) {
+      if ((ai.cross(invrottol * vec)).z() > 0) {
+         return 1;
+      } else if ((ai.cross(rottol * vec)).z() < 0 ) {
+         return -1;
+      } else {
+         return 0;   
+      }
+   } else {
+      if ((ai.cross(vec)).z() > 0) {    
+         return 1;
+      } else if ((ai.cross(vec)).z() < 0 ) {
+         return -1;
+      } else {       
+         return 0;
+      }
+   }
+}
+
+//=====================================================================
+//* DistanceToBoundary ------------------------------------------------
+G4double J4VSurface::DistanceToBoundary(G4int areacode,
+                                        G4ThreeVector &xx,
+                                        const G4ThreeVector &p) 
+{
+   // DistanceToBoundary 
+   //
+   // return distance to nearest boundary from arbitrary point p 
+   // in local coodinate.
+   // Argument areacode must be one of them:
+   // kAxis0 & kAxisMin, kAxis0 & kAxisMax,
+   // kAxis1 & kAxisMin, kAxis1 & kAxisMax.
+   //
+   // Equation
+   //
+   //    distance^2 = |(xx - p)|^2
+   //    with
+   //       xx = x0 + t*d
+   //            x0 is a reference point of the boudary
+   //            d  is the direction vector of the boundary
+   //
+   //   (d/dt)distance^2 = (d/dt)|((x0 + t*d) - p)|^2
+   //                    = 2*t*|d|^2 + 2*d*(x0 - p)
+   //                    = 0  // smallest distance
+   //   then
+   //      t = - d*(x0 - p) / |d|^2
+   //
+
+   G4ThreeVector d;             // direction vector of the boundary
+   G4ThreeVector x0;            // reference point of the boundary
+   G4double      t;
+   G4int         boundarytype;
+
+   if (IsAxis0(areacode) && IsAxis1(areacode)) {
+      G4cerr << "J4VSurface::DistanceToBoundary: You are in the "
+      << "corner area. This function returns a direction vector of "
+      << "a boundary line. areacode = " << areacode << G4endl;
+      abort();
+      
+   } else if (IsAxis0(areacode) || IsAxis1(areacode)) {
+      GetBoundaryParameters(areacode, d, x0, boundarytype);
+      if (boundarytype == kAxisPhi) {
+         t = x0.getRho() / p.getRho();
+         xx.set(t*p.x(), t*p.y(), x0.z());
+      } else if (boundarytype == kAxisRho) {
+         G4cerr << "J4VSurface::DistanceToBoundary: Yet supported "
+         << "kAxisRho option. areacode =" << areacode << G4endl;
+      } else { // linear boundary
+         t  = -d*(x0 - p);      // remember d is a unit vector. |d|^2 = 1.
+         xx = x0 + t*d;
+      }
+      
+   } else {
+      G4cerr << "J4VSurface::DistanceToBoundary: bad areacode of "
+      << "boundary. areacode = " << areacode << G4endl;
+      abort();
+   }
+
+   G4ThreeVector dist = xx - p;
+   return dist.mag();
+   
+}
+
+
+//=====================================================================
+//* DistanceToIn ------------------------------------------------------
+G4double J4VSurface::DistanceToIn(const G4ThreeVector &gp,
+                                  const G4ThreeVector &gv,
+                                        G4ThreeVector &gxxbest)
+{
+#ifdef __SOLIDDEBUG__
+   G4cerr <<"..... J4VSurface:DistanceToIn(p,v) : Start from p, v : "
+          << fName << " , " 
+          << gp << " , "
+          << gv << " ..... " << G4endl;
+#endif
+
+   G4ThreeVector gxx[2];
+   G4double      distance[2] = {kInfinity, kInfinity};
+   G4int         areacode[2] = {kOutside, kOutside};
+   G4bool        isvalid[2]  = {FALSE, FALSE};
+   G4double      bestdistance = kInfinity;
+   G4ThreeVector bestgxx(kInfinity, kInfinity, kInfinity);
+   G4int         besti       = -1;  
+
+   G4int         nxx = DistanceToSurface(gp, gv, gxx, distance, areacode, 
+                                         isvalid, kValidateWithTol);
+
+   G4int i;
+   for (i=0; i< nxx; i++) {
+      if (!isvalid[i]) {
+         // xx[i] is kOutside or distance[i] < 0
+         continue;      
+      }
+
+      G4ThreeVector normal = GetNormal(gxx[i], TRUE);
+
+      if ((normal * gv) >= 0) {
+         // particle goes outword the surface
+#ifdef __SOLIDDEBUG__
+         G4cerr << "J4VSurface:DistanceToIn(p,v): particle goes outword the surface " 
+         << fName << " " << bestdistance << G4endl;
+#endif 
+         continue; 
+      }
+      
+      if ((areacode[i] & kAreaMask) == kInside) {
+         // accept this intersection
+         if (distance[i] < bestdistance) {
+            bestdistance = distance[i];
+            bestgxx      = gxx[i];
+            besti        = i;
+#ifdef __SOLIDDEBUG__
+            G4cerr << "J4VSurface:DistanceToIn(p,v): areacode kInside name, distance = "
+                   << fName <<  " "<< bestdistance << G4endl;
+#endif 
+         }
+      } else {
+         // intersection is on boundary or corner.
+         J4VSurface* neighbours[2];
+         G4int       nneighbours = GetNeighbours(areacode[i], neighbours);
+         G4bool      isaccepted = FALSE;
+         G4int j;
+            
+         for (j=0; j< nneighbours; j++) {
+            // if on corner, nneighbours = 2.
+            // if on boundary, nneighbours = 1.
+            G4ThreeVector tmpgxx[2];
+            G4double      tmpdist[2]     = {kInfinity, kInfinity};
+            G4int         tmpareacode[2] = {kOutside, kOutside};
+            G4bool        tmpisvalid[2]  = {FALSE, FALSE};
+                  
+            G4int tmpnxx = neighbours[j]->DistanceToSurface(
+                                          gp, gv, tmpgxx, tmpdist,
+                                          tmpareacode, tmpisvalid,
+                                          kValidateWithTol);
+            G4ThreeVector neighbournormal;
+            G4int k;
+            G4int boundarycount = 0;
+            for (k=0; k< tmpnxx; k++) {
+               if ((tmpareacode[k] & kAreaMask) == kInside) {
+                  // tmpxx[k] is valid. but the point is not on this 
+                  // surface. continue.
+#ifdef __SOLIDDEBUG__
+            G4cerr << "J4VSurface:DistanceToIn(p,v): areacode kBoundary & kInside distance = "
+                   << fName << " " << tmpdist[k]<< G4endl;
+#endif 
+                  continue;
+               } else { 
+                  // tmpxx[k] is on boundary (or corner).
+                  // If both intersections are separated into both side of 
+                  // neighboursurface[j], skip farther one
+                  // (because the farther side is not on this surface).
+                  if (boundarycount) continue;
+                  boundarycount++;
+                  
+                  neighbournormal = neighbours[j]->GetNormal(tmpgxx[k], TRUE);
+                  if (neighbournormal * gv < 0) {
+                     // if xx is on corner, wait result of other neighbour.
+                     if (nneighbours > 1 && isaccepted == FALSE) {
+                        isaccepted = TRUE;
+                        continue;
+                     }
+                     // now, we can accept xx intersection
+                     if (distance[i] < bestdistance) {
+                        bestdistance = distance[i];
+                        bestgxx      = gxx[i];
+                        besti        = i;
+#ifdef __SOLIDDEBUG__
+                     G4cerr << "J4VSurface:DistanceToIn(p,v): areacode kBoundary"
+                            << " & kBoundary distance = "
+                            << fName  << " " << distance[i] << G4endl;
+#endif 
+                     }
+                  } else {
+                     // go next tmpintersection
+                     continue;
+                  }
+               }
+            } // tmpintersection loop end
+         } // neighboursurface loop end
+      }
+   } // intersection loop end
+
+   gxxbest = bestgxx;
+
+#ifdef __SOLIDDEBUG__
+   if (besti < 0) {
+      G4cerr <<"..... J4VSurface:DistanceToIn(p,v) : last return .................... " << G4endl;
+      G4cerr <<"   No intersections " << G4endl; 
+      G4cerr <<"   NAME        : " << fName << G4endl; 
+      G4cerr <<"..................................................................... " << G4endl;
+   } else {
+      G4cerr <<"..... J4VSurface:DistanceToIn(p,v) : last return .................... " << G4endl;
+      G4cerr <<"   NAME, i     : " << fName << " , " << besti << G4endl; 
+      G4cerr <<"   gxx[i]      : " << gxxbest << G4endl; 
+      G4cerr <<"   bestdist    : " << bestdistance << G4endl;
+      G4cerr <<"..................................................................... " << G4endl;
+   } 
+#endif
+
+   return bestdistance;
+}
+
+//=====================================================================
+//* DistanceToOut(p, v) -----------------------------------------------
+G4double J4VSurface::DistanceToOut(const G4ThreeVector &gp,
+                                   const G4ThreeVector &gv,
+                                         G4ThreeVector &gxxbest)
+{
+#ifdef __SOLIDDEBUG__
+   G4cerr <<"..... J4VSurface:DistanceToOut(p,v) : Start from p, v : "
+          << fName << " , "
+          << gp << " , "
+          << gv << " ..... " << G4endl;
+#endif
+
+   G4double      distance[2]  = {kInfinity, kInfinity};
+   G4int         areacode[2]  = {kOutside, kOutside};
+   G4bool        isvalid [2]  = {FALSE, FALSE};
+   G4ThreeVector gxx[2];
+   G4int         nxx;
+   G4double      bestdistance = kInfinity;
+   G4int         besti        = -1;
+
+   nxx = DistanceToSurface(gp, gv, gxx, distance, areacode,
+                           isvalid, kValidateWithTol);
+   G4int i;
+   for (i=0; i<nxx; i++) {
+#ifdef __SOLIDDEBUG__
+      G4cerr << "/* J4VSurface:DistanceToOut(p,v)--------------------------------------------" << G4endl; 
+      G4cerr << "/*    NAME, i           : " << fName << " " << i << G4endl; 
+      G4cerr << "/*    gp, gv            : " << gp << " , " << gv << G4endl;
+      G4cerr << "/*    gxx, dist         : " << gxx[i] << " , " << distance[i] << G4endl; 
+      G4cerr << "/*    isvalid, areacode : " << isvalid[i] << " , " << G4std::hex << areacode[i] << G4std::dec << G4endl; 
+      G4cerr << "/* -------------------------------------------------------------------------" << G4endl; 
+#endif 
+      if (!(isvalid[i])) {
+         continue;
+      }
+
+      G4ThreeVector normal = GetNormal(gxx[i], TRUE);
+      if (normal * gv <= 0) {
+         // particle goes toword inside of solid, return kInfinity
+#ifdef __SOLIDDEBUG__
+          G4cerr << "J4VSurface:DistanceToOut(p,v): normal*gv < 0, normal " 
+                 << fName << " " << normal 
+                 << G4endl;
+#endif 
+      } else {
+         // gxx[i] is accepted.
+         if (distance[i] < bestdistance) {
+             bestdistance = distance[i];
+             gxxbest = gxx[i];
+             besti   = i;
+         }
+      } 
+   }
+
+#ifdef __SOLIDDEBUG__
+   if (besti < 0) {
+      G4cerr <<"..... J4VSurface:DistanceToOut(p,v) : last return .................... " << G4endl;
+      G4cerr <<"   No intersections   " << G4endl; 
+      G4cerr <<"   NAME        : " << fName << G4endl; 
+      G4cerr <<"   bestdist    : " << bestdistance << G4endl;
+      G4cerr <<"..................................................................... " << G4endl;
+   } else {
+      G4cerr <<"..... J4VSurface:DistanceToOut(p,v) : last return .................... " << G4endl;
+      G4cerr <<"   NAME, i     : " << fName << " , " << i << G4endl; 
+      G4cerr <<"   gxx[i]      : " << gxxbest << G4endl; 
+      G4cerr <<"   bestdist    : " << bestdistance << G4endl;
+      G4cerr <<"..................................................................... " << G4endl;
+   } 
+#endif
+
+   return bestdistance;
+ 
+}
+
+//=====================================================================
+//* DistanceTo(p) -----------------------------------------------------
+G4double J4VSurface::DistanceTo(const G4ThreeVector &gp,
+                                      G4ThreeVector &gxxbest)
+{
+#ifdef __SOLIDDEBUG__
+   G4cerr <<"..... J4VSurface:DistanceTo(p) : Start from p : "
+          << fName << " , " << gp << " ..... " << G4endl;
+#endif
+   G4double distance[2] = {kInfinity, kInfinity};
+   G4int    areacode[2] = {kOutside, kOutside};
+   G4ThreeVector gxx[2];
+   G4int nxx;
+
+   nxx = DistanceToSurface(gp, gxx, distance, areacode);
+   gxxbest = gxx[0];
+
+#ifdef __SOLIDDEBUG__
+   G4cerr <<"..... J4VSurface:DistanceTo(p) : last return .................... " << G4endl;
+   G4cerr <<"   NAME        : " << fName << G4endl; 
+   G4cerr <<"   gxx         : " << gxxbest << G4endl; 
+   G4cerr <<"   bestdist    : " << distance[0] << G4endl;
+   G4cerr <<"..................................................................... " << G4endl;
+#endif
+
+   return distance[0];
+}
+
+//=====================================================================
+//* GetBoundaryParameters ---------------------------------------------
+void J4VSurface::GetBoundaryParameters(const G4int         &areacode,
+                                             G4ThreeVector &d,
+                                             G4ThreeVector &x0,
+                                             G4int         &boundarytype) const
+{
+   // areacode must be one of them:
+   // kAxis0 & kAxisMin, kAxis0 & kAxisMax,
+   // kAxis1 & kAxisMin, kAxis1 & kAxisMax.
+   
+   if (areacode & kAxis0 && areacode & kAxis1) {
+      G4cerr << "J4VSurface::GetBoundaryParameters: You are in the "
+      << "corner area. This function returns a direction vector of "
+      << "a boundary line. abort. areacode = " << areacode << G4endl;
+      abort();
+   } 
+
+   G4int i;
+   for (i=0; i<4; i++) {
+      if (fBoundaries[i].GetBoundaryParameters(areacode, d, x0,
+                                                boundarytype)) return;
+   }
+
+   G4cerr << "J4VSurface::GetBoundaryParameters: boundary at areacode "
+      << areacode << " is not be registerd. abort. " << G4endl;
+   abort();
+
+}
+
+//=====================================================================
+//* SetCorner ---------------------------------------------------------
+void J4VSurface::SetCorner(G4int areacode, G4double x, G4double y, G4double z)
+{
+   if ((areacode & kCorner) != kCorner){
+      G4cerr << "J4VSurface::GetCorner: area code must represents corner. "
+      << "your areacode = " << areacode << G4endl;
+      abort();
+   }
+
+   if ((areacode & kCorner0Min1Min) == kCorner0Min1Min) {
+      fCorners[0].set(x, y, z);
+   } else if ((areacode & kCorner0Max1Min) == kCorner0Max1Min) {
+      fCorners[1].set(x, y, z);
+   } else if ((areacode & kCorner0Max1Max) == kCorner0Max1Max) {
+      fCorners[2].set(x, y, z);
+   } else if ((areacode & kCorner0Min1Max) == kCorner0Min1Max) {
+      fCorners[3].set(x, y, z);
+   }
+
+}
+
+//=====================================================================
+//* SetBoundaryAxis ---------------------------------------------------
+void J4VSurface::GetBoundaryAxis(G4int areacode, EAxis axis[]) const
+{
+
+   if ((areacode & kBoundary) != kBoundary) {
+      G4cerr << "J4VSurface::GetBoundaryAxis: "
+             << "you are not on boudary. abort." << G4endl;
+      abort();
+   }
+
+   G4int i;
+   for (i=0; i<2; i++) {
+
+      G4int whichaxis;
+      if (i == 0) {
+         whichaxis = kAxis0;
+      } else if (i == 1) {
+         whichaxis = kAxis1;
+      }
+      
+      // extracted axiscode of whichaxis
+      G4int axiscode = whichaxis & kAxisMask & areacode ; 
+      if (axiscode) {
+         if (axiscode == (whichaxis & kAxisX)) {
+            axis[i] = kXAxis;
+         } else if (axiscode == (whichaxis & kAxisY)) {
+            axis[i] = kYAxis;
+         } else if (axiscode == (whichaxis & kAxisZ)) {
+            axis[i] = kZAxis;
+         } else if (axiscode == (whichaxis & kAxisRho)) {
+            axis[i] = kRho;
+         } else if (axiscode == (whichaxis & kAxisPhi)) {
+            axis[i] = kPhi;
+         } else {
+            G4cerr << "J4VSurface::GetBoundaryAxis: areacode " << areacode
+            << " is not be supported. abort. " << G4endl;
+            abort();
+         }
+      }
+   }
+
+}
+
+//=====================================================================
+//* SetBoundaryLimit --------------------------------------------------
+void J4VSurface::GetBoundaryLimit(G4int areacode, G4double limit[]) const
+{
+   if (areacode & kCorner) {
+      if (areacode & kCorner0Min1Max) {
+         limit[0] = fAxisMin[0];
+         limit[1] = fAxisMin[1];
+      } else if (areacode & kCorner0Max1Min) {
+         limit[0] = fAxisMax[0];
+         limit[1] = fAxisMin[1];
+      } else if (areacode & kCorner0Max1Max) {
+         limit[0] = fAxisMax[0];
+         limit[1] = fAxisMax[1];
+      } else if (areacode & kCorner0Min1Max) {
+         limit[0] = fAxisMin[0];
+         limit[1] = fAxisMax[1];
+      }
+   } else if (areacode & kBoundary) {
+      if (areacode & (kAxis0 | kAxisMin)) {
+         limit[0] = fAxisMin[0];
+      } else if (areacode & (kAxis1 | kAxisMin)) {
+         limit[0] = fAxisMin[1];
+      } else if (areacode & (kAxis0 | kAxisMax)) {
+         limit[0] = fAxisMax[0];
+      } else if (areacode & (kAxis1 | kAxisMax)) {
+         limit[0] = fAxisMax[1];
+      }
+   } else {
+      G4cerr << "J4VSurface::GetBoundaryLimit: you are not on boudary. "
+      << "your areacode = " << areacode << G4endl;
+   }
+}
+
+//=====================================================================
+//* SetBoundary --------------------------------------------------
+void J4VSurface::SetBoundary(const G4int         &axiscode,
+                             const G4ThreeVector &direction,
+                             const G4ThreeVector &x0,
+                             const G4int         &boundarytype)
+{
+   G4int code = (~kAxisMask) & axiscode;
+   if ((code == (kAxis0 & kAxisMin)) ||
+       (code == (kAxis0 & kAxisMax)) ||
+       (code == (kAxis1 & kAxisMin)) ||
+       (code == (kAxis1 & kAxisMax))) {
+
+      G4int i;
+      G4bool done = FALSE;
+      for (i=0; i<4; i++) {
+         if (fBoundaries[i].IsEmpty()) {
+            fBoundaries[i].SetFields(axiscode, direction,
+                                     x0, boundarytype);
+            done = TRUE;
+            break;
+         }
+      }
+
+      if (!done) {
+         G4cerr << "J4VSurface::SetBoundary: No. of boundary exeeded 4. "
+                << "abort. " << G4endl;
+         abort();
+      }
+
+   } else {
+
+      G4cerr << "J4VSurface::SetBoundary: invalid axiscode "
+             << G4std::setbase(2) << axiscode
+             << " . abort. " << G4endl;
+      abort();
+   }
+}
+
+//=====================================================================
+//* DebugPrint --------------------------------------------------
+void J4VSurface::DebugPrint()
+{
+   G4ThreeVector A = fRot * GetCorner(kCorner0Min1Min) + fTrans;
+   G4ThreeVector B = fRot * GetCorner(kCorner0Max1Min) + fTrans;
+   G4ThreeVector C = fRot * GetCorner(kCorner0Max1Max) + fTrans;
+   G4ThreeVector D = fRot * GetCorner(kCorner0Min1Max) + fTrans;
+  
+   G4cerr << "/* J4VSurface::DebugPrint:---------------------------------" << G4endl;
+   G4cerr << "/* NAME = " << fName << G4endl;
+   G4cerr << "/* Axis = " << G4std::hex << fAxis[0] << " " << G4std::hex << fAxis[1] 
+          << " (0,1,2,3,5 = kXAxis,kYAxis,kZAxis,kRho,kPhi)" << G4std::dec << G4endl;
+   G4cerr << "/* BoundaryLimit(in local) fAxis0(min, max) = ("<<fAxisMin[0] 
+          << ", " << fAxisMax[0] << ")" << G4endl;
+   G4cerr << "/* BoundaryLimit(in local) fAxis1(min, max) = ("<<fAxisMin[1] 
+          << ", " << fAxisMax[1] << ")" << G4endl;
+   G4cerr << "/* Cornar point kCorner0Min1Min = " << A << G4endl;
+   G4cerr << "/* Cornar point kCorner0Max1Min = " << B << G4endl;
+   G4cerr << "/* Cornar point kCorner0Max1Max = " << C << G4endl;
+   G4cerr << "/* Cornar point kCorner0Min1Max = " << D << G4endl;
+   G4cerr << "/*---------------------------------------------------------" << G4endl;
+
+}
+
+                             

@@ -1,0 +1,185 @@
+// $Id$
+// ====================================================================
+//    J4MaterialCatalog.icc
+//
+// ====================================================================
+
+////////////////////////////////////////////
+void J4MaterialCatalog::ReadMaterialCatalog()
+////////////////////////////////////////////
+{
+  // ==================================================================
+  // elements...
+  G4double A, Z;
+  G4String name, symbol;
+
+  A= 1.00794 *g/mole;
+  G4Element* elH= new G4Element(name="Hydrogen", symbol="H", Z=1., A);
+
+  A= 12.011 *g/mole;
+  G4Element* elC= new G4Element(name="Carbon", symbol="C", Z=6., A);
+
+  A= 14.00674 *g/mole;
+  G4Element* elN= new G4Element(name="Nitrogen", symbol="N", Z=7., A);
+
+  A= 15.9994 *g/mole;
+  G4Element* elO= new G4Element(name="Oxygen", symbol="O", Z=8., A);
+
+  A= 39.948 *g/mole;
+  G4Element* elAr ;
+  elAr = new G4Element(name="Argon", symbol="Ar", Z=18., A);
+
+  A= 126.90447 *g/mole;
+  G4Element* elI= new G4Element(name="Iodine", symbol="I", Z=53., A);
+
+  A= 132.90543 *g/mole;
+  G4Element* elCs= new G4Element(name="Cesium", symbol="Cs", Z=55., A);
+  
+
+  // ================================================================== 
+  // materials...
+  G4double density, massfraction, pressure; 
+  G4int natoms, nel, ncomponents;
+
+  // temperature of experimental hall is controlled at 20 degree.
+  const G4double expTemp= STP_Temperature+20.*kelvin; 
+  
+  // air
+  density= 1.205e-03 *g/cm3;  // at 20 degree
+  G4Material* Air= new G4Material(name="Air", density, nel=2, 
+				  kStateGas, expTemp);
+  Air-> AddElement(elN, massfraction= 70.*perCent);
+  Air-> AddElement(elO, massfraction= 30.*perCent);
+  
+  // vacuum
+  
+#if 1
+  density  = universe_mean_density;
+#else
+  density  = 1.205e-03 *g/cm3 * 1.e-15;
+#endif
+  pressure = 1.e-19*pascal;
+  G4Material* vacuum = new G4Material(name="vacuum", density, nel=2,
+  				      kStateGas, expTemp, pressure);
+  vacuum-> AddElement(elN, massfraction= 70.*perCent);
+  vacuum-> AddElement(elO, massfraction= 30.*perCent);
+ 
+
+  // Ar gas
+  A= 39.948 *g/mole;
+  const G4double denAr= 1.782e-03 *g/cm3 * STP_Temperature/expTemp;
+  G4Material* Ar= new G4Material(name="ArgonGas", Z=18., A, denAr,
+				 kStateGas, expTemp);
+  // ethane (C2H6)
+  const G4double denEthane= 1.356e-3 *g/cm3 * STP_Temperature/expTemp;
+  G4Material* Ethane= new G4Material(name="Ethane", denEthane, nel=2,
+				     kStateGas, expTemp);
+  Ethane-> AddElement(elC, natoms=2);
+  Ethane-> AddElement(elH, natoms=6);
+
+  // CO2 gas
+  const G4double denCO2= 1.977e-3 *g/cm3 * STP_Temperature/expTemp;
+  G4Material* CO2= new G4Material(name="CO2Gas", denCO2, ncomponents=2,
+				     kStateGas, expTemp);
+  CO2-> AddElement(elC, natoms=1);
+  CO2-> AddElement(elO, natoms=2);
+  
+  // Isobutane gas (C4H10)
+  const G4double denIsobutane= 2.67e-3 *g/cm3 * STP_Temperature/expTemp;
+  G4Material* Isobutane= new G4Material(name="Isobutane", denIsobutane, 
+  				     ncomponents=2,
+				     kStateGas, expTemp);
+  Isobutane-> AddElement(elC, natoms=4);
+  Isobutane-> AddElement(elH, natoms=10);
+
+#if 0  
+  // CO2(90%) + Isobutane(10%) mixture
+  density=  denCO2*0.9 + denIsobutane*0.1;
+  G4Material* CO2Isobutane= new G4Material(name="CO2Isobutane", density, nel=2,
+				       kStateGas, expTemp);
+  CO2Isobutane-> AddMaterial(CO2      , massfraction= 90. * perCent);
+  CO2Isobutane-> AddMaterial(Isobutane, massfraction= 10. * perCent);
+#endif
+  
+  // Ar(50%) + ethane(50%) mixture
+  density=  (denAr+denEthane)/2;
+  G4Material* ArEthane= new G4Material(name="ArEthane", density, nel=2,
+				       kStateGas, expTemp);
+  ArEthane-> AddMaterial(Ar, massfraction= denAr/2./density);
+  ArEthane-> AddMaterial(Ethane, massfraction= denEthane/2./density);
+
+  // it is also possible. (but not identical because of non-ideal gas)
+  //density=  (denAr+denEthane)/2.;
+  //G4Material* ArEthane= new G4Material(name="ArEthane", density, nel=3,
+  //			 	         kStateGas, expTemp);  
+  //ArEthane-> AddElement(elAr, natoms=1);
+  //ArEthane-> AddElement(elC,  natoms=2);
+  //ArEthane-> AddElement(elH,  natoms=6);
+  
+  
+  
+  // Beryllium
+  A = 9.012182*g/mole;
+  density = 1.848*g/cm3;
+  G4Material* Be;
+  Be = new G4Material(name="Beryllium", Z=4., A, density); 
+   
+  // Aluminum
+  A = 26.981539*g/mole;
+  density = 2.700*g/cm3;
+  G4Material* Al;
+  Al = new G4Material(name="Aluminum", Z=13., A, density);  
+
+  // silicon
+  A= 28.0855 *g/mole;
+  density= 2.33 *g/cm3;
+  G4Material* Si;
+  Si = new G4Material(name="Silicon", Z=14., A, density);
+
+  // iron
+  A= 55.847 *g/mole;
+  density= 7.87 *g/cm3;
+  G4Material* Fe;
+  Fe = new G4Material(name="Iron", Z=26., A, density);
+    
+  // Platinum
+  A= 195.08 *g/mole;
+  density= 21.45 *g/cm3;
+  G4Material* Pt;
+  Pt = new G4Material(name="Platinum", Z=78., A, density);
+
+  // lead
+  A= 207.2 *g/mole;
+  density= 11.35 *g/cm3;
+  G4Material* Pb;
+  Pb = new G4Material(name="Lead", Z=82., A, density);
+
+  // scintillator (Polystyene(C6H5CH=CH2))
+  density= 1.032 *g/cm3;
+  G4Material* Scinti = new G4Material(name="Scintillator", density, nel=2,
+				          kStateSolid, expTemp);
+  Scinti-> AddElement(elC, natoms=8);
+  Scinti-> AddElement(elH, natoms=8);
+
+  // CsI crystal
+  density= 4.51 *g/cm3;
+  G4Material* CsI= new G4Material(name="CsI", density, nel= 2);
+  CsI-> AddElement(elCs, natoms=1);
+  CsI-> AddElement(elI,  natoms=1);
+  
+  // Tungsten
+  A= 183.85 *g/mole;
+  density= 19.3 *g/cm3;
+  G4Material* W;
+  W = new G4Material(name="Tungsten", Z=74., A, density);
+
+  // CarbonFiber
+  A = 12.0107*g/mole;
+  density= 2.265 *g/cm3;
+  G4Material* CarbonFiber;
+  CarbonFiber = new G4Material(name="CarbonFiber", Z=6, A, density);
+  
+
+}
+
+

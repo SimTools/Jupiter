@@ -1,0 +1,6 @@
+ifneq ($(findstring g++, $(G4SYSTEM)),)
+   GCCVER    := $(shell $(CXX) -dumpversion 2>/dev/null | sed -e 's;\..*;;')
+ifeq ($(GCCVER),3)
+   CPPFLAGS  += -D__USEISOCXX__
+endif
+endif

@@ -1,0 +1,34 @@
+# $Id$
+# --------------------------------------------------------------
+#   GNUmakefile for examples module.
+#                             .G4UserGroup, 2000
+# --------------------------------------------------------------
+
+G4TMP    := $(JUPITERROOT)/tmp
+G4BIN    := $(JUPITERROOT)/bin
+G4TARGET := $(name)
+G4LIB    := $(JUPITERROOT)/lib
+
+ifndef G4WORKDIR
+  G4WORKDIR := .
+endif
+
+include $(G4INSTALL)/config/architecture.gmk
+include $(JUPITERROOT)/config/g4include.gmk
+include $(JUPITERROOT)/config/architecture.gmk
+
+G4TMPDIR  := $(G4TMP)/$(G4SYSTEM)/$(G4TARGET)
+
+CPPFLAGS  += -I../kern/include
+/* CPPFLAGS  += -Wno-deprecated */
+
+include $(G4INSTALL)/config/common.gmk
+
+ifneq ($(findstring g++, $(G4SYSTEM)),)
+   CXXFLAGS := $(subst -fno-for-scope,-ffor-scope,$(CXXFLAGS)) 
+endif
+
+.PHONY: global
+ 
+global: lib
+	

@@ -1,0 +1,68 @@
+------------------------------------------------------------------------------
+                                 JUPITER 
+------------------------------------------------------------------------------
+Version:        2.0.00
+
+Description:    JLC Monte-Carlo event simulator based on Geant4 
+
+UpdateRecord:   
+  2002/11/01    K.Fujii  (v.2.0.00)	Replaced Main stream
+  2002/10/30    K.Fujii  (v.1.8.00)	Merged with K.Hosina's main stream
+  2002/10/28    K.Fujii  (v.1.7.01)	Separated magnet from kern
+  2002/10/27    K.Fujii  (v.1.7.00)	Rearranged directory tree.
+					Made gcc3.X compliant.
+  2002/04/22    K.Hoshina(v.1.2.03)	
+
+Usage:
+
+[0] Prerequisite to Use Jupiter
+
+Jupiter is based on Geant4. You thus need to have Geant4
+and related libraries such as CLHEP beforehand.
+Install them first if not yet.
+You also  need to set Geant4-related environmental variables 
+by doing something like:
+
+$ export G4INSTALL=<top directory of Geant4 distribution>, etc.
+
+See Geant4 installation instructions for details.
+
+Note that you need to create directories to store image files
+according to G4DAWNFILE_DEST_DIR and/or G4VRMLFILE_DEST_DIR.
+
+Finally you need to set up JUPITER-related env. vars.
+
+$ export JUPITERROOT=<top directory of Jupiter distribution>
+
+
+[1] How to Compile Jupiter
+
+Given that Geant4 and Jupiter have been installed and
+related environmental variables have been set accordingly, 
+all you need to do is:
+
+$ cd $JUPITERROOT
+$ make
+
+The binary executable will be placed as
+        $JUPITERROOT/bin/$G4SYSTEM/Jupiter
+You can clean it together with other objects by
+
+$ make clean
+
+Alternatively you can do this in $JUPITERROOT/sources/main
+directory, where the main program Jupiter.cc resides.
+
+[2] How to Run Jupiter
+
+Type
+
+$ $J4BABAYROOT/bin/$G4SYSTEM/Baby
+
+then you will be prompted in a Baby interactive session.
+Supply valid commands whose examples can be found in
+$JUPITERROOT/macros/.
+
+Enjoy!
+
+

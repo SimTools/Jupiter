@@ -1,0 +1,27 @@
+# =====================================================================
+#   initialize visualization in VRML1FILE
+* =====================================================================
+# 
+# // create empty scene ("world" is default)
+/vis/scene/create
+# 
+# // add volume to scene
+/vis/scene/add/volume
+#  
+# // create a scene handler for a specific graphics system
+# // edit the next line(s) to choose another graphic system
+/vis/sceneHandler/create VRML2FILE
+# 
+# // create a viewer
+
+/vis/viewer/create
+
+/vis/camera/reset
+/vis/camera/viewpoint 120 30
+/vis/camera/zoom 1.5
+
+#  
+# // for drawing the tracks
+/tracking/storeTrajectory 1
+/vis/scene/include/trajectories
+ 

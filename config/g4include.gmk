@@ -1,0 +1,2 @@
+CPPFLAGS += $(shell $(JUPITERROOT)/config/mkg4include.pl $(G4INSTALL)/config/binmake.gmk $(G4BASE))
+

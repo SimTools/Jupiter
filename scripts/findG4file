@@ -1,0 +1,75 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# ============
+#  findG4file
+# ============
+#
+# (Function)
+#    find files with a target string in their names.
+# (Upate Record)
+#   200?/??/??  K.Hoshina       Original version.
+#   2002/10/27  K.Fujii         Modified to avoid making temp files.
+#
+#------------------------------------------------------------------------------
+#--
+#  Check #arguments
+#--
+if [ $# -lt 1 ]; then
+   echo "Usage:"
+   echo "  findG4file target [dir1] [dir2] ..."
+   exit 1
+fi
+#--
+#  Set target string
+#--
+target=$1
+#--
+#  Set list of directories to seach
+#--
+cmd=`basename $0`
+if [ $# -eq 1 ]; then
+   if [ $cmd = findG4file ]; then
+      if [ x"$G4INSTALL" != x ]; then
+         dirlist="${G4INSTALL}/source"
+      else
+         echo "Set G4INSTALL and try again"
+         exit 1
+      fi
+   elif [ $cmd = findJ4file ]; then
+      dirlist=""
+      for i in JUPITERROOT SATELLITESROOT URANUSROOT; do
+          dir=$(eval "echo \$$i")
+          if [ x$dir != x ]; then
+             dirlist="$dirlist $dir/"
+          fi
+      done
+      if [ x"$dirlist" = x ]; then
+         echo "Set at least one of"
+         echo "  JUPITERROOT, or SATELITTESROOT, or URANUSROOT"
+         echo "and try again"
+         exit 1
+      fi
+   else
+      dirlist=.
+   fi
+else
+   dirlist=""
+   shift 1
+   while [ $# -gt 0 ]; do
+      dirlist="$dirlist $1/"
+      shift 1
+   done
+fi
+echo "Going to check $dirlist"
+#--
+#  Loop over directories and find the target string.
+#--
+for dir in $dirlist; do
+   find $dir -name '*'$target'*'
+done
+#--
+#  That's it.
+#--
+echo "(END)"
+exit 0
+

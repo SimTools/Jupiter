@@ -1,0 +1,615 @@
+// $Id$
+//*************************************************************************
+//* --------------------
+//* J4VComponent
+//* --------------------
+//* (Description)
+//* 	Class for describing his/her detector compornents.
+//*     
+//* (Update Record)
+//*	2000/12/08  K.Hoshina	Original version.
+//*************************************************************************
+
+#include "geomdefs.hh"
+#include "G4RotationMatrix.hh"
+#include "G4VisAttributes.hh"
+#include "J4VComponent.hh"
+#include "J4VSensitiveDetector.hh"
+#include "J4PVPlacement.hh"
+#include "J4PVReplica.hh"
+#include "J4Parameter.hh"
+#include "J4UnionSolid.hh"
+#ifdef __USEISOCXX__
+#include <sstream>
+#else
+#include <strstream>
+#endif
+
+#include "G4Tubs.hh"
+#include "J4SubtractionSolid.hh"
+#include "G4Box.hh"
+
+#define __NMAXFAMILYMEMBERS__  100000
+
+J4ComponentArray J4VComponent::fgFamilyMembers(__NMAXFAMILYMEMBERS__);
+
+//************************************************************************
+//---------------------
+// Class Description
+//---------------------
+
+//=====================================================================
+//* constructor -----------------------------------------------
+
+J4VComponent::J4VComponent(const G4String&     groupname,
+                           const G4String&     name,
+                                 J4VComponent* parent,
+                                 G4int         nclones,
+                                 G4int         nbrothers,
+                                 G4int         me,
+                                 G4int         copyno):
+                      fSubGroup(groupname), fName(name),
+                      fMother(parent), fDaughters(64), fIsOn(FALSE), 
+                      fIsInstalled(FALSE), fSolid(0), fLV(0), fPV(0), 
+                      fNclones(nclones),
+                      fNbrothers(nbrothers), fMyID(me),fCopyNo(copyno), 
+                      fMyDepth(0)
+{
+   if (nclones < 1) {
+      G4cerr<<"J4VComponent::constructor: No of clones must bigger than 0."<<G4endl;
+   }
+   if (nbrothers < 1) {
+      G4cerr<<"J4VComponent::constructor: No of brothers must bigger than 0."<<G4endl;
+   }
+   if (nclones == 1) {
+      // in this case, this component will not be replicated and copied.
+      fCopyNo = 0;
+   } 
+
+   OpenMaterialStore();	
+      
+   SetName( fName, fNbrothers, fMyID, fNclones, fCopyNo, fMother);
+#if 1
+   J4Object::fName = fName;
+#endif
+   
+   if (fgFamilyMembers.entries() >= __NMAXFAMILYMEMBERS__) {
+      G4cerr << "J4VComponent::constructor: Too many family members "
+             << __NMAXFAMILYMEMBERS__ << " . abort. " << G4endl;
+      abort();
+   }
+ 
+   fgFamilyMembers.append(this);
+   
+   if (!parent) {
+      fMyDepth = 0;
+   } else {
+      fMyDepth = parent->GetMyDepth() - 1;
+   }
+
+#if 0
+   Register(&fDaughters);
+#endif
+   
+} 
+
+//=====================================================================
+//* destructor --------------------------------------------------------
+
+J4VComponent::~J4VComponent()
+{
+#if 0
+G4cerr << "J4VComponent::destructor called for ("
+     << (void *)this
+     << ") "
+     << fName << G4endl;
+#endif
+  if (Deregister(fSolid))  delete fSolid;
+  if (Deregister(fPV))     delete fPV;
+  if (Deregister(fLV->GetSensitiveDetector()))  delete fLV->GetSensitiveDetector();
+  if (Deregister(fLV))     delete fLV;
+}
+
+
+//=====================================================================
+//* OutputAll ---------------------------------------------------------
+
+void J4VComponent::OutputAll(G4HCofThisEvent* HCTE)
+{
+   if (GetSD()) {   	
+      if (fIsOn) { 
+          GetSD()->OutputAll(HCTE);
+      }
+   }
+
+   G4int ndaughters = fDaughters.entries();
+
+   G4int i;
+ 
+   for( i=0; i<ndaughters; i++) {      	
+      fDaughters[i]->OutputAll(HCTE);
+   }
+}
+
+//=====================================================================
+//* SwitchOn ----------------------------------------------------------
+void J4VComponent::SwitchOn(G4String opt)
+{
+   if (GetSD()) {   	
+      if (!fIsOn) fIsOn = TRUE;
+      G4SDManager::GetSDMpointer()->Activate(fLV->GetName(),TRUE);
+   }
+   
+   if (opt == "recursive") {
+      G4int ndaughters = fDaughters.entries();
+   
+      G4int i;
+      for(i=0; i<ndaughters; i++) {      	
+         fDaughters[i]->J4VComponent::SwitchOn();
+      }
+   }
+}
+
+//=====================================================================
+//* UnlockOutput ------------------------------------------------------
+
+void J4VComponent::UnlockOutput()
+{
+   if (GetSD()) {     
+      if (fIsOn) { 
+          GetSD()->UnlockOutput();
+      }
+   }
+
+   G4int ndaughters = fDaughters.entries();
+
+   G4int i;
+ 
+   for( i=0; i<ndaughters; i++) {             
+      fDaughters[i]->UnlockOutput();
+   }
+}
+ 
+//=====================================================================
+//* SwitchOff ---------------------------------------------------------
+void J4VComponent::SwitchOff(G4String opt)
+{	
+
+   if (GetSD()) {   	
+      if (fIsOn) fIsOn = FALSE;
+      G4SDManager::GetSDMpointer()->Activate(fName,FALSE);
+   }
+   
+   if (opt == "recursive") {
+      G4int ndaughters = fDaughters.entries();
+   
+      G4int i;
+      for(i=0; i<ndaughters; i++) {      	
+         fDaughters[i]->J4VComponent::SwitchOff();
+      }
+   }
+}
+
+//=====================================================================
+//* SetDaughter -------------------------------------------------------
+void J4VComponent::SetDaughter(J4VComponent* daughter)
+{
+   fDaughters.append(daughter);
+}
+
+//=====================================================================
+//* SetMother ---------------------------------------------------------
+void J4VComponent::SetMother(J4VComponent* mother)
+{
+   fMother = mother;
+   SetName( fName, fNbrothers, fMyID, fNclones, fCopyNo, fMother);
+   
+}
+
+//=====================================================================
+//* SetSD -------------------------------------------------------------
+
+void J4VComponent::SetSD(J4VSensitiveDetector* sd)
+{
+  if (!fLV) Assemble(); 
+  if (!fLV->GetSensitiveDetector()) {
+     G4SDManager::GetSDMpointer()-> AddNewDetector(sd);
+     fLV-> SetSensitiveDetector(sd);
+  } else if (fCopyNo > 0) {
+     G4cerr << "J4VComponent::SetSD at " << fName 
+            << " SetSD failed because you are not the owner of your LogicalVolume."
+            << "You must delete your sd created by new operator. abort." << G4endl;
+     abort();
+  } 
+}
+
+//=====================================================================
+//* SetName --------------------------------------------------------
+
+void J4VComponent::SetName(const G4String&       name,
+                                   G4int         nbrothers,
+                                   G4int         me,
+                                   G4int         nclones,
+                                   G4int         copyno,
+                                   J4VComponent *parent)
+{
+  // setting unique name to object. 
+
+  G4int width1 = (G4int)log10(nbrothers + 0.1) + 1;   
+  G4int width2 = (G4int)log10(nclones + 0.1) + 1;   
+
+  if (nbrothers > 1) {
+     if (nclones > 1 && copyno != -1) {   // if I will not be replica
+        if (parent) { 
+           fName = GetNewName(name, me, width1, copyno, width2, &(G4String &)(parent->GetName()));
+        } else {
+           fName = GetNewName(name, me, width1, copyno, width2);
+        }
+     } else {
+        if (parent) {
+           fName = GetNewName(name, me, width1, 0, 0, &(G4String &)(parent->GetName()));
+        } else {
+           fName = GetNewName(name, me, width1);
+        }
+     }
+  } else {
+    if (nclones > 1 && copyno != -1) {
+       if (parent) {
+          fName = GetNewName(name, 0, 0, copyno, width2, &(G4String &)(parent->GetName()));
+       }else  {
+          fName = GetNewName(name, 0, 0, copyno, width2);
+       }
+    } else {
+       if (parent){
+          fName = GetNewName(name, 0, 0, 0, 0, &(G4String &)(parent->GetName()));
+       }else  {
+          fName = GetNewName(name);
+       }
+    }
+  } 
+
+  G4cerr << " My name is " << fName << G4endl;
+}
+
+//=====================================================================
+//* MakeLVWith --------------------------------------------------------
+
+void J4VComponent::MakeLVWith( G4Material* material, G4UserLimits* ulp)
+{
+  if (!fLV) {
+     if (!fSolid) {
+        G4cerr << "J4VComponent::MakeLVWith at " << fName 
+             << " Solid does not exist. Create G4VSolid at first. return." << G4endl;
+     }  
+
+     fLV = new G4LogicalVolume(fSolid, material, fName); 
+     Register(fLV);
+
+     if (ulp) fLV->SetUserLimits(ulp);
+
+  } else { 
+        G4cerr << "J4VComponent::MakeLVWith at "  << fName 
+             << " LogicalVolume already exists. return." << G4endl;
+  }   
+}
+
+//=====================================================================
+//* PaintLV   --------------------------------------------------------
+
+void J4VComponent::PaintLV(G4bool visibility, const G4Color& color)
+{
+   if (fLV) {
+      if (!fLV->GetVisAttributes()) {
+         G4VisAttributes* visatt
+            = new G4VisAttributes(visibility, color);
+         Register(visatt);
+         fLV-> SetVisAttributes(visatt);   
+      } else {
+         ((G4VisAttributes *)fLV->GetVisAttributes())->SetVisibility(visibility);
+         ((G4VisAttributes *)fLV->GetVisAttributes())->SetColor(color);
+      }
+ 
+   } else {
+      G4cerr << "J4VComponent::PrintLV at "
+           << fName 
+           << " You must create LogicalVolume first. return" << G4endl; 
+   }
+}
+
+
+//=====================================================================
+//* GetComponentPtrByName ---------------------------------------------
+J4VComponent* 
+	J4VComponent::GetComponentPtrByName(const G4String& name) 
+{
+   G4int n = fgFamilyMembers.entries();
+   
+   for (G4int i=0; i<n; i++) {   	
+      if (name == fgFamilyMembers[i]->GetName()) {
+          return fgFamilyMembers[i] ;
+      } 	
+   }
+
+   G4cerr << " J4VComponent::GetComonentPtrByName " << G4endl
+          << "      Cannot find object name " << name << G4endl;
+   return 0;
+}
+
+//=====================================================================
+//* SetPVPlacement ----------------------------------------------------
+
+void J4VComponent::SetPVPlacement(G4RotationMatrix *pRot,
+                                  const G4ThreeVector &tlate)
+{
+  if (fPV) {
+     G4cerr << " J4VComponent::SetPVPlacement at " << fName 
+            << " PhysicalVolume already exists. abort." << G4endl;
+     abort();
+  } 
+  if (!fLV) {
+     G4cerr << " J4VComponent::SetPVPlacement at " << fName 
+            << " LogicalVolume does not exist. abort." << G4endl;
+     abort();
+  } 
+      
+  G4LogicalVolume*  motherLV = (fMother ? fMother->GetLV() : 0);
+  
+  fPV =  new J4PVPlacement(this,
+		           pRot,		// Rotation matrix
+    		     	   tlate, 		// Three vector of center position
+    			   fLV, 		// Logical volume
+    			   fName,	 	// Name of Physical volume
+    		           motherLV,  		// Mother Logical
+    			   FALSE,		// pMany
+    			   fCopyNo ); 		// pCopyNo	
+
+  Register(fPV);
+}  
+
+//=====================================================================
+//* SetPVReplica   ----------------------------------------------------
+
+void J4VComponent::SetPVReplica(const EAxis pAxis, G4double step,
+  			                const G4double offset)
+{ 
+  if (fPV) {
+     G4cerr << " J4VComponent::SetPVReplica at " << fName 
+            << " PhysicalVolume already exists. abort." << G4endl;
+     abort();
+  } 
+  if (!fLV) {
+     G4cerr << " J4VComponent::SetPVPlacement at " << fName 
+            << " LogicalVolume does not exist. abort." << G4endl;
+     abort();
+  } 
+
+  if (fNclones < 2) {
+     G4cerr << " J4VComponent::SetPVReplica at " << fName
+          << " You shouldn't be replicated because "
+          << "fNclones is less than 2. "
+          << "Use SetPVPlacement(). return. " << G4endl;
+     return;
+  } else if (fCopyNo != -1) {
+     G4cerr << "J4VComponent::SetPVReplica at " << fName
+          << " You are copied component. Use SetPVPlacement(). return." << G4endl;
+     return;
+  }
+
+  G4LogicalVolume*  motherLV = (fMother ? fMother->GetLV() : 0);
+  
+  G4double doffset = offset;
+  if ( pAxis == kPhi )  doffset -= 0.5*step;
+
+  fPV = new J4PVReplica( this,
+		         fName,          // Name of Physical Volume
+                         fLV,            // Logical Volume
+                         motherLV,       // Mother Logical 
+                         pAxis,          // Direction of replication
+                         fNclones,       // Number of replicas
+                         step,           // Distance between adjacent clones
+                         doffset );      // Position of the first
+
+  Register(fPV);
+
+}
+
+//=====================================================================
+//* OrderNewTubs ------------------------------------------------------
+
+void J4VComponent::OrderNewTubs( G4double rmin,
+                                 G4double rmax,
+                                 G4double halfzlen,
+                                 G4double totalphi,
+                                 G4double endcaphalfthickness,
+                                 G4double endcaprmin,
+                                 G4double sphi )
+{
+
+  if (fSolid) {
+     G4cerr << " J4VComponent::OrderNewTubs at " << fName 
+            << " fSolid already exists. abort." << G4endl;
+     abort();
+  } 
+  if (fNclones == 0) {
+        G4cerr << " J4VComponent::OrderNewTubs at " << fName
+               << " fNclones must be greater than 0 !! " << G4endl;
+        abort();
+  }
+
+  G4double  dphi = totalphi/fNclones;
+  
+  if (sphi == DBL_MAX) {   
+    sphi = (-dphi/2.);
+  }
+  
+    
+  if (!endcaphalfthickness) { 
+  
+    fSolid = new G4Tubs( fName, rmin, rmax, halfzlen, sphi, dphi );     
+      
+  } else { 
+    
+    if (endcaprmin == DBL_MAX) endcaprmin = rmin;
+    
+    G4cerr << "Endcap rmin = " << endcaprmin << G4endl;
+    
+    G4ThreeVector lefttranslation ( 0., 0., halfzlen - endcaphalfthickness);
+    G4RotationMatrix rotation;
+    G4Transform3D lefttransform   (rotation, lefttranslation);
+    
+    G4String cylindername(fName);
+    cylindername += ".Cylinder";
+    G4cerr << "Make " << cylindername << G4endl;
+    G4double cylinderlen = halfzlen - endcaphalfthickness * 2;
+    G4Tubs*  cylinder    
+        = new G4Tubs( cylindername, rmin, rmax, cylinderlen, sphi, dphi );
+
+    G4String leftendcapname(fName);
+    leftendcapname += ".LeftEndcap";
+    G4cerr << "Make " << leftendcapname << G4endl;
+    G4Tubs* leftendcap 
+        = new G4Tubs( leftendcapname, endcaprmin, rmax, endcaphalfthickness, sphi, dphi );
+    
+    G4String cupname(fName);
+    cupname += ".Cup";
+    G4cerr << "Make " << cupname << G4endl;
+    J4UnionSolid*  cup = new J4UnionSolid ( cupname, cylinder, leftendcap, lefttransform );
+        
+    G4String rightendcapname(fName);
+    rightendcapname += ".RightEndcap";
+    G4cerr << "Make " << rightendcapname << G4endl;
+    G4Tubs* rightendcap 
+        = new G4Tubs( rightendcapname, endcaprmin, rmax, endcaphalfthickness, sphi, dphi );
+    
+    G4ThreeVector    righttranslation ( 0., 0., -(halfzlen - endcaphalfthickness));
+    G4Transform3D    righttransform   (rotation, righttranslation);
+    G4cerr << "Make " << fName << G4endl;
+    fSolid = new J4UnionSolid ( fName, cup, rightendcap, righttransform );    
+    
+  }
+ 
+  Register(fSolid); 
+  
+}
+
+//=====================================================================
+//* OrderNewBox -------------------------------------------------------
+
+void J4VComponent::OrderNewBox(
+                              G4double             outerboxhalfx,
+                              G4double             outerboxhalfy,
+                              G4double             outerboxhalfz,
+                              G4double             innertubrad,
+                              G4RotationMatrix    *ptubrot,
+                              const G4ThreeVector &tubtlate,
+                              G4double             innerboxhalfx,
+                              G4double             innerboxhalfy,
+                              G4double             innerboxhalfz,
+                              G4RotationMatrix    *pboxrot,
+                              const G4ThreeVector &boxtlate     )
+{
+
+  // OrderNewBox makes a box with a cylindrycal hole and a boxy cavity.
+  // To get a filled box, set innerrad=0 and innerbox palameters = 0.
+
+  if (fSolid) {
+     G4cerr << " J4VComponent::OrderNewBox at " << fName 
+            << " fSolid already exists. abort." << G4endl;
+     abort();
+  } 
+
+  // check arguments -------------------------
+  if (outerboxhalfx == 0 || outerboxhalfy == 0 || outerboxhalfz == 0) {
+    G4cerr << "J4VComponent::OrderNewBox: "
+         << "argument error! outerbox variables must greater than 0. " << G4endl;
+    abort(); 
+  } else if (!(innerboxhalfx == 0 && innerboxhalfy == 0 && innerboxhalfz == 0)
+              && innerboxhalfx * innerboxhalfy * innerboxhalfz == 0 ) {
+    G4cerr << "J4VComponent::OrderNewBox: "
+         << "argument error! innerbox must be 3-dimension" << G4endl;
+    abort(); 
+  }
+
+  // construct solid -------------------------
+
+  G4String outerboxname(fName);
+  outerboxname += ".Outerbox";
+  G4VSolid *outerbox = new G4Box (outerboxname, outerboxhalfx, outerboxhalfy, outerboxhalfz );
+
+  if (!innertubrad && !innerboxhalfx) {
+    fSolid = outerbox;
+    fSolid->SetName(fName);
+
+  } else if (innertubrad) {
+    G4String innertubname(fName);
+    innertubname += ".Innertub";
+    G4VSolid *innertub = new G4Tubs( innertubname, 0, innertubrad, outerboxhalfz, 0, 2*M_PI);
+
+    if (!innerboxhalfx) {
+      fSolid = new J4SubtractionSolid( fName, outerbox, innertub, ptubrot, tubtlate );
+
+    } else {
+      G4String holedboxname(fName );
+      holedboxname += ".Holedbox";
+      G4VSolid *holedbox = new J4SubtractionSolid( holedboxname, outerbox,
+                                                  innertub, ptubrot, tubtlate );
+      G4String innerboxname(fName);
+      innerboxname += ".Innerbox";
+      G4VSolid *innerbox = new G4Box( innerboxname, innerboxhalfx, innerboxhalfy, innerboxhalfz );
+
+      fSolid = new J4SubtractionSolid( fName, holedbox, innerbox, pboxrot, boxtlate );
+    }
+
+  } else if (innerboxhalfx) {
+    G4String innerboxname(fName);
+    innerboxname += ".Innerbox";
+    G4VSolid *innerbox = new G4Box( innerboxname, innerboxhalfx, innerboxhalfy, innerboxhalfz );
+
+    fSolid = new J4SubtractionSolid( fName, outerbox, innerbox, pboxrot, boxtlate );
+
+  } else { 
+    G4cerr << " J4VComponent::OrderNewBox: Program inconsistency! check program." << G4endl;
+    abort();
+  }
+
+  Register(fSolid);
+
+}
+
+//=====================================================================
+//* OpenMaterialStore -------------------------------------------------
+
+J4VMaterialStore* J4VComponent::OpenMaterialStore()
+{
+    return 0;
+}
+
+//=====================================================================
+//* GetNewName --------------------------------------------------------
+
+G4String J4VComponent::GetNewName(const G4String &middlename, // component class name
+                                  G4int           myID,       // I'm (firsthame)-th child
+                                  G4int           width1,     // field width for firstname 
+                                  G4int           cloneID,    // I'm (cloneID)-th clone 
+                                  G4int           width2,     // field width for clone 
+                                  G4String       *parentname) // parent component name
+{
+#ifdef __USEISOCXX__
+  G4std::stringstream ost;
+#else
+  char tmpstr[1024];
+  G4std::strstream ost(tmpstr, 1024);
+#endif
+  if (parentname) ost << *parentname << ":";
+  ost << middlename;
+  if (width1) ost << G4std::setw(width1) << G4std::setfill('0') << myID;
+  if (width2) ost << "_" 
+                  << G4std::setw(width2) << G4std::setfill('0') << cloneID;
+#ifdef __USEISOCXX__
+  G4String tempname(ost.str());
+#else
+  ost << G4std::ends;
+  G4String tempname(tmpstr);
+#endif
+  return tempname;
+}

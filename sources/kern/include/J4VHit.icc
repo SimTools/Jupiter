@@ -1,0 +1,182 @@
+// $Id: 
+//=====================================================================
+//---------------------
+// inline function for J4VHit
+//---------------------
+
+inline J4VHit::J4VHit(const J4VHit& right)
+{
+
+  fDetectorComponent = right.fDetectorComponent   ;
+  fCloneID       = right.fCloneID      ; 
+  fTrackID       = right.fTrackID      ; 
+  fMotherTrackID = right.fMotherTrackID; 
+  fParticle      = right.fParticle     ;
+  fTof		 = right.fTof 	       ;
+  fEnergyDeposit = right.fEnergyDeposit;
+  fTotalEnergy   = right.fTotalEnergy  ;
+  fMomentum      = right.fMomentum     ;
+  fPrePosition   = right.fPrePosition  ;           
+  fPostPosition  = right.fPostPosition ;           
+  fHitNumber     = right.fHitNumber    ; 
+            
+}
+
+inline const J4VHit&
+	J4VHit::operator= (const J4VHit& right)
+{
+
+  fDetectorComponent = right.fDetectorComponent   ;
+  fCloneID       = right.fCloneID      ; 
+  fTrackID       = right.fTrackID      ; 
+  fMotherTrackID = right.fMotherTrackID; 
+  fParticle      = right.fParticle     ;
+  fEnergyDeposit = right.fEnergyDeposit;
+  fTotalEnergy   = right.fTotalEnergy  ;
+  fMomentum      = right.fMomentum     ;
+  fPrePosition   = right.fPrePosition  ;           
+  fPostPosition  = right.fPostPosition ; 
+  fHitNumber     = right.fHitNumber    ; 
+            
+  return *this;
+}
+
+inline void J4VHit::SetDetectorComponent(J4VDetectorComponent* detector) 
+{
+  fDetectorComponent = detector;
+}
+  
+inline void J4VHit::SetCloneID(G4int cloneID)  	 
+{
+  fCloneID = cloneID;
+}
+
+inline void J4VHit::SetTrackID(G4int trackID)  	 
+{
+  fTrackID = trackID;
+}
+
+inline void J4VHit::SetMotherTrackID(G4int mothertrackID)  	 
+{
+  fMotherTrackID = mothertrackID;
+}
+
+inline void J4VHit::SetParticle(G4ParticleDefinition* p) 
+{
+  fParticle = p;
+}
+  
+inline void J4VHit::SetTof(G4double tof)
+{
+  fTof = tof;
+}
+  
+inline void J4VHit::SetEnergyDeposit (G4double edep)
+{
+  fEnergyDeposit = edep;
+}
+  
+inline void J4VHit::SetTotalEnergy(G4double totalE)
+{
+  fTotalEnergy = totalE;
+}
+  
+inline void J4VHit::SetMomentum(const G4ThreeVector& momentum)
+{
+  fMomentum = momentum;
+}
+  
+inline void J4VHit::SetPrePosition(const G4ThreeVector& pre)
+{
+  fPrePosition = pre;
+}
+  
+inline void J4VHit::SetPostPosition(const G4ThreeVector& pos)
+{
+  fPostPosition = pos;
+}
+
+inline void J4VHit::SetHitNumber(G4int hitnumber)
+{
+  fHitNumber = hitnumber;
+}
+
+inline J4VDetectorComponent* J4VHit:: GetDetectorComponent() const 
+{
+  return fDetectorComponent;
+}
+  
+inline G4ParticleDefinition* J4VHit::GetParticle() const
+{
+  return fParticle;
+}
+  			
+inline G4int J4VHit::GetCloneID() const 
+{
+  return fCloneID;
+}
+
+inline G4int J4VHit::GetTrackID() const 
+{
+  return fTrackID;
+}
+
+inline G4int J4VHit::GetMotherTrackID() const 
+{
+  return fMotherTrackID;
+}
+
+inline G4double J4VHit::GetTof() const 
+{
+  return fTof;
+}
+
+inline G4double J4VHit::GetEnergyDeposit() const 
+{
+  return fEnergyDeposit;
+}
+
+inline G4double J4VHit::GetTotalEnergy() const 
+{
+  return fTotalEnergy;
+}
+
+inline G4double J4VHit::GetCharge() const 
+{
+  return fParticle->GetPDGCharge();
+}
+
+inline G4double J4VHit::GetMass() const 
+{
+  return fParticle->GetPDGMass();
+}
+ 
+inline const G4String& J4VHit::GetDetectorComponentName() const 
+{
+  return fDetectorComponent->GetName();
+}
+
+inline G4ThreeVector J4VHit::GetMomentum () const 
+{
+  return fMomentum;
+}
+
+inline G4ThreeVector J4VHit::GetPrePosition() const 
+{
+  return fPrePosition;
+}
+
+inline G4ThreeVector J4VHit::GetPostPosition() const 
+{
+  return fPostPosition;
+}
+
+inline G4int J4VHit::GetHitNumber() const 
+{
+  return fHitNumber;
+}
+
+inline const G4String& J4VHit::GetParticleName() const 
+{
+  return fParticle->GetParticleName();
+}

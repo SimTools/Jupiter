@@ -1,0 +1,38 @@
+# ===========================================================
+#   set beam line parameters
+# ===========================================================
+
+# // set beam 
+/jupiter/generator ParticleBeam 
+
+# // set particle
+#/jupiter/beam/particle geantino 
+/jupiter/beam/particle mu-
+
+# // Multiple scattering 
+#/process/inactivate msc
+#/process/activate msc
+
+# // set momentum
+/jupiter/beam/energy 10 GeV
+#
+# // set momentum resolution in dp/p
+#/jupiter/beam/resolution 0.02
+#
+# // set max azimuthal angle
+#/jupiter/beam/theta 0.001 mrad
+
+# // set randomize
+# // 1 = Random divergence 
+/jupiter/beam/beamtype 1 
+
+# // set convergence mode 
+# // 1 = convergence mode 
+/jupiter/beam/convergence 0
+
+# // set convergence mode 
+# // set beam position 
+/jupiter/beam/position 0. 0. 0. m
+#/jupiter/beam/position 0.75 0. 0. m
+#/jupiter/beam/position 288.675 -500. -1000. mm #// A1
+

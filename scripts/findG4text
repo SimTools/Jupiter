@@ -1,0 +1,86 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# ============
+#  findG4text
+# ============
+#
+# (Function)
+#    find files containing a text string under Geant4 directory.
+# (Upate Record)
+#   200?/??/??  K.Hoshina       Original version.
+#   2002/10/27  K.Fujii         Modified to avoid making temp files.	
+# 
+#------------------------------------------------------------------------------
+#--
+#  Check #arguments
+#--
+if [ $# -lt 1 ]; then
+   echo "Usage:"
+   echo "  findJ4text target [dir1] [dir2] ...."
+   exit 1
+fi
+#--
+#  Set target string
+#--
+target=$1
+#--
+#  Set list of directories to seach
+#--
+cmd=`basename $0`
+if [ $# -eq 1 ]; then
+   if [ $cmd = findG4text ]; then
+      if [ x"$G4INSTALL" != x ]; then 
+         dirlist="${G4INSTALL}/"
+      else
+         echo "Set G4INSTALL and try again"
+         exit 1
+      fi
+   elif [ $cmd = findJ4text ]; then
+      dirlist=""
+      for i in JUPITERROOT SATELLITESROOT URANUSROOT; do
+          dir=$(eval "echo \$$i")
+          if [ x$dir != x ]; then
+             dirlist="$dirlist $dir/"
+          fi
+      done
+      if [ x"$dirlist" = x ]; then 
+         echo "Set at least one of"
+         echo "  JUPITERROOT, or SATELITTESROOT, or URANUSROOT"
+         echo "and try again"
+         exit 1
+      fi
+   else
+      dirlist=.
+   fi
+else
+   dirlist=""
+   shift 1
+   while [ $# -gt 0 ]; do
+      dirlist="$dirlist $1/"
+      shift 1
+   done
+fi
+echo "Going to check $dirlist"
+#--
+#  Loop over directories and find the target text string.
+#--
+for dir in $dirlist; do
+   for pat in '*.cc' '*.hh' '*.icc' '*.cxx' '*.h' '*.ixx'; do
+      for i in `find $dir -name $pat`; do
+         if [ `grep -c $target $i` != 0 ]; then
+            echo -n "----------------------------------------"
+            echo    "----------------------------------------"
+            echo $i;
+            echo -n "----------------------------------------"
+            echo    "----------------------------------------"
+            grep $target $i
+         fi
+      done
+   done
+done
+#--
+#  That's it!
+#--
+echo "(END)"
+exit 0
+

@@ -1,0 +1,8 @@
+#!/bin/sh
+for j in baby bd cal cdc ir it kern vtx; do
+   for i in include src; do
+      (cd $j/$i; $G4INSTALL/../share/utils/bin/mkansi.pl *.*;\
+       mv out/* .; rmdir out)
+   done
+done
+exit 0
