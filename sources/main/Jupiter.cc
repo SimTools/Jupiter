@@ -12,13 +12,17 @@
 //                                K.Hoshina , 2001
 // ====================================================================
 
-#define __INSTALLIR__  
-#define __INSTALLBD__  
-#define __INSTALLVTX__  
-#define __INSTALLIT__  
+//#define __INSTALLIR__  
+//#define __INSTALLBD__  
+//#define __INSTALLVTX__  
+//#define __INSTALLIT__  
+#if 0
 #define __INSTALLCDC__  
-#define __INSTALLCAL__  
-#define __INSTALLSOL__  
+#else
+#define __INSTALLTPC__
+#endif
+//#define __INSTALLCAL__  
+//#define __INSTALLSOL__  
 
 
 #ifdef __USEISOCXX__
@@ -49,6 +53,7 @@
 #include "J4VTX.hh"
 #include "J4IT.hh"
 #include "J4CDC.hh"
+#include "J4TPC.hh"
 #include "J4CAL.hh"
 #include "J4SOL.hh"
 
@@ -118,6 +123,14 @@ int main(int argc, char** argv)
   dtcptr->AddComponent(cdcptr);
 #endif
 
+  //* tpc
+                                                                                
+#ifdef __INSTALLTPC__
+  J4TPC *tpcptr = new J4TPC();
+  tpcptr->SetMother(dtcptr->GetEXPHall());
+  dtcptr->AddComponent(tpcptr);
+#endif
+
   //* calorimeter 
     
 #ifdef __INSTALLCAL__  
@@ -164,8 +177,8 @@ int main(int argc, char** argv)
   G4VisManager* visManager= new J4VisManager;
   visManager-> Initialize();
   std::cerr << " ------------------------------- " << std::endl
-         << " ---- J4VisManager created! ---- " << std::endl
-         << " ------------------------------- " << std::endl;
+            << " ---- J4VisManager created! ---- " << std::endl
+            << " ------------------------------- " << std::endl;
   std::cerr << std::endl;
 #endif
 
@@ -220,6 +233,11 @@ int main(int argc, char** argv)
      }
   }
 #endif
+#endif
+
+  //* tpc
+#ifdef __INSTALLTPC__
+  tpcptr->J4VDetectorComponent::SwitchOn();
 #endif
 
   //* cal 

@@ -68,6 +68,10 @@ class J4ParameterList : public J4VParameterList
    inline G4double GetCDCOuterR       () const { return fCDCOuterR;       }
    inline G4double GetCDCHalfZ        () const { return fCDCHalfZ;        }
 
+   inline G4double GetTPCInnerR       () const { return GetSupportTubOuterR();}
+   inline G4double GetTPCOuterR       () const { return fTPCOuterR;       }
+   inline G4double GetTPCHalfZ        () const { return fTPCHalfZ;        }
+
    inline G4double GetCALInnerR       () const { return fCALInnerR;       }
    inline G4double GetCALOuterR       () const { return fCALOuterR;       }
    inline G4double GetCALInnerHalfZ   () const { return fCALInnerHalfZ;   }
@@ -105,6 +109,9 @@ class J4ParameterList : public J4VParameterList
 
    inline void     SetCDCOuterR      (G4double x) { fCDCOuterR        = x; }
    inline void     SetCDCHalfZ       (G4double x) { fCDCHalfZ         = x; }
+
+   inline void     SetTPCOuterR      (G4double x) { fTPCOuterR        = x; }
+   inline void     SetTPCHalfZ       (G4double x) { fTPCHalfZ         = x; }
 
    inline void     SetCALInnerR      (G4double x) { fCALInnerR        = x; }
    inline void     SetCALOuterR      (G4double x) { fCALOuterR        = x; }
@@ -148,6 +155,9 @@ class J4ParameterList : public J4VParameterList
 
    G4double  fCDCOuterR;        // OuterR of CDC 
    G4double  fCDCHalfZ;         // half z length of CDC 
+
+   G4double  fTPCOuterR;        // OuterR of TPC
+   G4double  fTPCHalfZ;         // half z length of TPC
 
    G4double  fCALInnerR;        // InnerR of CAL 
    G4double  fCALOuterR;        // OuterR of CAL 
