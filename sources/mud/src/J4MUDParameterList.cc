@@ -67,7 +67,7 @@ void J4MUDParameterList::SetParameters()
   fNTraps              = 8;
   
   // Endcap
-#ifdef __FRONTENDCAP__
+#ifdef __GLD_V1__
   fEndcapFrontZ        = 535.0*cm;                            // Endcap front z-axis position
   fEndcapThick         = 310.0*cm;                            // Endcap thickness
 #else
@@ -79,7 +79,7 @@ void J4MUDParameterList::SetParameters()
   fEndcapNSuperLayers  = 5;                                   // Number of Endcap SuperLayer
   fEndcapNAbsLayers    = fEndcapNSuperLayers + 1;             // Number of Endcap Active Layer
   fEndcapNActiveLayers = fEndcapNSuperLayers;                 // Number of Endcap Active Layer
-  fEndcapActiveThick   = 10.0*cm;                             // Endcap Active Layer thickness
+  fEndcapActiveThick   = 1.0*cm;                              // Endcap Active Layer thickness
   fEndcapAbsThick      = (fEndcapThick - fEndcapNActiveLayers*fEndcapActiveThick ) / fEndcapNAbsLayers; // Endcap Absorber thickness
 
   // frontEndcap
@@ -89,7 +89,7 @@ void J4MUDParameterList::SetParameters()
   fFrontEndcapFrontZ        = 430.0*cm;                       // FrontEndcap front z-axis position
   fFrontEndcapOuterR        = 375.0*cm;                       // FrontEndcap Outer radius
   fFrontEndcapThick         = fEndcapFrontZ - fFrontEndcapFrontZ; // FrontEndcap Thickness
-  fFrontEndcapActiveThick   = 10.0*cm;                        // FrontEndcap Active Layer Thickness
+  fFrontEndcapActiveThick   = 1.0*cm;                         // FrontEndcap Active Layer Thickness
   fFrontEndcapAbsThick      = ( fFrontEndcapThick - fFrontEndcapNActiveLayers*fFrontEndcapActiveThick ) / fFrontEndcapNAbsLayers; // FrontEndcap Absorber thickness
   
   // Barrel
@@ -99,7 +99,7 @@ void J4MUDParameterList::SetParameters()
   fBarrelNSuperLayers  = 4;                                   // Number of Barrel SuperLayer
   fBarrelNAbsLayers    = fBarrelNSuperLayers + 1;             // Number of Barrel Active Layer
   fBarrelNActiveLayers = fBarrelNSuperLayers;                 // Number of Barrel Active Layer
-  fBarrelActiveThick   = 10.0*cm;                             // Barrel Active Layer thickness
+  fBarrelActiveThick   = 1.0*cm;                              // Barrel Active Layer thickness
   fBarrelAbsThick      = (fBarrelThick - fBarrelNActiveLayers*fBarrelActiveThick ) / fBarrelNAbsLayers; // Barrel Absorber thickness
   fMUDHalfL            = fEndcapFrontZ + fEndcapThick;        // Half length of MUD : 845cm
 
@@ -110,7 +110,7 @@ void J4MUDParameterList::SetParameters()
 void J4MUDParameterList::SetVisAttributes()
 {
    fMUDVisAtt               = false;
-   fBlockVisAtt             = true;
+   fBlockVisAtt             = false;
    fBarrelActiveVisAtt      = true;
    fBarrelAbsVisAtt         = true;
    fEndcapActiveVisAtt      = true;
