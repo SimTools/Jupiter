@@ -61,14 +61,22 @@ void J4IT::Assemble()
 {   
   if(!GetLV()){
   	
+
+    static G4double kEpsilon = 0.1*mm;
+
     J4ITParameterList *list = OpenParameterList(); 
-    G4double rmin = list->GetITInnerR(); 
-    G4double rmax = list->GetITOuterR();
-    G4double len  = list->GetITHalfZ();
-    G4double dphi = list->GetITDeltaPhi();
+    G4double rmin   = list->GetITInnerR(); 
+    G4double rmax   = list->GetITOuterR() + kEpsilon;
+    G4double lenmax = list->GetITHalfZ();
+    G4double lenmin = list->GetLayerHalfZ(0);
+    G4double dphi   = list->GetITDeltaPhi();
+    G4double ethick = (lenmax-lenmin)/2;
+    G4double lrmin  = rmax - kEpsilon;
+    G4double rrmin  = rmax - kEpsilon;
   	
     // MakeSolid ----------//
-    OrderNewTubs (rmin, rmax, len, dphi);
+    OrderNewTubs (rmin, rmax, lenmax, dphi, 
+                  ethick, rmin, DBL_MAX, lrmin, rrmin);
     
     // MakeLogicalVolume --//  
     MakeLVWith(OpenMaterialStore()->Order(list->GetITMaterial()));
@@ -130,6 +138,3 @@ void J4IT::Draw()
 void J4IT::Print() const
 {
 }
-
-	
-	

@@ -77,10 +77,17 @@ void J4ITParameterList::SetParameters()
 
    fLayerThick          = 0.5616*mm; 
    fLayerRspacing       = 7.0*cm;
+#if 1
    fLayerHalfZincrement = 14.5*cm;
    fLayerDeltaPhi       = 360.*cm;
    fFirstLayerHalfZ     = 18.5*cm;
    fFirstLayerInnerR    = 9.0*cm;
+#else
+   fLayerHalfZincrement = 14.0*cm;
+   fLayerDeltaPhi       = 360.*cm;
+   fFirstLayerHalfZ     = 20.0*cm;
+   fFirstLayerInnerR    = 10.0*cm;
+#endif
 }
 
 //=====================================================================
