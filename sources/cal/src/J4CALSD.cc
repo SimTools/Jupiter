@@ -17,15 +17,10 @@
 #include "J4CALMiniTower.hh"
 #include "J4CALEM.hh"
 #include <cmath>
-
-//static J4CALPreHit* J4CALPreHit::fgCurrentPreHitPtr = 0;
-G4int J4CALSD::fgCurrentPreHitID = -1;
-#if 0
-G4int J4CALSD::fgCurrentTrackID = 999999999;
-#else
 #include <limits>
+
+G4int J4CALSD::fgCurrentPreHitID = -1;
 G4int J4CALSD::fgCurrentTrackID = __INT_MAX__;
-#endif
  
 //=====================================================================
 //---------------------
@@ -38,7 +33,6 @@ G4int J4CALSD::fgCurrentTrackID = __INT_MAX__;
 J4CALSD::J4CALSD( J4VDetectorComponent* detector )
                   :J4VSD<J4CALPreHit>( detector )
 {  
-  //J4CALPreHit* fCalPreHits = new J4CALPreHit();
 }
 
 //=====================================================================
@@ -87,43 +81,22 @@ G4bool J4CALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ )
   //  G4double              edep     = GetEnergyDeposit();
   G4double              energy   = GetKineticEnergy();
   G4double              tof      = GetTof();
-  G4int                 trackID  = GetTrackID(); 
+  G4int                 trackID  = GetTrackID();
+  G4int                 motherTrackID = GetMotherTrackID();
   G4ParticleDefinition* particle = GetParticle(); 
   
   // Create new hit
   if ( trackID < fgCurrentTrackID ) { 
-  //if ( !fCalPreHits ) {
 
      fgCurrentPreHitID++;
-     //SetCurrentPreHitID( fgCurrentPreHitID );
      SetCurrentTrackID( trackID );
      // create new hit!
 
      fCurrentPreHitPtr = new J4CALPreHit( ptrCAL, fgCurrentPreHitID, pre, momentum, 
-					  /*edep,*/ energy, tof, trackID, particle );
+					  energy, tof, trackID, particle, motherTrackID );
      
      ( (J4CALPreHitBuf *)GetHitBuf() ) -> insert( fCurrentPreHitPtr );
-     
-#if 0 
-     G4cerr << __FILE__ << " " << __LINE__ << " : "
-            << "preHitID = " <<  preHitID << " "
-            << G4endl;
-#endif
-     
-  } else {
-    
-     //fCalPreHits -> AccumulateEdep(edep);
-#if 0
-     if ( fCalPreHits -> GetTof() > tof ) {
-
-         // replace information of first hit
-         
-         fCalPreHits -> SetTof( tof );
-         fCalPreHits -> SetInjectionPoint( pre );
-         fCalPreHits -> SetTrackID( trackID );
-         fCalPreHits -> SetParticle( particle );
-     }
-#endif
+          
   }   
   return TRUE;
 }
@@ -136,7 +109,6 @@ void J4CALSD::EndOfEvent( G4HCofThisEvent* /* PreHCTE */ )
   SetCurrentPreHitPtr(0);
   SetCurrentPreHitID(-1);
   SetCurrentTrackID( INT_MAX );
-  //SetCurrentTrackID( 9999999999 );
 }
 
 //=====================================================================

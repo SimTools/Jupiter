@@ -138,7 +138,7 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
 
   //  Get particle information
   G4int  preHitID = J4CALSD::GetCurrentPreHitID();
-  G4int  pdgcode = GetParticle()->GetPDGEncoding();
+  //G4int  pdgcode = GetParticle()->GetPDGEncoding();
 
   if ( fgCurrentPreHitID < 0 ) {
     fgCurrentPreHitID = J4CALSD::GetCurrentPreHitID();
@@ -165,7 +165,7 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
     G4double cellY = cellrho*sin(celltheta)*sin(cellphi);
     G4double cellZ = cellrho*cos(celltheta);
 
-    J4CALHit *aHit = new J4CALHit( ptrSubLayerComponent, preHitID, pdgcode, cellID, isEM, isBarrel, edep, tof, Xcm, G4ThreeVector(cellX,cellY,cellZ) );
+    J4CALHit *aHit = new J4CALHit( ptrSubLayerComponent, preHitID, cellID, isEM, isBarrel, edep, tof, GetParticle(), Xcm, G4ThreeVector(cellX,cellY,cellZ) );
     fgCalHits.insert( std::make_pair( cellID, aHit ) );
     ((J4CALHitBuf*)GetHitBuf())->insert( aHit );
   }
@@ -181,7 +181,7 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
 	aHit->AddXcm( Xcm );
 	if ( tof < aHit->GetTof() ) {
 	  aHit->SetTof( tof );
-	  aHit->SetPDGCode( pdgcode );
+	  aHit->SetParticle( GetParticle() );
 	}
 	makeNewHit = FALSE;
 	break;
@@ -196,7 +196,7 @@ G4bool J4CALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhis
       G4double cellY = cellrho*sin(celltheta)*sin(cellphi);
       G4double cellZ = cellrho*cos(celltheta);
 
-      J4CALHit *aHit = new J4CALHit( ptrSubLayerComponent, preHitID, pdgcode, cellID, isEM, isBarrel, edep, tof, Xcm, G4ThreeVector(cellX,cellY,cellZ) );
+      J4CALHit *aHit = new J4CALHit( ptrSubLayerComponent, preHitID, cellID, isEM, isBarrel, edep, tof, GetParticle(), Xcm, G4ThreeVector(cellX,cellY,cellZ) );
       fgCalHits.insert( std::make_pair( cellID, aHit ) );
       ((J4CALHitBuf*)GetHitBuf())->insert( aHit );
     }
