@@ -103,7 +103,7 @@ G4int J4CALAddress::GetCellMiniTowerID( G4int cellID, G4bool isEM )
   const G4int nHDMiniCones  = ptrList -> GetHDMiniConeNClones();
   const G4int nEMMiniTowers = ptrList -> GetEMMiniTowerNClones();
   const G4int nHDMiniTowers = ptrList -> GetHDMiniTowerNClones();
-  const G4int nIsEM         = ptrList -> GeNIsEM();
+  const G4int nIsEM         = ptrList -> GetNIsEM();
   G4int miniTowerID = -1;
 
   if ( isEM ) {
