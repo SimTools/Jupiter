@@ -137,3 +137,19 @@ void J4TrackingAction::PostUserTrackingAction(const G4Track* /* aTrack */)
 #endif
    
 }
+
+
+
+G4bool J4TrackingAction::IsNext(G4int &detid)
+{ 
+   G4int trackid = J4StackingAction::GetTopOfStackID();
+   if (detid < 0) {
+      fgRegs.push_back(trackid);
+      detid = fgRegs.size() - 1;
+   } else if (fgRegs[detid] <= fCurrentTrackID) {
+      return FALSE;
+   } else {
+      fgRegs[detid] = trackid;
+   }
+   return TRUE;
+}
