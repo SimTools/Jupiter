@@ -36,7 +36,7 @@ J4CALEMSD::J4CALEMSD(J4VDetectorComponent* detector)
 J4CALEMSD::~J4CALEMSD()
 {
 #ifndef __GEANT452__
- (fCalHits) {
+   if (fCalHits) {
       for (G4int i=0; i<fNsectionsInPhi; i++) {
          if (fCalHits[i]) delete fCalHits[i];
       }
