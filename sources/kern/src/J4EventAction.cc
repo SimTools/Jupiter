@@ -67,7 +67,7 @@ void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
 #ifdef __THEBE__
    if ( J4Global::GetErrorOutputUnit() == "Event" ) {
       if ( !fErrorOfs.is_open() ) {
-         fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), ios::out);
+         fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), G4std::ios::out);
          if(! fErrorOfs.good()) {
             G4String errorMessage=
             "*** EventAction::BeginOfEventAction():fail to open a file ("
