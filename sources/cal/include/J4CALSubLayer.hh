@@ -12,39 +12,52 @@
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
-
 #include "J4VCALDetectorComponent.hh"
-#include "J4CALLayer.hh"
+#include "J4CALCone.hh"
+#include "J4CALBlock.hh"
 
 class J4VDetectorComponent;
 class J4CALSubLayerSD;
 class J4CALSubLayer;
-
 //=====================================================================
 //---------------------
 // class definition
 //---------------------
 
 class J4CALSubLayer : public J4VCALDetectorComponent {
-//class J4CALSubLayer : public J4CALLayer{
 
 public:
-  J4CALSubLayer(J4VDetectorComponent  *parent   = 0,
-                               G4int  nclones   = 1,
-                               G4int  nbrothers = 1, 
-                               G4int  me        = 0,
-                               G4int  copyno    = -1 );
+  J4CALSubLayer( J4VDetectorComponent  *parent   = 0,
+                                G4int  nclones   = 1,
+                                G4int  nbrothers = 1, 
+                                G4int  me        = 0,
+                                G4int  copyno    = -1 );
   virtual ~J4CALSubLayer();
 
   virtual void  InstallIn( J4VComponent         *mother,
                            G4RotationMatrix     *prot  = 0,
                            const G4ThreeVector  &tlate = 0 );
-  virtual void	Draw()      ;
+  virtual void	Draw() ;
   virtual void	Print() const ;
 
-  inline G4int  GetTowerNClones();
-  inline G4int  GetMiniTowerNClones();
+  inline G4int  GetNCones();
+  inline G4int  GetNTowers();
+  inline G4int  GetNMiniTowers();
 
+#if 1
+  inline G4int  GetMyConeID();
+  inline G4int  GetMyTowerID();
+  inline G4int  GetNMiniCones();
+  inline G4int  GetMyMiniConeID();
+  inline G4int  GetMyMiniTowerID();
+  inline G4int  GetNLayers();
+  inline G4int  GetMyLayerID();
+  inline G4int  GetNSubLayers();
+  inline G4int  GetMySubLayerID();
+  inline G4bool GetIsBarrel();
+  inline G4bool GetIsEM();
+#endif
+  
 private:
   void 	Assemble();    
   void  Cabling ();
@@ -52,20 +65,81 @@ private:
 private:  
   static const G4String& fFirstName;
 
-//  G4int fMiniTowerNClones;
-//  G4int fTowerNClones;
-  
 };
+
 // ===============================================================
 // inline functions ----------------------------------------------
-G4int J4CALSubLayer::GetTowerNClones()
+G4int J4CALSubLayer::GetNCones()
+{
+  return GetMother()->GetMother()->GetMother()->GetMother()->GetMother()->GetMother()->GetNbrothers();
+}
+
+G4int J4CALSubLayer::GetNTowers()
 {
   return GetMother()->GetMother()->GetMother()->GetMother()->GetMother()->GetNclones();
 }
-
-G4int J4CALSubLayer::GetMiniTowerNClones()
+G4int J4CALSubLayer::GetNMiniTowers()
 {
-  return GetMother()->GetMother()->GetNclones();
+  return GetMother()->GetMother()->GetNbrothers();
 }
+
+#if 1
+G4int J4CALSubLayer::GetNMiniCones()
+{
+  return GetMother()->GetMother()->GetMother()->GetNbrothers();
+}
+G4int J4CALSubLayer::GetMyTowerID()
+{
+  return GetMother()->GetMother()->GetMother()->GetMother()->GetMother()->GetMyID();
+}
+
+G4int J4CALSubLayer::GetMyConeID()
+{
+  return GetMother()->GetMother()->GetMother()->GetMother()->GetMother()->GetMother()->GetMyID();
+}
+
+G4int J4CALSubLayer::GetMyMiniConeID()
+{
+  return GetMother()->GetMother()->GetMother()->GetMyID();
+}
+
+G4int J4CALSubLayer::GetMyMiniTowerID()
+{
+  return GetMother()->GetMother()->GetMyID();
+}
+
+G4int J4CALSubLayer::GetNLayers()
+{
+  return GetMother()->GetNbrothers();
+}
+
+G4int J4CALSubLayer::GetMyLayerID()
+{
+  return GetMother()->GetMyID();
+}
+
+G4int J4CALSubLayer::GetNSubLayers()
+{
+  return GetNbrothers();
+}
+
+G4int J4CALSubLayer::GetMySubLayerID()
+{
+  return GetMyID();
+}
+
+G4bool J4CALSubLayer::GetIsBarrel()
+{
+  return ( (J4CALCone*)GetMother()->GetMother()->GetMother()->GetMother()->GetMother()->GetMother() )->IsBarrel();
+}
+
+G4bool J4CALSubLayer::GetIsEM()
+{
+  const G4String& firstName = ( (J4CALBlock*)GetMother()->GetMother()->GetMother()->GetMother() ) -> GetFirstName();
+  if ( firstName == "EM" ) return true;
+  else return false;
+  //return ( (J4CALBlock*)GetMother()->GetMother()->GetMother()->GetMother() ) -> IsEM();
+}
+#endif
 
 #endif
