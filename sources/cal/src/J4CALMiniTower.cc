@@ -22,7 +22,7 @@
 // constants (detector parameters)
 //--------------------------------
 
-G4String J4CALMiniTower::fFirstName("MiniTower");
+const G4String& J4CALMiniTower::fFirstName( "MiniTower" );
 
 //=====================================================================
 //---------------------
@@ -32,13 +32,13 @@ G4String J4CALMiniTower::fFirstName("MiniTower");
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CALMiniTower::J4CALMiniTower(J4VDetectorComponent *parent,
-                                        G4int  nclones,
-                                        G4int  nbrothers, 
-                                        G4int  me,
-                                        G4int  copyno ) :
-             J4VCALDetectorComponent( fFirstName, parent, nclones,
-                                      nbrothers, me, copyno  ) 
+J4CALMiniTower::J4CALMiniTower( J4VDetectorComponent *parent,
+                                               G4int  nclones,
+                                               G4int  nbrothers, 
+                                               G4int  me,
+                                               G4int  copyno ) 
+: J4VCALDetectorComponent( fFirstName, parent, nclones,
+                                 nbrothers, me, copyno  ) 
 {   
 }
 
@@ -47,16 +47,14 @@ J4CALMiniTower::J4CALMiniTower(J4VDetectorComponent *parent,
 
 J4CALMiniTower::~J4CALMiniTower()
 {
-  J4CALMiniTower* ptrJ4CALMiniTower = dynamic_cast<J4CALMiniTower*>(GetMother());
-  J4CALMiniCone*  ptrJ4CALMiniCone  = dynamic_cast<J4CALMiniCone*>(GetMother());
-  J4CALBlock*     ptrJ4CALBlock     = dynamic_cast<J4CALBlock*>(ptrJ4CALMiniCone->GetMother());
-  const G4String& firstName = ptrJ4CALBlock->GetFirstName();
-  G4int nLayers = ((OpenParameterList()->GetSubLayerParam())->GetNLayers(firstName));
+  J4CALMiniCone*  ptrMiniCone  = dynamic_cast<J4CALMiniCone*>( GetMother() );
+  J4CALBlock*     ptrBlock     = dynamic_cast<J4CALBlock*>( ptrMiniCone->GetMother() );
+  const G4String& firstName    = ptrBlock -> GetFirstName();
+  const G4int nLayers = ( OpenParameterList()->GetSubLayerParam() )->GetNLayers(firstName);
 
-  for(G4int i = 0; i < nLayers; i++){
-     if (Deregister(fLayers[i])) delete fLayers[i];
+  for ( G4int i = 0; i < nLayers; i++ ){
+     if ( Deregister( fLayers[i] ) ) delete fLayers[i];
   }
-  
 }
 
 //=====================================================================
@@ -64,24 +62,21 @@ J4CALMiniTower::~J4CALMiniTower()
 
 void J4CALMiniTower::Assemble() 
 {   
-   if(!GetLV()){
+   if( !GetLV() ) {
  
       J4CALParameterList* ptrList = OpenParameterList();
-      J4CALSubLayerParameterList* subList = ptrList -> GetSubLayerParam();
+
       J4CALMiniCone* ptrMiniCone = dynamic_cast<J4CALMiniCone*>(GetMother());
-      J4CALBlock* ptrBlock = dynamic_cast<J4CALBlock*>(ptrMiniCone->GetMother());
-      const G4String& firstName = ptrBlock->GetFirstName();
-      G4Sphere *mothercone = (G4Sphere *)(GetMother()->GetSolid());
+      J4CALBlock*    ptrBlock    = dynamic_cast<J4CALBlock*>(ptrMiniCone->GetMother());
+      const G4String& firstName  = ptrBlock -> GetFirstName();
+      G4Sphere *mothercone = (G4Sphere *)( GetMother()->GetSolid() );
 
       G4double rmin   = mothercone -> GetInsideRadius();
       G4double rmax   = mothercone -> GetOuterRadius();
-      G4double sphi   = mothercone -> GetStartPhiAngle();
+
       G4double dtheta = mothercone -> GetDeltaThetaAngle();
       G4double stheta = mothercone -> GetStartThetaAngle();
-      G4double layerSize   = subList->GetTotalLayerSize(firstName);
-      G4double EMThickness = layerSize * ( ptrList->GetEMNLayers() );
-      G4double HDThickness = layerSize * ( ptrList->GetHDNLayers() );
-      
+     
       G4int nphi = 0;
       G4int nLayers = 0;
 
@@ -94,25 +89,38 @@ void J4CALMiniTower::Assemble()
 	nphi    = ptrList -> GetHDMiniTowerNClones();
       }
 
-      G4double dphi = (mothercone -> GetDeltaPhiAngle()) / nphi;
+      G4int myID = GetMyID();
+      G4double dphi = ( mothercone -> GetDeltaPhiAngle() ) / nphi;
+      G4double sphi   = mothercone -> GetStartPhiAngle() + myID * dphi;
+
+#if 0
+      G4cerr << __FILE__ << " " << __LINE__ << " : "
+	     << "rmin=" << rmin << " "
+             << "rmax=" << rmax << " "
+             << "nLayers=" << nLayers << " "
+             << "nphi=" << nphi << " "
+	     << "dphi=" << dphi << " "
+	     << "type=" << firstName
+             << G4endl;
+#endif      
       
       // MakeSolid ----------//
-      G4Sphere* tower = new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta);
-      Register(tower);
-      SetSolid(tower);
+      G4Sphere* minitower = new G4Sphere( GetName(), rmin, rmax, sphi, dphi, stheta, dtheta );
+      Register( minitower );
+      SetSolid( minitower );
       
       // MakeLogicalVolume --//  
-      MakeLVWith(OpenMaterialStore()->Order(ptrList->GetMiniTowerMaterial()));
+      MakeLVWith( OpenMaterialStore()->Order(ptrList->GetMiniTowerMaterial()) );
       
       // SetVisAttribute ----//
-      PaintLV(ptrList->GetMiniTowerVisAtt(), ptrList->GetMiniTowerColor());
+      PaintLV( ptrList->GetMiniTowerVisAtt(), ptrList->GetMiniTowerColor() );
       
-      for(G4int i = 0; i < nLayers; i++){
-	J4CALLayer* ptrLayer = new J4CALLayer(this,1,nLayers,i);
-	fLayers.push_back(ptrLayer);
-	Register(ptrLayer);
-	ptrLayer -> InstallIn(this);
-	SetDaughter(ptrLayer);
+      for ( G4int i = 0; i < nLayers; i++ ) {
+	J4CALLayer* ptrLayer = new J4CALLayer( this, 1, nLayers, i );
+	fLayers.push_back( ptrLayer );
+	Register( ptrLayer );
+	ptrLayer -> InstallIn( this );
+	SetDaughter( ptrLayer );
       }
    }
 }
@@ -127,16 +135,20 @@ void J4CALMiniTower::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CALMiniTower::InstallIn(J4VComponent      *mother,
-                            G4RotationMatrix     *prot, 
-                            const G4ThreeVector  &tlate ) 
+void J4CALMiniTower::InstallIn( J4VComponent         *mother,
+                                G4RotationMatrix     *prot, 
+                                const G4ThreeVector  &tlate ) 
 { 
    Assemble();			// You MUST call Assemble(); at first.
   
    // Placement function into mother object...
-   G4double step = ((G4Sphere *)GetSolid())->GetDeltaPhiAngle();
-   SetPVReplica(kPhi, step);
-  
+   //===================================================================
+   // Caution!!
+   // If you use SetPVReplica(), then SD has some trouble !!
+   //===================================================================
+   //G4double step = ((G4Sphere *)GetSolid())->GetDeltaPhiAngle();
+   //SetPVReplica(kPhi, step);
+   SetPVPlacement();
 }
 
 
