@@ -48,7 +48,7 @@ void J4ITLayerSD::Initialize(G4HCofThisEvent* HCTE)
 //=====================================================================
 //* ProcessHits -------------------------------------------------------
 
-G4bool J4ITLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
+G4bool J4ITLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* /* ROhist */)
 {
   //In order to use Get function, you must call SetNewStep() at first.
   
@@ -95,7 +95,7 @@ G4bool J4ITLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist)
 //=====================================================================
 //* EndOfEvent --------------------------------------------------------
 
-void J4ITLayerSD::EndOfEvent(G4HCofThisEvent* HCTE)
+void J4ITLayerSD::EndOfEvent(G4HCofThisEvent* /* HCTE */)
 {			
 }
 

@@ -74,12 +74,14 @@ private:
 //----------------------------------------
 
 inline J4ITLayerHit::J4ITLayerHit(const J4ITLayerHit& right)
+     : J4VTrackerHit(right)
 {
 }
 
 inline const J4ITLayerHit& 
   J4ITLayerHit::operator= (const J4ITLayerHit& right)
 {         
+  J4VTrackerHit::operator=(right);
   return *this;
 }
   

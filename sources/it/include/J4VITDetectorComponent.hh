@@ -32,9 +32,11 @@ public:
                           G4int                 nbrothers = 1, 
                           G4int                 me        = 0,
                           G4int                 copyno    = -1 );
+#if 0
   J4VITDetectorComponent(J4VITDetectorComponent& right);
   virtual const J4VITDetectorComponent& 
   		operator=(const J4VITDetectorComponent& right);    
+#endif
 
   virtual ~J4VITDetectorComponent();
       
@@ -54,6 +56,7 @@ private:
 //---------------------
 
 
+#if 0
 inline J4VITDetectorComponent::J4VITDetectorComponent(J4VITDetectorComponent& right)
                               : J4VDetectorComponent(right)
 {
@@ -63,8 +66,10 @@ inline J4VITDetectorComponent::J4VITDetectorComponent(J4VITDetectorComponent& ri
 inline const J4VITDetectorComponent& 
 J4VITDetectorComponent::operator=(const J4VITDetectorComponent& right)
 {
+  J4VDetectorComponent::operator=(right);
   return *this;
 }
+#endif
 
 
 #endif

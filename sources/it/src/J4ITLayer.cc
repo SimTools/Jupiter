@@ -120,9 +120,9 @@ void J4ITLayer::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4ITLayer::InstallIn(J4VComponent         *mother,
-                          G4RotationMatrix     *prot, 
-                          const G4ThreeVector  &tlate ) 
+void J4ITLayer::InstallIn(J4VComponent         * /* mother */,
+                          G4RotationMatrix     * /* prot   */, 
+                          const G4ThreeVector  & /* tlate  */) 
 { 
   Assemble();			// You MUST call Assemble(); at first.
   				// 

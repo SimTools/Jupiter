@@ -29,6 +29,12 @@ public:
   J4ITLayerSD(J4VDetectorComponent* detector);
   ~J4ITLayerSD();
 
+  inline virtual const J4ITLayerSD & operator=(const J4VSD<J4ITLayerHit> &right)
+  {
+     J4VSD<J4ITLayerHit>::operator=(right);
+     return *this;
+  }
+
   virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist);
   virtual void   Initialize (G4HCofThisEvent* HCTE);
   virtual void   EndOfEvent (G4HCofThisEvent* HCTE);
