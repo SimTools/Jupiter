@@ -14,13 +14,13 @@
 //#include "J4CALSubLayerParameterList.hh"
 #include <algorithm>
 
-J4CALParameterList    * J4CALParameterList::fgInstance = 0;
+J4CALParameterList* J4CALParameterList::fgInstance = 0;
 
 //=====================================================================
 //* public getter -----------------------------------------------------
 J4CALParameterList* J4CALParameterList::GetInstance()
 {
-   if (!fgInstance) {
+   if ( !fgInstance ) {
       J4CALParameterList* instance = new J4CALParameterList("CAL");
    }
    return fgInstance;
@@ -29,9 +29,8 @@ J4CALParameterList* J4CALParameterList::GetInstance()
 //=====================================================================
 //* protected constructor ---------------------------------------------
 
-J4CALParameterList::J4CALParameterList(const G4String& name)
-  : J4VParameterList(name), 
-    fSubLayerParameterList(0)
+J4CALParameterList::J4CALParameterList( const G4String& name )
+  : J4VParameterList(name), fSubLayerParameterList(0)
 {
    fgInstance = this;
    
@@ -77,28 +76,21 @@ void J4CALParameterList::SetMaterials()
 //* SetParameters -----------------------------------------------------
 void J4CALParameterList::SetParameters()
 {
-
-
    // ==== Basic parameters ========================================= 
-
    // CAL --------------------- 
-
-   fCALDeltaPhi    = 360.*deg;
-   fCALPhiOffset   = 0.*deg;
+   fCALDeltaPhi     = 360.*deg;
+   fCALPhiOffset    =   0.*deg;
    
    // Barrel ------------------ 
-
-   fBarrelDeltaPhi      = 360.*deg;
-   fBarrelPhiOffset     = 0.*deg;
+   fBarrelDeltaPhi  = 360.*deg;
+   fBarrelPhiOffset =   0.*deg;
 
    // Endcap ------------------ 
-
-   fEndcapInnerR    = 45.*cm;
+   fEndcapInnerR    =  45.*cm;
    fEndcapDeltaPhi  = 360.*deg;
-   fEndcapPhiOffset = 0.*deg;
+   fEndcapPhiOffset =   0.*deg;
 
    // Tower -------------------
-
    //fNominalBarrelTowerFrontSize = 4. *cm;   // Nominal granularity of BarrelTower 
    //fNominalEndcapTowerFrontSize = 4. *cm;   // Nominal granularity of EndcapTower
    fNominalBarrelTowerFrontSize = 12. *cm;   // Nominal granularity of BarrelTower 
@@ -110,53 +102,50 @@ void J4CALParameterList::SetParameters()
                                    // see CalcNextTowerEdgeAngle().
 
    fBarrelCoverageAngle = atan2(fEndcapTowerFrontZ, fBarrelTowerFrontRho);
-      // as a dip angle(lambda)
+   // as a dip angle(lambda)
+
+   // EM ------------------
+   fEMNLayers          = 20;
+   //fEMNLayers          = 38;
+   fEMMiniConeNClones  = 3;
+   fEMMiniTowerNClones = 3;
+  // fEMThickness      = 26. *cm;
+
+   // HD -------------
+   fHDNLayers          = 30;
+   //fHDNLayers          = 130;
+   fHDMiniTowerNClones = 1;
+   fHDMiniConeNClones  = 1;
+   //fHDThickness      = 156. *cm;
    
    // ==== Calculate Tower parameters =============================== 
-   
    G4double startlambda = 0;
 
-   SetTowerParameters(fTowerHeight, 
-                      startlambda,fBarrelCoverageAngle, 
-                      fBarrelTowerFrontRho,
-                      fNominalBarrelTowerFrontSize, TRUE);  
+   SetTowerParameters( fTowerHeight, 
+                        startlambda,fBarrelCoverageAngle, 
+                        fBarrelTowerFrontRho,
+                        fNominalBarrelTowerFrontSize, TRUE );  
 
-   startlambda = atan2(fEndcapInnerR, fEndcapTowerFrontZ);
+   startlambda = atan2( fEndcapInnerR, fEndcapTowerFrontZ );
 
-   SetTowerParameters(fTowerHeight, 
-                      startlambda, 0.5 * M_PI - fBarrelCoverageAngle, 
-                      fEndcapTowerFrontZ,
-                      fNominalEndcapTowerFrontSize, FALSE);  
+   SetTowerParameters( fTowerHeight, 
+                       startlambda, 0.5 * M_PI - fBarrelCoverageAngle, 
+                       fEndcapTowerFrontZ,
+                       fNominalEndcapTowerFrontSize, FALSE );  
 
    ShowTowerParameters();
 
-   // MiniCone -------------
-   fEMMiniConeNClones = 3;
-   fHDMiniConeNClones = 1;
-
-   // MiniCone -------------
-   fEMMiniTowerNClones = 3;
-   fHDMiniTowerNClones = 1;
-
-   // EM -------------------
-   fEMNLayers = 38;
-  // fEMThickness = 26. *cm;
-
-   // HD -------------------
-   //fHDNLayers = 64.;
-   fHDNLayers = 130;
-   //fHDThickness = 156. *cm;
 
 }
 
 //=====================================================================
 //* SetTowerParameters ------------------------------------------------
-void J4CALParameterList::SetTowerParameters(G4double towerheight,
-                                            G4double startlambda,
-                                            G4double endlambda,
-                                            G4double length,
-                                            G4double nominalwidth, 
-                                            G4bool   isbarrel)
+void J4CALParameterList::SetTowerParameters( G4double towerheight,
+                                             G4double startlambda,
+                                             G4double endlambda,
+                                             G4double length,
+                                             G4double nominalwidth, 
+                                             G4bool   isbarrel )
 {
    // SetTowerParameters
    // Calculate tower parameters.  
@@ -200,7 +189,7 @@ void J4CALParameterList::SetTowerParameters(G4double towerheight,
 
    if (startlambda >= endlambda) {
       std::cerr << "J4CDCParameterList::SetTowerParameters: endlambda is bigger than startlambda! abort."
-             << std::endl;
+                << std::endl;
       abort();
    }
 
@@ -373,18 +362,18 @@ void J4CALParameterList::SetTowerParameters(G4double towerheight,
 
       if (!isbarrel) centerlambda = 0.5 * M_PI - centerlambda;
 
-      paramright = new J4CALTowerParam(r, 
-                                       towerheight, 
-                                       centerlambda,
-                                       dlambda,
-                                       nominalwidth, 
-                                       isbarrel);
-      paramleft  = new J4CALTowerParam(r, 
-                                       towerheight, 
-                                       - centerlambda,
-                                       dlambda,
-                                       nominalwidth,
-                                       isbarrel);
+      paramright = new J4CALTowerParam( r, 
+                                        towerheight, 
+                                        centerlambda,
+                                        dlambda,
+                                        nominalwidth, 
+                                        isbarrel      );
+      paramleft  = new J4CALTowerParam( r, 
+                                        towerheight, 
+                                        - centerlambda,
+                                        dlambda,
+                                        nominalwidth,
+                                        isbarrel       );
       ntowers++;
 
       J4CALTowerParamPair pairright(centerlambda, paramright);
@@ -415,10 +404,10 @@ void J4CALParameterList::SetTowerParameters(G4double towerheight,
 
 //=====================================================================
 //* EstimateNtowers ---------------------------------------------------
-G4int J4CALParameterList::EstimateNtowers(G4double length,
-                                         G4double width,
-                                         G4double lambdamin,
-                                         G4double lambdamax)
+G4int J4CALParameterList::EstimateNtowers( G4double length,
+                                           G4double width,
+                                           G4double lambdamin,
+                                           G4double lambdamax )
 {
    // EstimateNtowers 
    // Estimate number of towers in half length of the barrel calorimeter
@@ -550,9 +539,9 @@ void J4CALParameterList::SetVisAttributes()
    fBarrelVisAtt      = FALSE;
    fEndcapVisAtt      = FALSE;
    fConeVisAtt        = FALSE;
-   fTowerVisAtt       = TRUE;
-   fEMVisAtt          = FALSE;
-   fHDVisAtt          = FALSE;
+   fTowerVisAtt       = FALSE; 
+   fEMVisAtt          = TRUE;
+   fHDVisAtt          = TRUE;
    fMiniConeVisAtt    = FALSE;
    fMiniTowerVisAtt   = FALSE;
    fLayerVisAtt       = FALSE;
