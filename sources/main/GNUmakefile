@@ -29,6 +29,7 @@ include $(JUPITERROOT)/config/architecture.gmk
 EXTRALIBS =	-L$(JUPITERROOT)/lib/$(G4SYSTEM) \
 		-lJ4ir \
 		-lJ4bd \
+		-lJ4vtx \
 		-lJ4it \
 		-lJ4cdc \
 		-lJ4cal \

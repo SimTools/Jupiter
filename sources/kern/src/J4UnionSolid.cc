@@ -63,8 +63,8 @@ J4UnionSolid:: J4UnionSolid( const G4String& pName,
 
 J4UnionSolid::~J4UnionSolid()
 {
-// ifndef __GEANT452__
-#if 0
+#ifdef __GEANT451_OR_OLDER__
+   // It's now G4's privilage to delete solids.
    if (fIsOwner) {
    	if (fSolidA) delete fSolidA;
    	if (fSolidB) delete fSolidB;

@@ -95,8 +95,9 @@ J4VComponent::J4VComponent(const G4String&     groupname,
 
 J4VComponent::~J4VComponent()
 {
-// ifndef __GEANT452__ 
-#if 0
+#ifdef __GEANT451_OR_OLDER__
+   // It's now G4's privilage to delete solids, pvs, lvs, and sds.
+
    if (Deregister(fSolid))  delete fSolid;
    if (Deregister(fPV))     delete fPV;
    if (fLV->GetSensitiveDetector()) { 

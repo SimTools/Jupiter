@@ -12,12 +12,12 @@
 //                                K.Hoshina , 2001
 // ====================================================================
 
-//#define __INSTALLIR__  
-//#define __INSTALLBD__  
-//#define __INSTALLVTX__  
-//#define __INSTALLIT__  
+#define __INSTALLIR__  
+#define __INSTALLBD__  
+#define __INSTALLVTX__  
+#define __INSTALLIT__  
 #define __INSTALLCDC__  
-//#define __INSTALLCAL__  
+#define __INSTALLCAL__  
 #define __INSTALLSOL__  
 
 
@@ -37,15 +37,6 @@
 #include "J4EventAction.hh"
 #include "J4TrackingAction.hh"
 #include "TBookKeeper.hh"
-
-#ifdef __INSTALLVTX__
-#include "J4ParameterListStore.hh"
-#include "J4ParameterList.hh"
-#include "J4VTXParameterList.hh"
-#include "J4ITParameterList.hh"
-#include "J4CDCParameterList.hh"
-#include "J4SOLParameterList.hh"
-#endif
 
 #ifdef G4VIS_USE
 #include "J4VisManager.hh"
@@ -83,15 +74,6 @@ int main(int argc, char** argv)
 
   G4RunManager* runManager = new G4RunManager;  std::cout << std::endl;
 //  runManager->SetVerboseLevel(2);
-
-#ifdef __INSTALLVTX__
-  J4ParameterListStore *paramlistStore = new J4ParameterListStore();
-
-  //---------------------------------------------
-  // set mandatory user initialization classes...
-  
-  J4VTXParameterList *vtxlist = new J4VTXParameterList();
-#endif
 
   //*--------------------------------------------
   //* Install detector components...

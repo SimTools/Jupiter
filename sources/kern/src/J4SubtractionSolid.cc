@@ -63,10 +63,13 @@ J4SubtractionSolid:: J4SubtractionSolid( const G4String& pName,
 
 J4SubtractionSolid::~J4SubtractionSolid()
 {
+#ifdef __GEANT451_OR_OLDER__
+   /// It's now G4's privilage to delete solids.
    if (fIsOwner) {
    	if (fSolidA) delete fSolidA;
    	if (fSolidB) delete fSolidB;
    }
+#endif
 }
 
 

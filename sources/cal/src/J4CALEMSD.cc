@@ -35,15 +35,15 @@ J4CALEMSD::J4CALEMSD(J4VDetectorComponent* detector)
 
 J4CALEMSD::~J4CALEMSD()
 {
-// ifndef __GEANT452__
-#if 0
    if (fCalHits) {
+#ifdef __GEANT451_OR_OLDER__
+      // It's now G4's privilage to delete hit objects.
       for (G4int i=0; i<fNsectionsInPhi; i++) {
          if (fCalHits[i]) delete fCalHits[i];
       }
+#endif
       delete[] fCalHits;
    }
-#endif
 }
 
 //=====================================================================
