@@ -14,6 +14,7 @@
 
 #include "G4String.hh"
 #include "J4Object.hh"
+#include "J4Global.hh"
 
 //=====================================================================
 //---------------------
@@ -28,7 +29,12 @@ public:
   J4Named();
   J4Named(const G4String &name);
 
-  virtual ~J4Named(){}
+  virtual ~J4Named()
+  {
+#ifdef __THEBE__
+     J4cerr << "J4Named::destructor called for " << fName << J4endl;
+#endif
+  }
 
   inline virtual const G4String &GetName() const { return fName; }
 

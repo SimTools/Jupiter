@@ -17,6 +17,7 @@
 //---------------------
 
 #include "J4VSensitiveDetector.hh"
+#include "J4Global.hh"
 
 G4int J4VSensitiveDetector::fHitNumber = 0; 
 
@@ -35,6 +36,9 @@ J4VSensitiveDetector::J4VSensitiveDetector(J4VComponent* detector)
 	
 J4VSensitiveDetector::~J4VSensitiveDetector()
 {
+#ifdef __THEBE__
+  J4cerr << "J4VSensitiveDetector::destructor is called for " << GetName() << J4endl;
+#endif
 }
 	
 	

@@ -12,6 +12,7 @@
 
 #include "G4PVPlacement.hh"
 #include "J4AttPV.hh"
+#include "J4Global.hh"
 
 class J4VComponent;
 
@@ -38,6 +39,13 @@ public:
            J4AttPV(component)
   {
   } 
+
+  virtual ~J4PVPlacement()
+  {
+#ifdef __THEBE__
+    J4cerr << "J4PVPlacement:destructor is called for " << GetName() << J4endl;
+#endif
+  }
 
 private:
   //===== data members

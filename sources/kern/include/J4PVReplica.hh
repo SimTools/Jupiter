@@ -12,6 +12,7 @@
 
 #include "G4PVReplica.hh"
 #include "J4AttPV.hh"
+#include "J4Global.hh"
 
 class J4VComponent;
 
@@ -37,6 +38,13 @@ public:
 			 nReplicas , width, offset),
             J4AttPV(component)
             {} 
+
+   virtual ~J4PVReplica()
+   {
+#ifdef __THEBE__
+      J4cerr << "J4PVReplica:destructor is called for " << GetName() << J4endl; 
+#endif
+   }
      
 private:
   //===== data members

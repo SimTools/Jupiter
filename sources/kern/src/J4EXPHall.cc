@@ -53,7 +53,9 @@ J4EXPHall::J4EXPHall(J4VComponent *parent,
 //* destructor --------------------------------------------------------
 J4EXPHall::~J4EXPHall()
 {	
+#ifndef __GEANT452__
   if (Deregister(fMaterialStore)) delete fMaterialStore;
+#endif
 }
 
 // ====================================================================

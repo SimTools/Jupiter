@@ -44,7 +44,7 @@ J4CAL::J4CAL(J4VDetectorComponent *parent,
 
 J4CAL::~J4CAL()
 {
-
+#ifndef __GEANT452__
    if (fCones) {
       J4CALParameterList *list = OpenParameterList(); 
       for (G4int i=0; i < list->GetNcones(); i++) {
@@ -52,6 +52,7 @@ J4CAL::~J4CAL()
       }
       if (Deregister(fCones)) delete [] fCones;
    }
+#endif
 }
 
 //=====================================================================
