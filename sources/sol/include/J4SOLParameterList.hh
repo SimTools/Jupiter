@@ -29,16 +29,17 @@ class J4SOLParameterList : public J4VParameterList
                       G4double ro   = 450.*cm,
                       G4double len    = 340.*cm,
                       G4double bfield = 3.*tesla,
-                    // G4double magrad =  160.*cm)
-                      G4double magrad =  400.*cm)
+                      G4double magrad =  157.*cm)
+                    //  G4double magrad =  400.*cm)
            : fMaterial("Air"),
-	     fMagInnerRadius(ri),
+             fMagInnerRadius(ri),
              fMagOuterRadius(ro),
              fMagLength(len),
              fMagRad(magrad),
              fBField(bfield),
-	     fVisAtt(TRUE),
-	     fColor(0.,0.,0.5) {}
+             fVisAtt(TRUE),
+             fColor(0.,0.,0.5) {}
+
    virtual ~J4SOLParameterList() {}
    
    // Getters
@@ -61,7 +62,7 @@ class J4SOLParameterList : public J4VParameterList
    inline void     SetVisAtt  (G4bool   b) { fVisAtt         = b; }
    inline void     SetColor   (G4Color  c) { fColor          = c; }
    
-   virtual void PrintParameterList(){};
+   virtual void    PrintParameterList(){};
     
  private:
    G4String  fMaterial; 

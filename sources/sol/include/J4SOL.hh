@@ -14,14 +14,14 @@
 //*************************************************************************
 
 #include "J4VSOLDetectorComponent.hh"
-#include "J4MagneticField.hh"
+#include "J4AttMFieldMap.hh"
 
 //=====================================================================
 //---------------------
 // class definition
 //---------------------
 
-class J4SOL : public J4VSOLDetectorComponent {	
+class J4SOL : public J4VSOLDetectorComponent, public J4AttMFieldMap  {	
 
 public:
   J4SOL(J4VDetectorComponent *parent = 0,
@@ -45,8 +45,6 @@ private:
   
 private:  
   static G4String	fFirstName;
-  J4MagneticField     * fMagField;
-
 };
 
 #endif
