@@ -65,7 +65,7 @@ G4bool J4VTXSensorSD::ProcessHits(G4Step*              aStep,
       
   //Get particle information
   G4int                 trackID         = GetTrackID();
-#if 0
+#if 1
   G4int                 mothertrackID   = GetMotherTrackID();
   G4ParticleDefinition *particle        = GetParticle();
   G4double             weight           = GetWeight(); 
@@ -92,20 +92,22 @@ G4bool J4VTXSensorSD::ProcessHits(G4Step*              aStep,
     procName = "ORIGIN";
   }else{
     const G4VProcess* process = GetTrack()->GetCreatorProcess();  
-    procName = process->GetProcessName();
+    if ( process == NULL ) procName = "ORIGIN";
+    else procName = process->GetProcessName();
   }
 
-#if 0
+#if 1
   J4VComponent  *sensor      = GetComponent();
-  J4VComponent  *ladder      = sensor->GetMother();
+  J4VComponent  *ladder      = GetComponent(1);//sensor->GetMother();
   J4VComponent  *layer       = ladder->GetMother();
 
-  G4VPhysicalVolume* sensorPV = sensor->GetPV();
-  G4VPhysicalVolume* ladderPV = sensorPV->GetMother();
+//  G4VPhysicalVolume* sensorPV = sensor->GetPV();
+  G4VPhysicalVolume* ladderPV = ladder->GetPV();
+//  G4VPhysicalVolume* ladderPV = sensorPV->GetMother();
 
   G4int iLayer    =  layer->GetMyID();
   G4int iLadder   =  ladderPV->GetCopyNo();
-  G4int iSensor   =  sensorPV->GetCopyNo();
+  G4int iSensor   =  sensor->GetCopyNo();
 
   G4double             edep      = GetEnergyDeposit();
   G4ThreeVector        trkP      = GetMomentum();
@@ -117,7 +119,7 @@ G4bool J4VTXSensorSD::ProcessHits(G4Step*              aStep,
   G4ThreeVector        localoutPos = GlobalToLocalPosition(outPos);
 #endif
 // Create a new hit and push them to "Hit Collection"
-#if 0
+#if 1
   if(! compareID(trackID,iLayer,iLadder,iSensor) ){
         J4VTXSensorHit* hit = new J4VTXSensorHit(
 		               GetComponent(),
@@ -177,6 +179,11 @@ G4ThreeVector J4VTXSensorSD::GlobalToLocalPosition(G4ThreeVector gpIn){
   pos = Or*(pos+Ot);
   pv = pv->GetMother();
   }
+#endif
+#if 1
+  G4ThreeVector Ot = GetTranslation();
+  G4RotationMatrix Or(*GetRotation());
+  pos = (Or)*(pos-Ot);
 #endif
   return pos;
 }

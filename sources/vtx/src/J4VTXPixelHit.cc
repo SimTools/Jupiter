@@ -59,9 +59,9 @@ J4VTXPixelHit::J4VTXPixelHit(
                fSensorID(sensorID),fPixThetaID(pixthetaID),
                fPixPhiID(pixphiID),fPixPosition(pixPos),
                fInPosition(inPos),fOutPosition(outPos),
-               fLocalInPosition(localpixPos),
-               fLocalOutPosition(localinPos),
-               fLocalPixPosition(localoutPos)
+               fLocalPixPosition(localpixPos),
+               fLocalInPosition(localinPos),
+               fLocalOutPosition(localoutPos)
 {  
 }
 

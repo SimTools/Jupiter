@@ -65,7 +65,7 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step*              aStep,
       
   //Get particle information
   G4int                 trackID         = GetTrackID();
-#if 0
+#if 1
   G4int                 mothertrackID   = GetMotherTrackID();
   G4ParticleDefinition *particle        = GetParticle();
   G4double             weight           = GetWeight(); 
@@ -91,25 +91,26 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step*              aStep,
     procName = "ORIGIN";
   }else{
     const G4VProcess* process = GetTrack()->GetCreatorProcess();  
+    if ( process == NULL ) procName = "ORIGIN";
     procName = process->GetProcessName();
   }
 
 
-#if 0
-  J4VComponent  *pixelarea   = GetComponent();
-  J4VComponent  *epitaxial   = pixelarea->GetMother();
-  J4VComponent  *sensor      = epitaxial->GetMother();
-  J4VComponent  *ladder      = sensor->GetMother();
-  J4VComponent  *layer       = ladder->GetMother();
+#if 1
+//  J4VComponent  *pixelarea   = GetComponent();
+//  J4VComponent  *epitaxial   = GetComponent(1);//pixelarea->GetMother();
+  J4VComponent  *sensor      = GetComponent(2);//epitaxial->GetMother();
+  J4VComponent  *ladder      = GetComponent(3);//sensor->GetMother();
+  J4VComponent  *layer       = GetComponent(4);//ladder->GetMother();
 
-  G4VPhysicalVolume* pixelareaPV = pixelarea->GetPV();
-//  G4VPhysicalVolume* epitaxialPV = pixelareaPV->GetMother();
-//  G4VPhysicalVolume* sensorPV = epitaxialPV->GetMother();
-//  G4VPhysicalVolume* ladderPV = sensorPV->GetMother();
+//  G4VPhysicalVolume* pixelareaPV = pixelarea->GetPV();
+//  G4VPhysicalVolume* epitaxialPV = epitaxial->GetPV();//pixelareaPV->GetMother();
+  G4VPhysicalVolume* sensorPV = sensor->GetPV();//epitaxialPV->GetMother();
+  G4VPhysicalVolume* ladderPV = ladder->GetPV();//sensorPV->GetMother();
 
   G4int iLayer    =  layer->GetMyID();
-//  G4int iLadder   =  ladderPV->GetCopyNo();
-//  G4int iSensor   =  sensorPV->GetCopyNo();
+  G4int iLadder   =  ladderPV->GetCopyNo();
+  G4int iSensor   =  sensorPV->GetCopyNo();
 
   G4double             edep      = GetEnergyDeposit();
   G4ThreeVector        trkP      = GetMomentum();
@@ -122,7 +123,7 @@ G4bool J4VTXPixelAreaSD::ProcessHits(G4Step*              aStep,
   G4ThreeVector        localoutPos = GlobalToLocalPosition(outPos);
 
 // Create a new hit and push them to "Hit Collection"
-#if 0
+#if 1
   if(! compareID(trackID,iLayer,iLadder,iSensor) ){
         J4VTXPixelAreaHit* hit = new J4VTXPixelAreaHit(
 		               GetComponent(),

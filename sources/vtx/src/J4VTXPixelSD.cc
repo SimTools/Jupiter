@@ -58,14 +58,14 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step*              aStep,
   // you must call SetNewStep() at first.
   SetNewStep(aStep);
   // volume information must be gotten from "PreStepPoint"
- 
+
   //Only when a charged particle has just come into a sensitive detector,
   //create a new hit
-  //if(GetCharge() == 0.) return FALSE;
+  if(GetCharge() == 0.) return FALSE;
       
   //Get perticle information
   G4int                 trackID         = GetTrackID();
-#if 0
+#if 1
   G4int                 mothertrackID   = GetMotherTrackID();
   G4ParticleDefinition *particle        = GetParticle();
   G4double             weight           = GetWeight();
@@ -91,25 +91,26 @@ G4bool J4VTXPixelSD::ProcessHits(G4Step*              aStep,
     procName = "ORIGIN";
   }else{
     const G4VProcess* process = GetTrack()->GetCreatorProcess();
+    if ( process == NULL ) procName = "ORIGIN";
     procName = process->GetProcessName();
   }
 
-#if 0
-  J4VComponent  *pixel       = GetComponent();
-  J4VComponent  *pixelarray  = pixel->GetMother();
-  J4VComponent  *pixelarea   = pixelarray->GetMother();
-  J4VComponent  *epitaxial   = pixelarea->GetMother();
-  J4VComponent  *sensor      = epitaxial->GetMother();
-  J4VComponent  *ladder      = sensor->GetMother();
-  J4VComponent  *layer       = ladder->GetMother();
+#if 1
+//  J4VComponent  *pixel       = GetComponent();
+  J4VComponent  *pixelarray  = GetComponent(1);//pixel->GetMother();
+//  J4VComponent  *pixelarea   = GetComponent(2);//pixelarray->GetMother();
+//  J4VComponent  *epitaxial   = GetComponent(3);//pixelarea->GetMother();
+  J4VComponent  *sensor      = GetComponent(4);//epitaxial->GetMother();
+  J4VComponent  *ladder      = GetComponent(5);//sensor->GetMother();
+  J4VComponent  *layer       = GetComponent(6);//ladder->GetMother();
 
   // Pixel -> PixelArray -> PixelArea -> Epitaxial -> Sensor -> Ladder
-  G4VPhysicalVolume* pixelPV = pixel->GetPV();
-  G4VPhysicalVolume* pixelarrayPV = pixelPV->GetMother();
-  G4VPhysicalVolume* pixelareaPV = pixelarrayPV->GetMother();
-  G4VPhysicalVolume* epitaxialPV = pixelareaPV->GetMother();
-  G4VPhysicalVolume* sensorPV = epitaxialPV->GetMother();
-  G4VPhysicalVolume* ladderPV = sensorPV->GetMother();
+//  G4VPhysicalVolume* pixelPV = pixel->GetPV();
+//  G4VPhysicalVolume* pixelarrayPV = pixelarray->GetPV();// pixelPV->GetMother();
+//  G4VPhysicalVolume* pixelareaPV = pixelarea->GetPV();// pixelarrayPV->GetMother();
+//  G4VPhysicalVolume* epitaxialPV = epitaxial->GetPV();// pixelareaPV->GetMother();
+  G4VPhysicalVolume* sensorPV = sensor->GetPV();// epitaxialPV->GetMother();
+  G4VPhysicalVolume* ladderPV = ladder->GetPV();// sensorPV->GetMother();
 
   G4int iLayer = layer->GetMyID();
   G4int iLadder = ladderPV->GetCopyNo();
@@ -190,6 +191,11 @@ G4ThreeVector J4VTXPixelSD::GlobalToLocalPosition(G4ThreeVector gpIn){
   pos = Or*(pos+Ot);
   pv = pv->GetMother();
   }
+#endif
+#if 1
+  G4ThreeVector Ot = GetTranslation();
+  G4RotationMatrix Or(*GetRotation());
+  pos = (Or)*(pos-Ot);
 #endif
   return pos;
 }
