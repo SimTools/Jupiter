@@ -14,7 +14,6 @@
 
 #include "J4ITMaterialStore.hh"
 #include "J4VDetectorComponent.hh"
-#include "J4ITParameter.hh"
 
 //=====================================================================
 //---------------------
@@ -32,12 +31,11 @@ public:
                           G4int                 nbrothers = 1, 
                           G4int                 me        = 0,
                           G4int                 copyno    = -1 );
-  virtual ~J4VITDetectorComponent();
-#if 0 		          
   J4VITDetectorComponent(J4VITDetectorComponent& right);
   virtual const J4VITDetectorComponent& 
   		operator=(const J4VITDetectorComponent& right);    
-#endif
+
+  virtual ~J4VITDetectorComponent();
       
 protected:    
   J4VMaterialStore* 	 OpenMaterialStore();
@@ -48,7 +46,6 @@ private:
        
 };
 
-#if 0
 //=====================================================================
 //---------------------
 // inline function
@@ -56,26 +53,16 @@ private:
 
 
 inline J4VITDetectorComponent::J4VITDetectorComponent(J4VITDetectorComponent& right)
+                              : J4VDetectorComponent(right)
 {
-
-  fMaterialStore = right.fMaterialStore;
-  fSubGroup      = right.fSubGroup;
           
 }
 
 inline const J4VITDetectorComponent& 
 J4VITDetectorComponent::operator=(const J4VITDetectorComponent& right)
 {
-
-  fMaterialStore = right.fMaterialStore;
-  fSubGroup      = right.fSubGroup;
-  
   return *this;
-            
 }
-
-#endif
-
 
 
 #endif
