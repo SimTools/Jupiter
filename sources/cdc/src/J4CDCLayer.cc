@@ -37,7 +37,8 @@ J4CDCLayer::J4CDCLayer(J4VDetectorComponent *parent,
                                       G4int  copyno ) 
            :J4VCDCDetectorComponent(fFirstName, parent, nclones,
                                     nbrothers, me, copyno),
-            fCell(0), fStereoCells(0)
+            fCell(0), fStereoCells(0), fOffset(0), fTwistedAngle(0), 
+            fShieldWidth(0), fRmin(0), fRmax(0), fLayerType("W")
 {
    J4CDCParameterList *list = OpenParameterList();
    G4int globallayerno = GetGlobalLayerNumber();

@@ -48,14 +48,24 @@ J4CDCParameterList::~J4CDCParameterList()
 //* SetMaterials ------------------------------------------------------
 void J4CDCParameterList::SetMaterials()
 {
+#if 1
    fCDCMaterial         = "Air";
    fSupportTubMaterial  = "Aluminum";
    fEndcapMaterial      = "Aluminum";
    fLayerMaterial       = "CO2Isobutane";
    fCellMaterial        = "CO2Isobutane";
    fDriftRegionMaterial = "CO2Isobutane";
-   fSenseWireMaterial   = "CO2Isobutane";
-   //fSenseWireMaterial   = "Tungsten";
+   //fSenseWireMaterial   = "CO2Isobutane";
+   fSenseWireMaterial   = "Tungsten";
+#else
+   fCDCMaterial         = "vacuum";
+   fSupportTubMaterial  = "vacuum";
+   fEndcapMaterial      = "vacuum";
+   fLayerMaterial       = "vacuum";
+   fCellMaterial        = "vacuum";
+   fDriftRegionMaterial = "vacuum";
+   fSenseWireMaterial   = "vacuum";
+#endif
 }
 
 //=====================================================================

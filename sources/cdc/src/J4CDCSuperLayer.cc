@@ -38,7 +38,7 @@ J4CDCSuperLayer::J4CDCSuperLayer(J4VDetectorComponent *parent,
                                       G4int  copyno ) 
   	             :J4VCDCDetectorComponent(fFirstName, parent, nclones,
                                          nbrothers, me, copyno),
-                 fLayers(0)
+                      fLayers(0), fOffset(0), fNcellsPerLayer(0) 
 {
    J4CDCParameterList *list = OpenParameterList();
    fOffset         = list->GetSuperLayerSPhi(me);

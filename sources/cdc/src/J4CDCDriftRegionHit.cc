@@ -46,7 +46,8 @@ J4CDCDriftRegionHit::J4CDCDriftRegionHit(
      const G4double       &rotangle,      // rotation angle of cell 
      const G4int           hitnumber)     // unique hit number
  	: J4VHit(detector, cloneID, trackID, mothertrackID, particle, tof, edep, 
-            totalE, momentum, pre, pos, hitnumber), fRotAngle(rotangle)
+            totalE, momentum, pre, pos, hitnumber), 
+          fRotAngle(rotangle)
  		
 {
   fWireEnd[0] = wireEndmz;

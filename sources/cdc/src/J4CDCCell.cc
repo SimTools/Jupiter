@@ -41,7 +41,8 @@ J4CDCCell::J4CDCCell(J4VDetectorComponent *parent,
                                     G4int  copyno ) :
            J4VCDCDetectorComponent( fFirstName, parent, nclones,
                                     nbrothers, me, copyno  ),
-           fDriftRegions(0) //, fDummyDriftRegions(0) 
+           fDriftRegions(0), //fDummyDriftRegions(0), 
+           fRmin(0), fRmax(0)
 {
    G4double shieldwidth = GetShieldWidth();
    fRmin = GetInnerRadius(parent) + shieldwidth;
