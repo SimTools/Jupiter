@@ -1,0 +1,4298 @@
+? .DAWN_1.default
+? .DAWN_1.history
+? .DS_Store
+? .gdb_history
+? diff.txt
+? macros/beam.g4mac.gaussian
+? macros/beam.g4mac.isotopic
+? sources/cal.tgz
+? sources/jsfj4
+? sources/cal/include/hidden
+? sources/cal/include/J4CALCone.hh
+? sources/cal/include/J4CALEM.hh
+? sources/cal/include/J4CALEMSD.hh
+? sources/cal/include/J4CALHD.hh
+? sources/cal/include/J4CALHit.hh
+? sources/cal/include/J4CALParameterList.hh
+? sources/cal/include/J4CALTower.hh
+? sources/cal/src/hidden
+? sources/cal/src/J4CALCone.cc
+? sources/cal/src/J4CALEM.cc
+? sources/cal/src/J4CALEMSD.cc
+? sources/cal/src/J4CALHD.cc
+? sources/cal/src/J4CALHit.cc
+? sources/cal/src/J4CALParameterList.cc
+? sources/cal/src/J4CALParameterList.cc.back
+? sources/cal/src/J4CALTower.cc
+? sources/cdc/src/J4CDCParameterList.cc.dummysense
+? sources/cdc/src/J4CDCParameterList.cc.LLRR
+? sources/cdc/src/J4CDCParameterList.cc.LRLR
+? sources/cdc/src/J4CDCParameterList.cc.smallgap
+? sources/cdc/src/J4CDCParameterList.cc.smallgap.default.dummy
+? sources/cdc/src/J4CDCParameterList.cc.smallgap.LLRR.dummy
+? sources/ir/include/J4IRBPAlDrum.hh
+? sources/ir/include/J4IRBPAlDrumCap.hh
+? sources/ir/include/J4IRBPAlDrumPipe.hh
+? sources/ir/include/J4IRBPAlPipe.hh
+? sources/ir/include/J4IRBPAlTube.hh
+? sources/ir/include/J4IRBPBeCone.hh
+? sources/ir/include/J4IRBPBePipe.hh
+? sources/ir/include/J4IRBPCone.hh
+? sources/ir/include/J4IRBPParameterList.hh
+? sources/ir/include/J4IRBPPipe.hh
+? sources/ir/include/J4IRCH2Mask.hh
+? sources/ir/include/J4IRCH2MaskParameterList.hh
+? sources/ir/include/J4IRCSG.hh
+? sources/ir/include/J4IRQC1.hh
+? sources/ir/include/J4IRQC1Coil.hh
+? sources/ir/include/J4IRQC1Collar.hh
+? sources/ir/include/J4IRQC1Coolant.hh
+? sources/ir/include/J4IRQC1Cooling.hh
+? sources/ir/include/J4IRQC1HeVessel.hh
+? sources/ir/include/J4IRQC1MField.hh
+? sources/ir/include/J4IRQC1Parameter.hh
+? sources/ir/include/J4IRQC1ParameterList.hh
+? sources/ir/include/J4IRQC1QLayer.hh
+? sources/ir/include/J4IRQC1SUS.hh
+? sources/ir/include/J4IRQC1Thermal.hh
+? sources/ir/include/J4IRQC1ThermalVessel.hh
+? sources/ir/include/J4IRQC1VacuumVessel.hh
+? sources/ir/include/J4IRQC2.hh
+? sources/ir/include/J4IRQC2Coil.hh
+? sources/ir/include/J4IRQC2Iron1.hh
+? sources/ir/include/J4IRQC2Iron2.hh
+? sources/ir/include/J4IRQC2Iron3.hh
+? sources/ir/include/J4IRQC2MField.hh
+? sources/ir/include/J4IRQC2Parameter.hh
+? sources/ir/include/J4IRSD0.hh
+? sources/ir/include/J4IRSD0Collar.hh
+? sources/ir/include/J4IRSD0MField.hh
+? sources/ir/include/J4IRSD0Parameter.hh
+? sources/ir/include/J4IRSD0SUS.hh
+? sources/ir/include/J4IRWMask1.hh
+? sources/ir/include/J4IRWMask2.hh
+? sources/ir/include/J4IRWMaskParameterList.hh
+? sources/ir/include/J4IRWSiCAL1.hh
+? sources/ir/include/J4IRWSiCAL2.hh
+? sources/ir/include/J4IRWSiCALParameterList.hh
+? sources/ir/include/J4VIRDetectorComponent.hh
+? sources/ir/src/J4IR.cc.org
+? sources/ir/src/J4IRBPAlDrum.cc
+? sources/ir/src/J4IRBPAlDrumCap.cc
+? sources/ir/src/J4IRBPAlDrumPipe.cc
+? sources/ir/src/J4IRBPAlPipe.cc
+? sources/ir/src/J4IRBPAlTube.cc
+? sources/ir/src/J4IRBPBeCone.cc
+? sources/ir/src/J4IRBPBePipe.cc
+? sources/ir/src/J4IRBPCone.cc
+? sources/ir/src/J4IRBPParameterList.cc
+? sources/ir/src/J4IRBPPipe.cc
+? sources/ir/src/J4IRCH2Mask.cc
+? sources/ir/src/J4IRCH2MaskParameterList.cc
+? sources/ir/src/J4IRQC1.cc
+? sources/ir/src/J4IRQC1Coil.cc
+? sources/ir/src/J4IRQC1Collar.cc
+? sources/ir/src/J4IRQC1Coolant.cc
+? sources/ir/src/J4IRQC1Cooling.cc
+? sources/ir/src/J4IRQC1HeVessel.cc
+? sources/ir/src/J4IRQC1MField.cc
+? sources/ir/src/J4IRQC1ParameterList.cc
+? sources/ir/src/J4IRQC1QLayer.cc
+? sources/ir/src/J4IRQC1SUS.cc
+? sources/ir/src/J4IRQC1Thermal.cc
+? sources/ir/src/J4IRQC1ThermalVessel.cc
+? sources/ir/src/J4IRQC1VacuumVessel.cc
+? sources/ir/src/J4IRQC2.cc
+? sources/ir/src/J4IRQC2Coil.cc
+? sources/ir/src/J4IRQC2Iron1.cc
+? sources/ir/src/J4IRQC2Iron2.cc
+? sources/ir/src/J4IRQC2Iron3.cc
+? sources/ir/src/J4IRQC2MField.cc
+? sources/ir/src/J4IRSD0.cc
+? sources/ir/src/J4IRSD0Collar.cc
+? sources/ir/src/J4IRSD0MField.cc
+? sources/ir/src/J4IRSD0SUS.cc
+? sources/ir/src/J4IRWMask1.cc
+? sources/ir/src/J4IRWMask2.cc
+? sources/ir/src/J4IRWMaskParameterList.cc
+? sources/ir/src/J4IRWSiCAL1.cc
+? sources/ir/src/J4IRWSiCAL2.cc
+? sources/ir/src/J4IRWSiCALParameterList.cc
+? sources/ir/src/J4VIRDetectorComponent.cc
+? sources/it/include/hidden
+? sources/it/include/J4ITLayerHit.hh
+? sources/it/include/J4ITLayerSD.hh
+? sources/it/src/J4ITLayerHit.cc
+? sources/it/src/J4ITLayerSD.cc
+? sources/kern/include/hidden
+? sources/kern/include/J4VTrackerHit.hh
+? sources/kern/src/hidden
+? sources/kern/src/J4VTrackerHit.cc
+? sources/sol/src/J4SOLParameterList.cc
+? sources/vtx/include/J4VTXSensorHit.hh
+? sources/vtx/include/J4VTXSensorSD.hh
+? sources/vtx/src/J4VTX.cc.cone
+? sources/vtx/src/J4VTXSensorHit.cc
+? sources/vtx/src/J4VTXSensorSD.cc
+cvs server: Diffing .
+cvs server: Diffing config
+cvs server: Diffing doc
+cvs server: Diffing macros
+cvs server: macros/runcommands.example was removed, no comparison available
+Index: macros/visvrmlf.g4mac
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/macros/visvrmlf.g4mac,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 visvrmlf.g4mac
+17a18
+> /vis/sceneHandler/attach
+19,21c20,22
+< /vis/camera/reset
+< /vis/camera/viewpoint 120 30
+< /vis/camera/zoom 1.5
+---
+> /vis/viewer/reset
+> /vis/viewer/viewpointThetaPhi 120 30
+> /vis/viewer/zoom 1.5 
+26c27
+< /vis/scene/include/trajectories
+---
+> /vis/scene/add/trajectories
+cvs server: Diffing scripts
+Index: scripts/findG4text
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/scripts/findG4text,v
+retrieving revision 1.2
+diff -r1.2 findG4text
+56c56
+<    dirlist=""
+---
+>    dirlist=$2/
+68,69c68,69
+<    for ext in 'cc' 'hh' 'icc' 'cxx' 'h' 'ixx'; do
+<       for i in `find $dir -name '*'.$ext`; do
+---
+>    for pat in '*.cc' '*.hh' '*.icc' '*.cxx' '*.h' '*.ixx'; do
+>       for i in `find $dir -name $pat`; do
+cvs server: Diffing sources
+cvs server: Diffing sources/bd
+cvs server: Diffing sources/bd/include
+Index: sources/bd/include/J4BDParameterList.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/bd/include/J4BDParameterList.hh,v
+retrieving revision 1.1
+diff -r1.1 J4BDParameterList.hh
+9a10,11
+> //*     The instance must be singleton. Use "GetInstance()" function
+> //*     to create and get the instance.
+27,28d28
+<  public:
+<    J4BDParameterList();
+30c30,34
+<    virtual ~J4BDParameterList() {}
+---
+>  protected: 
+>    J4BDParameterList(const G4String &name);
+> 
+>  public:
+>    virtual ~J4BDParameterList();
+32c36
+<    static J4BDParameterList *GetInstance() { return fInstance;    }
+---
+>    static J4BDParameterList *GetInstance();
+35,43c39,47
+<    inline G4String GetMaterial()         const { return fMaterial;      }
+<    inline G4bool   GetVisAtt  ()         const { return fVisAtt;        }
+<    inline G4Color *GetColor   ()         const { return fColor;         }
+<    inline G4double GetOuterHalfX()       const { return fOuterHalfX;    }
+<    inline G4double GetOuterHalfY()       const { return fOuterHalfY;    }
+<    inline G4double GetOuterHalfZ()       const { return fOuterHalfZ;    }
+<    inline G4double GetInnerHalfX()       const { return fInnerHalfX;    }
+<    inline G4double GetInnerHalfY()       const { return fInnerHalfY;    }
+<    inline G4double GetInnerHalfZ()       const { return fInnerHalfZ;    }
+---
+>    inline G4String GetBDMaterial()       const { return fBDMaterial;    }
+>    inline G4bool   GetBDVisAtt  ()       const { return fBDVisAtt;      }
+>    inline G4Color  GetBDColor   ()       const { return fBDColor;       }
+>    inline G4double GetBDOuterHalfX()     const { return fBDOuterHalfX;  }
+>    inline G4double GetBDOuterHalfY()     const { return fBDOuterHalfY;  }
+>    inline G4double GetBDOuterHalfZ()     const { return fBDOuterHalfZ;  }
+>    inline G4double GetBDInnerHalfX()     const { return fBDInnerHalfX;  }
+>    inline G4double GetBDInnerHalfY()     const { return fBDInnerHalfY;  }
+>    inline G4double GetBDInnerHalfZ()     const { return fBDInnerHalfZ;  }
+46,54c50,58
+<    inline void SetMaterial        (G4String s) { fMaterial       = s; }
+<    inline void SetVisAtt          (G4bool   b) { fVisAtt         = b; }
+<    inline void SetColor           (G4Color *c) { fColor          = c; }
+<    inline void SetOuterHalfX      (G4double x) { fOuterHalfX     = x; }
+<    inline void SetOuterHalfY      (G4double x) { fOuterHalfY     = x; }
+<    inline void SetOuterHalfZ      (G4double x) { fOuterHalfZ     = x; }
+<    inline void SetInnerHalfX      (G4double x) { fInnerHalfX     = x; }
+<    inline void SetInnerHalfY      (G4double x) { fInnerHalfY     = x; }
+<    inline void SetInnerHalfZ      (G4double x) { fInnerHalfZ     = x; }
+---
+>    inline void SetBDMaterial      (G4String s) { fBDMaterial     = s; }
+>    inline void SetBDVisAtt        (G4bool   b) { fBDVisAtt       = b; }
+>    inline void SetBDColor         (G4Color  c) { fBDColor        = c; }
+>    inline void SetBDOuterHalfX    (G4double x) { fBDOuterHalfX   = x; }
+>    inline void SetBDOuterHalfY    (G4double x) { fBDOuterHalfY   = x; }
+>    inline void SetBDOuterHalfZ    (G4double x) { fBDOuterHalfZ   = x; }
+>    inline void SetBDInnerHalfX    (G4double x) { fBDInnerHalfX   = x; }
+>    inline void SetBDInnerHalfY    (G4double x) { fBDInnerHalfY   = x; }
+>    inline void SetBDInnerHalfZ    (G4double x) { fBDInnerHalfZ   = x; }
+59c63
+<    static J4BDParameterList *fInstance;
+---
+>    static J4BDParameterList *fgInstance;
+61,70c65,74
+<    G4String  fMaterial; 
+<    G4bool    fVisAtt;
+<    G4Color  *fColor;
+< 
+<    G4double  fOuterHalfX;
+<    G4double  fOuterHalfY;
+<    G4double  fOuterHalfZ;
+<    G4double  fInnerHalfX;
+<    G4double  fInnerHalfY;
+<    G4double  fInnerHalfZ;
+---
+>    G4String  fBDMaterial; 
+>    G4bool    fBDVisAtt;
+>    G4Color   fBDColor;
+> 
+>    G4double  fBDOuterHalfX;
+>    G4double  fBDOuterHalfY;
+>    G4double  fBDOuterHalfZ;
+>    G4double  fBDInnerHalfX;
+>    G4double  fBDInnerHalfY;
+>    G4double  fBDInnerHalfZ;
+Index: sources/bd/include/J4VBDAcceleratorComponent.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/bd/include/J4VBDAcceleratorComponent.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VBDAcceleratorComponent.hh
+28a29
+> #include "J4BDParameterList.hh"
+51a53,54
+>   J4BDParameterList* 	 OpenParameterList() 
+>                          { return J4BDParameterList::GetInstance(); }
+cvs server: Diffing sources/bd/src
+Index: sources/bd/src/J4BD.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/bd/src/J4BD.cc,v
+retrieving revision 1.2
+diff -r1.2 J4BD.cc
+50c50
+<   J4BDParameterList *list = J4BDParameterList::GetInstance(); 
+---
+>   J4BDParameterList *list = OpenParameterList(); 
+54c54
+<     OrderNewBox (list->GetOuterHalfX(), list->GetOuterHalfY(), list->GetOuterHalfZ(), 
+---
+>     OrderNewBox (list->GetBDOuterHalfX(), list->GetBDOuterHalfY(), list->GetBDOuterHalfZ(), 
+56c56
+<                  list->GetInnerHalfX(), list->GetInnerHalfY(), list->GetInnerHalfZ());
+---
+>                  list->GetBDInnerHalfX(), list->GetBDInnerHalfY(), list->GetBDInnerHalfZ());
+59c59
+<     MakeLVWith(OpenMaterialStore()->Order(list->GetMaterial()));
+---
+>     MakeLVWith(OpenMaterialStore()->Order(list->GetBDMaterial()));
+62c62
+<     PaintLV(list->GetVisAtt(), *list->GetColor());
+---
+>     PaintLV(list->GetBDVisAtt(), list->GetBDColor());
+Index: sources/bd/src/J4BDParameterList.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/bd/src/J4BDParameterList.cc,v
+retrieving revision 1.1
+diff -r1.1 J4BDParameterList.cc
+16c16
+< J4BDParameterList * J4BDParameterList::fInstance = 0;
+---
+> J4BDParameterList* J4BDParameterList::fgInstance = 0;
+19c19
+< //* constructor -------------------------------------------------------
+---
+> //* public get function -----------------------------------------------
+21c21
+< J4BDParameterList::J4BDParameterList()
+---
+> J4BDParameterList* J4BDParameterList::GetInstance()
+23c23,30
+<    fInstance = this;
+---
+>    if (!fgInstance) {
+>       fgInstance = new J4BDParameterList("BD");
+>    }
+>    return fgInstance;
+> }
+> 
+> //=====================================================================
+> //* protected constructor ---------------------------------------------
+24a32,33
+> J4BDParameterList::J4BDParameterList(const G4String &name)
+> {
+28,36c37,47
+<    fMaterial       = "Air";
+<    fVisAtt         = FALSE;
+<    fColor          = new G4Color(0.5, 0.5, 0.5);
+<    fOuterHalfX     = paramlist->GetEXPHallHalfX();
+<    fOuterHalfY     = paramlist->GetEXPHallHalfY();
+<    fOuterHalfZ     = paramlist->GetEXPHallHalfZ();
+<    fInnerHalfX     = irlist->GetIRBoxHalfX(); 
+<    fInnerHalfY     = irlist->GetIRBoxHalfY(); 
+<    fInnerHalfZ     = irlist->GetZMax(); 
+---
+>    fBDMaterial       = "Air";
+>    fBDVisAtt         = FALSE;
+>    fBDOuterHalfX     = paramlist->GetEXPHallHalfX();
+>    fBDOuterHalfY     = paramlist->GetEXPHallHalfY();
+>    fBDOuterHalfZ     = paramlist->GetEXPHallHalfZ();
+> 
+>    fBDInnerHalfX     = irlist->GetDxyzIRBox().x();   
+>    fBDInnerHalfY     = irlist->GetDxyzIRBox().y(); 
+>    fBDInnerHalfZ     = irlist->GetIRZMax(); 
+> 
+>    SetBDColor(G4Color(0.5, 0.5, 0.5));
+39a51,56
+> //=====================================================================
+> //* destructor --------------------------------------------------------
+> J4BDParameterList::~J4BDParameterList()
+> {
+>    fgInstance = 0;
+> }
+cvs server: Diffing sources/cal
+cvs server: Diffing sources/cal/include
+Index: sources/cal/include/J4CAL.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cal/include/J4CAL.hh,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4CAL.hh
+17,18c17
+< #include "J4CALBarrel.hh"
+< #include "J4CALEndcap.hh"
+---
+> #include "J4CALCone.hh"
+47,48c46
+<   J4CALBarrel*  	fBarrel;
+<   J4CALEndcap** 	fEndcaps;  
+---
+>   J4CALCone**           fCones;  
+cvs server: cannot find sources/cal/include/J4CALBarrel.hh
+cvs server: cannot find sources/cal/include/J4CALEndcap.hh
+cvs server: cannot find sources/cal/include/J4CALParameter.hh
+Index: sources/cal/include/J4VCALDetectorComponent.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cal/include/J4VCALDetectorComponent.hh,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4VCALDetectorComponent.hh
+15a16
+> #include "J4CALParameterList.hh"
+17d17
+< #include "J4CALParameter.hh"
+35,36d34
+<   virtual ~J4VCALDetectorComponent();
+< #if 0 		          
+37a36,38
+> 
+>   virtual ~J4VCALDetectorComponent();
+> 
+40d40
+< #endif
+43a44
+>   J4CALParameterList* 	 OpenParameterList() { return J4CALParameterList::GetInstance(); }
+51d51
+< #if 0
+58a59
+>                                :J4VDetectorComponent(right)
+61,63d61
+<   fMaterialStore = right.fMaterialStore;
+<   fSubGroup      = right.fSubGroup;
+<           
+69,72d66
+< 
+<   fMaterialStore = right.fMaterialStore;
+<   fSubGroup      = right.fSubGroup;
+<   
+74d67
+<             
+81d73
+< #endif
+cvs server: Diffing sources/cal/src
+Index: sources/cal/src/J4CAL.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cal/src/J4CAL.cc,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4CAL.cc
+38c38
+<   		fBarrel(0), fEndcaps(0)
+---
+>        fCones(0)
+47,56c47,54
+<   if (Deregister(fBarrel)) delete fBarrel;
+<   if (fEndcaps)
+<   {
+<  	 G4int i;
+<  	 G4int calnum = _CALENDCAPNUM_ ;
+<  	 for (i=0; i < calnum ; i++) {
+<   		if (Deregister(fEndcaps[i])) delete fEndcaps[i];
+<   	 }
+<   	 if (Deregister(fEndcaps)) delete [] fEndcaps;
+<   }
+---
+> 
+>    if (fCones) {
+>       J4CALParameterList *list = OpenParameterList(); 
+>       for (G4int i=0; i < list->GetNcones(); i++) {
+>          if (Deregister(fCones[i])) delete fCones[i];
+>       }
+>       if (Deregister(fCones)) delete [] fCones;
+>    }
+64c62,63
+<   if(!GetLV()){
+---
+>    if(!GetLV()){
+>       J4CALParameterList *list = OpenParameterList(); 
+66,71c65,70
+<     G4double rmin = _CALIR_;
+<     G4double rmax = _CALOR_;
+<     G4double len  = _CALLEN_;
+<     G4double dphi = _CALDPHI_;
+<     G4double endcapthickness = (_CALLEN_ - _CALFRONTZ_) / 2. ;
+<     G4double endcaprmin      = _CALENDCAPIR_ ;
+---
+>       G4double rmin        = list->GetCALInnerR();
+>       G4double rmax        = list->GetCALOuterR();
+>       G4double len         = list->GetCALOuterHalfZ();
+>       G4double dphi        = list->GetCALDeltaPhi();
+>       G4double endcaprmin  = list->GetEndcapInnerR();
+>       G4double endcaphalfz = 0.5 * (len - list->GetCALInnerHalfZ());
+73,74c72,73
+<     // MakeSolid ----------//
+<     OrderNewTubs (rmin, rmax, len, dphi, endcapthickness, endcaprmin);
+---
+>       // MakeSolid ----------//
+>       OrderNewTubs (rmin, rmax, len, dphi, endcaphalfz, endcaprmin);
+76,77c75,76
+<     // MakeLogicalVolume --//  
+<     MakeLVWith(OpenMaterialStore()->Order(_CALMATERIAL_));
+---
+>       // MakeLogicalVolume --//  
+>       MakeLVWith(OpenMaterialStore()->Order(list->GetCALMaterial()));
+79,80c78,79
+<     // SetVisAttribute ----//
+<     PaintLV(_CALVISATT_, G4Color(1, 1, 0));
+---
+>       // SetVisAttribute ----//
+>       PaintLV(list->GetCALVisAtt(), list->GetCALColor());
+82c81
+<     // Install daughter PV //
+---
+>       // Install daughter PV //
+84,101c83,93
+<     fBarrel = new J4CALBarrel(this, 1, 1, 0 );
+<     Register(fBarrel);
+<     fBarrel->InstallIn(this);
+<     SetDaughter(fBarrel);
+<     
+<     G4int i;
+<     G4int nendcaps = _CALENDCAPNUM_ ;
+<     fEndcaps = new J4CALEndcap* [nendcaps];
+<     Register(fEndcaps);
+<     for(i=0; i<nendcaps; i++)
+<     {
+<    	 fEndcaps[i] = new J4CALEndcap(this, 1, nendcaps, i );
+<          Register(fEndcaps[i]);
+<   	 fEndcaps[i] ->InstallIn(this);
+<   	 SetDaughter(fEndcaps[i]);
+<     } 
+<     
+<   }
+---
+>       G4int ncones = list->GetNcones();
+>       fCones       = new J4CALCone* [ncones];
+>       Register(fCones);
+>       for (G4int i=0; i<ncones; i++) {
+>          fCones[i] = new J4CALCone(this, 1, ncones, i );
+>          Register(fCones[i]);
+>          fCones[i] ->InstallIn(this);
+>          SetDaughter(fCones[i]);
+>       }
+> 
+>    }
+cvs server: cannot find sources/cal/src/J4CALBarrel.cc
+cvs server: cannot find sources/cal/src/J4CALEndcap.cc
+cvs server: Diffing sources/cdc
+cvs server: Diffing sources/cdc/include
+Index: sources/cdc/include/J4CDCDriftRegionHit.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/include/J4CDCDriftRegionHit.hh,v
+retrieving revision 1.2
+diff -r1.2 J4CDCDriftRegionHit.hh
+63,64c63,64
+<   void* operator new    (size_t    );
+<   void  operator delete (void *aHit);
+---
+>   void* operator   new    (size_t    );
+>   void  operator   delete (void *aHit);
+66c66
+<   virtual void Output(G4HCofThisEvent *HCTE);
+---
+>   virtual void     Output(G4HCofThisEvent *HCTE);
+Index: sources/cdc/include/J4CDCParameterList.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/include/J4CDCParameterList.hh,v
+retrieving revision 1.2
+diff -r1.2 J4CDCParameterList.hh
+9,10c9,11
+< //* 	Material Store class for CDC.
+< //*     Define Materials for CDC here.
+---
+> //*     ParameterList class for CDC.
+> //*     The instance must be singleton. Use "GetInstance()" function
+> //*     to create and get the instance.
+18c19
+< #include "J4VParameterList.hh"
+---
+> #include "J4ParameterList.hh"
+27,29c28,30
+<  
+<  public:
+<    J4CDCParameterList();   
+---
+> 
+>  protected: 
+> 
+30a32,33
+> 
+>  public:
+33a37,38
+>  
+>    static J4CDCParameterList* GetInstance();
+40,44c45,49
+<    inline G4double GetCDCIR()    const { return fCDCInnerRadius; }
+<    inline G4double GetCDCOR()    const { return fCDCOuterRadius; }
+<    inline G4double GetCDCHalfZ() const { return fCDCHalfZLength; }
+<    inline G4double GetCDCDPhi()  const { return fCDCDeltaPhi;    }
+<    inline G4double GetCDCSPhi()  const { return fCDCPhiOffset;   }
+---
+>    inline G4double GetCDCInnerR()    const; 
+>    inline G4double GetCDCOuterR()    const; 
+>    inline G4double GetCDCHalfZ()     const;
+>    inline G4double GetCDCDeltaPhi()  const { return fCDCDeltaPhi;  }
+>    inline G4double GetCDCPhiOffset() const { return fCDCPhiOffset; }
+47,53c52,58
+<    inline G4double GetEndcapThick()  const { return fEndcapHalfThickness; }
+<    inline G4double GetEndcapFrontZ() const;
+<    inline G4double GetEndcapIR()     const;
+<    inline G4double GetEndcapOR()     const;
+<    inline G4double GetEndcapHalfZ()  const;
+<    inline G4double GetEndcapSPhi()   const;
+<    inline G4double GetEndcapDPhi()   const { return fCDCDeltaPhi;    }
+---
+>    inline G4double GetEndcapHalfThick() const { return fEndcapHalfThick; }
+>    inline G4double GetEndcapFrontZ()    const;
+>    inline G4double GetEndcapInnerR()    const;
+>    inline G4double GetEndcapOuterR()    const;
+>    inline G4double GetEndcapHalfZ()     const;
+>    inline G4double GetEndcapPhiOffset() const;
+>    inline G4double GetEndcapDeltaPhi()  const { return fCDCDeltaPhi;    }
+56,63c61,68
+<    inline G4double GetSupportTubThick()   const { return fSupportTubThickness;}
+<    inline G4double GetOuterSupportTubIR() const;
+<    inline G4double GetOuterSupportTubOR() const;
+<    inline G4double GetInnerSupportTubIR() const;
+<    inline G4double GetInnerSupportTubOR() const;
+<    inline G4double GetSupportTubHalfZ()   const;
+<    inline G4double GetSupportTubSPhi()    const;
+<    inline G4double GetSupportTubDPhi()    const { return fCDCDeltaPhi;    }
+---
+>    inline G4double GetSupportTubHalfThick()   const { return fSupportTubHalfThick;}
+>    inline G4double GetOuterSupportTubInnerR() const;
+>    inline G4double GetOuterSupportTubOuterR() const;
+>    inline G4double GetInnerSupportTubInnerR() const;
+>    inline G4double GetInnerSupportTubOuterR() const;
+>    inline G4double GetSupportTubHalfZ()       const;
+>    inline G4double GetSupportTubPhiOffset()   const;
+>    inline G4double GetSupportTubDeltaPhi()    const { return fCDCDeltaPhi;    }
+66,70c71,74
+<    inline G4bool   IsOddSuperLyrOutermost()      const { return fIsOddSuperLyrOutermost;    }
+<    inline G4int    GetNsuperLayers()       const { return fNsuperLayers;        }
+<    inline G4int    GetNlayersPerSuperLayer(G4int ilayer) const;
+<    inline G4int    GetNcellsPerLayer(G4int ilayer) const
+<                                               { return fNcellsParLayer[ilayer]; }
+---
+>    inline G4bool   IsOddSuperLyrOutermost()         const { return fIsOddSuperLyrOutermost; }
+>    inline G4int    GetNsuperLayers()                const { return fNsuperLayers;           }
+>    inline G4int    GetNcellsPerLayer(G4int i)       const { return fNcellsParLayer[i];      }
+>    inline G4int    GetNlayersPerSuperLayer(G4int i) const;
+72,82c76,85
+<    inline G4double GetSuperLayerInnerGap() const { return fSuperLayerInnerGap;  }
+<    inline G4double GetSuperLayerOuterGap() const { return fSuperLayerOuterGap;  }
+<    inline G4double GetAxialToStereoGap()   const { return fAxialToStereoGap;    }
+<    inline G4double GetStereoToStereoGap()  const { return fStereoToStereoGap;   }
+<    inline G4double GetStereoToAxialGap()   const { return fStereoToAxialGap;    }
+<    inline G4double GetSuperLayerHalfZ()    const;
+<    inline G4double GetSuperLayerThick(G4int ilayer) const;
+<    inline G4double GetSuperLayerIR   (G4int ilayer) const;
+<    inline G4double GetSuperLayerOR   (G4int ilayer) const;
+<    inline G4double GetSuperLayerSPhi (G4int ilayer) const 
+<                                         { return fSuperLayerPhiOffset[ilayer]; }
+---
+>    inline G4double GetSuperLayerInnerGap()          const { return fSuperLayerInnerGap; }
+>    inline G4double GetSuperLayerOuterGap()          const { return fSuperLayerOuterGap; }
+>    inline G4double GetAxialToStereoGap()            const { return fAxialToStereoGap;   }
+>    inline G4double GetStereoToStereoGap()           const { return fStereoToStereoGap;  }
+>    inline G4double GetStereoToAxialGap()            const { return fStereoToAxialGap;   }
+>    inline G4double GetSuperLayerHalfZ()             const;
+>    inline G4double GetSuperLayerThick(G4int i)      const;
+>    inline G4double GetSuperLayerInnerR(G4int i)     const;
+>    inline G4double GetSuperLayerOuterR(G4int i)     const;
+>    inline G4double GetSuperLayerPhiOffset(G4int i)  const { return fSuperLayerPhiOffset[i]; }
+85,89c88,96
+<    inline G4bool   IsAxialOnly()             const { return fIsAxialOnly; }
+<    inline G4int    GetNlayers()              const { return fNlayers;          }
+<    inline G4double GetUniformShieldLayerThick()const;
+<    
+<    // generation function of global No. through the chamber
+---
+>    inline G4bool   IsAxialOnly()                    const { return fIsAxialOnly; }
+>    inline G4int    GetNlayers()                     const { return fNlayers;     }
+>    inline G4double GetUniformShieldLayerThick()     const;
+>    
+>    // argument "gi" must be a global layer number.
+>    inline G4double GetLayerPhiOffset(G4int gi)      const { return fLayerPhiOffset[gi];}
+>    inline G4double GetLayerPhiTwist(G4int gi)       const { return fTwistedAngle[gi];  }
+> 
+>    // generate global No. through the chamber
+91,94d97
+<    
+<    // following functions requires global layer number.
+<    inline G4double GetLayerSPhi(G4int gi)    const { return fLayerPhiOffset[gi];}
+<    inline G4double GetLayerPhiTwist(G4int gi)const { return fTwistedAngle[gi];  }
+97c100
+<    inline G4double GetCellThick()        const { return fCellThickness;   }
+---
+>    inline G4double GetCellThick()              const { return fCellThick;   }
+100,105c103,106
+<    inline G4int    GetNdriftRegions()    const { return fNdriftRegions;        }
+<    inline G4double GetDriftRegionThick() const { return fDriftRegionThickness; }
+<   
+<    //*DummyDriftRegion -------------------------------------------------------
+<    inline G4double GetDummyDriftRegionThick() const 
+<                    { return fDummyDriftRegionThickness; }
+---
+>    inline G4double GetMeasPlaneHalfThick()     const { return fMeasPlaneHalfThick;    }
+>    inline G4int    GetNdriftRegions()          const { return fNdriftRegions;         }
+>    inline G4double GetDriftRegionThick()       const { return fDriftRegionThick;      }
+>    inline G4double GetDummyDriftRegionThick()  const { return fDummyDriftRegionThick; }
+108c109,110
+<    inline G4double GetSenseWireRadius()     const { return fSenseWireRadius; }
+---
+>    inline G4double GetSenseWireR()             const { return fSenseWireR;  }
+> 
+111,119c113,120
+<    inline G4String GetCDCMaterial()         const { return fCDCMaterial;        }
+<    inline G4String GetSupportTubMaterial()  const { return fSupportTubMaterial; }
+<    inline G4String GetEndcapMaterial()      const { return fEndcapMaterial;     }
+<    inline G4String GetLayerMaterial()       const { return fLayerMaterial;      }
+<    inline G4String GetCellMaterial()        const { return fCellMaterial;       }
+<    inline G4String GetDriftRegionMaterial() const { return fDriftRegionMaterial;}
+<    inline G4String GetSenseWireMaterial()   const { return fSenseWireMaterial;  }
+<    inline G4String GetDummyDriftRegionMaterial() const 
+<                    { return fDriftRegionMaterial; }
+---
+>    inline G4String GetCDCMaterial()              const { return fCDCMaterial;        }
+>    inline G4String GetSupportTubMaterial()       const { return fSupportTubMaterial; }
+>    inline G4String GetEndcapMaterial()           const { return fEndcapMaterial;     }
+>    inline G4String GetLayerMaterial()            const { return fLayerMaterial;      }
+>    inline G4String GetCellMaterial()             const { return fCellMaterial;       }
+>    inline G4String GetDriftRegionMaterial()      const { return fDriftRegionMaterial;}
+>    inline G4String GetSenseWireMaterial()        const { return fSenseWireMaterial;  }
+>    inline G4String GetDummyDriftRegionMaterial() const { return fDriftRegionMaterial; }
+122,134c123,133
+<    inline G4bool GetCDCVisAtt()         const { return fCDCVisAtt;         }
+<    inline G4bool GetEndcapVisAtt()      const { return fEndcapVisAtt;      }
+<    inline G4bool GetSupportTubVisAtt()  const { return fSupportTubVisAtt;  }
+<    inline G4bool GetSuperLayerVisAtt()  const { return fSuperLayerVisAtt;  }
+<    inline G4bool GetLayerVisAtt()       const { return fLayerVisAtt;       }
+<    inline G4bool GetCellVisAtt()        const { return fCellVisAtt;        }
+<    inline G4bool GetDriftRegionVisAtt() const { return fDriftRegionVisAtt; }
+<    inline G4bool GetSenseWireVisAtt()   const { return fSenseWireVisAtt;   }
+<    inline G4bool GetStereoCellVisAtt()  const { return fStereoCellVisAtt;        }
+<    inline G4bool GetStereoDriftRegionVisAtt() const 
+<                  { return fStereoDriftRegionVisAtt; }
+<    inline G4bool GetDummyDriftRegionVisAtt() const 
+<                  { return fDummyDriftRegionVisAtt; }
+---
+>    inline G4bool GetCDCVisAtt()               const { return fCDCVisAtt;         }
+>    inline G4bool GetEndcapVisAtt()            const { return fEndcapVisAtt;      }
+>    inline G4bool GetSupportTubVisAtt()        const { return fSupportTubVisAtt;  }
+>    inline G4bool GetSuperLayerVisAtt()        const { return fSuperLayerVisAtt;  }
+>    inline G4bool GetLayerVisAtt()             const { return fLayerVisAtt;       }
+>    inline G4bool GetCellVisAtt()              const { return fCellVisAtt;        }
+>    inline G4bool GetDriftRegionVisAtt()       const { return fDriftRegionVisAtt; }
+>    inline G4bool GetSenseWireVisAtt()         const { return fSenseWireVisAtt;   }
+>    inline G4bool GetStereoCellVisAtt()        const { return fStereoCellVisAtt;  }
+>    inline G4bool GetStereoDriftRegionVisAtt() const { return fStereoDriftRegionVisAtt; }
+>    inline G4bool GetDummyDriftRegionVisAtt()  const { return fDummyDriftRegionVisAtt; }
+137,149c136,164
+<    inline G4Color GetCDCColor()         const { return *fCDCColor;         }
+<    inline G4Color GetEndcapColor()      const { return *fEndcapColor;      }
+<    inline G4Color GetSupportTubColor()  const { return *fSupportTubColor;  }
+<    inline G4Color GetSuperLayerColor()  const { return *fSuperLayerColor;  }
+<    inline G4Color GetLayerColor()       const { return *fLayerColor;       }
+<    inline G4Color GetCellColor()        const { return *fCellColor;        }
+<    inline G4Color GetDriftRegionColor() const { return *fDriftRegionColor; }
+<    inline G4Color GetSenseWireColor()   const { return *fSenseWireColor; }
+<    inline G4Color GetStereoCellColor()  const { return *fStereoCellColor;        }
+<    inline G4Color GetStereoDriftRegionColor() const 
+<                   { return *fStereoDriftRegionColor; }
+<    inline G4Color GetDummyDriftRegionColor() const 
+<                   { return *fDummyDriftRegionColor; }
+---
+>    inline G4Color GetCDCColor()               const { return fCDCColor;         }
+>    inline G4Color GetEndcapColor()            const { return fEndcapColor;      }
+>    inline G4Color GetSupportTubColor()        const { return fSupportTubColor;  }
+>    inline G4Color GetSuperLayerColor()        const { return fSuperLayerColor;  }
+>    inline G4Color GetLayerColor()             const { return fLayerColor;       }
+>    inline G4Color GetCellColor()              const { return fCellColor;        }
+>    inline G4Color GetDriftRegionColor()       const { return fDriftRegionColor; }
+>    inline G4Color GetSenseWireColor()         const { return fSenseWireColor;   }
+>    inline G4Color GetStereoCellColor()        const { return fStereoCellColor;  }
+>    inline G4Color GetStereoDriftRegionColor() const { return fStereoDriftRegionColor; }
+>    inline G4Color GetDummyDriftRegionColor()  const { return fDummyDriftRegionColor;  }
+> 
+> 
+>    //
+>    // set parameters
+>    //
+> 
+>    //*Color ------------------------------------------------------------------
+>    inline void SetCDCColor(const G4Color &c)        { fCDCColor = c;         }
+>    inline void SetEndcapColor(const G4Color &c)     { fEndcapColor = c;      }
+>    inline void SetSupportTubColor(const G4Color &c) { fSupportTubColor = c;  }
+>    inline void SetSuperLayerColor(const G4Color &c) { fSuperLayerColor = c;  }
+>    inline void SetLayerColor(const G4Color &c)      { fLayerColor = c;       }
+>    inline void SetCellColor(const G4Color &c)       { fCellColor = c;        }
+>    inline void SetDriftRegionColor(const G4Color &c){ fDriftRegionColor = c; }
+>    inline void SetSenseWireColor(const G4Color &c)  { fSenseWireColor = c;   }
+>    inline void SetStereoCellColor(const G4Color &c) { fStereoCellColor = c;  }
+>    inline void SetStereoDriftRegionColor(const G4Color &c) { fStereoDriftRegionColor = c; }
+>    inline void SetDummyDriftRegionColor(const G4Color &c)  { fDummyDriftRegionColor = c;  }
+159a175,176
+>    static J4CDCParameterList* fgInstance;
+> 
+183,193c200,210
+<    G4Color  *fCDCColor;
+<    G4Color  *fEndcapColor;
+<    G4Color  *fSupportTubColor;
+<    G4Color  *fSuperLayerColor;
+<    G4Color  *fLayerColor;
+<    G4Color  *fCellColor;
+<    G4Color  *fDriftRegionColor;
+<    G4Color  *fStereoCellColor;
+<    G4Color  *fStereoDriftRegionColor;
+<    G4Color  *fDummyDriftRegionColor;
+<    G4Color  *fSenseWireColor;
+---
+>    G4Color   fCDCColor;
+>    G4Color   fEndcapColor;
+>    G4Color   fSupportTubColor;
+>    G4Color   fSuperLayerColor;
+>    G4Color   fLayerColor;
+>    G4Color   fCellColor;
+>    G4Color   fDriftRegionColor;
+>    G4Color   fStereoCellColor;
+>    G4Color   fStereoDriftRegionColor;
+>    G4Color   fDummyDriftRegionColor;
+>    G4Color   fSenseWireColor;
+196,198d212
+<    G4double  fCDCInnerRadius;
+<    G4double  fCDCOuterRadius;
+<    G4double  fCDCHalfZLength;
+203c217
+<    G4double  fEndcapHalfThickness;
+---
+>    G4double  fEndcapHalfThick;
+206c220
+<    G4double  fSupportTubThickness;
+---
+>    G4double  fSupportTubHalfThick;
+222,223c236,237
+<    G4double  fSuperLayerInnerGap;   // gap between InnerSupportTubOR and superlayer
+<    G4double  fSuperLayerOuterGap;   // gap between superlayer and OuterSupportTubIR
+---
+>    G4double  fSuperLayerInnerGap;   // gap between InnerSupportTubOuterR and superlayer
+>    G4double  fSuperLayerOuterGap;   // gap between superlayer and OuterSupportTubInnerR
+231c245
+<    G4double  fCellThickness;
+---
+>    G4double  fCellThick;
+233a248
+>    G4double  fMeasPlaneHalfThick;   // thickness of hypothetical measurement plane 
+235c250
+<    G4double  fDriftRegionThickness;
+---
+>    G4double  fDriftRegionThick;     // thickness of driftregion per wire
+238c253
+<    G4double  fDummyDriftRegionThickness;
+---
+>    G4double  fDummyDriftRegionThick;
+241c256
+<    G4double  fSenseWireRadius;
+---
+>    G4double  fSenseWireR;
+247a263,277
+> G4double J4CDCParameterList::GetCDCInnerR() const 
+> { 
+>    return J4ParameterList::GetInstance()->GetCDCInnerR();
+> }
+> 
+> G4double J4CDCParameterList::GetCDCOuterR() const 
+> {
+>    return J4ParameterList::GetInstance()->GetCDCOuterR();
+> }
+> 
+> G4double J4CDCParameterList::GetCDCHalfZ() const
+> {
+>    return J4ParameterList::GetInstance()->GetCDCHalfZ();     
+> }
+> 
+250c280
+<    return fCDCHalfZLength - 2 * fEndcapHalfThickness;
+---
+>    return GetCDCHalfZ() - 2 * fEndcapHalfThick;
+253c283
+< G4double J4CDCParameterList::GetEndcapIR() const
+---
+> G4double J4CDCParameterList::GetEndcapInnerR() const
+255c285
+<    return fCDCInnerRadius;
+---
+>    return GetCDCInnerR();
+258c288
+< G4double J4CDCParameterList::GetEndcapOR() const
+---
+> G4double J4CDCParameterList::GetEndcapOuterR() const
+260c290
+<    return fCDCOuterRadius;
+---
+>    return GetCDCOuterR();
+265c295
+<    return fEndcapHalfThickness;
+---
+>    return fEndcapHalfThick;
+268c298
+< G4double J4CDCParameterList::GetEndcapSPhi() const
+---
+> G4double J4CDCParameterList::GetEndcapPhiOffset() const
+273c303
+< G4double J4CDCParameterList::GetOuterSupportTubIR() const
+---
+> G4double J4CDCParameterList::GetOuterSupportTubInnerR() const
+275c305
+<    return fCDCOuterRadius - fSupportTubThickness;
+---
+>    return GetCDCOuterR() - 2 * fSupportTubHalfThick;
+278c308
+< G4double J4CDCParameterList::GetOuterSupportTubOR() const
+---
+> G4double J4CDCParameterList::GetOuterSupportTubOuterR() const
+280c310
+<    return fCDCOuterRadius;
+---
+>    return GetCDCOuterR();
+283c313
+< G4double J4CDCParameterList::GetInnerSupportTubIR() const
+---
+> G4double J4CDCParameterList::GetInnerSupportTubInnerR() const
+285c315
+<    return fCDCInnerRadius;
+---
+>    return GetCDCInnerR();
+288c318
+< G4double J4CDCParameterList::GetInnerSupportTubOR() const
+---
+> G4double J4CDCParameterList::GetInnerSupportTubOuterR() const
+290c320
+<    return fCDCInnerRadius + fSupportTubThickness;
+---
+>    return GetCDCInnerR() + 2 * fSupportTubHalfThick;
+298c328
+< G4double J4CDCParameterList::GetSupportTubSPhi() const
+---
+> G4double J4CDCParameterList::GetSupportTubPhiOffset() const
+329c359,360
+<       return fCellThickness;
+---
+>       // small super layer! (A)
+>       return fCellThick;
+331c362,363
+<       return (3 * fCellThickness + fAxialToStereoGap +
+---
+>       // large super layer (A,U,V)
+>       return (3 * fCellThick + fAxialToStereoGap +
+336c368
+< G4double J4CDCParameterList::GetSuperLayerIR(G4int ilayer) const
+---
+> G4double J4CDCParameterList::GetSuperLayerInnerR(G4int ilayer) const
+339c371
+<       return (GetInnerSupportTubOR() + fSuperLayerInnerGap 
+---
+>       return (GetInnerSupportTubOuterR() + fSuperLayerInnerGap 
+342,343c374,375
+<       return (GetInnerSupportTubOR() + fSuperLayerInnerGap 
+<               + fCellThickness // innermost small superlayer
+---
+>       return (GetInnerSupportTubOuterR() + fSuperLayerInnerGap 
+>               + fCellThick // innermost small superlayer
+348c380
+< G4double J4CDCParameterList::GetSuperLayerOR(G4int ilayer) const
+---
+> G4double J4CDCParameterList::GetSuperLayerOuterR(G4int ilayer) const
+350c382
+<    return GetSuperLayerIR(ilayer) + GetSuperLayerThick(ilayer);
+---
+>    return GetSuperLayerInnerR(ilayer) + GetSuperLayerThick(ilayer);
+355,357c387,389
+<    return (fCDCOuterRadius - fCDCInnerRadius 
+<            - 2 * fSupportTubThickness
+<            - fNlayers * fCellThickness) / fNlayers;
+---
+>    return (GetCDCOuterR() - GetCDCInnerR() 
+>            - 4 * fSupportTubHalfThick
+>            - fNlayers * fCellThick) / fNlayers;
+Index: sources/cdc/include/J4CDCSenseWireHit.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/include/J4CDCSenseWireHit.hh,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4CDCSenseWireHit.hh
+16c16
+< #include "J4VHit.hh"
+---
+> #include "J4VTrackerHit.hh"
+34c34
+< class J4CDCSenseWireHit : public J4VHit {
+---
+> class J4CDCSenseWireHit : public J4VTrackerHit {
+Index: sources/cdc/include/J4VCDCDetectorComponent.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/include/J4VCDCDetectorComponent.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VCDCDetectorComponent.hh
+62,63c62,63
+<   J4VMaterialStore*       OpenMaterialStore();
+<   J4CDCParameterList*     OpenParameterList();
+---
+>   J4VMaterialStore*          OpenMaterialStore();
+>   J4CDCParameterList*        OpenParameterList() { return J4CDCParameterList::GetInstance();}
+67d66
+<   static J4CDCParameterList *fParameterList;
+Index: sources/cdc/include/J4VCDCDriftRegionHit.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/include/J4VCDCDriftRegionHit.hh,v
+retrieving revision 1.1
+diff -r1.1 J4VCDCDriftRegionHit.hh
+16c16
+< #include "J4VHit.hh"
+---
+> #include "J4VTrackerHit.hh"
+29c29
+< class J4VCDCDriftRegionHit : public J4VHit 
+---
+> class J4VCDCDriftRegionHit : public J4VTrackerHit 
+35,50c35,50
+<                       G4int                 cloneID, 
+<                       G4int                 trackID        = 0,
+<                       G4int                 mothertrackID  = 0,
+<                       G4ParticleDefinition *particle       = 0,
+<                       G4double              tof            = 0,
+<                       G4double              edep           = 0,
+<                       G4double              totalE         = 0,
+<                       const G4ThreeVector  &momentum       = 0,
+<                       const G4ThreeVector  &pre            = 0,
+<                       const G4ThreeVector  &pos            = 0,
+<                       G4double              rotangle       = 0, 
+<                       const G4ThreeVector  &wireEndpz      = 0,
+<                       const G4ThreeVector  &wireEndmz      = 0, 
+<                       G4double              tanstereo      = 0, 
+<                       G4double              rwaist         = 0, 
+<                       const G4int           hitnumber      = 0); 
+---
+>                        G4int                 cloneID, 
+>                        G4int                 trackID,
+>                        G4int                 mothertrackID,
+>                        G4ParticleDefinition *particle,
+>                        G4double              tof            = 0,
+>                        G4double              edep           = 0,
+>                        G4double              totalE         = 0,
+>                        const G4ThreeVector  &momentum       = 0,
+>                        const G4ThreeVector  &pre            = 0,
+>                        const G4ThreeVector  &pos            = 0,
+>                        G4double              rotangle       = 0, 
+>                        const G4ThreeVector  &wireEndpz      = 0,
+>                        const G4ThreeVector  &wireEndmz      = 0, 
+>                        G4double              tanstereo      = 0, 
+>                        G4double              rwaist         = 0, 
+>                        const G4int           hitnumber      = -9999); 
+52c52
+<   inline J4VCDCDriftRegionHit(const J4VCDCDriftRegionHit &right);
+---
+>   inline  J4VCDCDriftRegionHit(const J4VCDCDriftRegionHit &right);
+56,58d55
+<   virtual const J4VCDCDriftRegionHit& 
+<           operator=(const J4VCDCDriftRegionHit &right);    
+< 
+63,66d59
+<   virtual G4ThreeVector GetHitPosition() const; 
+<   virtual G4double      DistanceToWire(const G4ThreeVector &p,
+<                                              G4ThreeVector xx) const;
+< 
+69d61
+<   G4ThreeVector    fHitPosition;
+84a77
+>                      :J4VTrackerHit(right)
+86,97d78
+<   fHitPosition  = right.fHitPosition ;
+<   fWireEnd[0]   = right.fWireEnd[0];
+<   fWireEnd[1]   = right.fWireEnd[1];
+<   fTanStereo    = right.fTanStereo;
+<   fRwaist       = right.fRwaist;
+<   fRotAngle     = right.fRotAngle;
+< }
+< 
+< inline const J4VCDCDriftRegionHit& 
+<   J4VCDCDriftRegionHit::operator= (const J4VCDCDriftRegionHit &right)
+< {         
+<   fHitPosition  = right.fHitPosition ;
+103d83
+<   return *this;
+cvs server: Diffing sources/cdc/src
+Index: sources/cdc/src/J4CDC.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/src/J4CDC.cc,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4CDC.cc
+74,78c74,78
+<       G4double rmin = list->GetCDCIR();
+<       G4double rmax = list->GetCDCOR();
+<       G4double len  = list->GetCDCOR();
+<       G4double dphi = list->GetCDCDPhi();
+<       //G4double endcapthick = list->GetEndcapThick();
+---
+>       G4double rmin = list->GetCDCInnerR();
+>       G4double rmax = list->GetCDCOuterR();
+>       G4double len  = list->GetCDCOuterR();
+>       G4double dphi = list->GetCDCDeltaPhi();
+>       //G4double endcapthick = list->GetEndcapHalfThick();
+85a86
+>       GetLV()->SetOptimisation(FALSE);
+93,98c94,99
+<       G4double otubIR  = list->GetOuterSupportTubIR();
+<       G4double otubOR  = list->GetOuterSupportTubOR();
+<       G4double itubIR  = list->GetInnerSupportTubIR();
+<       G4double itubOR  = list->GetInnerSupportTubOR();
+<       G4double tublen  = list->GetSupportTubHalfZ();
+<       G4double tubdphi = list->GetSupportTubDPhi();
+---
+>       G4double otubInnerR  = list->GetOuterSupportTubInnerR();
+>       G4double otubOuterR  = list->GetOuterSupportTubOuterR();
+>       G4double itubInnerR  = list->GetInnerSupportTubInnerR();
+>       G4double itubOuterR  = list->GetInnerSupportTubOuterR();
+>       G4double tublen      = list->GetSupportTubHalfZ();
+>       G4double tubdphi     = list->GetSupportTubDeltaPhi();
+100c101
+<       fOuterSupportTub = new J4CDCSupportTub(otubIR, otubOR, tublen,
+---
+>       fOuterSupportTub = new J4CDCSupportTub(otubInnerR, otubOuterR, tublen,
+106c107
+<       fInnerSupportTub = new J4CDCSupportTub(itubIR, itubOR, tublen, 
+---
+>       fInnerSupportTub = new J4CDCSupportTub(itubInnerR, itubOuterR, tublen, 
+121d121
+<       
+Index: sources/cdc/src/J4CDCDriftRegion.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/src/J4CDCDriftRegion.cc,v
+retrieving revision 1.2
+diff -r1.2 J4CDCDriftRegion.cc
+67c67
+<     // define parameters
+---
+>      // define parameters
+77,78c77
+<      G4double rmin       = motherRmin + thick * (myid) + dummythick;
+<      G4double rmax       = motherRmin + thick * (myid + 1) + dummythick;
+---
+>      G4double centerradius = motherRmin + thick * (myid + 0.5) + dummythick;
+80c79,87
+<      fRwaist             = 0.5 * (rmin + rmax);
+---
+>      fRwaist             = centerradius;
+> #if 1
+>      G4double measplanehalfthick = list->GetMeasPlaneHalfThick();
+>      G4double rmin = centerradius - measplanehalfthick;
+>      G4double rmax = centerradius + measplanehalfthick;
+> #else
+>      G4double rmin = centerradius - 0.5 * thick;
+>      G4double rmax = centerradius + 0.5 * thick;
+> #endif
+82,83c89,90
+<     // MakeSolid ----------//
+<     OrderNewTubs (rmin, rmax, len, dphi );
+---
+>      // MakeSolid ----------//
+>      OrderNewTubs (rmin, rmax, len, dphi );
+85,87c92,94
+<     // MakeLogicalVolume --//
+<     G4String material = list->GetDriftRegionMaterial();
+<     MakeLVWith(OpenMaterialStore()->Order(material));
+---
+>      // MakeLogicalVolume --//
+>      G4String material = list->GetDriftRegionMaterial();
+>      MakeLVWith(OpenMaterialStore()->Order(material));
+89,91c96,98
+<     // SetVisAttribute ----//
+<     PaintLV(list->GetDriftRegionVisAtt(),
+<             list->GetDriftRegionColor());   
+---
+>      // SetVisAttribute ----//
+>      PaintLV(list->GetDriftRegionVisAtt(),
+>              list->GetDriftRegionColor());   
+94,95c101,102
+<     // Install daughter PV //
+<     // Install Sense Wire  //
+---
+>      // Install daughter PV //
+>      // Install Sense Wire  //
+97,99c104,106
+<     fSenseWire = new J4CDCSenseWire(this);
+<     Register(fSenseWire);
+<     fSenseWire->InstallIn(this);
+---
+>      fSenseWire = new J4CDCSenseWire(this);
+>      Register(fSenseWire);
+>      fSenseWire->InstallIn(this);
+101c108
+<     SetDaughter(fSenseWire);
+---
+>      SetDaughter(fSenseWire);
+Index: sources/cdc/src/J4CDCDriftRegionHit.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/src/J4CDCDriftRegionHit.cc,v
+retrieving revision 1.3
+diff -r1.3 J4CDCDriftRegionHit.cc
+80,81c80,81
+<   G4String      pname    = GetParticle()->GetParticleName();
+<   G4int         pdid     = GetParticle()->GetPDGEncoding();   
+---
+>   G4String      pname    = GetParticleName();
+>   G4int         pdid     = GetPDGEncoding();   
+85,110d84
+<   G4double      gwirephi;  // global phi position of wire
+<   G4double      rwire;     // global r position of wire   
+<   G4double      driftlen;  // drift length
+< 
+<   if (fIsRoundDriftRegion) { 
+< 
+<      G4double   rmin     = cpt->GetInnerRadius(cpt); 
+<      G4double   rmax     = cpt->GetOuterRadius(cpt); 
+<      G4double   ghitphi  = fHitPosition.getPhi();
+< 
+<      rwire    = (rmax + rmin) * 0.5;
+<      gwirephi = fWireEnd[1].getPhi();
+<      driftlen = rwire * ( ghitphi - gwirephi);
+<   
+<      G4double cellphi  = fRotAngle - sphi;
+<      while (cellphi < 0)      cellphi += 2*M_PI;
+<      while (cellphi > 2*M_PI) cellphi -= 2*M_PI;   
+< 
+<   } else {
+< 
+<      G4ThreeVector xx;
+<      driftlen = DistanceToWire(fHitPosition, xx);
+<      rwire    = xx.getRho(); 
+<      gwirephi = xx.getPhi();
+<   } 
+<   
+126c100,101
+<          << G4std::setiosflags(G4std::ios::scientific) << G4std::setprecision(14)
+---
+>          << G4std::setiosflags(G4std::ios::scientific) 
+>          << G4std::setprecision(14)
+129,131d103
+<          << G4std::setw(18) << gwirephi << " " 
+<          << G4std::setw(18) << rwire << " " 
+<          << G4std::setw(18) << driftlen << " "
+138,140d109
+<          << G4std::setw(18) << fHitPosition.x() << " " 
+<          << G4std::setw(18) << fHitPosition.y() << " " 
+<          << G4std::setw(18) << fHitPosition.z() << " "
+155c124,125
+<          << G4std::setiosflags(G4std::ios::floatfield) << setprecision(8)
+---
+>          << G4std::setiosflags(G4std::ios::floatfield) 
+>          << G4std::setprecision(8)
+157a128,151
+> 
+> #if 0
+>      G4cerr << "LayerNo   : " << layerNo << G4endl; 
+>      G4cerr << "WireNo    : " << wireNo << G4endl; 
+>      G4cerr << "CellID    : " << cellID << G4endl;
+>      G4cerr << "TrackID   : " << GetTrackID() << G4endl; 
+>      G4cerr << "MotherTrackID : " << GetMotherTrackID() << G4endl; 
+>      G4cerr << "HitNumber : " << GetHitNumber() << G4endl; 
+>      G4cerr << "PDID      : " << pdid << G4endl; 
+>      G4cerr << "Charge    : " << GetCharge() << G4endl; 
+>      G4cerr << "DPhi      : " << dphi << G4endl; 
+>      G4cerr << "SPhi      : " << sphi << G4endl; 
+>      G4cerr << "Pre       : " << pre << G4endl; 
+>      G4cerr << "Post      : " << post << G4endl; 
+>      G4cerr << "Momentum  : " << GetMomentum() << G4endl; 
+>      G4cerr << "TotalE    : " << GetTotalEnergy() << G4endl; 
+>      G4cerr << "EDep      : " << GetEnergyDeposit() << G4endl; 
+>      G4cerr << "Tof       : " << GetTof() << G4endl; 
+>      G4cerr << "WireEndm  : " << fWireEnd[0] << G4endl; 
+>      G4cerr << "WireEndp  : " << fWireEnd[1] << G4endl; 
+>      G4cerr << "TanStereo : " << fTanStereo << G4endl; 
+>      G4cerr << "RWaist    : " << fRwaist << G4endl; 
+> #endif
+> 
+Index: sources/cdc/src/J4CDCEndcap.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/src/J4CDCEndcap.cc,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4CDCEndcap.cc
+56,57c56,57
+<      G4double rmin = list->GetEndcapIR();
+<      G4double rmax = list->GetEndcapOR();
+---
+>      G4double rmin = list->GetEndcapInnerR();
+>      G4double rmax = list->GetEndcapOuterR();
+59c59
+<      G4double dphi = list->GetCDCDPhi();
+---
+>      G4double dphi = list->GetCDCDeltaPhi();
+97c97
+<                OpenParameterList()->GetEndcapThick();  
+---
+>                OpenParameterList()->GetEndcapHalfThick();  
+Index: sources/cdc/src/J4CDCLayer.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/src/J4CDCLayer.cc,v
+retrieving revision 1.3
+diff -r1.3 J4CDCLayer.cc
+46c46
+<    fOffset             = list->GetLayerSPhi(globallayerno);
+---
+>    fOffset             = list->GetLayerPhiOffset(globallayerno);
+219d218
+< //   J4CDCParameterList *list = (((J4CDCParameterList *)() const)OpenParameterList)();  
+221,222c220,221
+<    G4int superlayerno = GetMother()->GetMyID();
+<    G4int nsuperlayers = list->GetNlayersPerSuperLayer(superlayerno);
+---
+>    G4int superlayerno       = GetMother()->GetMyID();
+>    G4int nsuperlayers       = list->GetNlayersPerSuperLayer(superlayerno);
+Index: sources/cdc/src/J4CDCParameterList.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/src/J4CDCParameterList.cc,v
+retrieving revision 1.5
+diff -r1.5 J4CDCParameterList.cc
+14a15,27
+> J4CDCParameterList*   J4CDCParameterList::fgInstance = 0;
+> 
+> //=====================================================================
+> //* public get function -----------------------------------------------
+> 
+> J4CDCParameterList* J4CDCParameterList::GetInstance()
+> {
+>    if (!fgInstance) {
+>       fgInstance = new J4CDCParameterList("CDC");
+>    }
+>    return fgInstance;
+> }
+>  
+16c29
+< //* constructor -------------------------------------------------------
+---
+> //* protected constructor ---------------------------------------------
+18c31,32
+< J4CDCParameterList::J4CDCParameterList()
+---
+> J4CDCParameterList::J4CDCParameterList(const G4String &name)
+>                    :J4VParameterList(name) 
+31,41d44
+<    delete  fCDCColor;
+<    delete  fEndcapColor;
+<    delete  fSupportTubColor;
+<    delete  fSuperLayerColor;
+<    delete  fLayerColor;
+<    delete  fCellColor;
+<    delete  fDriftRegionColor;
+<    delete  fStereoCellColor;
+<    delete  fStereoDriftRegionColor;
+<    delete  fDummyDriftRegionColor;
+<    delete  fSenseWireColor;
+44a48
+>    fgInstance = 0;
+58c62
+<    //fSenseWireMaterial   = "CO2Isobutane";
+---
+>    //fSenseWireMaterial = "CO2Isobutane";
+74a79
+> 
+76,80c81,82
+<    fCDCInnerRadius      = 44.*cm;
+<    fCDCOuterRadius      = 157.*cm;
+<    fCDCHalfZLength      = 157.*cm;
+<    fCDCDeltaPhi         = 360.*deg;
+<    fCDCPhiOffset        = 360.*deg;
+---
+>    fCDCDeltaPhi     = 360.*deg;
+>    fCDCPhiOffset    = 360.*deg;
+83c85
+<    fEndcapHalfThickness = 1.*cm;
+---
+>    fEndcapHalfThick = 1.*cm;
+86c88
+<    fSupportTubThickness = 1.*cm;
+---
+>    fSupportTubHalfThick = 0.5*cm;
+92c94
+<    fIsAxialOnly       = TRUE; // TRUE: Axial only, FALSE: with Stereo cell
+---
+>    fIsAxialOnly       = FALSE; // TRUE: Axial only, FALSE: with Stereo cell
+139,140d140
+<    // Cell
+<    
+142,146c142,148
+<    fNdriftRegions        = 5;             // per cell
+<    fDriftRegionThickness = 1.*cm;
+<    
+<    // DummyDriftRegion
+<    fDummyDriftRegionThickness = 1.*cm;
+---
+> 
+>    fMeasPlaneHalfThick     = 0.0015*cm; // thickness of hypothetical measurement plane
+>    //fMeasPlaneHalfThick     = 0.5*cm; // thickness of hypothetical measurement plane
+> 
+>    fNdriftRegions          = 5;       // per cell
+>    fDriftRegionThick       = 1.*cm;   // thickness of driftregion per wire
+>    fDummyDriftRegionThick  = 1.*cm;
+149,150c151,152
+<    fSenseWireRadius      = 0.015*mm;
+<    //fSenseWireRadius      = 1.5*mm;  // for printing
+---
+>    fSenseWireR             = 0.015*mm;
+>    //fSenseWireR           = 1.5*mm;  // for printing
+154,155c156,157
+<    fCellThickness = fNdriftRegions * fDriftRegionThickness 
+<                     + 2 * fDummyDriftRegionThickness;
+---
+>    fCellThick = fNdriftRegions * fDriftRegionThick 
+>                     + 2 * fDummyDriftRegionThick;
+158c160
+<       (GetOuterSupportTubIR() - GetInnerSupportTubOR()
+---
+>       (GetOuterSupportTubInnerR() - GetInnerSupportTubOuterR()
+160c162
+<        - fNlayers * fCellThickness
+---
+>        - fNlayers * fCellThick
+184c186
+<    fCDCVisAtt         = TRUE;
+---
+>    fCDCVisAtt         = FALSE;
+188a191
+>    //fCellVisAtt        = TRUE; 
+205,215c208,218
+<    fCDCColor         = new G4Color(0., 0., 1.);
+<    fEndcapColor      = new G4Color(0., 0., 1.);
+<    fSupportTubColor  = new G4Color(0., 0., 1.);
+<    fSuperLayerColor  = new G4Color(0., 0., 1.);
+<    fLayerColor       = new G4Color(0., 1., 0.);
+<    fCellColor        = new G4Color(0., 1., 1.);
+<    fDriftRegionColor = new G4Color(0., 1., 1.);
+<    fSenseWireColor   = new G4Color(1., 0., 1.);
+<    fDummyDriftRegionColor  = new G4Color(0., 1., 1.);
+<    fStereoCellColor        = new G4Color(0., 1., 1.);
+<    fStereoDriftRegionColor = new G4Color(0., 1., 1.);
+---
+>    SetCDCColor              (G4Color(0., 0., 1.));
+>    SetEndcapColor           (G4Color(0., 0., 1.));
+>    SetSupportTubColor       (G4Color(0., 0., 1.));
+>    SetSuperLayerColor       (G4Color(0., 0., 1.));
+>    SetLayerColor            (G4Color(0., 1., 0.));
+>    SetCellColor             (G4Color(0., 1., 1.));
+>    SetDriftRegionColor      (G4Color(0., 1., 1.));
+>    SetSenseWireColor        (G4Color(1., 0., 1.));
+>    SetDummyDriftRegionColor (G4Color(0., 1., 1.));
+>    SetStereoCellColor       (G4Color(0., 1., 1.));
+>    SetStereoDriftRegionColor(G4Color(0., 1., 1.));
+227c230
+<       return (superlayerid - 1) * 3 + 1 + myid;
+---
+>       return  1 + (superlayerid - 1) * 3 + myid;
+Index: sources/cdc/src/J4CDCSenseWire.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/src/J4CDCSenseWire.cc,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4CDCSenseWire.cc
+82c82
+<       G4double rmax = list->GetSenseWireRadius();
+---
+>       G4double rmax = list->GetSenseWireR();
+Index: sources/cdc/src/J4CDCStereoDriftRegion.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/src/J4CDCStereoDriftRegion.cc,v
+retrieving revision 1.3
+diff -r1.3 J4CDCStereoDriftRegion.cc
+81,84c81,84
+<      G4double motherRmin  = GetInnerRadius(GetMother());
+<      G4double halfzlen    = GetZHalfLength(GetMother());
+<      G4double motherdphi  = GetDeltaPhi(GetMother());
+<      G4double twistedAng  = GetTwistedAngle();
+---
+>      G4double motherRmin      = GetInnerRadius(GetMother());
+>      G4double halfzlen        = GetZHalfLength(GetMother());
+>      G4double motherdphi      = GetDeltaPhi(GetMother());
+>      G4double twistedAng      = GetTwistedAngle();
+87,93c87,90
+<      G4int    myid        = GetMyID();
+<      G4double thick       = list->GetDriftRegionThick();
+<      G4double dummythick  = list->GetDummyDriftRegionThick();
+<      G4double endinnerrad = motherRmin 
+<                             + thick * (myid) + dummythick;
+<      G4double endouterrad = motherRmin
+<                             + thick * (myid + 1) + dummythick;
+---
+>      G4int    myid            = GetMyID();
+>      G4double thick           = list->GetDriftRegionThick();
+>      G4double dummythick      = list->GetDummyDriftRegionThick();
+>      G4double centerradius    = motherRmin + thick * (myid + 0.5) + dummythick;
+95,100c92,97
+<      fTanStereo = CalcTanStereo(twistedAng, 
+<                                     0.5 * (endinnerrad + endouterrad),
+<                                     halfzlen);
+<      fRwaist      = CalcWaist(fTanStereo, 
+<                               0.5 * (endinnerrad + endouterrad),
+<                               halfzlen);
+---
+>      G4double measplanehalfthick = list->GetMeasPlaneHalfThick();
+>      G4double endinnerradius   = centerradius - measplanehalfthick;
+>      G4double endouterradius   = centerradius + measplanehalfthick;
+> 
+>      fTanStereo   = CalcTanStereo(twistedAng, centerradius, halfzlen);
+>      fRwaist      = CalcWaist(fTanStereo, centerradius, halfzlen);
+103c100
+<      G4cerr << "J4CDCDriftRegion::Assemble -----------------------------" << G4endl;
+---
+>      G4cerr << "J4CDCStereoDriftRegion::Assemble -----------------------------" << G4endl;
+105,106c102,103
+<      G4cerr << " endinnerrad   = " << endinnerrad << G4endl;
+<      G4cerr << " endouterrad   = " << endinnerrad << G4endl;
+---
+>      G4cerr << " endinnerradius= " << endinnerradius << G4endl;
+>      G4cerr << " endouterradius= " << endinnerradius << G4endl;
+113,114c110,111
+<                                                     endinnerrad,
+<                                                     endouterrad,
+---
+>                                                     endinnerradius,
+>                                                     endouterradius,
+Index: sources/cdc/src/J4CDCStereoDriftRegionHit.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/src/J4CDCStereoDriftRegionHit.cc,v
+retrieving revision 1.2
+diff -r1.2 J4CDCStereoDriftRegionHit.cc
+84,99d83
+<   G4double      gwirephi;  // global phi position of wire
+<   G4double      rwire;     // global r position of wire
+<   G4double      driftlen;  // drift length
+< 
+<   if (fIsRoundDriftRegion) {
+<      // yet implemented...
+< 
+<   } else {
+< 
+<      G4ThreeVector xx;
+<      driftlen = DistanceToWire(fHitPosition, xx);              
+<      rwire    = xx.getRho();              
+<      gwirephi = xx.getPhi();              
+< 
+<   }
+<   
+117c101,102
+<      << setiosflags(G4std::ios::scientific) << G4std::setprecision(14)
+---
+>      << setiosflags(G4std::ios::scientific) 
+>      << G4std::setprecision(14)
+120,122d104
+<      << G4std::setw(18) << gwirephi << " "
+<      << G4std::setw(18) << rwire << " "
+<      << G4std::setw(18) << driftlen << " "
+129,131d110
+<      << G4std::setw(18) << fHitPosition.x() << " "
+<      << G4std::setw(18) << fHitPosition.y() << " "
+<      << G4std::setw(18) << fHitPosition.z() << " "
+146c125,126
+<      << G4std::setiosflags(G4std::ios::floatfield) << setprecision(8)
+---
+>      << G4std::setiosflags(G4std::ios::floatfield) 
+>      << G4std::setprecision(8)
+Index: sources/cdc/src/J4CDCSuperLayer.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/src/J4CDCSuperLayer.cc,v
+retrieving revision 1.3
+diff -r1.3 J4CDCSuperLayer.cc
+44c44
+<    fOffset                  = list->GetSuperLayerSPhi(me);
+---
+>    fOffset                  = list->GetSuperLayerPhiOffset(me);
+46c46
+<    fRot.rotateZ(list->GetSuperLayerSPhi(me));
+---
+>    fRot.rotateZ(list->GetSuperLayerPhiOffset(me));
+71,72c71,72
+<       G4double rmin      = list->GetSuperLayerIR(GetMyID());
+<       G4double rmax      = list->GetSuperLayerOR(GetMyID());
+---
+>       G4double rmin      = list->GetSuperLayerInnerR(GetMyID());
+>       G4double rmax      = list->GetSuperLayerOuterR(GetMyID());
+74c74
+<       G4double motherphi = list->GetCDCDPhi();
+---
+>       G4double motherphi = list->GetCDCDeltaPhi();
+93c93
+<          // isolated superlayer! (innermost or outermost)
+---
+>          // isolated small superlayer! 
+Index: sources/cdc/src/J4VCDCDetectorComponent.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/src/J4VCDCDetectorComponent.cc,v
+retrieving revision 1.2
+diff -r1.2 J4VCDCDetectorComponent.cc
+17d16
+< J4CDCParameterList* J4VCDCDetectorComponent::fParameterList = 0;
+55d53
+<    if(Deregister(fParameterList)) delete fParameterList;
+70,83d67
+< }
+< 
+< //=====================================================================
+< //* OpenParameterList -------------------------------------------------
+< 
+< J4CDCParameterList* J4VCDCDetectorComponent::OpenParameterList()
+< {
+<    if(!fParameterList) {
+<       fParameterList = new J4CDCParameterList();
+<       Register(fParameterList);
+<       G4cerr << "*** Opend J4CDCParameterList ***" << G4endl;
+<    }
+< 
+<    return fParameterList;
+Index: sources/cdc/src/J4VCDCDriftRegionHit.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/cdc/src/J4VCDCDriftRegionHit.cc,v
+retrieving revision 1.1
+diff -r1.1 J4VCDCDriftRegionHit.cc
+44c44
+<    : J4VHit(detector, cloneID, trackID, mothertrackID, particle, 
+---
+>    : J4VTrackerHit(detector, cloneID, trackID, mothertrackID, particle, 
+48d47
+<    fHitPosition = GetHitPosition(); 
+59a59
+> #if 0
+109c109
+< 
+---
+> #endif
+cvs server: Diffing sources/ir
+cvs server: Diffing sources/ir/include
+Index: sources/ir/include/J4IR.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/ir/include/J4IR.hh,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4IR.hh
+1c1
+< // $Id$
+---
+> // $Id$
+9,10c9,10
+< //* 	Derivation class for Beampipe.
+< //*     Mother class : J4VAcceleratorComponent
+---
+> //* 	Derivation class for IR region
+> //*     Mother class : J4VIRAcceleratorComponent
+13,14c13
+< //*	2000/12/08  K.Hoshina	Original version.
+< //*	2002/05/15  K.Hoshina	Argument changed in InstallIn().
+---
+> //*	2002/09/13  T.Aso	Original version.
+18a18,34
+> // Sub-Component
+> #include "J4IRBPPipe.hh"
+> #include "J4IRBPCone.hh"
+> #include "J4IRBPAlDrum.hh"
+> #include "J4IRBPAlTube.hh"
+> 
+> #include "J4IRQC1.hh"
+> #include "J4IRSD0.hh"
+> #include "J4IRQC2.hh"
+> #include "J4IRCH2Mask.hh"
+> 
+> #include "J4IRWSiCAL1.hh"
+> #include "J4IRWSiCAL2.hh"
+> #include "J4IRWMask1.hh"
+> #include "J4IRWMask2.hh"
+> //#include "J4IRPairMonitor.hh"
+> 
+35,37d50
+<   virtual void  InstallIn(J4VComponent         *mother,
+<                           G4RotationMatrix     *prot  = 0,
+<                           const G4ThreeVector  &tlate = 0 );
+46,47c59,85
+<   static G4String	fFirstName;
+<   
+---
+>   static G4String	fName;
+> 
+>   J4IRBPPipe* fBeampipe;
+>   J4IRBPCone* fBeamConeR;
+>   J4IRBPCone* fBeamConeL;
+>   J4IRBPAlDrum* fAlDrumR; 
+>   J4IRBPAlDrum* fAlDrumL; 
+>   J4IRBPAlTube* fAlBeamPipeR;
+>   J4IRBPAlTube* fAlBeamPipeL;
+>   J4IRQC1* fQC1R;
+>   J4IRQC1* fQC1L;
+>   J4IRSD0* fSD0R;
+>   J4IRSD0* fSD0L;
+>   J4IRQC2* fQC2R;
+>   J4IRQC2* fQC2L;
+>   J4IRCH2Mask* fCH2MR;
+>   J4IRCH2Mask* fCH2ML;
+>   J4IRWMask1* fWM1R;
+>   J4IRWMask1* fWM1L;
+>   J4IRWMask2* fWM2R;
+>   J4IRWMask2* fWM2L;
+>   J4IRWSiCAL1* fWSC1R;
+>   J4IRWSiCAL1* fWSC1L;
+>   J4IRWSiCAL2* fWSC2R;
+>   J4IRWSiCAL2* fWSC2L;
+>   //  J4IRPairMonitor* fPMNR;
+>   //  J4IRPairMonitor* fPMNL;
+Index: sources/ir/include/J4IRMaterialStore.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/ir/include/J4IRMaterialStore.hh,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4IRMaterialStore.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/ir/include/J4IRParameterList.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/ir/include/J4IRParameterList.hh,v
+retrieving revision 1.1
+diff -r1.1 J4IRParameterList.hh
+1c1,2
+< // $Id$
+---
+> // J4IRParameterList.hh
+> //
+5c6
+< //* ---------------------------
+---
+> //* ---------------------
+7c8
+< //* ---------------------------
+---
+> //* ---------------------
+9,10c10,12
+< //* 	ParameterList class for IR
+< //*     
+---
+> //*     Parameter class for IR.
+> //*     Define Geomtrical parameters for IR here.
+> //*
+12c14
+< //*	2003/02/28  R.Kuboshima  Original version.
+---
+> //*     2002/11/19  T.Aso   Original version.
+15d16
+< #include "globals.hh"
+17a19
+> #include "G4ThreeVector.hh"
+19a22
+> 
+24,25c27,28
+<  
+< class J4IRParameterList : public J4VParameterList 
+---
+> 
+> class J4IRParameterList : public J4VParameterList
+27,28d29
+<  public:
+<    J4IRParameterList();
+30c31
+<    virtual ~J4IRParameterList() {}
+---
+> protected :
+32,73c33
+<    static J4IRParameterList *GetInstance() { return fInstance;    }
+<    
+<    // Getters
+<    inline G4String GetMaterial()         const { return fMaterial;      }
+<    inline G4bool   GetVisAtt  ()         const { return fVisAtt;        }
+<    inline G4Color *GetColor   ()         const { return fColor;         }
+<    inline G4double GetZMax    ()         const { return fZMax;          }
+<    inline G4double GetZMid    ()         const { return fZMid;          }
+<    inline G4double GetThetaMax()         const { return fThetaMax;      }
+<    inline G4double GetIRBoxHalfX()       const { return fIRBoxHalfX;    }
+<    inline G4double GetIRBoxHalfY()       const { return fIRBoxHalfY;    }
+<    inline G4double GetSupportTubInnerR() const { return fSuppTubInnerR ;}
+<    inline G4double GetBeampipeOuterR  () const { return fBeampipeOuterR;}
+< 
+<    // Setters
+<    inline void SetMaterial        (G4String s) { fMaterial       = s; }
+<    inline void SetVisAtt          (G4bool   b) { fVisAtt         = b; }
+<    inline void SetColor           (G4Color *c) { fColor          = c; }
+<    inline void SetZMax            (G4double x) { fZMax           = x; }
+<    inline void SetZMid            (G4double x) { fZMid           = x; }
+<    inline void SetThetaMax        (G4double x) { fThetaMax       = x; }
+<    inline void SetIRBoxHalfX      (G4double x) { fIRBoxHalfX     = x; }
+<    inline void SetIRBoxHalfY      (G4double x) { fIRBoxHalfY     = x; }
+<    inline void SetSupportTubInnerR(G4double x) { fSuppTubInnerR  = x; }
+<    inline void SetBeampipeOuterR  (G4double x) { fBeampipeOuterR = x; }
+<    
+<    virtual void    PrintParameterList(){};
+<     
+<  private:
+<    static J4IRParameterList *fInstance;
+< 
+<    G4String  fMaterial; 
+<    G4bool    fVisAtt;
+<    G4Color  *fColor;
+< 
+<    G4double  fZMax;
+<    G4double  fZMid;
+<    G4double  fThetaMax;
+<    G4double  fIRBoxHalfX;
+<    G4double  fIRBoxHalfY;
+<    G4double  fSuppTubInnerR;
+<    G4double  fBeampipeOuterR;
+---
+>   J4IRParameterList(const G4String &name);
+74a35,155
+> public:
+>   virtual ~J4IRParameterList();
+>   virtual void PrintParameterList(){};
+> 
+> public:
+>   //*
+>   //* Set/GetFunctions
+>   //*
+>   // Materials
+>   inline void SetIRMaterial(G4String mat) {fIRMaterial=mat;}
+>   inline G4String GetIRMaterial() const { return fIRMaterial;}
+> 
+>   // Margin for avoiding volume intersection.
+>   inline void SetDxyzMarginSize(G4ThreeVector size){fDxyzMargin=size;}
+>   inline void SetDrMarginSize(G4double size){fDrMargin=size;}
+>   inline G4ThreeVector GetDxyzMarginSize()const { return fDxyzMargin;}
+>   inline G4double SetDrMarginSize()const{return fDrMargin;}
+> 
+>   // Color
+>   inline G4Color GetIRColor() const { return *fIRColor; }
+>   // VisAtt  
+>   inline G4bool GetIRVisAtt() const { return fIRVisAtt; }
+> 
+>   //   Crossing Angle
+>   inline G4double GetCrossAngle() const { return fCrossAngle;} 
+>   inline void SetCrossAngle(G4double angle) { fCrossAngle=angle;} 
+>   //   L* position of QC1
+>   inline G4double GetLStar() const { return fLStar;} 
+>   inline void SetLStar(G4double z) { fLStar=z;} 
+>   //   Be Beam pipe 
+>   inline G4double GetBeamPipeRadius()const { return fBPRadiusSmall;}
+>   inline void    SetBeamPipeRadius(G4double r){fBPRadiusSmall = r;}
+>   inline G4double GetBeamPipeThick()const { return fBPBeThick;}
+>   inline void    SetBeamPipeThick(G4double t){fBPBeThick = t;}
+>   //   Max Z Length of IR region
+>   inline G4double GetIRZMax() const { return fIRZMax;}
+>   inline void SetIRZMax(G4double zmax) {fIRZMax=zmax;}
+>   //   Z Length of Middle part of IR region
+>   inline G4double GetIRZMid()const{return fIRZMid;}
+>   inline void SetIRZMid(G4double zmid ){fIRZMid=zmid;}
+>   //   Inner radius os Support tube
+>   inline G4double GetIRSupportInnerRadius()const{return fIRSupportTubeInnerR;}
+>   inline void SetIRSupportInnerRadius(G4double r){fIRSupportTubeInnerR=r;}
+>   //   Minimum inner radius of IR
+>   inline G4double GetIRMinimumRadius()const{return fIRMinimumRadius;}
+>   inline void SetIRMinimumRadius(G4double r){fIRMinimumRadius=r;}
+>   //   Maximum theta angle
+>   inline G4double GetIRThetaMax()const{return fIRThetaMax;}
+>   inline void SetIRThetaMax(G4double thetamax){fIRThetaMax=thetamax;}
+>   //   IR Box Size
+>   inline G4ThreeVector GetDxyzIRBox()const{ return fDxyzIRBox; }
+>   inline void SetDxyzIRBox(G4ThreeVector size){fDxyzIRBox = size;}
+> 
+>   // Caluculated Values
+>   inline G4double GetIRBeamPipeZLength()const{ 
+>     return 2.*(tan(M_PI/2.-GetIRThetaMax())*GetIRMinimumRadius());}
+>   inline G4double GetIRDrumFaceZPosition()const{
+>     return tan(M_PI/2.-GetIRThetaMax())*GetIRSupportInnerRadius();}
+>   inline G4double GetIRConeZLength()const{
+>     return GetIRDrumFaceZPosition()-GetIRBeamPipeZLength()/2.;}
+>   inline G4double GetIRDrumZLength()const{
+>     return GetIRZMid()-GetIRDrumFaceZPosition();}
+>   inline G4double GetIRConeZPosition()const{
+>     return GetIRBeamPipeZLength()/2+GetIRConeZLength()/2;}
+>   inline G4double GetIRDrumZPosition() const{
+>     return GetIRConeZPosition()+GetIRConeZLength()/2.+GetIRDrumZLength()/2.;}
+>   inline G4double GetIRBoxZPosition()const{
+>         return GetIRZMid()+GetDxyzIRBox().z();}
+>     //    return GetIRDrumZPosition()+GetIRDrumZLength()/2.+GetDxyzIRBox().z()/2.;}
+> 
+> 
+>   static J4IRParameterList * GetInstance();
+> 
+> private:
+>   virtual void SetMaterials();
+>   virtual void SetVisAttributes();
+>   virtual void SetColors();
+>   virtual void SetParameters();
+>   virtual void SetDefaults();
+>   virtual void BuildParameters();
+> 
+> private:
+> 
+>   static J4IRParameterList *fgInstance;
+> 
+>   // Materials
+>   G4String fIRMaterial;
+> 
+>   // Visual Attributes
+>   G4bool fIRVisAtt;
+> 
+>   // Visual Color
+>   G4Color* fIRColor;
+>   //
+>   // Geomrtries             (example)
+>   //      1) Size      --   fDxyz , fDr
+>   //      2) Position  --   fxyz  , fr
+>   // 
+> 
+>   G4ThreeVector fDxyzMargin;
+>   G4double      fDrMargin;
+> 
+>   //   Crossing Angle
+>   G4double fCrossAngle; 
+>   //   L*  ( Position of QC1 )
+>   G4double fLStar;
+>   //   Be Beam Pipe
+>   G4double fBPRadiusSmall;  
+>   G4double fBPBeThick;
+>   //   Max Z Length of IR region
+>   G4double fIRZMax;
+>   //   Z Length of Middle part of IR region
+>   G4double fIRZMid;
+>   //   Inner radius of Support tube
+>   G4double fIRSupportTubeInnerR;
+>   //   Minimum inner radius ( equal to outer radius of beam pipe at IP.)
+>   G4double fIRMinimumRadius;
+>   //   Maximum theta angle
+>   G4double fIRThetaMax;
+>   //   IR Box Size
+>   G4ThreeVector fDxyzIRBox;
+77a159
+> 
+Index: sources/ir/include/J4VIRAcceleratorComponent.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/ir/include/J4VIRAcceleratorComponent.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VIRAcceleratorComponent.hh
+1c1
+< // $Id$
+---
+> // $Id$
+16a17
+> #include "J4IRParameterList.hh"
+28,33c29,37
+<   J4VIRAcceleratorComponent( const G4String          &name, 
+<   			     J4VAcceleratorComponent *parent    = 0,
+<                              G4int                    nclones   = 1,
+<                              G4int                    nbrothers = 1, 
+<                              G4int                    me        = 0,
+<                              G4int                    copyno    = -1 );
+---
+>   // (nclones)      number of replication in one component.
+>   // (nbrothers)    number of same kind of objects with this one.
+>   J4VIRAcceleratorComponent( const G4String       &name, 
+>   			  J4VComponent *parent    = 0,
+> 			     G4int                 nclones   = 1,  
+>                           G4int                 nbrothers = 1, 
+>                           G4int                 me        = 0,
+>                           G4int                 copyno    = -1 ,
+> 			     G4bool  reflection=FALSE);
+35a40,47
+>   virtual void  InstallIn(J4VComponent *mother,
+>                           G4RotationMatrix     *prot  = 0,
+>                           const G4ThreeVector  &tlate = 0 );
+> 
+>   virtual G4RotationMatrix* GetRotation();
+>   virtual G4ThreeVector&  GetTranslation();
+> 
+> #if 0 		          
+39c51,52
+<       
+---
+> #endif
+>   
+41a55
+>   J4IRParameterList*     OpenParameterList() { return J4IRParameterList::GetInstance(); }
+44a59
+>   static J4IRParameterList*  fParameterList;
+46c61,64
+<        
+---
+>   G4bool fReflection   ;
+> 
+> private:
+>   void Assemble()=0;
+55d72
+< 
+57d73
+<                                  :J4VAcceleratorComponent(right)  
+58a75,78
+> 
+>   fMaterialStore = right.fMaterialStore;
+>   fSubGroup      = right.fSubGroup;
+>           
+63a84,89
+> 
+>   fMaterialStore = right.fMaterialStore;
+>   fSubGroup      = right.fSubGroup;
+>   
+>   return *this;
+>             
+cvs server: Diffing sources/ir/src
+Index: sources/ir/src/J4IR.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/ir/src/J4IR.cc,v
+retrieving revision 1.2
+diff -r1.2 J4IR.cc
+1c1
+< // $Id$
+---
+> // $Id$
+10c10
+< //*	2000/12/08  K.Hoshina	Original version.
+---
+> //*	2002/09/13  T.Aso	Original version.
+14c14
+< #include "J4IRParameterList.hh"
+---
+> 
+20a21,25
+> #include "J4IRQC1MField.hh"
+> #include "J4IRQC2MField.hh"
+> #include "J4IRSD0MField.hh"
+> 
+> #include "J4IRWMaskParameterList.hh"
+27c32
+< G4String J4IR::fFirstName("IR");
+---
+> G4String J4IR::fName("IR");
+42c47
+<             J4VIRAcceleratorComponent( fFirstName, parent, nclones,
+---
+>             J4VIRAcceleratorComponent( fName, parent, nclones,
+51a57,82
+>   if(Deregister(fBeampipe)) delete fBeampipe;
+>   if(Deregister(fBeamConeR)) delete fBeamConeR;
+>   if(Deregister(fBeamConeL)) delete fBeamConeL;
+>   if(Deregister(fAlDrumR)) delete fAlDrumR;  
+>   if(Deregister(fAlDrumL)) delete fAlDrumL;  
+>   if(Deregister(fAlBeamPipeR)) delete fAlBeamPipeR;
+>   if(Deregister(fAlBeamPipeL)) delete fAlBeamPipeL;
+>   if(Deregister(fQC1R)) delete fQC1R;
+>   if(Deregister(fQC1L)) delete fQC1L;
+>   if(Deregister(fSD0R)) delete fSD0R;
+>   if(Deregister(fSD0L)) delete fSD0L;
+>   if(Deregister(fQC2R)) delete fQC2R;
+>   if(Deregister(fQC2L)) delete fQC2L;
+>   if(Deregister(fCH2MR)) delete fCH2MR;
+>   if(Deregister(fCH2ML)) delete fCH2ML;
+>   if(Deregister(fWM1R)) delete fWM1R;
+>   if(Deregister(fWM1L)) delete fWM1L;
+>   if(Deregister(fWM2R)) delete fWM2R;
+>   if(Deregister(fWM2L)) delete fWM2L;
+>   if(Deregister(fWSC1R)) delete fWSC1R;
+>   if(Deregister(fWSC1L)) delete fWSC1L;
+>   if(Deregister(fWSC2R)) delete fWSC2R;
+>   if(Deregister(fWSC2L)) delete fWSC2L;
+>   //if(Deregister(fPMNR)) delete fPMNR;
+>   //if(Deregister(fPMNL)) delete fPMNL;
+> 
+60,61c91,94
+<     
+<     J4IRParameterList *paramlist = J4IRParameterList::GetInstance();   	
+---
+> 
+>     J4IRParameterList* list = OpenParameterList();
+>     J4IRWMaskParameterList* wlist = new J4IRWMaskParameterList(list);
+> 
+63,77c96,107
+<     G4double innersupporttubrad = paramlist->GetSupportTubInnerR();
+<     G4double outerbeampiperad   = paramlist->GetBeampipeOuterR();
+<     G4double thetamax           = paramlist->GetThetaMax();
+<     G4double beampipehalfzlen   = tan(M_PI/2 - thetamax) * outerbeampiperad;
+<     G4double cylinderfrontz     = tan(M_PI/2 - thetamax) * innersupporttubrad;
+<     G4double conehalfz          = 0.5*(cylinderfrontz -  beampipehalfzlen);	
+<     G4double cylinderhalfz      = 0.5*(paramlist->GetZMid() - cylinderfrontz);
+<     G4double boxhalfx           = paramlist->GetIRBoxHalfX();
+<     G4double boxhalfy           = paramlist->GetIRBoxHalfY();
+<     G4double boxhalfz           = 0.5*(paramlist->GetZMax() - paramlist->GetZMid());
+<     G4double coneglobalz        = beampipehalfzlen + conehalfz;
+<     G4double cylinderglobalz    = coneglobalz + conehalfz + cylinderhalfz;
+<     G4double boxglobalz         = cylinderglobalz + cylinderhalfz + boxhalfz;
+<     
+<   	
+---
+>     G4double innersupporttubrad = list->GetIRSupportInnerRadius();
+>     G4double outerbeampiperad   = list->GetIRMinimumRadius();
+>     G4double beampipehalfzlen   = list->GetIRBeamPipeZLength()/2.;
+>     G4double conehalfz          = list->GetIRConeZLength()/2.;
+>     G4double cylinderhalfz      = list->GetIRDrumZLength()/2.;
+>     G4double boxhalfx           = list->GetDxyzIRBox().x();
+>     G4double boxhalfy           = list->GetDxyzIRBox().y();
+>     G4double boxhalfz           = list->GetDxyzIRBox().z();
+>     G4double coneglobalz        = list->GetIRConeZPosition();
+>     G4double cylinderglobalz    = list->GetIRDrumZPosition();
+>     G4double boxglobalz         = list->GetIRBoxZPosition();
+> 
+92,98c122,124
+<     G4String ircylindername1( GetName() );
+<     ircylindername1 += ".IRcylinder1";
+<     G4VSolid *ircylinder1 = new G4Tubs( ircylindername1, 0, innersupporttubrad,
+<                                        cylinderhalfz, 0, 2*M_PI);
+<     G4String ircylindername2( GetName() );
+<     ircylindername2 += ".IRcylinder2";
+<     G4VSolid *ircylinder2 = new G4Tubs( ircylindername2, 0, innersupporttubrad,
+---
+>     G4String ircylindername( GetName() );
+>     ircylindername += ".IRcylinder";
+>     G4VSolid *ircylinder = new G4Tubs( ircylindername, 0, innersupporttubrad,
+100,106c126,128
+<     G4String irboxname1( GetName() );
+<     irboxname1 += ".IRbox1";
+<     G4VSolid *irbox1 = new G4Box( irboxname1, boxhalfx, boxhalfy, boxhalfz);
+< 
+<     G4String irboxname2( GetName() );
+<     irboxname2 += ".IRbox2";
+<     G4VSolid *irbox2 = new G4Box( irboxname2, boxhalfx, boxhalfy, boxhalfz);
+---
+>     G4String irboxname( GetName() );
+>     irboxname += ".IRbox";
+>     G4VSolid *irbox = new G4Box( irboxname, boxhalfx, boxhalfy, boxhalfz);
+121c143
+<     G4VSolid *tmpsolid3 = new J4UnionSolid(tmpsolid3name, tmpsolid2, ircylinder1,
+---
+>     G4VSolid *tmpsolid3 = new J4UnionSolid(tmpsolid3name, tmpsolid2, ircylinder,
+126c148
+<     G4VSolid *tmpsolid4 = new J4UnionSolid(tmpsolid4name, tmpsolid3, ircylinder2,
+---
+>     G4VSolid *tmpsolid4 = new J4UnionSolid(tmpsolid4name, tmpsolid3, ircylinder,
+131c153
+<     G4VSolid *tmpsolid5 = new J4UnionSolid(tmpsolid5name, tmpsolid4, irbox1,
+---
+>     G4VSolid *tmpsolid5 = new J4UnionSolid(tmpsolid5name, tmpsolid4, irbox,
+135c157
+<     G4VSolid *lastsolid = new J4UnionSolid(GetName(), tmpsolid5, irbox2,
+---
+>     G4VSolid *lastsolid = new J4UnionSolid(GetName(), tmpsolid5, irbox,
+136a159
+> 
+141,145c164,165
+<     // MakeLogicalVolume ------------- 
+<     MakeLVWith(OpenMaterialStore()->Order(paramlist->GetMaterial())); 
+< 
+<     // SetVisAttribute ---------------
+<     PaintLV(paramlist->GetVisAtt(), *(paramlist->GetColor()));
+---
+>     // MakeLogicalVolume -------------
+>     MakeLVWith(OpenMaterialStore()->Order(list->GetIRMaterial()));
+147c167,168
+<  
+---
+>     // SetVisAttribute ---------------
+>     PaintLV(list->GetIRVisAtt(),list->GetIRColor());
+150,158c171,318
+<     
+<     
+<     
+<     
+<     
+<     
+<     
+<     
+<   		  
+---
+> #if 1
+>     fBeampipe = new J4IRBPPipe(this,1,1,0,-1);
+>     Register(fBeampipe);
+>     fBeampipe->InstallIn(this);
+>     SetDaughter(fBeampipe);
+> 
+>     fBeamConeR = new J4IRBPCone(this,1,2,0,-1,FALSE);
+>     fBeamConeL = new J4IRBPCone(this,1,2,1,-1,TRUE);
+>     Register(fBeamConeR);
+>     Register(fBeamConeL);
+>     fBeamConeR->InstallIn(this);
+>     fBeamConeL->InstallIn(this);
+>     SetDaughter(fBeamConeR);
+>     SetDaughter(fBeamConeL);
+> 
+>     fAlDrumR =  new J4IRBPAlDrum(this,1,2,0,-1,FALSE);
+>     fAlDrumL =  new J4IRBPAlDrum(this,1,2,1,-1,TRUE);
+>     Register(fAlDrumR);
+>     Register(fAlDrumL);
+>     fAlDrumR->InstallIn(this);
+>     fAlDrumL->InstallIn(this);
+>     SetDaughter(fAlDrumR);
+>     SetDaughter(fAlDrumL);
+> 
+>     fAlBeamPipeR = new J4IRBPAlTube(this,1,2,0,-1,FALSE);
+>     fAlBeamPipeL = new J4IRBPAlTube(this,1,2,1,-1,TRUE);
+>     Register(fAlBeamPipeR);
+>     Register(fAlBeamPipeL);
+>     fAlBeamPipeR->InstallIn(this);
+>     fAlBeamPipeL->InstallIn(this);
+>     SetDaughter(fAlBeamPipeR);
+>     SetDaughter(fAlBeamPipeL);
+> #endif
+> 
+> #if 1
+>     J4IRQC1MField* qc1fielde = new J4IRQC1MField(250.*GeV,-0.1295329270206);
+>     J4IRQC1MField* qc1fieldp = new J4IRQC1MField(250.*GeV,+0.1295329270206);
+> 
+>     fQC1R = new J4IRQC1(this,1,2,0,-1);
+>     fQC1R->SetMField(qc1fielde);
+>     Register(fQC1R);
+>     fQC1R->InstallIn(this);
+>     SetDaughter(fQC1R);
+> 
+>     fQC1L = new J4IRQC1(this,1,2,1,-1,true);
+>     fQC1L->SetMField(qc1fieldp);
+>     Register(fQC1L);
+>     fQC1L->InstallIn(this);
+>     SetDaughter(fQC1L);
+> #endif
+> 
+> #if 0
+> 
+>     J4IRSD0MField* sd0fielde = new J4IRSD0MField(250.*GeV,-2.249174);
+>     J4IRSD0MField* sd0fieldp = new J4IRSD0MField(250.*GeV,+2.249174);
+> 
+>     fSD0R = new J4IRSD0(this,1,2,0,-1);
+>     fSD0R->SetMField(sd0fielde);
+>     fSD0L = new J4IRSD0(this,1,2,1,-1,true);
+>     fSD0L->SetMField(sd0fieldp);
+>     Register(fSD0R);
+>     Register(fSD0L);
+>     fSD0R->InstallIn(this);
+>     fSD0L->InstallIn(this);
+>     SetDaughter(fSD0R);
+>     SetDaughter(fSD0L);
+> 
+>     J4IRQC2MField* qc2fielde = new J4IRQC2MField(250.*GeV,+0.0537249);
+>     J4IRQC2MField* qc2fieldp = new J4IRQC2MField(250.*GeV,-0.0537249);
+> 
+>     fQC2R = new J4IRQC2(this,1,2,0,-1);
+>     fQC2R->SetMField(qc2fielde);
+>     fQC2L = new J4IRQC2(this,1,2,1,-1,true);
+>     fQC2L->SetMField(qc2fieldp);
+>     Register(fQC2R);
+>     Register(fQC2L);
+>     fQC2R->InstallIn(this);
+>     fQC2L->InstallIn(this);
+>     SetDaughter(fQC2R);
+>     SetDaughter(fQC2L);
+> #endif
+> 
+> #if 1
+>     fCH2MR = new J4IRCH2Mask(this,1,2,0,-1);
+>     fCH2ML = new J4IRCH2Mask(this,1,2,1,-1,true);
+>     Register(fCH2MR);
+>     Register(fCH2ML);
+>     fCH2MR->InstallIn(this);
+>     fCH2ML->InstallIn(this);
+>     SetDaughter(fCH2MR);
+>     SetDaughter(fCH2ML);
+> #endif
+> 
+> 
+> #if 1
+>     if( wlist->IsWMask1Valid() ){
+>       fWM1R = new J4IRWMask1(this,1,2,0,-1);
+>       fWM1L = new J4IRWMask1(this,1,2,1,-1,true);
+>       Register(fWM1R);
+>       Register(fWM1L);
+>       fWM1R->InstallIn(this);
+>       fWM1L->InstallIn(this);
+>       SetDaughter(fWM1R);
+>       SetDaughter(fWM1L);
+>     }
+> 
+>     fWM2R = new J4IRWMask2(this,1,2,0,-1);
+>     fWM2L = new J4IRWMask2(this,1,2,1,-1,true);
+>     Register(fWM2R);
+>     Register(fWM2L);
+>     fWM2R->InstallIn(this);
+>     fWM2L->InstallIn(this);
+>     SetDaughter(fWM2R);
+>     SetDaughter(fWM2L);
+> #endif
+> 
+> #if 0
+>     fPMNR = new J4IRPairMonitor(this,1,2,0,-1);
+>     fPMNL = new J4IRPairMonitor(this,1,2,1,-1,true);
+>     Register(fPMNR);
+>     Register(fPMNL);
+>     fPMNR->InstallIn(this);
+>     fPMNL->InstallIn(this);
+>     SetDaughter(fPMNR);
+>     SetDaughter(fPMNL);
+> #endif
+> 
+> #if 1
+>     fWSC1R = new J4IRWSiCAL1(this,1,2,0,-1);
+>     fWSC1L = new J4IRWSiCAL1(this,1,2,1,-1,true);
+>     Register(fWSC1R);
+>     Register(fWSC1L);
+>     fWSC1R->InstallIn(this);
+>     fWSC1L->InstallIn(this);
+>     SetDaughter(fWSC1R);
+>     SetDaughter(fWSC1L);
+> 
+>     if (wlist->IsWSiCAL2Valid()){
+>       fWSC2R = new J4IRWSiCAL2(this,1,2,0,-1);
+>       fWSC2L = new J4IRWSiCAL2(this,1,2,1,-1,true);
+>       Register(fWSC2R);
+>       Register(fWSC2L);
+>       fWSC2R->InstallIn(this);
+>       fWSC2L->InstallIn(this);
+>       SetDaughter(fWSC2R);
+>       SetDaughter(fWSC2L);
+>     }
+> #endif
+172,175c332,335
+< 
+< void J4IR::InstallIn(J4VComponent         *mother,
+<                      G4RotationMatrix     *prot, 
+<                      const G4ThreeVector  &tlate )
+---
+> /*
+> void J4IR::InstallIn(J4VComponent *mother,
+>                              G4RotationMatrix     *prot, 
+>                              const G4ThreeVector  &tlate )
+185,186c345
+< 
+< 
+---
+> */
+Index: sources/ir/src/J4IRMaterialStore.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/ir/src/J4IRMaterialStore.cc,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4IRMaterialStore.cc
+1c1
+< // $Id$
+---
+> // $Id$
+30,37c30,36
+<   if(name == "DummyCal") { 		// CO2Isobutane(90:10)  
+<   
+<     //--------------
+<     // elements...  
+<     //--------------
+<     //  G4double A, Z;
+<     //  G4String name, symbol;
+<   
+---
+>   G4double A, Z;
+>   G4String mname;
+>   G4double density;
+>   G4int nel,natoms,ncomponents;
+>   const G4double expTemp=STP_Temperature+20.*kelvin;
+> 
+>   if(name == "Cupper") { 		// Cupper
+41,45c40,43
+<     //  G4double density, massfraction;
+<     //  G4int natoms, nel, ncomponents;
+<     //  temperature of experimental hall is controlled at 20 degree.
+<     //  const G4double expTemp= STP_Temperature+20.*kelvin; 
+<     
+---
+>       A = 63.546 *g/mole;
+>       density = 8.96 *g/cm3;
+>       G4Material* Cu = new G4Material(mname="Cupper",Z=29.,A,density);
+>       material = Cu;
+46a45,61
+>   }else if ( name == "Polyethylene") {
+> 
+>     G4String ename,symbol;
+> 
+>     A= 1.00794 *g/mole;
+>     G4Element* elH= new G4Element(ename="Hydrogen", symbol="H", Z=1., A);
+> 
+>     A= 12.011 *g/mole;
+>     G4Element* elC= new G4Element(ename="Carbon", symbol="C", Z=6., A);
+> 
+>     density = 0.92*g/cm3;
+>     G4Material* Polyethylene = new G4Material(mname="Polyethylene",density,
+> 					      nel=2,kStateSolid,expTemp);
+>     Polyethylene->AddElement(elC,natoms=2);
+>     Polyethylene->AddElement(elH,natoms=4);
+> 
+>     material = Polyethylene;
+Index: sources/ir/src/J4IRParameterList.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/ir/src/J4IRParameterList.cc,v
+retrieving revision 1.1
+diff -r1.1 J4IRParameterList.cc
+1c1
+< // $Id$
+---
+> // J4IRParameterList.cc
+6a7
+> //*     Class for describing his/her detector compornents.
+9c10
+< //*	2003/02/28  K.Hoshina	Original version.
+---
+> //*     2002/11/19  T.Aso   Original version.
+13,36c14,57
+< #include "J4ParameterList.hh"
+<  
+< J4IRParameterList * J4IRParameterList::fInstance = 0;
+< 
+< //=====================================================================
+< //* constructor -------------------------------------------------------
+< 
+< J4IRParameterList::J4IRParameterList()
+< {
+<    fInstance = this;
+< 
+<    J4ParameterList *paramlist = J4ParameterList::GetInstance();    
+< 
+<    fMaterial       = "Air";
+<    fVisAtt         = FALSE;
+<    fColor          = new G4Color(0.5, 0.5, 0.5);
+<    fZMax           = 10000*cm;
+<    fZMid           = 40*cm;
+<    fThetaMax       = 200*mrad;
+<    fIRBoxHalfX     = paramlist->GetEXPHallHalfX() - 1.0*cm;
+<    fIRBoxHalfY     = paramlist->GetEXPHallHalfY() - 1.0*cm;
+<    fSuppTubInnerR  = 40*cm;
+<    fBeampipeOuterR = 2.0*cm;
+<  
+---
+> 
+> J4IRParameterList* J4IRParameterList::fgInstance = 0;
+> 
+> //=====================================================================
+> //* public getter -----------------------------------------------------
+> 
+> J4IRParameterList* J4IRParameterList::GetInstance()
+> {
+>    if (!fgInstance) {
+>       fgInstance = new J4IRParameterList("IR");
+>    }
+>    return fgInstance;
+> }
+> 
+> //=====================================================================
+> //* protected constructor ---------------------------------------------
+> 
+> J4IRParameterList::J4IRParameterList(const G4String& name)
+>                   :J4VParameterList(name)
+> {
+>   fgInstance = this;
+>   
+>   SetParameters();
+>   SetMaterials();
+>   SetVisAttributes();
+>   SetColors();
+> }
+> 
+> //=====================================================================
+> //* destructor -------------------------------------------------------
+> 
+> J4IRParameterList::~J4IRParameterList()
+> {
+> 
+>   delete  fIRColor;
+>   fgInstance = 0;
+> 
+> }
+> 
+> //=====================================================================
+> //* SetMaterials ------------------------------------------------------
+> void J4IRParameterList::SetMaterials()
+> {
+>   SetIRMaterial("Air");
+38a60,115
+> //=====================================================================
+> //* SetParameters ------------------------------------------------------
+> void J4IRParameterList::SetParameters()
+> {
+>   SetDefaults();
+>   BuildParameters();
+> }
+> //=====================================================================
+> //* SetParameters ------------------------------------------------------
+> void J4IRParameterList::SetDefaults()
+> {
+>   // Margin for avoiding volume intersection.
+>   SetDxyzMarginSize(G4ThreeVector(0.1*mm,0.1*mm,0.1*mm));
+>   SetDrMarginSize(0.5*mm);
+> 
+>   // Crossing Angle
+>   //SetCrossAngle(-3.*milliradian);
+>   SetCrossAngle(-4.*milliradian);
+>   //SetCrossAngle(-5.*milliradian);
+>   //SetCrossAngle(-10.*milliradian);
+>   // L*
+>   SetLStar(4300*mm);
+>   // Z Maximum length
+>   SetIRZMax(800*cm); // Near end of QC1
+>   // Z Mid length
+>   SetIRZMid(500*cm);
+>   // Support Tube
+>   SetIRSupportInnerRadius(40*cm);
+>   // Be BeamPipe
+>   SetBeamPipeRadius(1.8*cm);
+>   SetBeamPipeThick(0.05*cm);
+>   // Minimum radius of IR = Outer of beam-pipe at IR
+>   SetIRMinimumRadius(GetBeamPipeRadius()+GetBeamPipeThick()+0.1*cm);
+>   // IR Theta max
+>   SetIRThetaMax(200*mrad);
+>   // Acc tunnel box (half)
+>   SetDxyzIRBox(G4ThreeVector(3.99*m,3.99*m,(GetIRZMax()-GetIRZMid())/2.));
+> }
+> //=====================================================================
+> //* SetParameters ------------------------------------------------------
+> void J4IRParameterList::BuildParameters()
+> {
+> }
+> //=====================================================================
+> //* SetVtsAttributes ------------------------------------------------------
+> void J4IRParameterList::SetVisAttributes()
+> {
+>   fIRVisAtt       = TRUE;
+> }
+> //=====================================================================
+> //* SetColors ---------------------------------------------------------
+> void J4IRParameterList::SetColors()
+> {
+>   fIRColor       = new G4Color(0.5,0.5,0.5);  // gray
+>   //fIRColor       = new G4Color(1,0.,0.);  // red
+> }
+Index: sources/ir/src/J4VIRAcceleratorComponent.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/ir/src/J4VIRAcceleratorComponent.cc,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4VIRAcceleratorComponent.cc
+1c1
+< // $Id$
+---
+> // $id: J4VIRAcceleratorComponent.cc,v 1.1.1.1 2002/05/02 07:56:57 hoshina Exp $
+10a11
+> //*     2002/09/13 T.Aso        Changed for IR 
+14c15
+< 
+---
+> #include "G4UserLimits.hh"
+18a20
+> J4IRParameterList* J4VIRAcceleratorComponent::fParameterList = 0;
+30c32
+<   			   	J4VAcceleratorComponent *parent,
+---
+>   			   	J4VComponent *parent,
+34c36,37
+<                                 G4int                 copyno ) :
+---
+>                                 G4int                 copyno,
+> 				G4bool             reflection) :
+37c40,41
+<                          		      nbrothers, me, copyno )   
+---
+> 						nbrothers, me, copyno ),
+> 			fReflection(reflection)
+41d44
+< 
+47c50,51
+<    if (Deregister(fMaterialStore)) delete fMaterialStore;
+---
+>    if(Deregister(fMaterialStore)) delete fMaterialStore;
+>    if(Deregister(fParameterList)) delete fParameterList;
+55,58c59,62
+<    if (!fMaterialStore) {
+<        fMaterialStore = new J4IRMaterialStore();
+<        Register(fMaterialStore); 
+<        G4cerr << "*** Opend J4IRMaterialStore ***" << G4endl;
+---
+>    if(!fMaterialStore) {
+>    	fMaterialStore = new J4IRMaterialStore();
+> 	Register(fMaterialStore);
+>   	G4cerr << "*** Opend J4IRMaterialStore ***" << G4endl;
+62a67,112
+> //=====================================================================
+> //*   --------------------------------------------------------
+> G4RotationMatrix* J4VIRAcceleratorComponent::GetRotation(){
+>   G4RotationMatrix* rot = new G4RotationMatrix;
+>   return rot;
+> }
+> G4ThreeVector&  J4VIRAcceleratorComponent::GetTranslation(){
+>   G4ThreeVector* p = new G4ThreeVector;
+>   return *p;
+> }
+> //=====================================================================
+> //* InstallIn  --------------------------------------------------------
+> 
+> void J4VIRAcceleratorComponent::InstallIn(J4VComponent *mother,
+>                              G4RotationMatrix     *prot, 
+>                              const G4ThreeVector  &tlate )
+> { 
+>   Assemble();			// You MUST call Assemble(); at first.
+>   				// 
+>   G4UserLimits* myLimits = new G4UserLimits;
+>   //myLimits->SetMaxAllowedStep(100.*micrometer);
+>   //myLimits->SetMaxAllowedStep(1000.*micrometer);
+>   //myLimits->SetMaxAllowedStep(1.*mm);
+>   //myLimits->SetMaxAllowedStep(1.*cm);
+>   GetLV()->SetUserLimits(myLimits);
+> 
+>   // Placement function into mother object...
+>   G4ThreeVector position = tlate;
+>   G4RotationMatrix* rotation = prot;
+>   if ( prot == 0 && tlate==0 ) {
+>     rotation = GetRotation();
+>     position = GetTranslation();
+>     if ( fReflection ){
+>       position.setZ(-position.z());
+>       G4double angle = (rotation->getAxis()).y()*rotation->getDelta();
+>       angle = 180.*degree - angle*2.;
+>       rotation->rotateY(angle);
+>     } 
+>   }
+> 
+>     SetPVPlacement(rotation,position);
+> }
+> 
+> #if 0
+> //=====================================================================
+> //* OpenParameterList -------------------------------------------------
+63a114,124
+> J4IRParameterList* J4VIRAcceleratorComponent::OpenParameterList()
+> {
+> 
+>   if(!fParameterList) {
+>     fParameterList = new J4IRParameterList();
+>     Register(fParameterList);
+>     G4cerr << "*** Opend J4IRParameterList ***" << G4endl;
+>   }
+> 
+>   return fParameterList;
+> }
+64a126
+> #endif
+cvs server: Diffing sources/it
+cvs server: Diffing sources/it/include
+cvs server: Diffing sources/it/src
+cvs server: Diffing sources/kern
+cvs server: Diffing sources/kern/include
+Index: sources/kern/include/J4EXPHall.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/kern/include/J4EXPHall.hh,v
+retrieving revision 1.1
+diff -r1.1 J4EXPHall.hh
+15a16
+> #include <fstream>
+37a39,41
+> 
+>   virtual void   OutputAll(G4HCofThisEvent *HCTE, G4std::ofstream &ofs) ;
+> 
+39a44
+> 
+Index: sources/kern/include/J4MaterialCatalog.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/kern/include/J4MaterialCatalog.hh,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4MaterialCatalog.hh
+31,32c31,32
+<   static J4MaterialCatalog*	OpenCatalog();
+<   G4Material*		        Order(const G4String& name) const;
+---
+>   inline static  J4MaterialCatalog*  OpenCatalog();
+>   G4Material*    Order(const G4String& name) const;
+51c51
+< inline J4MaterialCatalog* J4MaterialCatalog::OpenCatalog()
+---
+> J4MaterialCatalog* J4MaterialCatalog::OpenCatalog()
+Index: sources/kern/include/J4ParameterList.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/kern/include/J4ParameterList.hh,v
+retrieving revision 1.1
+diff -r1.1 J4ParameterList.hh
+26,27c26
+< 
+<  public:
+---
+>  protected:  
+29,33c28
+<    //* --------------------------------------------------------- 
+<    //* !!! ATTENTION !!!
+<    //* J4ParameterList must be singleton. 
+<    //* Call the constructor at the begining of the main program.  
+<    //* --------------------------------------------------------- 
+---
+>    J4ParameterList(const G4String &name);
+35c30
+<    J4ParameterList();
+---
+>  public:
+41c36
+<    static J4ParameterList *GetInstance()      { return fgParameterList ; }
+---
+>    static J4ParameterList *GetInstance();
+43,70c38,74
+<    inline G4String GetEXPHallMaterial() const { return fEXPHallMaterial;   }
+<    inline G4bool   GetEXPHallVisAtt  () const { return fEXPHallVisAtt;     }
+<    inline G4Color* GetEXPHallColor   () const { return fEXPHallColor;      }
+<    inline G4double GetEXPHallHalfX   () const { return fEXPHallHalfX;      }
+<    inline G4double GetEXPHallHalfY   () const { return fEXPHallHalfY;      }
+<    inline G4double GetEXPHallHalfZ   () const { return fEXPHallHalfZ;      }
+< 
+<    inline G4double GetBPOuterRadius  () const { return fBPOuterRadius;     }
+<    inline G4double GetBPMargin       () const { return fBPMargin;          }
+< 
+<    inline G4double GetIRThetaMax     () const { return fIRThetaMax;        }
+<    inline G4double GetIRBoxFrontZ    () const { return fIRBoxFrontZ;       }
+<    inline G4double GetIRBoxEndZ      () const { return fIRBoxEndZ;         }
+<    inline G4double GetIRBoxHalfX     () const { return fIRBoxHalfX;        }
+<    inline G4double GetIRBoxHalfY     () const { return fIRBoxHalfY;        }
+< 
+<    inline G4double GetSupportTubInnerRadius () const { return fSupportTubInnerRadius; }
+<    inline G4double GetSupportTubOuterRadius () const { return fSupportTubOuterRadius; }
+< 
+<    inline G4double GetVTXOuterRadius () const { return fVTXOuterRadius; }
+<    inline G4double GetVTXAngle       () const { return fVTXAngle;          }
+< 
+<    inline G4double GetCDCOuterRadius () const { return fCDCOuterRadius; }
+<    inline G4double GetCDCHalfZ       () const { return fCDCHalfZ;          }
+< 
+<    inline G4double GetCALInnerRadius () const { return fCALInnerRadius; }
+<    inline G4double GetCALOuterRadius () const { return fCALOuterRadius; }
+<    inline G4double GetCALHalfZ       () const { return fCALHalfZ;          }
+---
+>    inline G4String GetEXPHallMaterial () const { return fEXPHallMaterial; }
+>    inline G4bool   GetEXPHallVisAtt   () const { return fEXPHallVisAtt;   }
+>    inline G4Color  GetEXPHallColor    () const { return fEXPHallColor;    }
+>    inline G4double GetEXPHallHalfX    () const { return fEXPHallHalfX;    }
+>    inline G4double GetEXPHallHalfY    () const { return fEXPHallHalfY;    }
+>    inline G4double GetEXPHallHalfZ    () const { return fEXPHallHalfZ;    }
+> 
+>    inline G4double GetBPOuterR        () const { return fBPOuterR;        }
+>    inline G4double GetBPMargin        () const { return fBPMargin;        }
+> 
+>    inline G4double GetIRThetaMax      () const { return fIRThetaMax;      }
+>    inline G4double GetIRBoxFrontZ     () const { return fIRBoxFrontZ;     }
+>    inline G4double GetIRBoxEndZ       () const { return fIRBoxEndZ;       }
+>    inline G4double GetIRBoxHalfX      () const { return GetEXPHallHalfX() - 1*cm;}
+>    inline G4double GetIRBoxHalfY      () const { return GetEXPHallHalfY() - 1*cm;}
+> 
+>    inline G4double GetSupportTubInnerR() const { return fSupportTubInnerR;}
+>    inline G4double GetSupportTubOuterR() const { return fSupportTubOuterR;}
+> 
+>    inline G4double GetVTXInnerR       () const { return GetBPOuterR();    }
+>    inline G4double GetVTXOuterR       () const { return fVTXOuterR;       }
+>    inline G4double GetVTXZcoverage    () const { return fVTXZcoverage;    }
+>    inline G4double GetVTXHalfZ        () const ;   
+> 
+>    inline G4double GetITInnerR        () const { return GetVTXOuterR();   }
+>    inline G4double GetITOuterR        () const { return GetSupportTubInnerR();}
+>    inline G4double GetITZcoverage     () const { return fITZcoverage;    }
+>    inline G4double GetITHalfZ         () const ;
+> 
+>    inline G4double GetCDCInnerR       () const { return GetSupportTubOuterR();}
+>    inline G4double GetCDCOuterR       () const { return fCDCOuterR;       }
+>    inline G4double GetCDCHalfZ        () const { return fCDCHalfZ;        }
+> 
+>    inline G4double GetCALInnerR       () const { return fCALInnerR;       }
+>    inline G4double GetCALOuterR       () const { return fCALOuterR;       }
+>    inline G4double GetCALInnerHalfZ   () const { return fCALInnerHalfZ;   }
+>    inline G4double GetCALOuterHalfZ   () const { return fCALOuterHalfZ;   }
+72,74c76,78
+<    inline G4double GetSOLInnerRadius () const { return fSOLInnerRadius; }
+<    inline G4double GetSOLOuterRadius () const { return fSOLOuterRadius; }
+<    inline G4double GetSOLHalfZ       () const { return fSOLHalfZ;          }
+---
+>    inline G4double GetSOLInnerR       () const { return fSOLInnerR;       }
+>    inline G4double GetSOLOuterR       () const { return fSOLOuterR;       }
+>    inline G4double GetSOLHalfZ        () const { return fSOLHalfZ;        }
+80c84
+<    inline void     SetEXPHallColor   (G4Color* c) { fEXPHallColor     = c; }
+---
+>    inline void     SetEXPHallColor   (G4Color  c) { fEXPHallColor     = c; }
+85c89
+<    inline void     SetBPOuterRadius  (G4double x) { fBPOuterRadius    = x; }
+---
+>    inline void     SetBPOuterR       (G4double x) { fBPOuterR         = x; }
+94,95c98,99
+<    inline void     SetSupportTubInnerRadius (G4double x) { fSupportTubInnerRadius = x; }
+<    inline void     SetSupportTubOuterRadius (G4double x) { fSupportTubOuterRadius = x; }
+---
+>    inline void     SetSupportTubInnerR (G4double x) { fSupportTubInnerR = x; }
+>    inline void     SetSupportTubOuterR (G4double x) { fSupportTubOuterR = x; }
+97,98c101,102
+<    inline void     SetVTXOuterRadius (G4double x) { fVTXOuterRadius    = x; }
+<    inline void     SetVTXAngle       (G4double x) { fVTXAngle          = x; }
+---
+>    inline void     SetVTXOuterR      (G4double x) { fVTXOuterR        = x; }
+>    inline void     SetVTXZcoverage   (G4double x) { fVTXZcoverage     = x; }
+100,101c104
+<    inline void     SetCDCOuterRadius (G4double x) { fCDCOuterRadius = x; }
+<    inline void     SetCDCHalfZ       (G4double x) { fCDCHalfZ          = x; }
+---
+>    inline void     SetITZcoverage    (G4double x) { fITZcoverage      = x; }
+103,105c106,112
+<    inline void     SetCALInnerRadius (G4double x) { fCALInnerRadius = x; }
+<    inline void     SetCALOuterRadius (G4double x) { fCALOuterRadius = x; }
+<    inline void     SetCALHalfZ       (G4double x) { fCALHalfZ          = x; }
+---
+>    inline void     SetCDCOuterR      (G4double x) { fCDCOuterR        = x; }
+>    inline void     SetCDCHalfZ       (G4double x) { fCDCHalfZ         = x; }
+> 
+>    inline void     SetCALInnerR      (G4double x) { fCALInnerR        = x; }
+>    inline void     SetCALOuterR      (G4double x) { fCALOuterR        = x; }
+>    inline void     SetCALInnerHalfZ  (G4double x) { fCALInnerHalfZ    = x; }
+>    inline void     SetCALOuterHalfZ  (G4double x) { fCALOuterHalfZ    = x; }
+107,109c114,116
+<    inline void     SetSOLInnerRadius (G4double x) { fSOLInnerRadius = x; }
+<    inline void     SetSOLOuterRadius (G4double x) { fSOLOuterRadius = x; }
+<    inline void     SetSOLHalfZ       (G4double x) { fSOLHalfZ          = x; }
+---
+>    inline void     SetSOLInnerR      (G4double x) { fSOLInnerR        = x; }
+>    inline void     SetSOLOuterR      (G4double x) { fSOLOuterR        = x; }
+>    inline void     SetSOLHalfZ       (G4double x) { fSOLHalfZ         = x; }
+117c124
+<    static J4ParameterList *fgParameterList;
+---
+>    static J4ParameterList *fgInstance;
+121c128
+<    G4Color  *fEXPHallColor;
+---
+>    G4Color   fEXPHallColor;
+126,149c133,159
+<    G4double  fBPOuterRadius;         // OuterRadius of BeamPipe
+<    G4double  fBPMargin;              // Margin between beampipe and IR region
+<    G4double  fIRThetaMax;            // Theta Max of IR region
+<    G4double  fIRBoxFrontZ;           // Front-z of IR box     
+<    G4double  fIRBoxEndZ;             // End-z of IR box
+<    G4double  fIRBoxHalfX;            // half x-width of IR box
+<    G4double  fIRBoxHalfY;            // half y-width of IR box
+< 
+<    G4double  fSupportTubInnerRadius; // InnerRadius of Support Tub
+<    G4double  fSupportTubOuterRadius; // OuterRadius of Support Tub
+< 
+<    G4double  fVTXOuterRadius;        // OuterRadius of VTX 
+<    G4double  fVTXAngle;              // half z length of VTX 
+< 
+<    G4double  fCDCOuterRadius;        // OuterRadius of CDC 
+<    G4double  fCDCHalfZ;              // half z length of CDC 
+< 
+<    G4double  fCALInnerRadius;        // InnerRadius of CAL 
+<    G4double  fCALOuterRadius;        // OuterRadius of CAL 
+<    G4double  fCALHalfZ;              // half z length of CAL 
+< 
+<    G4double  fSOLInnerRadius;        // InnerRadius of CAL 
+<    G4double  fSOLOuterRadius;        // OuterRadius of CAL 
+<    G4double  fSOLHalfZ;              // half z length of CAL 
+---
+>    G4double  fBPOuterR;         // OuterR of BeamPipe
+>    G4double  fBPMargin;         // Margin between beampipe and IR region
+>    G4double  fIRThetaMax;       // Theta Max of IR region
+>    G4double  fIRBoxFrontZ;      // Front-z of IR box     
+>    G4double  fIRBoxEndZ;        // End-z of IR box
+>    G4double  fIRBoxHalfX;       // half x-width of IR box
+>    G4double  fIRBoxHalfY;       // half y-width of IR box
+> 
+>    G4double  fSupportTubInnerR; // InnerR of Support Tub
+>    G4double  fSupportTubOuterR; // OuterR of Support Tub
+> 
+>    G4double  fVTXOuterR;        // OuterR of VTX 
+>    G4double  fVTXZcoverage;     // z coverage of VTX in cos_theta
+> 
+>    G4double  fITZcoverage;      // z coverage of IT in cos_theta 
+> 
+>    G4double  fCDCOuterR;        // OuterR of CDC 
+>    G4double  fCDCHalfZ;         // half z length of CDC 
+> 
+>    G4double  fCALInnerR;        // InnerR of CAL 
+>    G4double  fCALOuterR;        // OuterR of CAL 
+>    G4double  fCALInnerHalfZ;    // half z length of innerface of CAL 
+>    G4double  fCALOuterHalfZ;    // half z length of outersurface of CAL 
+> 
+>    G4double  fSOLInnerR;        // InnerR of CAL 
+>    G4double  fSOLOuterR;        // OuterR of CAL 
+>    G4double  fSOLHalfZ;         // half z length of CAL 
+151a162,178
+> 
+> //=========================================================
+> //* inline functions
+> 
+> G4double J4ParameterList::GetVTXHalfZ() const   
+> {
+>    G4double costheta  = GetVTXZcoverage();
+>    G4double cottheta = costheta / sqrt((1 + costheta) * (1 - costheta)); 
+>    return GetVTXOuterR() * cottheta; 
+> }
+> 
+> G4double J4ParameterList::GetITHalfZ() const   
+> {
+>    G4double costheta  = GetITZcoverage();
+>    G4double cottheta = costheta / sqrt((1 + costheta) * (1 - costheta)); 
+>    return GetITOuterR() * cottheta; 
+> }
+Index: sources/kern/include/J4VAcceleratorComponent.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/kern/include/J4VAcceleratorComponent.hh,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4VAcceleratorComponent.hh
+38a39,46
+>                           J4VComponent            *parent    = 0,
+>                           G4int                    nclones   = 1,
+>                           G4int                    nbrothers = 1, 
+>                           G4int                    me        = 0,
+>                           G4int                    copyno    = -1);
+> 
+>   J4VAcceleratorComponent(const G4String          &groupname,
+>                           const G4String          &name, 
+Index: sources/kern/include/J4VComponent.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/kern/include/J4VComponent.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VComponent.hh
+92a93,94
+>   inline virtual       J4ComponentArray      GetDaughters() const { return fDaughters; } 
+>   inline         const EPlacementType        GetPlacementType() const; 
+96d97
+<   inline         const EPlacementType        GetPlacementType() const; 
+Index: sources/kern/include/J4VHit.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/kern/include/J4VHit.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VHit.hh
+36a37,38
+>   J4VHit(J4VComponent * detector);
+> 
+43,45c45,47
+<          G4int                  trackID   = 0,
+<          G4int                  mothertrackID = 0,
+<          G4ParticleDefinition  *particle  = 0,
+---
+>          G4int                  trackID ,
+>          G4int                  mothertrackID,
+>          G4ParticleDefinition  *particle,
+51c53,54
+<          const G4ThreeVector   &pos       = G4ThreeVector(0.));	      
+---
+>          const G4ThreeVector   &pos       = G4ThreeVector(0.),      
+>          G4int                  hitnumber = -9999);	      
+54,57c57,60
+<          G4int                  cloneID   = 0,
+<          G4int                  trackID   = 0,
+<          G4int                  mothertrackID  = 0,
+<          G4ParticleDefinition  *particle  = 0,
+---
+>          G4int                  cloneID,
+>          G4int                  trackID,
+>          G4int                  mothertrackID,
+>          G4ParticleDefinition  *particle,
+64c67
+<          const G4int            hitnumber = 0);	      
+---
+>          G4int                  hitnumber = -9999);	      
+134c137,138
+<   inline virtual       G4int	               GetHitNumber()     const { return fHitNumber;                  }
+---
+>   inline virtual       G4int	             GetHitNumber()     const { return fHitNumber;                  }
+>   inline virtual       G4int                 GetPDGEncoding()   const { return fParticle->GetPDGEncoding(); }
+cvs server: Diffing sources/kern/src
+Index: sources/kern/src/J4EXPHall.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/kern/src/J4EXPHall.cc,v
+retrieving revision 1.1
+diff -r1.1 J4EXPHall.cc
+16a17
+> #include "J4VSensitiveDetector.hh"
+81a83
+> //=====================================================================
+83d84
+< 
+89a91,115
+> //=====================================================================
+> //* OutputAll ---------------------------------------------------------
+> void J4EXPHall::OutputAll(G4HCofThisEvent* HCTE, G4std::ofstream & ofs)
+> {
+> 
+>    
+>    if (GetSD()) {  
+>       if (IsOn()) {
+>           ofs << "*****_EXPHall_output_start_*****" << G4endl;
+>           GetSD()->OutputAll(HCTE);  
+>           ofs << "*****_EXPHall_output_end_*****" << G4endl; 
+>       }
+>    }
+> 
+>    J4ComponentArray daughters = GetDaughters();
+>    G4int ndaughters = daughters.entries();
+> 
+>    G4int i;
+> 
+>    for( i=0; i<ndaughters; i++) {
+>       ofs << "*****_" << daughters[i]->GetName() << "_output_start_*****" << G4endl; 
+>       daughters[i]->OutputAll(HCTE);
+>       ofs << "*****_" << daughters[i]->GetName() << "_output_end_*****" << G4endl; 
+>    }
+> }
+Index: sources/kern/src/J4EventAction.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/kern/src/J4EventAction.cc,v
+retrieving revision 1.7
+diff -r1.7 J4EventAction.cc
+146c146
+<    J4DetectorConstruction::GetEXPHall()->OutputAll(HCTE);
+---
+>    J4DetectorConstruction::GetEXPHall()->OutputAll(HCTE, ofs);
+Index: sources/kern/src/J4ParameterList.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/kern/src/J4ParameterList.cc,v
+retrieving revision 1.1
+diff -r1.1 J4ParameterList.cc
+14c14
+< J4ParameterList* J4ParameterList::fgParameterList = 0;
+---
+> J4ParameterList* J4ParameterList::fgInstance = 0;
+17,20c17,18
+< //* constructor -------------------------------------------------------
+< 
+< J4ParameterList::J4ParameterList()
+<                 :J4VParameterList("kern")
+---
+> //* public get function -----------------------------------------------
+> J4ParameterList* J4ParameterList::GetInstance()
+22,24c20,27
+<    if (fgParameterList) { 
+<       G4Exception("J4ParameterList constructed twice."); 
+<    }
+---
+>    if (!fgInstance) {
+>       fgInstance = new J4ParameterList("kern");
+>    } 
+>    return fgInstance;
+> }
+> 
+> //=====================================================================
+> //* protected constructor ---------------------------------------------
+25a29,31
+> J4ParameterList::J4ParameterList(const G4String &name)
+>                 :J4VParameterList(name)
+> {
+27d32
+<    fgParameterList = this;
+35c40
+<    delete  fEXPHallColor;
+---
+>    fgInstance = 0;
+46c51,52
+<    fEXPHallColor    = new G4Color(1, 0, 1);
+---
+>    SetEXPHallColor(G4Color(1, 0, 1));
+> 
+47a54,58
+>    fBPOuterR         = 1.8*cm;                 // OuterR of BeamPipe
+>    fBPMargin         = 0.05*cm;                // Margin between beampipe and IR
+>    fIRThetaMax       = 200*mrad;               // Theta Max of IR region
+>    fIRBoxFrontZ      = 500*cm;                 // Front-z of IR box
+>    fIRBoxEndZ        = 700*cm;                 // End-z of IR box
+49,55c60,61
+<    fBPOuterRadius   = 1.8*cm;                  // OuterRadius of BeamPipe
+<    fBPMargin        = 0.05*cm;                 // Margin between beampipe and IR
+<    fIRThetaMax      = 200*mrad;                // Theta Max of IR region
+<    fIRBoxFrontZ     = 500*cm;                  // Front-z of IR box
+<    fIRBoxEndZ       = 700*cm;                  // End-z of IR box
+<    fIRBoxHalfX      = fEXPHallHalfX - 1.0*cm;  // half x-width of IR box
+<    fIRBoxHalfY      = fEXPHallHalfY - 1.0*cm;  // half y-width of IR box
+---
+>    fSupportTubInnerR = 40*cm;                  // InnerR of Support Tub
+>    fSupportTubOuterR = 44*cm;                  // OuterR of Support Tub
+57,58c63,64
+<    fSupportTubInnerRadius = 40*cm;             // InnerRadius of Support Tub
+<    fSupportTubOuterRadius = 44*cm;             // OuterRadius of Support Tub
+---
+>    fVTXOuterR        = 8.0*cm;                 // OuterR of VTX
+>    fVTXZcoverage     = 0.9015;                 // z-coverage in cos_theta of VTX
+60,61c66
+<    fVTXOuterRadius  = 8.0*cm;                  // OuterRadius of VTX
+<    fVTXAngle        = 10;                      // half z length of VTX
+---
+>    fITZcoverage      = 0.90;                   // z-coverage in cos_theta of IT 
+63,64c68,69
+<    fCDCOuterRadius  = 156*cm;                  // OuterRadius of CDC
+<    fCDCHalfZ        = 156*cm;                  // half z length of CDC
+---
+>    fCDCOuterR        = 157*cm;                 // OuterR of CDC
+>    fCDCHalfZ         = 160*cm;                 // half z length of CDC
+66,68c71,74
+<    fCALInnerRadius  = 160*cm;                  // InnerRadius of CAL
+<    fCALOuterRadius  = 290*cm;                  // OuterRadius of CAL
+<    fCALHalfZ        = 320*cm;                  // half z length of CAL
+---
+>    fCALInnerR        = 157*cm;                 // InnerR of CAL
+>    fCALOuterR        = 370*cm;                 // OuterR of CAL
+>    fCALInnerHalfZ    = 185*cm;                 // half z length of innerface of CAL 
+>    fCALOuterHalfZ    = 400*cm;                 // half z length of outersurface of CAL
+70,72c76,78
+<    fSOLInnerRadius  = 375*cm;                  // InnerRadius of Solenoid
+<    fSOLOuterRadius  = 450*cm;                  // OuterRadius of Solenoid
+<    fSOLHalfZ        = 340*cm;                  // half z length of Solenoid
+---
+>    fSOLInnerR        = 375*cm;                 // InnerR of Solenoid
+>    fSOLOuterR        = 450*cm;                 // OuterR of Solenoid
+>    fSOLHalfZ         = 430*cm;                 // half z length of Solenoid
+79,81c85,87
+<    fEXPHallHalfX    = 5*m;
+<    fEXPHallHalfY    = 5*m;
+<    fEXPHallHalfZ    = 5*m;
+---
+>    fEXPHallHalfX    = 7*m;
+>    fEXPHallHalfY    = 7*m;
+>    fEXPHallHalfZ    = 7*m;
+Index: sources/kern/src/J4PhysicsList.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/kern/src/J4PhysicsList.cc,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4PhysicsList.cc
+36a37,38
+>   //defaultCutValue = 10.0*cm;
+>   //defaultCutValue = 1.0*m;
+Index: sources/kern/src/J4VAcceleratorComponent.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/kern/src/J4VAcceleratorComponent.cc,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4VAcceleratorComponent.cc
+22a23,35
+>                                   J4VComponent            *parent,
+>                                   G4int                    nclones,
+>                                   G4int                    nbrothers,
+>                                   G4int                    me,
+>                                   G4int                    copyno)
+>                         :J4VComponent(groupname, name, parent,
+>                                       nclones, nbrothers, me, copyno)
+> {
+> } 
+> 
+> J4VAcceleratorComponent::J4VAcceleratorComponent(
+>                                   const G4String          &groupname,
+>                                   const G4String          &name,
+Index: sources/kern/src/J4VHit.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/kern/src/J4VHit.cc,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4VHit.cc
+24,26c24,34
+<        :fComponent(0), fCloneID(0), fTrackID(0), fMotherTrackID(0),
+<         fParticle(0), fTof(0), fEnergyDeposit(0), fTotalEnergy(0),
+<         fMomentum(0), fPrePosition(0), fPostPosition(0), fHitNumber(0)
+---
+>        :fComponent(0), fCloneID(-9999), fTrackID(-9999), fMotherTrackID(-9999),
+>         fParticle(0), fTof(-9999), fEnergyDeposit(-9999), fTotalEnergy(-9999),
+>         fMomentum(0), fPrePosition(0), fPostPosition(0), fHitNumber(-9999)
+> { 
+> }
+> 
+> J4VHit::J4VHit(J4VComponent * detector)
+>        :fComponent(detector), fCloneID(-9999), fTrackID(-9999), 
+>         fMotherTrackID(-9999),
+>         fParticle(0), fTof(-9999), fEnergyDeposit(-9999), fTotalEnergy(-9999),
+>         fMomentum(0), fPrePosition(0), fPostPosition(0), fHitNumber(-9999)
+34,36c42,44
+<        :fComponent(detector), fCloneID(cloneid), fTrackID(0), 
+<         fMotherTrackID(0),
+<         fParticle(0), fTof(0), fEnergyDeposit(0), fTotalEnergy(0),
+---
+>        :fComponent(detector), fCloneID(cloneid), fTrackID(-9999), 
+>         fMotherTrackID(-9999),
+>         fParticle(0), fTof(-9999), fEnergyDeposit(-9999), fTotalEnergy(-9999),
+38c46
+<         fHitNumber(0)
+---
+>         fHitNumber(-9999)
+41a50,68
+> J4VHit::J4VHit(J4VComponent         *detector,      // Belonging Component 
+>                G4int                 trackID,	    // TrackID
+>                G4int                 mothertrackID, // MotherTrackID
+>                G4ParticleDefinition *particle,	    // particle
+>                G4double              tof,           // TOF 
+>                G4double              edep,          // Energy Deposit
+>                G4double              totalE,        // Total energy
+>                const G4ThreeVector  &p,             // Momentum of perticle
+>                const G4ThreeVector  &pre,           // Pre-position of track
+>                const G4ThreeVector  &pos,           // Post-position of track
+>                G4int                 hitnumber)
+>              :fComponent(detector), fCloneID(-9999), fTrackID(trackID), 
+>               fMotherTrackID(mothertrackID), fParticle(particle), 
+> 	      fTof(tof), fEnergyDeposit(edep), 
+> 	      fTotalEnergy(totalE), fMomentum(p),
+> 	      fPrePosition(pre), fPostPosition(pos), fHitNumber(hitnumber)
+> {  
+> }
+> 
+54c81
+<        :fComponent(detector),  fCloneID(0),
+---
+>        :fComponent(detector),  fCloneID(cloneID),
+65,81d91
+< J4VHit::J4VHit(J4VComponent         *detector,      // Belonging Component 
+<                G4int                 trackID,	    // TrackID
+< 	            G4int                 mothertrackID, // MotherTrackID
+<                G4ParticleDefinition *particle,	    // particle
+<            		G4double              tof,           // TOF 
+<                G4double              edep,          // Energy Deposit
+< 	            G4double              totalE,        // Total energy
+<                const G4ThreeVector  &p,             // Momentum of perticle
+<                const G4ThreeVector  &pre,           // Pre-position of track
+<                const G4ThreeVector  &pos)           // Post-position of track
+< 	     :fComponent(detector), fCloneID(-9999), fTrackID(trackID), 
+<          fMotherTrackID(mothertrackID), fParticle(particle), 
+< 	      fTof(tof), fEnergyDeposit(edep), 
+< 	      fTotalEnergy(totalE), fMomentum(p),
+< 	      fPrePosition(pre), fPostPosition(pos), fHitNumber(-9999)
+< {  
+< }
+cvs server: Diffing sources/main
+Index: sources/main/Jupiter.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/main/Jupiter.cc,v
+retrieving revision 1.3
+diff -r1.3 Jupiter.cc
+33a34
+> #include "J4ITParameterList.hh"
+51,53c52,54
+< //#define __INSTALLIR__  
+< //#define __INSTALLBD__  
+< //#define __INSTALLVTX__  
+---
+> #define __INSTALLIR__  
+> #define __INSTALLBD__  
+> #define __INSTALLVTX__  
+87,90c88
+<   J4ParameterList    *paramlist    = new J4ParameterList();
+<   J4VTXParameterList *vtxparamlist = new J4VTXParameterList();
+<   J4CDCParameterList *cdcparamlist = new J4CDCParameterList();
+<   J4SOLParameterList *solparamlist = new J4SOLParameterList();
+---
+>   J4VTXParameterList *vtxlist = new J4VTXParameterList();
+208a207,211
+>   //* it 
+> #ifdef __INSTALLIT__
+>   itptr->J4VDetectorComponent::SwitchOn();
+> #endif
+> 
+231a235,239
+> #endif
+> 
+>   //* cal 
+> #ifdef __INSTALLCAL__
+>   calptr->J4VDetectorComponent::SwitchOn();
+cvs server: Diffing sources/sol
+cvs server: Diffing sources/sol/include
+Index: sources/sol/include/J4SOLParameterList.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/sol/include/J4SOLParameterList.hh,v
+retrieving revision 1.3
+diff -r1.3 J4SOLParameterList.hh
+18c18
+< #include "J4VParameterList.hh"
+---
+> #include "J4ParameterList.hh"
+27,30c27,30
+<  public:
+<    J4SOLParameterList(G4double ri   = 375.*cm,
+<                       G4double ro   = 450.*cm,
+<                       G4double len    = 340.*cm,
+---
+>  protected:
+>    J4SOLParameterList(G4double ri     = 375.*cm,
+>                       G4double ro     = 450.*cm,
+>                       G4double len    = 380.*cm,
+32,41c32,39
+<                       G4double magrad =  157.*cm)
+<                     //  G4double magrad =  400.*cm)
+<            : fMaterial("Air"),
+<              fMagInnerRadius(ri),
+<              fMagOuterRadius(ro),
+<              fMagLength(len),
+<              fMagRad(magrad),
+<              fBField(bfield),
+<              fVisAtt(TRUE),
+<              fColor(0.,0.,0.5) {}
+---
+>                       G4double fieldr =  157.*cm)
+>                   //  G4double fieldr =  400.*cm)
+>            : J4VParameterList("SOL"), 
+>              fSOLMaterial("Air"),
+>              fSOLVisAtt(TRUE),
+>              fSOLColor(0.7, 0.5, 0.5),
+>              fFieldR(fieldr),
+>              fBField(bfield){}
+43c41,45
+<    virtual ~J4SOLParameterList() {}
+---
+>  public: 
+> 
+>    static J4SOLParameterList  *GetInstance();
+> 
+>    virtual ~J4SOLParameterList();
+46,53c48,55
+<    inline G4String GetMaterial() const { return fMaterial;        }
+<    inline G4double GetIR      () const { return fMagInnerRadius;  }
+<    inline G4double GetOR      () const { return fMagOuterRadius;  }
+<    inline G4double GetLength  () const { return fMagLength;       }
+<    inline G4double GetMagRad  () const { return fMagRad;          }
+<    inline G4double GetBField  () const { return fBField;          }
+<    inline G4bool   GetVisAtt  () const { return fVisAtt;          }
+<    inline G4Color  GetColor   () const { return fColor;           }
+---
+>    inline G4String GetSOLMaterial() const { return fSOLMaterial; }
+>    inline G4double GetSOLInnerR  () const ; 
+>    inline G4double GetSOLOuterR  () const ;
+>    inline G4double GetSOLHalfZ   () const ;
+>    inline G4bool   GetSOLVisAtt  () const { return fSOLVisAtt;   }
+>    inline G4Color  GetSOLColor   () const { return fSOLColor;    }
+>    inline G4double GetFieldR     () const { return fFieldR;      }
+>    inline G4double GetBField     () const { return fBField;      }
+56,63c58,62
+<    inline void     SetMaterial(G4String s) { fMaterial       = s; }
+<    inline void     SetIR      (G4double x) { fMagInnerRadius = x; }
+<    inline void     SetOR      (G4double x) { fMagOuterRadius = x; }
+<    inline void     SetLength  (G4double x) { fMagLength      = x; }
+<    inline void     SetMagRad  (G4double x) { fMagRad         = x; }
+<    inline void     SetBField  (G4double x) { fBField         = x; }
+<    inline void     SetVisAtt  (G4bool   b) { fVisAtt         = b; }
+<    inline void     SetColor   (G4Color  c) { fColor          = c; }
+---
+>    inline void     SetSOLMaterial(G4String s) { fSOLMaterial = s; }
+>    inline void     SetSOLVisAtt  (G4bool   b) { fSOLVisAtt   = b; }
+>    inline void     SetSOlColor   (G4Color  c) { fSOLColor    = c; }
+>    inline void     SetFieldR     (G4double x) { fFieldR      = x; }
+>    inline void     SetBField     (G4double x) { fBField      = x; }
+68,73c67,68
+<    G4String  fMaterial; 
+< 
+<    G4double  fMagInnerRadius;
+<    G4double  fMagOuterRadius;
+<    G4double  fMagLength;
+<    G4double  fMagRad;
+---
+>  
+>    static J4SOLParameterList  *fgInstance;
+74a70,73
+>    G4String  fSOLMaterial; 
+>    G4bool    fSOLVisAtt;
+>    G4Color   fSOLColor;
+>    G4double  fFieldR;
+77,78d75
+<    G4bool    fVisAtt;
+<    G4Color   fColor;
+79a77,95
+> 
+> //=========================================================
+> //* inline functions
+> 
+> G4double J4SOLParameterList::GetSOLInnerR() const
+> {
+>    return J4ParameterList::GetInstance()->GetSOLInnerR();
+> }
+> 
+> G4double J4SOLParameterList::GetSOLOuterR() const
+> {
+>    return J4ParameterList::GetInstance()->GetSOLOuterR();
+> }
+> 
+> G4double J4SOLParameterList::GetSOLHalfZ() const
+> {
+>    return J4ParameterList::GetInstance()->GetSOLHalfZ();
+> }
+> 
+Index: sources/sol/include/J4VSOLDetectorComponent.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/sol/include/J4VSOLDetectorComponent.hh,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4VSOLDetectorComponent.hh
+37d36
+<   static J4SOLParameterList * GetParameterList() { return fParameterList; }
+40,41c39,40
+<   J4VMaterialStore   * 	 OpenMaterialStore();
+<   J4SOLParameterList * 	 OpenParameterList();
+---
+>   J4VMaterialStore   * OpenMaterialStore();
+>   J4SOLParameterList * OpenParameterList() { return J4SOLParameterList::GetInstance(); }
+45d43
+<   static J4SOLParameterList *fParameterList;
+cvs server: Diffing sources/sol/src
+Index: sources/sol/src/J4SOL.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/sol/src/J4SOL.cc,v
+retrieving revision 1.3
+diff -r1.3 J4SOL.cc
+60,62c60,63
+<       G4double rmin = OpenParameterList()->GetIR();
+<       G4double rmax = OpenParameterList()->GetOR();
+<       G4double len  = OpenParameterList()->GetLength();
+---
+>       J4SOLParameterList *list = OpenParameterList();
+>       G4double rmin = list->GetSOLInnerR();
+>       G4double rmax = list->GetSOLOuterR();
+>       G4double len  = list->GetSOLHalfZ();
+69c70
+<       MakeLVWith(OpenMaterialStore()->Order(OpenParameterList()->GetMaterial()));
+---
+>       MakeLVWith(OpenMaterialStore()->Order(list->GetSOLMaterial()));
+72c73
+<       PaintLV(OpenParameterList()->GetVisAtt(), OpenParameterList()->GetColor());
+---
+>       PaintLV(list->GetSOLVisAtt(), list->GetSOLColor());
+111,113c112,116
+<     
+<     if (GetParameterList()->GetBField() != 0) {
+<        SetMField(new J4SOLMField(OpenParameterList())); 
+---
+> 
+> 
+>     J4SOLParameterList *list = OpenParameterList(); 
+>     if (list->GetBField() != 0) {
+>        SetMField(new J4SOLMField(list)); 
+116c119
+<        G4TransportationManager::GetTransportationManager()-> GetFieldManager();
+---
+>        G4TransportationManager::GetTransportationManager()->GetFieldManager();
+Index: sources/sol/src/J4SOLMField.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/sol/src/J4SOLMField.cc,v
+retrieving revision 1.1
+diff -r1.1 J4SOLMField.cc
+41,42c41,42
+<   G4double maxBRad    = fParameterList->GetOR();
+<   G4double maxBZ      = fParameterList->GetLength();
+---
+>   G4double maxBRad    = fParameterList->GetSOLOuterR();
+>   G4double maxBZ      = fParameterList->GetSOLHalfZ();
+55,57c55,57
+<   lpos[0] = fParameterList->GetOR();
+<   lpos[1] = fParameterList->GetOR();
+<   lpos[2] = fParameterList->GetLength();
+---
+>   lpos[0] = fParameterList->GetSOLOuterR();
+>   lpos[1] = fParameterList->GetSOLOuterR();
+>   lpos[2] = fParameterList->GetSOLHalfZ();
+Index: sources/sol/src/J4VSOLDetectorComponent.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/sol/src/J4VSOLDetectorComponent.cc,v
+retrieving revision 1.1.1.1
+diff -r1.1.1.1 J4VSOLDetectorComponent.cc
+17d16
+< J4SOLParameterList* J4VSOLDetectorComponent::fParameterList = 0;
+49d47
+<    if(Deregister(fParameterList)) delete fParameterList;
+64,76d61
+< }
+< 
+< //=====================================================================
+< ////* OpenParameterList -------------------------------------------------
+< 
+< J4SOLParameterList* J4VSOLDetectorComponent::OpenParameterList()
+< {
+<    if (!fParameterList) {
+<       fParameterList = new J4SOLParameterList();
+<       Register(fParameterList);
+<       G4cerr << "*** Opend J4SOLParameterList ***" << G4endl;
+<    }
+<    return fParameterList;
+cvs server: Diffing sources/vtx
+cvs server: Diffing sources/vtx/include
+Index: sources/vtx/include/J4VTX.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTX.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTX.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXEpitaxial.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXEpitaxial.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXEpitaxial.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXLadder.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXLadder.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXLadder.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXLadderHit.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXLadderHit.hh,v
+retrieving revision 1.1
+diff -r1.1 J4VTXLadderHit.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXLadderSD.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXLadderSD.hh,v
+retrieving revision 1.1
+diff -r1.1 J4VTXLadderSD.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXLayer.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXLayer.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXLayer.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXMaterialStore.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXMaterialStore.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXMaterialStore.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXParameterList.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXParameterList.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXParameterList.hh
+41a42
+>   inline void SetSensorSD(G4bool log) {fSensorSD = log; }
+77a79,80
+>   // Cover angle of VTX Master (not used)
+>   inline void SetVTXAngle(G4double a){ fVTXAngle=a;}
+82a86,87
+>   inline G4ThreeVector GetDxyzMarginSize() const { return fDxyzMargin;}
+> 
+84a90
+>   inline G4bool IsSensorSD() const { return fSensorSD; }
+99a106
+>   inline G4double GetVTXAngle() const { return fVTXAngle; }
+104a112,113
+>   inline G4double GetLayerZLength(G4int layer)
+>   const { return (G4double)GetNSensors(layer)*GetSensorSize().z()+4.*GetDxyzMarginSize().z(); }
+179a189
+>   G4bool fSensorSD;
+252d261
+<   G4ThreeVector** fDxyzLadder;
+254a264
+>   G4ThreeVector** fDxyzLadder;
+262a273
+>   G4double fVTXAngle;
+Index: sources/vtx/include/J4VTXPixel.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXPixel.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXPixel.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXPixelArea.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXPixelArea.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXPixelArea.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXPixelAreaHit.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXPixelAreaHit.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXPixelAreaHit.hh
+1c1
+< // $Id$
+---
+> // $Id$
+41,53c41,57
+<   	 	      G4ParticleDefinition *particle,
+< 		      G4int                 layerID ,
+< 		      G4int                 ladderID ,
+< 		      G4int                 sensorID,
+< 		      G4double              edep    ,
+<   	 	      const G4ThreeVector  &momentum,
+<   	 	      G4double              energy,
+<   	 	      G4double              tof,
+<   	 	      const G4ThreeVector  &inPos ,
+< 		      const G4ThreeVector  &outPos,
+<   	 	      const G4ThreeVector  &localinPos ,
+< 		      const G4ThreeVector  &localoutPos
+< 		      );
+---
+> 	    G4ParticleDefinition *particle,
+> 	    G4double             weight,
+> 	    const G4ThreeVector  &origin,
+>             const G4ThreeVector  &origP,
+>             const G4String       &process,
+> 	    G4int                 layerID ,
+> 	    G4int                 ladderID ,
+> 	    G4int                 sensorID,
+> 	    G4double              edep    ,
+> 	    const G4ThreeVector  &momentum,
+> 	    G4double              energy,
+> 	    G4double              tof,
+> 	    const G4ThreeVector  &inPos ,
+> 	    const G4ThreeVector  &outPos,
+> 	    const G4ThreeVector  &localinPos ,
+> 	    const G4ThreeVector  &localoutPos
+> 	    );
+69c73
+< 
+---
+>   G4ThreeVector         GetOrigin() { return fOrigin; }
+70a75,76
+>   G4String              GetProcessName(){return fProcess;}
+> 
+83a90,94
+> 
+>   G4ThreeVector         fOrigin;
+>   G4ThreeVector         fOriginP;
+>   G4double              fWeight;
+>   G4String              fProcess;
+Index: sources/vtx/include/J4VTXPixelAreaSD.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXPixelAreaSD.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXPixelAreaSD.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXPixelArray.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXPixelArray.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXPixelArray.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXPixelHit.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXPixelHit.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXPixelHit.hh
+1c1
+< // $Id$
+---
+> // $Id$
+42a43,46
+> 	    G4double              weight,
+> 	    const G4ThreeVector  &origin,
+>             const G4ThreeVector  &origP,
+>             const G4String       &process,
+75c79,82
+<   G4ThreeVector         GetHitPosition() ;  
+---
+>   G4ThreeVector         GetOrigin() { return fOrigin; }
+>   G4ThreeVector         GetHitPosition() ;
+>   G4String              GetProcessName(){return fProcess;}
+> 
+92a100,104
+> 
+>   G4ThreeVector         fOrigin;
+>   G4ThreeVector         fOriginP;
+>   G4double              fWeight;
+>   G4String              fProcess;
+Index: sources/vtx/include/J4VTXPixelSD.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXPixelSD.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXPixelSD.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXSensor.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXSensor.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXSensor.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VTXSubstrate.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VTXSubstrate.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VTXSubstrate.hh
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/include/J4VVTXDetectorComponent.hh
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/include/J4VVTXDetectorComponent.hh,v
+retrieving revision 1.2
+diff -r1.2 J4VVTXDetectorComponent.hh
+1c1
+< // $Id$
+---
+> // $Id$
+cvs server: Diffing sources/vtx/src
+Index: sources/vtx/src/J4VTX.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTX.cc,v
+retrieving revision 1.2
+diff -r1.2 J4VTX.cc
+1c1
+< // $Id$
+---
+> // $Id$
+15c15,18
+< 
+---
+> #include "G4Cons.hh"
+> #include "G4Tubs.hh"
+> #include "G4Box.hh"
+> #include "J4UnionSolid.hh"
+65,71c68,102
+<     G4double rmin = list->GetVTXInnerRadius();
+<     G4double rmax = list->GetVTXOuterRadius();
+<     G4double len  = list->GetVTXZLength()/2.;
+<     G4double dphi = twopi;
+<  	
+<     // MakeSolid ----------//
+<     OrderNewTubs (rmin, rmax, len, dphi);
+---
+>     G4String vtxname(GetName());
+>     G4VSolid* lastsolid;
+>     G4String tmpname = vtxname+".master";
+> 
+> #if 1
+>     // New Master
+>      G4int nlayer = list->GetNLayers();
+>     G4double rin,rout;
+>     for ( G4int i = 0 ; i < nlayer; i++ ){
+>       if ( i == 0 ){
+> 	rin  = list->GetVTXInnerRadius();
+> 	if ( (i+1) == nlayer ) rout = list->GetVTXOuterRadius();
+> 	else rout = list->GetLayerInnerRadius(i+1)-3*mm;	
+>       }else if ( i < nlayer-1 ){
+> 	rin  = list->GetLayerInnerRadius(i)-5*mm;
+> 	rout = list->GetLayerInnerRadius(i+1)-3*mm;
+>       }else {
+> 	rin  = list->GetLayerInnerRadius(i)-5*mm;
+> 	rout = list->GetVTXOuterRadius();
+>       }
+>       G4double z   = list->GetLayerZLength(i);
+>       G4String tmptube = vtxname+".tube";
+> 
+>       G4VSolid* tube = new G4Tubs(tmptube,rin,rout,z/2.,0.,twopi);
+>       if ( i == 0 ) {
+> 	lastsolid = tube;
+>       }else {
+> 	lastsolid = new J4UnionSolid(vtxname,lastsolid,tube);
+>       }
+>     }
+> #endif
+> 
+>     Register(lastsolid);
+>     SetSolid(lastsolid);
+> 
+76a108
+> #if 1
+89a122,123
+> 
+> #endif
+Index: sources/vtx/src/J4VTXEpitaxial.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXEpitaxial.cc,v
+retrieving revision 1.2
+diff -r1.2 J4VTXEpitaxial.cc
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/src/J4VTXLadderHit.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXLadderHit.cc,v
+retrieving revision 1.2
+diff -r1.2 J4VTXLadderHit.cc
+1c1
+< // $Id$
+---
+> // $Id$
+14c14,15
+< #include <iomanip.h>
+---
+> #include "g4std/iomanip"
+> #include "g4std/fstream"
+95c96
+< 	 << endl;
+---
+> 	 << G4endl;
+113c114,116
+<   G4cerr << setiosflags(ios::fixed);
+---
+>   G4int prec = G4cerr.precision(2);
+> 
+>   G4cerr << G4std::setiosflags(G4std::ios::fixed);
+115c118
+< 	 << " position(mm)= " << setprecision(2) 
+---
+> 	 << " position(mm)= "  
+119c122
+< 	 << " Edep(keV)= " << setprecision(2) 
+---
+> 	 << " Edep(keV)= " 
+121a125,126
+> 
+>   G4cerr.precision(prec);
+Index: sources/vtx/src/J4VTXLayer.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXLayer.cc,v
+retrieving revision 1.3
+diff -r1.3 J4VTXLayer.cc
+1c1
+< // $Id$
+---
+> // $Id$
+70,74c70,71
+<     G4double   len  = 
+<       ((G4Tubs *)GetMother()->GetLV()->GetSolid())->GetZHalfLength();
+<     G4double   totalPhi=
+<       ((G4Tubs *)GetMother()->GetLV()->GetSolid())->GetDeltaPhiAngle();
+< 
+---
+>     G4double   halfzlen  = list->GetLayerZLength(layerID)/2.;
+>     G4double   totalPhi= twopi;
+80c77
+<     OrderNewTubs (rmin, rmax, len, totalPhi );
+---
+>     OrderNewTubs (rmin, rmax, halfzlen, totalPhi );
+85c82,83
+<         
+---
+> 
+> #if 1        
+111a110,111
+> #endif
+>     
+Index: sources/vtx/src/J4VTXMaterialStore.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXMaterialStore.cc,v
+retrieving revision 1.2
+diff -r1.2 J4VTXMaterialStore.cc
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/src/J4VTXParameterList.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXParameterList.cc,v
+retrieving revision 1.1
+diff -r1.1 J4VTXParameterList.cc
+14a15,18
+> #define __VTXACFAREPCONF__  0
+> #define __VTXSTDCONF__      1
+> #define __VTX5LYRCONF__     0
+> 
+57c61
+<   fSensorMaterial    = "Air";
+---
+>   fSensorMaterial    = "Silicon";
+68,69c72,74
+<   SetPixelAreaSD(TRUE);
+<   SetPixelSD(FALSE);
+---
+>   SetSensorSD(FALSE);
+>   SetPixelAreaSD(FALSE);
+>   SetPixelSD(TRUE);
+78d82
+< 
+82a87
+> 
+86a92,94
+>   G4double  sensorDZ = 330*micrometer;
+>   G4double  epitaxDZ = 30*micrometer;
+> 
+88c96
+<   SetSensorSize(G4ThreeVector(1.25*cm,330*micrometer,5.0*cm));
+---
+>   SetSensorSize(G4ThreeVector(1.25*cm,sensorDZ,5.0*cm));
+90c98
+<   SetDySubstrate(300.*micrometer);
+---
+>   SetDySubstrate(sensorDZ-epitaxDZ);
+92c100
+<   SetDyEpitaxial(30*micrometer);
+---
+>   SetDyEpitaxial(epitaxDZ);
+95,98c103,104
+<   //SetNzPixels(2000);
+<   //SetNxPixels(500);
+<   SetNzPixels(5);
+<   SetNxPixels(2);
+---
+>   SetNzPixels(2000);
+>   SetNxPixels(500);
+99a106
+> #if __VTXACFAREPCONF__
+101c108,110
+<   SetNLayers(4);
+---
+>   SetNLayers(3);
+>   // Number of sensors in a ladder in a layer
+>   G4int nsensors[] = {  3,  6,  9 };
+103c112,118
+<   G4int nladders[] = { 16, 24, 32, 40 };
+---
+>   G4int nladders[] = { 16, 24, 32 };
+>   // Radius of the layer
+>   G4double layerradius[] = { 2.5*cm, 5.0*cm, 7.5*cm };
+> #endif
+> #if __VTXSTDCONF__  
+>   // Number of laysers
+>   SetNLayers(4);
+106,107c121,134
+<   // Radius of the layers
+<   G4double layerradius[] = { 2.4*cm, 3.6*cm, 4.8*cm,6.0*cm};
+---
+>   // Number of ladders in a layer
+>   G4int nladders[] = { 16, 24, 32, 40 };
+>   // Radius of the layer
+>   G4double layerradius[] = { 2.4*cm, 3.6*cm, 4.8*cm, 6.0*cm };
+> #endif
+> #if __VTX5LYRCONF__
+>   SetNLayers(5);
+>   G4int nsensors[] = {  2,  3,  4,  5 ,6};
+>   G4int nladders[] = { 8, 16, 24, 32 ,40};
+>   G4double layerradius[] = { 1.5*cm, 2.7*cm, 3.9*cm, 5.1*cm ,6.3*cm};
+> #endif
+> 
+>   // Cover angle of VTX Mother Volume  ( not Used.)
+>   SetVTXAngle(205.*milliradian);
+113c140
+<   for ( G4int ilayer = 0; ilayer < fNLayers ; ilayer++ ){
+---
+>   for ( G4int ilayer = 0; ilayer < GetNLayers() ; ilayer++ ){
+179c206
+<   fVTXVisAtt       = FALSE;
+---
+>   fVTXVisAtt       = TRUE;
+182c209
+<   fSensorVisAtt    = FALSE;
+---
+>   fSensorVisAtt    = TRUE;
+185c212
+<   fPixelAreaVisAtt = TRUE;
+---
+>   fPixelAreaVisAtt = FALSE;
+Index: sources/vtx/src/J4VTXPixel.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXPixel.cc,v
+retrieving revision 1.3
+diff -r1.3 J4VTXPixel.cc
+1c1
+< // $Id$
+---
+> // $Id$
+62d61
+<     G4cout << " Pixel  size " << dxyzPixel << G4endl;      
+Index: sources/vtx/src/J4VTXPixelArea.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXPixelArea.cc,v
+retrieving revision 1.2
+diff -r1.2 J4VTXPixelArea.cc
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/src/J4VTXPixelAreaHit.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXPixelAreaHit.cc,v
+retrieving revision 1.3
+diff -r1.3 J4VTXPixelAreaHit.cc
+1c1
+< // $Id$
+---
+> // $Id$
+14c14,15
+< #include <iomanip.h>
+---
+> #include "g4std/iomanip"
+> #include "g4std/fstream"
+28c29
+<                  J4VComponent         *component,
+---
+> 				     J4VComponent         *component,
+31a33,36
+>  		                     G4double             weight,
+> 		                     const G4ThreeVector  &origin,
+> 		                     const G4ThreeVector  &origP,
+> 		                     const G4String       &process,
+43c48
+<               :J4VHit(component, trackID, mothertrackID,
+---
+>   :J4VHit(component, trackID, mothertrackID,
+45,49c50,56
+<                fLayerID(layerID),fLadderID(ladderID),
+<                fSensorID(sensorID),
+<                fInPosition(inPos),fOutPosition(outPos),
+<                fLocalInPosition(localinPos),
+<                fLocalOutPosition(localoutPos)
+---
+>   fOrigin(origin),
+>   fOriginP(origP),fProcess(process),fWeight(weight),
+>   fLayerID(layerID),fLadderID(ladderID),
+>   fSensorID(sensorID),
+>   fInPosition(inPos),fOutPosition(outPos),
+>   fLocalInPosition(localinPos),
+>   fLocalOutPosition(localoutPos)
+90a98,99
+>      G4int    mothertrk = GetMotherTrackID();
+>      G4double   weight   = fWeight;
+91a101
+>      G4double trkE = GetTotalEnergy()/keV;
+92a103,109
+>      G4double xorig = fOrigin.x()/mm;
+>      G4double yorig = fOrigin.y()/mm;
+>      G4double zorig = fOrigin.z()/mm;
+>      G4double xorigP = fOriginP.x()/keV;
+>      G4double yorigP = fOriginP.y()/keV;
+>      G4double zorigP = fOriginP.z()/keV;
+>      G4String procName = fProcess;
+95a113,122
+>      G4double xout = fOutPosition.x()/mm;
+>      G4double yout = fOutPosition.y()/mm;
+>      G4double zout = fOutPosition.z()/mm;
+>      G4double xLin = fLocalInPosition.x()/mm;
+>      G4double yLin = fLocalInPosition.y()/mm;
+>      G4double zLin = fLocalInPosition.z()/mm;
+>      G4double xLout= fLocalOutPosition.x()/mm;
+>      G4double yLout= fLocalOutPosition.y()/mm;
+>      G4double zLout= fLocalOutPosition.z()/mm;
+> 
+97,99c124,134
+<          << trk  << "\t" << pid << "\t" << charge << "\t" << dE
+< 	 <<"\t" <<  fLayerID  <<"\t" << fLadderID <<"\t"<< fSensorID
+< 	 <<"\t" <<  xin << "\t" << yin << "\t" << zin << G4endl;
+---
+> 	 << " " << xorig << " " << yorig << " " << zorig 
+> 	 << " " << xorigP << " " << yorigP << " " << zorigP 
+>          << " " << trk  << " " << mothertrk<< " " << weight
+> 	 << " " << pid << " " << charge << " " << trkE
+> 	 <<" " <<  fLayerID  <<" " << fLadderID 
+> 	 <<" " << fSensorID << " " <<dE
+> 	 <<" " <<  xin << " " << yin << " " << zin 
+> 	 <<" " <<  xout << " " << yout << " " << zout 
+> 	 <<" " <<  xLin << " " << yLin << " " << zLin 
+> 	 <<" " <<  xLout << " " << yLout << " " << zLout 
+> 	 <<" " <<  procName<< G4endl;
+118c153,155
+<   G4cerr << setiosflags(ios::fixed);
+---
+>   G4int prec = G4cerr.precision(2);
+> 
+>   G4cerr << G4std::setiosflags(G4std::ios::fixed);
+120c157
+< 	 << " position(mm)= " << setprecision(2) 
+---
+> 	 << " position(mm)= "
+124c161
+< 	 << " Edep(keV)= " << setprecision(2) 
+---
+> 	 << " Edep(keV)= " 
+126a164
+>   G4cerr.precision(prec);
+Index: sources/vtx/src/J4VTXPixelAreaSD.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXPixelAreaSD.cc,v
+retrieving revision 1.4
+diff -r1.4 J4VTXPixelAreaSD.cc
+14a15
+> #include "G4VProcess.hh"
+26c27
+<               fSTrack(0), fSLayer(0), fSLadder(0), fSSensor(0), 
+---
+>               fSTrack(-1), fSLayer(-1), fSLadder(-1), fSSensor(-1), 
+29c30
+<   G4cout << " XXXX PixelAreaSD XXXX " << G4endl;
+---
+>   G4cout << " ----- PixelAreaSD ----- " << G4endl;
+46d46
+<   //cout << " XXXX PixelAreaSD InitializeXXXX " << G4endl;
+59d58
+<   //G4cout << " XXXX PixelAreaSD ProcessHits XXXX " << G4endl;
+69a69,93
+>   G4double             weight           = GetWeight(); 
+> 
+>   const G4ThreeVector &origin = GetTrack()->GetVertexPosition();
+>   G4double orgkinE = GetTrack()->GetVertexKineticEnergy();
+>   G4ThreeVector  origP;
+>   if (orgkinE > 0 ){
+>     const G4ThreeVector &orgPDir = GetTrack()->GetVertexMomentumDirection();
+>     if ( &orgPDir != NULL ) {
+>       G4double mass = GetTrack()->GetDynamicParticle()->GetMass();
+>       G4double mom =  sqrt( orgkinE*orgkinE+2*orgkinE*mass );
+>       origP = 
+> 	G4ThreeVector(mom*orgPDir.x(),mom*orgPDir.y(),mom*orgPDir.z());
+>     }
+>   }else{
+>     origP = G4ThreeVector(0.,0.,0.);
+>   }
+> 
+>   G4String procName;
+>   if ( trackID==1 ) {
+>     procName = "ORIGIN";
+>   }else{
+>     const G4VProcess* process = GetTrack()->GetCreatorProcess();  
+>     procName = process->GetProcessName();
+>   }
+> 
+95a120
+> #if 1
+99a125,126
+> 			       weight,
+> 			       origin,origP,procName,
+110a138
+> #endif
+Index: sources/vtx/src/J4VTXPixelArray.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXPixelArray.cc,v
+retrieving revision 1.3
+diff -r1.3 J4VTXPixelArray.cc
+1c1
+< // $Id$
+---
+> // $Id$
+63d62
+<     G4cout << " Pixel Array size " << dxyzPixelArray << G4endl;
+Index: sources/vtx/src/J4VTXPixelHit.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXPixelHit.cc,v
+retrieving revision 1.3
+diff -r1.3 J4VTXPixelHit.cc
+1c1
+< // $Id$
+---
+> // $Id$
+14c14,15
+< #include <iomanip.h>
+---
+> #include "g4std/iomanip"
+> #include "g4std/fstream"
+31a33,36
+>  		                     G4double             weight,
+> 		                     const G4ThreeVector  &origin,
+> 		                     const G4ThreeVector  &origP,
+> 		                     const G4String       &process,
+48a54
+>            fOrigin(origin),  fOriginP(origP),fProcess(process),fWeight(weight),
+88c94
+< #if 1
+---
+> #if 0
+97a104,105
+>      G4int    mothertrk = GetMotherTrackID();
+>      G4double   weight   = fWeight;
+98a107
+>      G4double trkE = GetTotalEnergy()/keV;
+99a109,115
+>      G4double xorig = fOrigin.x()/mm;
+>      G4double yorig = fOrigin.y()/mm;
+>      G4double zorig = fOrigin.z()/mm;
+>      G4double xorigP = fOriginP.x()/keV;
+>      G4double yorigP = fOriginP.y()/keV;
+>      G4double zorigP = fOriginP.z()/keV;
+>      G4String procName = fProcess;
+102a119,133
+>      G4double xout = fOutPosition.x()/mm;
+>      G4double yout = fOutPosition.y()/mm;
+>      G4double zout = fOutPosition.z()/mm;
+>      G4double xpix = fPixPosition.x()/mm;
+>      G4double ypix = fPixPosition.y()/mm;
+>      G4double zpix = fPixPosition.z()/mm;
+>      G4double xlpix = fLocalPixPosition.x()/mm;
+>      G4double ylpix = fLocalPixPosition.y()/mm;
+>      G4double zlpix = fLocalPixPosition.z()/mm;
+>      G4double xlin = fLocalInPosition.x()/mm;
+>      G4double ylin = fLocalInPosition.y()/mm;
+>      G4double zlin = fLocalInPosition.z()/mm;
+>      G4double xlout = fLocalOutPosition.x()/mm;
+>      G4double ylout = fLocalOutPosition.y()/mm;
+>      G4double zlout = fLocalOutPosition.z()/mm;
+104c135,138
+<          << trk  << " " << pid << " " << charge << " " << dE
+---
+> 	 << " " << xorig << " " << yorig << " " << zorig
+>          << " " << xorigP << " " << yorigP << " " << zorigP
+>          << " " << trk  << " " << mothertrk<<" " << weight
+> 	 << " " << pid << " " << charge << " " << trkE
+106,108c140,147
+<          <<" " << fPixThetaID <<" " << fPixPhiID
+< 	 <<" " <<  xin << " " << yin << " " << zin << G4endl;
+< 
+---
+>          <<" " << fPixThetaID <<" " << fPixPhiID << " " << dE
+> 	 <<" " <<  xin << " " << yin << " " << zin 
+> 	 << " "<<  xout << " " << yout << " " << zout 
+> 	 << " "<<  xpix << " " << ypix << " " << zpix
+> 	 << " "<<  xlpix << " " << ylpix << " " << zlpix
+> 	 << " "<<  xlin << " " << ylin << " " << zlin
+> 	 << " "<<  xlout << " " << ylout << " " << zlout 
+> 	 << " " << procName<< G4endl;
+125a165
+>   G4int prec = G4cerr.precision(2);
+127c167
+<   G4cerr << setiosflags(ios::fixed);
+---
+>   G4cerr << G4std::setiosflags(G4std::ios::fixed);
+129c169
+< 	 << " position(mm)= " << setprecision(2) 
+---
+> 	 << " position(mm)= " 
+133c173
+< 	 << " Edep(keV)= " << setprecision(2) 
+---
+> 	 << " Edep(keV)= " 
+135a176
+>   G4cerr.precision(prec);
+Index: sources/vtx/src/J4VTXPixelSD.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXPixelSD.cc,v
+retrieving revision 1.4
+diff -r1.4 J4VTXPixelSD.cc
+13a14
+> #include "G4VProcess.hh"
+25,26c26,27
+<               fSTrack(0), fSLayer(0), fSLadder(0), fSSensor(0), 
+<               fSTpixel(0), fSPpixel(0), fSColNo(0)     
+---
+>               fSTrack(-1), fSLayer(-1), fSLadder(-1), fSSensor(-1), 
+>               fSTpixel(-1), fSPpixel(-1), fSColNo(0)     
+28c29
+<   G4cout << " XXXX PixelSD XXXX " << G4endl;
+---
+>   G4cout << " ----- PixelSD ----- " << G4endl;
+67a69,92
+>   G4double             weight           = GetWeight();
+> 
+>   const G4ThreeVector &origin = GetTrack()->GetVertexPosition();
+>   G4double orgkinE = GetTrack()->GetVertexKineticEnergy();
+>   G4ThreeVector  origP;
+>   if (orgkinE > 0 ){
+>     const G4ThreeVector &orgPDir = GetTrack()->GetVertexMomentumDirection();
+>     if ( &orgPDir != NULL ) {
+>       G4double mass = GetTrack()->GetDynamicParticle()->GetMass();
+>       G4double mom =  sqrt( orgkinE*orgkinE+2*orgkinE*mass );
+>       origP =
+>         G4ThreeVector(mom*orgPDir.x(),mom*orgPDir.y(),mom*orgPDir.z());
+>     }
+>   }else{
+>     origP = G4ThreeVector(0.,0.,0.);
+>   }
+> 
+>   G4String procName;
+>   if ( trackID==1 ) {
+>     procName = "ORIGIN";
+>   }else{
+>     const G4VProcess* process = GetTrack()->GetCreatorProcess();
+>     procName = process->GetProcessName();
+>   }
+106a132,133
+> 			       weight,
+> 			       origin,origP,procName,
+Index: sources/vtx/src/J4VTXSensor.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXSensor.cc,v
+retrieving revision 1.4
+diff -r1.4 J4VTXSensor.cc
+1c1
+< // $Id$
+---
+> // $Id$
+14a15
+> #include "J4VTXSensorSD.hh"
+86a88
+>   if ( !(OpenParameterList()->IsSensorSD()) ){
+95a98
+>   }
+103a107,114
+>   if(!GetLV()) Assemble();
+> 
+>   if (OpenParameterList()->IsSensorSD()){
+>     J4VTXSensorSD* sd = new J4VTXSensorSD(this);
+>     Register(sd);
+>     SetSD(sd);
+>   }
+> 
+117,118d127
+<   G4cout << " Sensor === GetCopyNo" << sensorID << G4endl;
+< 
+122a132,133
+> 
+>   if (!GetSD()) Cabling(); 
+Index: sources/vtx/src/J4VTXSubstrate.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VTXSubstrate.cc,v
+retrieving revision 1.2
+diff -r1.2 J4VTXSubstrate.cc
+1c1
+< // $Id$
+---
+> // $Id$
+Index: sources/vtx/src/J4VVTXDetectorComponent.cc
+===================================================================
+RCS file: /proj/soft/CVSMASTER/Jupiter/sources/vtx/src/J4VVTXDetectorComponent.cc,v
+retrieving revision 1.2
+diff -r1.2 J4VVTXDetectorComponent.cc
+1c1
+< // $Id$
+---
+> // $Id$
