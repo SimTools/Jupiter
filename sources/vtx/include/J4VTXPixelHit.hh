@@ -112,9 +112,10 @@ private:
   G4ThreeVector         fPixPosition;  
   G4ThreeVector         fInPosition;
   G4ThreeVector         fOutPosition;
+  G4ThreeVector         fLocalPixPosition;  
   G4ThreeVector         fLocalInPosition;
   G4ThreeVector         fLocalOutPosition;
-  G4ThreeVector         fLocalPixPosition;  
+
 
   static J4Output      *fOutput; // Pointer to Output Module
   static J4VTXPixelHitAllocator fHitAllocator;
