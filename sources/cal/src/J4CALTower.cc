@@ -21,7 +21,7 @@
 // constants (detector parameters)
 //--------------------------------
 
-G4String J4CALTower::fFirstName("Tower");
+const G4String& J4CALTower::fFirstName( "Tower" );
 
 //=====================================================================
 //---------------------
@@ -31,13 +31,13 @@ G4String J4CALTower::fFirstName("Tower");
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4CALTower::J4CALTower(J4VDetectorComponent *parent,
-                                        G4int  nclones,
-                                        G4int  nbrothers, 
-                                        G4int  me,
-                                        G4int  copyno ) :
-             J4VCALDetectorComponent( fFirstName, parent, nclones,
-                                      nbrothers, me, copyno  ) 
+J4CALTower::J4CALTower( J4VDetectorComponent *parent,
+                                       G4int  nclones,
+                                       G4int  nbrothers, 
+                                       G4int  me,
+                                       G4int  copyno ) 
+: J4VCALDetectorComponent( fFirstName, parent, nclones,
+                                 nbrothers, me, copyno  ) 
 {   
 }
 
@@ -46,9 +46,8 @@ J4CALTower::J4CALTower(J4VDetectorComponent *parent,
 
 J4CALTower::~J4CALTower()
 {
-   if (Deregister(fEMcal)) delete fEMcal;
-   if (Deregister(fHDcal)) delete fHDcal;
-  // if (Deregister(fBlock)) delete fBlock;
+   if ( Deregister(fEMcal) ) delete fEMcal;
+   if ( Deregister(fHDcal) ) delete fHDcal;
 }
 
 //=====================================================================
@@ -62,8 +61,8 @@ void J4CALTower::Assemble()
       J4CALSubLayerParameterList* subList = ptrList -> GetSubLayerParam();
       G4Sphere *mothercone = (G4Sphere *)(GetMother()->GetSolid());
 
-      G4double EMThickness = (ptrList->GetEMNLayers()) * (subList->GetTotalLayerSize("EM"));
-      G4double HDThickness = (ptrList->GetHDNLayers()) * (subList->GetTotalLayerSize("HD"));
+      const G4double EMThickness = (ptrList->GetEMNLayers()) * (subList->GetTotalLayerSize("EM"));
+      const G4double HDThickness = (ptrList->GetHDNLayers()) * (subList->GetTotalLayerSize("HD"));
       
       G4double rmin   = mothercone->GetInsideRadius();
       G4double rmax   = rmin + EMThickness + HDThickness; 
@@ -73,9 +72,9 @@ void J4CALTower::Assemble()
       G4double sphi   = - 0.5 * dphi;
   	
       // MakeSolid ----------//
-      G4Sphere* tower = new G4Sphere(GetName(), rmin, rmax, sphi, dphi, stheta, dtheta);
-      Register(tower);
-      SetSolid(tower);
+      G4Sphere* tower = new G4Sphere( GetName(), rmin, rmax, sphi, dphi, stheta, dtheta );
+      Register( tower );
+      SetSolid( tower );
     
       // MakeLogicalVolume --//  
       MakeLVWith(OpenMaterialStore()->Order(ptrList->GetTowerMaterial()));
@@ -85,15 +84,15 @@ void J4CALTower::Assemble()
 
       // Install daughter PV //
 
-      fEMcal = new J4CALEM(this);  
-      Register(fEMcal);
-      fEMcal->InstallIn(this);
-      SetDaughter(fEMcal);
+      fEMcal = new J4CALEM( this );  
+      Register( fEMcal );
+      fEMcal->InstallIn( this );
+      SetDaughter( fEMcal );
       
-      fHDcal = new J4CALHD(this);  
-      Register(fHDcal);
-      fHDcal->InstallIn(this);
-      SetDaughter(fHDcal);
+      fHDcal = new J4CALHD( this );  
+      Register( fHDcal );
+      fHDcal->InstallIn( this );
+      SetDaughter( fHDcal );
       
    }
 }
@@ -108,12 +107,11 @@ void J4CALTower::Cabling()
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CALTower::InstallIn(J4VComponent         *mother,
+void J4CALTower::InstallIn( J4VComponent         *mother,
                             G4RotationMatrix     *prot, 
                             const G4ThreeVector  &tlate ) 
 { 
    Assemble();			// You MUST call Assemble(); at first.
-  				// 
   
    // Placement function into mother object...
    ///////////////////////////////////////////////////////////////////////
