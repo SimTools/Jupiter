@@ -11,14 +11,15 @@
 //*************************************************************************
 
 #include "J4CAL.hh"
-#include "J4CALSD.hh"
+#include "J4CALCone.hh"
+#include "J4Timer.hh"
 
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
 
-G4String J4CAL::fFirstName("CAL");
+const G4String& J4CAL::fFirstName( "CAL" );
 
 //=====================================================================
 //---------------------
@@ -32,11 +33,10 @@ J4CAL::J4CAL(J4VDetectorComponent *parent,
                             G4int  nclones,
                             G4int  nbrothers, 
                             G4int  me,
-                            G4int  copyno ) :
-       J4VCALDetectorComponent(fFirstName, parent, nclones,
-                               nbrothers, me, copyno),
-       fCones(0)
-{   
+                            G4int  copyno )
+: J4VCALDetectorComponent( fFirstName, parent, nclones,
+                                       nbrothers, me, copyno )
+{
 }
 
 //=====================================================================
@@ -44,15 +44,15 @@ J4CAL::J4CAL(J4VDetectorComponent *parent,
 
 J4CAL::~J4CAL()
 {
-#ifndef __GEANT452__
-   if (fCones) {
-      J4CALParameterList *list = OpenParameterList(); 
-      for (G4int i=0; i < list->GetNcones(); i++) {
+//#ifndef __GEANT452__
+   if ( fCones ) {
+      J4CALParameterList *ptrList = OpenParameterList(); 
+      for ( G4int i = 0; i < ptrList->GetNcones(); i++ ) {
          if (Deregister(fCones[i])) delete fCones[i];
       }
       if (Deregister(fCones)) delete [] fCones;
    }
-#endif
+//#endif
 }
 
 //=====================================================================
@@ -60,21 +60,21 @@ J4CAL::~J4CAL()
 
 void J4CAL::Assemble() 
 {   
-   if(!GetLV()){
+   if ( !GetLV() ) {
       J4CALParameterList *ptrList = OpenParameterList(); 
-  	
-      G4double rmin        = ptrList->GetCALInnerR();
-      G4double rmax        = ptrList->GetCALOuterR();
-      G4double len         = ptrList->GetCALOuterHalfZ();
-      G4double dphi        = ptrList->GetCALDeltaPhi();
-      G4double endcaprmin  = ptrList->GetEndcapInnerR();
+
+      G4double rmin        = ptrList -> GetCALInnerR();
+      G4double rmax        = ptrList -> GetCALOuterR();
+      G4double len         = ptrList -> GetCALOuterHalfZ();
+      G4double dphi        = ptrList -> GetCALDeltaPhi();
+      G4double endcaprmin  = ptrList -> GetEndcapInnerR();
       G4double endcaphalfz = 0.5 * (len - ptrList->GetCALInnerHalfZ());
   	
       // MakeSolid ----------//
-      OrderNewTubs (rmin, rmax, len, dphi, endcaphalfz, endcaprmin);
+      OrderNewTubs( rmin, rmax, len, dphi, endcaphalfz, endcaprmin );
     
       // MakeLogicalVolume --//  
-      MakeLVWith(OpenMaterialStore()->Order(ptrList->GetCALMaterial()));
+      MakeLVWith( OpenMaterialStore()->Order(ptrList->GetCALMaterial()) );
     
       // SetVisAttribute ----//
       PaintLV(ptrList->GetCALVisAtt(), ptrList->GetCALColor());
@@ -86,13 +86,13 @@ void J4CAL::Assemble()
       //* for whole tower printing -------------------
       G4int ncones = ptrList->GetNcones();
       //////////////////////////////////////////////////////////////////////
-      fCones       = new J4CALCone* [ncones];
+      fCones = new J4CALCone* [ncones];
       Register(fCones);
-      for (G4int i=0; i<ncones; i++) {
-         fCones[i] = new J4CALCone(this, 1, ncones, i );
-         Register(fCones[i]);
-         fCones[i] ->InstallIn(this);
-         SetDaughter(fCones[i]);
+      for ( G4int i = 0; i < ncones; i++ ) {
+         fCones[i] = new J4CALCone( this, 1, ncones, i );
+         Register( fCones[i] );
+         fCones[i] -> InstallIn( this );
+         SetDaughter( fCones[i] );
       }
    }
 }
@@ -102,26 +102,30 @@ void J4CAL::Assemble()
 
 void J4CAL::Cabling()
 {
-  if ( !GetSD() ) {
-    J4CALSD* sd = new J4CALSD(this);
-    Register(sd);
-    SetSD(sd);
-  }
+  //if ( !GetSD() ) {
+   // J4CALSD* sd = new J4CALSD(this);
+   // Register(sd);
+   // SetSD(sd);
+  //}
 }
 
 //=====================================================================
 //* InstallIn  --------------------------------------------------------
 
-void J4CAL::InstallIn(J4VComponent         *mother,
-                      G4RotationMatrix     *prot, 
-                      const G4ThreeVector  &tlate )
+void J4CAL::InstallIn( J4VComponent         *mother,
+                       G4RotationMatrix     *prot, 
+                       const G4ThreeVector  &tlate )
 { 
+  G4int clockID = -1;
+  J4Timer timer( clockID, "J4CAL", "InstallIn()" );
+  timer.Start(); 
   Assemble();			// You MUST call Assemble(); at first.
-  				// 
   
   // Placement function into mother object...
   SetPVPlacement();
-  
+
+  //Cabling();
+  timer.Stop();
 }
 
 
@@ -129,7 +133,6 @@ void J4CAL::InstallIn(J4VComponent         *mother,
 void J4CAL::Draw()
 {
   // set visualization attributes
-  
 }
 	
 //* Print  --------------------------------------------------------
