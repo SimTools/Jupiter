@@ -13,7 +13,6 @@
 #include "G4Types.hh"
 #include "J4CALAddress.hh"
 #include "J4CALParameterList.hh"
-//#include "J4CALSubLayerParameterList.hh"
 
 //=====================================================================
 //---------------------
@@ -49,14 +48,6 @@ G4int J4CALAddress::GetCellID( G4int coneID, G4int towerID,
   const G4int nEMMiniTowers = ptrList -> GetEMMiniTowerNClones();
   const G4int nHDMiniTowers = ptrList -> GetHDMiniTowerNClones();
   const G4int nIsEM         = ptrList -> GetNIsEM();
-
-  G4cerr << "coneID = " << coneID << " " 
-         << "towerID = " << towerID << " "   
-         << "isEM = " << isEM << " "   
-         << "miniConeID = " << miniConeID << " "   
-         << "miniTowerID = " << miniTowerID << " "   
-         << "layerID = " << layerID 
-         << G4endl;
 
   if ( isEM ) 
     cellID = ((((coneID*nTowers + towerID)*nIsEM + 0)*nEMMiniCones + miniConeID)*nEMMiniTowers + miniTowerID)*nEMLayers + layerID;
