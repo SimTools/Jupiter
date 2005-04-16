@@ -11,6 +11,8 @@
 //*************************************************************************
 
 #include "J4ITParameterList.hh"
+#include "J4ParameterTable.hh"
+#include <vector>
 
 J4ITParameterList * J4ITParameterList::fgInstance = 0;
 
@@ -50,8 +52,12 @@ J4ITParameterList::~J4ITParameterList()
 void J4ITParameterList::SetMaterials()
 {
 #if 1
-   fITMaterial          = "Air";
-   fLayerMaterial       = "Silicon";
+  //   fITMaterial          = "Air";
+  //   fLayerMaterial       = "Silicon";
+   
+   fITMaterial = J4ParameterTable::GetValue("J4IT.Material","Air");
+   fLayerMaterial = J4ParameterTable::GetValue("J4IT.Layer.Material","Silicon");
+
 #else
    fITMaterial          = "vacuum";
    fLayerMaterial       = "vacuum";
@@ -71,6 +77,8 @@ void J4ITParameterList::SetParameters()
 #ifdef __GLD_V1__
    fNlayers             = 4;
 #endif
+   fNlayers = J4ParameterTable::GetValue("J4IT.NLayers",4);
+
    fLayerPhiOffset      = new G4double[fNlayers];
    fLayerPhiOffset[0]   = 0.*rad; // 
    fLayerPhiOffset[1]   = 0.*rad; //
@@ -78,13 +86,21 @@ void J4ITParameterList::SetParameters()
    fLayerPhiOffset[3]   = 0.*rad; // 
    fLayerPhiOffset[4]   = 0.*rad; //
 
-   fLayerThick          = 0.5616*mm; 
-   fLayerRspacing       = 7.0*cm;
+   //   fLayerThick          = 0.5616*mm; 
+   //   fLayerRspacing       = 7.0*cm;
+   fLayerThick = J4ParameterTable::GetValue("J4IT.Layer.Thickness",0.05616)*cm;
+   fLayerRspacing = J4ParameterTable::GetValue("J4IT.Layer.RSpacing",7.0)*cm;
 #if 1
    fLayerHalfZincrement = 14.5*cm;
    fLayerDeltaPhi       = 360.*deg;
    fFirstLayerHalfZ     = 18.5*cm;
    fFirstLayerInnerR    = 9.0*cm;
+   
+   fLayerHalfZincrement = J4ParameterTable::GetValue("J4IT.Layer.HalfZIncrement",14.5)*cm;
+   fLayerDeltaPhi       = 360.*deg;
+   fFirstLayerHalfZ     = J4ParameterTable::GetValue("J4IT.FirstLayer.HalfZ",18.5)*cm;
+   fFirstLayerInnerR    = J4ParameterTable::GetValue("J4IT.FirstLayer.InnerRadius",9.0)*cm;
+
 #else
    fLayerHalfZincrement = 14.0*cm;
    fLayerDeltaPhi       = 360.*deg;
@@ -97,16 +113,27 @@ void J4ITParameterList::SetParameters()
 //* SetVisAttributes --------------------------------------------------
 void J4ITParameterList::SetVisAttributes()
 {
-   fITVisAtt          = FALSE;
-   fLayerVisAtt       = TRUE;
+  //   fITVisAtt          = FALSE;
+  //   fLayerVisAtt       = TRUE;
+
+   fITVisAtt = J4ParameterTable::GetValue("J4IT.VisAtt",FALSE);
+   fLayerVisAtt = J4ParameterTable::GetValue("J4IT.VisAtt.Layer",TRUE);
+
 }
 
 //=====================================================================
 //* SetColors ---------------------------------------------------------
 void J4ITParameterList::SetColors()
 {
-   SetITColor(G4Color(1., 0., 1.));
-   SetLayerColor(G4Color(1., 0., 1.));
+  std::vector<double> col;
+  col=J4ParameterTable::GetDValue("J4IT.Color","1.0 0.0 1.0 1.0",4);
+  SetITColor(G4Color(col[0], col[1], col[2], col[3]));
+  col=J4ParameterTable::GetDValue("J4IT.Color.Layer","1.0 0.0 1.0 1.0",4);
+  SetLayerColor(G4Color(col[0], col[1], col[2], col[3]));
+
+  //   SetITColor(G4Color(1., 0., 1.));
+  //   SetLayerColor(G4Color(1., 0., 1.));
+  
 }
 
 

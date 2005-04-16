@@ -27,17 +27,7 @@ class J4SOLParameterList : public J4VParameterList
  protected:
    J4SOLParameterList(G4double ri     = 375.*cm,
                       G4double ro     = 450.*cm,
-                      G4double len    = 380.*cm,
-                      G4double bfield = 3.*tesla,
-                      G4double fieldr =  157.*cm)
-                  //  G4double fieldr =  400.*cm)
-           : J4VParameterList("SOL"), 
-             fSOLMaterial("Air"),
-             fSOLVisAtt(TRUE),
-             fSOLColor(0.7, 0.5, 0.5),
-             fFieldR(fieldr),
-             fBField(bfield){}
-
+                      G4double len    = 380.*cm);
  public: 
 
    static J4SOLParameterList  *GetInstance();

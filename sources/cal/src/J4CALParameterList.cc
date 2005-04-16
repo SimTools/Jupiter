@@ -12,8 +12,10 @@
 
 #include "J4CALParameterList.hh"
 #include <algorithm>
+#include <vector>
 #include "TVNewton.hh"
 #include "geomdefs.hh"
+#include "J4ParameterTable.hh"
 
 J4CALParameterList* J4CALParameterList::fgInstance = 0;
 
@@ -63,11 +65,10 @@ void J4CALParameterList::SetMaterials()
    fMiniConeMaterial      = "Air";
    fMiniTowerMaterial     = "Air";
    fLayerMaterial         = "Air";
-   fEMAbsLayerMaterial    = "Lead";
-   fHDAbsLayerMaterial    = "Lead";
-   fEMActiveLayerMaterial = "Scintillator";
-   fHDActiveLayerMaterial = "Scintillator";
-
+   fEMAbsLayerMaterial    = J4ParameterTable::GetValue("J4CAL.EM.AbsLayerMaterial","Lead");
+   fHDAbsLayerMaterial    = J4ParameterTable::GetValue("J4CAL.HD.AbsLayerMaterial","Lead");
+   fEMActiveLayerMaterial = J4ParameterTable::GetValue("J4CAL.EM.ActiveLayerMaterial","Scintillator");
+   fHDActiveLayerMaterial = J4ParameterTable::GetValue("J4CAL.HD.ActiveLayerMaterial","Scintillator");
 #else
    fCALMaterial           = "vacuum";
    fConeMaterial          = "vacuum";
@@ -100,7 +101,7 @@ void J4CALParameterList::SetParameters()
 
    // Endcap ------------------ 
 #if defined(__GLD_V1__)
-   fEndcapInnerR    =  39.9*cm;
+   fEndcapInnerR    =  J4ParameterTable::GetValue("J4CAL.Endcap.InnerRadius",39.9)*cm;
 #else
    fEndcapInnerR    =  45.*cm;
 #endif
@@ -108,15 +109,15 @@ void J4CALParameterList::SetParameters()
    fEndcapPhiOffset =   0.*deg;
 
    // Tower -------------------
-   //fNominalBarrelTowerFrontSize = 4. *cm;   // Nominal granularity of BarrelTower 
-   //fNominalEndcapTowerFrontSize = 4. *cm;   // Nominal granularity of EndcapTower
-   fNominalBarrelTowerFrontSize = 12. *cm;   // Nominal granularity of BarrelTower 
-   fNominalEndcapTowerFrontSize = 12. *cm;   // Nominal granularity of EndcapTower
+   fNominalBarrelTowerFrontSize = J4ParameterTable::GetValue("J4CAL.BarrelTower.FrontSize",12.0)*cm;
+   fNominalEndcapTowerFrontSize = J4ParameterTable::GetValue("J4CAL.EndcapTower.FrontSize",12.0)*cm;
 
 #if defined(__GLD_V1__)
    // default: __GLD_V1__
-   fBarrelTowerFrontRho = 210.*cm; // Towers must be placed in a CAL volume completely.  
-   fEndcapTowerFrontZ   = 270.*cm; // Check kern/J4ParameterList.cc and 
+   fBarrelTowerFrontRho = J4ParameterTable::GetValue("J4CAL.BarrelTower.FrontRadius",210.0)*cm; 
+                                  // Towers must be placed in a CAL volume completely.  
+   fEndcapTowerFrontZ   = J4ParameterTable::GetValue("J4CAL.EndcapTower.FrontZ",270.0)*cm; 
+                                  // Check kern/J4ParameterList.cc and 
                                    // see CalcNextTowerEdgeAngle().
 #else
    fBarrelTowerFrontRho = 160.*cm; // Towers must be placed in a CAL volume completely.  
@@ -130,34 +131,32 @@ void J4CALParameterList::SetParameters()
    // as a dip angle(lambda)
 
    // EM ------------------
-   //fEMNLayers          = 10;
-   fEMNLayers          = 38;
-   fEMMiniConeNClones  = 3;
-   fEMMiniTowerNClones = 3;
+   fEMNLayers          = J4ParameterTable::GetValue("J4CAL.EM.NLayers",38);
+   fEMMiniConeNClones  = J4ParameterTable::GetValue("J4CAL.EM.MiniCone.NCLones",3);
+   fEMMiniTowerNClones = J4ParameterTable::GetValue("J4CAL.EM.MiniTower.NClones",3);
 
    // HD ------------------
-   //fHDNLayers          = 10;
-   fHDNLayers          = 130;
-   fHDMiniTowerNClones = 1;
-   fHDMiniConeNClones  = 1;
+   fHDNLayers          = J4ParameterTable::GetValue("J4CAL.HD.NLayers",130);
+   fHDMiniTowerNClones = J4ParameterTable::GetValue("J4CAL.HD.MiniCone.NCLones",1);
+   fHDMiniConeNClones  = J4ParameterTable::GetValue("J4CAL.HD.MiniTower.NClones",1);
 
    // SubLeyars -----------
-   fNSubLayers = 2;
+   fNSubLayers = J4ParameterTable::GetValue("J4CAL.NSubLayers",2);
 
    // Thickness of AbsLayer ------------
-   fEMAbsLayerThickness = 4. *mm;
-   fHDAbsLayerThickness = 8. *mm;
+   fEMAbsLayerThickness = J4ParameterTable::GetValue("J4CAL.EM.AbsLayerThickness",0.4)*cm;
+   fHDAbsLayerThickness = J4ParameterTable::GetValue("J4CAL.HD.AbsLayerThickness",0.8)*cm;
  
    // Thickness of ActiveLayer ------------
-   fEMActiveLayerThickness = 1. *mm;
-   fHDActiveLayerThickness = 2. *mm;
+   fEMActiveLayerThickness = J4ParameterTable::GetValue("J4CAL.EM.ActiveLayerThickness",0.1)*cm;
+   fHDActiveLayerThickness = J4ParameterTable::GetValue("J4CAL.HD.ActiveLayerThickness",0.2)*cm;
 
    
    // Number of Barrel types
-   fNIsBarrel          = 2;
+   fNIsBarrel          = J4ParameterTable::GetValue("J4CAL.NumberOfBarrelTypes",2);
 
    // Nubmer of CAL types
-   fNIsEM              = 2;
+   fNIsEM              = J4ParameterTable::GetValue("J4CAL.NumberOfCalTypes",2);
  
 
 
@@ -241,7 +240,7 @@ void J4CALParameterList::SetTowerParameters( G4double startlambda,
    G4double width;      // tile width of tower-front 
    G4double lambda;     // tower edge angle (lower side of lambda) 
    G4double nextlambda; // tower edge angle (upper side of lambda)  
-   G4double dlambda;    // nextlambda - lambda
+   G4double dlambda=0;    // nextlambda - lambda
    G4double tanlambda;
    G4double tanlambda2;
 
@@ -585,9 +584,11 @@ void J4CALParameterList::ShowTowerParameters()
 //* SetVisAttributes --------------------------------------------------
 void J4CALParameterList::SetVisAttributes()
 {
-   fCALVisAtt         = TRUE;//FALSE;
-   fBarrelVisAtt      = FALSE;
-   fEndcapVisAtt      = FALSE;
+   fCALVisAtt         = J4ParameterTable::GetValue("J4CAL.VisAtt",TRUE);
+   fBarrelVisAtt      = J4ParameterTable::GetValue("J4CAL.VisAtt.Barrel",TRUE);
+   fEndcapVisAtt      = J4ParameterTable::GetValue("J4CAL.VisAtt.Endcap",TRUE);
+
+#if 0
 #ifdef __DRAWONETOWER__
    fConeVisAtt        = TRUE;
    fTowerVisAtt       = TRUE;
@@ -607,12 +608,48 @@ void J4CALParameterList::SetVisAttributes()
    fLayerVisAtt       = FALSE;
    fSubLayerVisAtt    = FALSE;
 #endif
+#endif
+
+   fConeVisAtt        = J4ParameterTable::GetValue("J4CAL.VisAtt.Cone",FALSE);
+   fTowerVisAtt       = J4ParameterTable::GetValue("J4CAL.VisAtt.Tower",TRUE);
+   fEMVisAtt          = J4ParameterTable::GetValue("J4CAL.VisAtt.EM",FALSE);
+   fHDVisAtt          = J4ParameterTable::GetValue("J4CAL.VisAtt.HD",FALSE);
+   fMiniConeVisAtt    = J4ParameterTable::GetValue("J4CAL.VisAtt.MiniCone",FALSE);
+   fMiniTowerVisAtt   = J4ParameterTable::GetValue("J4CAL.VisAtt.MiniTower",FALSE);
+   fLayerVisAtt       = J4ParameterTable::GetValue("J4CAL.VisAtt.Layer",FALSE);
+   fSubLayerVisAtt    = J4ParameterTable::GetValue("J4CAL.VisAtt.SubLayer",FALSE);
+
 }
 
 //=====================================================================
 //* SetColors ---------------------------------------------------------
 void J4CALParameterList::SetColors()
 {
+
+   std::vector<double> col;
+   col=J4ParameterTable::GetDValue("J4CAL.Color","0.0 0.0 1.0 1.0",4);
+   SetCALColor(G4Color(col[0], col[1], col[2], col[3]));
+   col=J4ParameterTable::GetDValue("J4CAL.Color.Barrel","0.0 0.0 1.0 1.0",4);
+   SetBarrelColor(G4Color(col[0], col[1], col[2], col[3]));
+   col=J4ParameterTable::GetDValue("J4CAL.Color.Endcap","0.0 0.0 1.0 1.0",4);
+   SetEndcapColor(G4Color(col[0], col[1], col[2], col[3]));
+   col=J4ParameterTable::GetDValue("J4CAL.Color.Cone","1.0 0.0 0.0 1.0",4);
+   SetConeColor(G4Color(col[0], col[1], col[2], col[3]));
+   col=J4ParameterTable::GetDValue("J4CAL.Color.Tower","0.0 1.0 0.0 1.0",4);
+   SetTowerColor(G4Color(col[0], col[1], col[2], col[3]));
+   col=J4ParameterTable::GetDValue("J4CAL.Color.EM","0.0 0.0 1.0 1.0",4);
+   SetEMColor(G4Color(col[0], col[1], col[2], col[3]));
+   col=J4ParameterTable::GetDValue("J4CAL.Color.HD","1.0 0.0 0.0 1.0",4);
+   SetHDColor(G4Color(col[0], col[1], col[2], col[3]));
+   col=J4ParameterTable::GetDValue("J4CAL.Color.MiniCone","1.0 1.0 0.0 1.0",4);
+   SetMiniConeColor(G4Color(col[0], col[1], col[2], col[3]));
+   col=J4ParameterTable::GetDValue("J4CAL.Color.MiniTower","0.0 1.0 0.0 1.0",4);
+   SetMiniTowerColor(G4Color(col[0], col[1], col[2], col[3]));
+   col=J4ParameterTable::GetDValue("J4CAL.Color.Layer","0.0 1.0 0.0 1.0",4);
+   SetLayerColor(G4Color(col[0], col[1], col[2], col[3]));
+   col=J4ParameterTable::GetDValue("J4CAL.Color.SubLayer","0.0 1.0 0.0 1.0",4);
+   SetSubLayerColor(G4Color(col[0], col[1], col[2], col[3]));
+/*
    SetCALColor(G4Color(0., 0., 1.));
    SetBarrelColor(G4Color(0., 0., 1.));
    SetEndcapColor(G4Color(0., 0., 1.));
@@ -624,4 +661,5 @@ void J4CALParameterList::SetColors()
    SetMiniTowerColor(G4Color(0., 1., 0.));
    SetLayerColor(G4Color(0., 1., 0.));
    SetSubLayerColor(G4Color(0., 1., 0.));
+*/
 }

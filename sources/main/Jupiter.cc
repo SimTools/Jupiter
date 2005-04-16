@@ -25,7 +25,6 @@
 #define __INSTALLSOL__  
 #define __INSTALLMUD__  
 
-
 #ifdef __USEISOCXX__
 #include <sstream>
 #else
@@ -80,6 +79,7 @@
 #endif
 
 #include "J4CommandArguments.hh"
+#include "J4ParameterTable.hh"
 
 TBookKeeper* TBookKeeper::fgBookKeeper = new TBookKeeper(); 
 
@@ -89,6 +89,7 @@ int main(int argc, char** argv)
   if( ! J4CommandArguments::ParseArguments(argc, argv) ) {
 	exit(-1);
   }
+  J4ParameterTable::Print();
 
   std::cerr << "Verbose level=" << J4CommandArguments::VerboseLevel() << std::endl;
 
@@ -334,6 +335,10 @@ int main(int argc, char** argv)
   //-----------------------
   J4Timer::PrintAllAccumulatedTimes();
 
+  if ( J4ParameterTable::CollectDefaults() ) {
+	J4ParameterTable::PrintDefaults("jupiter.defaults"); 
+        cerr << "Default parameters has been written to jupiter.defaults" << endl;
+  }
 
 #ifdef G4VIS_USE
   delete visManager;

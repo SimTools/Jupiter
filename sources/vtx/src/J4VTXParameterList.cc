@@ -1,4 +1,4 @@
-// J4VTXParameterList.cc
+// J4vtxparameterlist.cc
 //*************************************************************************
 //* --------------------
 //* J4VTXParameterList
@@ -11,6 +11,8 @@
 //*************************************************************************
 
 #include "J4VTXParameterList.hh"
+#include "J4ParameterTable.hh"
+#include <vector>
 
 #define __VTXACFAREPCONF__  0
 #define __VTXSTDCONF__      1
@@ -56,14 +58,15 @@ J4VTXParameterList::~J4VTXParameterList()
 void J4VTXParameterList::SetMaterials()
 {
 #if 1
-  fVTXMaterial       = "Air";
-  fLayerMaterial     = "Silicon";
+  fVTXMaterial       = J4ParameterTable::GetValue("J4VTX.Material","Air");
+  fLayerMaterial     = J4ParameterTable::GetValue("J4VTX.Material.Layer","Silicon");
   //fLayerMaterial     = "Air";
-  fLadderMaterial    = "Air";
-  fSensorMaterial    = "Silicon";
-  fSubstrateMaterial = "Silicon";
-  fEpitaxialMaterial = "Silicon";
-  fPixelAreaMaterial = "Silicon";
+  fLadderMaterial    = J4ParameterTable::GetValue("J4VTX.Material.Ladder","Air");
+  fSensorMaterial    = J4ParameterTable::GetValue("J4VTX.Material.Sensor","Silicon");
+  fSubstrateMaterial = J4ParameterTable::GetValue("J4VTX.Material.Substrate","Silicon");
+  fEpitaxialMaterial = J4ParameterTable::GetValue("J4VTX.Material.Epitaxial","Silicon");
+  fPixelAreaMaterial = J4ParameterTable::GetValue("J4VTX.Material.PixelArea","Silicon");
+
 #else
   fVTXMaterial       = "vacuum";
   fLayerMaterial     = "vacuum";
@@ -80,11 +83,18 @@ void J4VTXParameterList::SetMaterials()
 //* SetSensitiveDetector-----------------------------------------------
 void J4VTXParameterList::SetSensitiveDetector()
 {
+  /*
   SetLayerSD(TRUE);    // if TRUE, Layer specific configuration.
   SetLadderSD(FALSE);
   SetSensorSD(FALSE);
   SetPixelAreaSD(FALSE);
   SetPixelSD(FALSE);
+  */
+  SetLayerSD(J4ParameterTable::GetValue("J4VTX.Activate.LayerSD",TRUE));
+  SetLadderSD(J4ParameterTable::GetValue("J4VTX.Activate.LadderSD",FALSE));
+  SetSensorSD(J4ParameterTable::GetValue("J4VTX.Activate.SensorSD",FALSE));
+  SetPixelAreaSD(J4ParameterTable::GetValue("J4VTX.Activate.PixelAreaSD",FALSE));
+  SetPixelSD(J4ParameterTable::GetValue("J4VTX.Activate.PixelSD",FALSE));
 }
 //=====================================================================
 //* SetParameters ------------------------------------------------------
@@ -102,19 +112,28 @@ void J4VTXParameterList::SetDefaults()
   SetDxyzMarginSize(G4ThreeVector(0.01*mm,0.01*mm,0.01*mm));
   SetDrMarginSize(0.5*mm);
 
-  G4double  sensorDZ = 330*micrometer;
-  G4double  epitaxDZ = 30*micrometer;
+  //  G4double  sensorDZ = 330*micrometer;
+  //  G4double  epitaxDZ = 30*micrometer;
+
+  G4double sensorWidth = J4ParameterTable::GetValue("J4VTX.Sensor.Width",1.25)*cm;
+  G4double sensorLength = J4ParameterTable::GetValue("J4VTX.Sensor.Length",5.0)*cm;
+  G4double sensorDZ = J4ParameterTable::GetValue("J4VTX.Sensor.Thickness",0.0330)*cm;
+  G4double epitaxDZ = J4ParameterTable::GetValue("J4VTX.Epitax.Thickness",0.0030)*cm;
+
 
   // Sensor Size 
-  SetSensorSize(G4ThreeVector(1.25*cm,sensorDZ,5.0*cm));
+  //  SetSensorSize(G4ThreeVector(1.25*cm,sensorDZ,5.0*cm));
+  SetSensorSize(G4ThreeVector(sensorWidth,sensorDZ,sensorLength));
   // Substrate Size
   SetDySubstrate(sensorDZ-epitaxDZ);
   // Epitaxial
   SetDyEpitaxial(epitaxDZ);
 
   // Number of Pixels
-  SetNzPixels(2000);
-  SetNxPixels(500);
+  //  SetNzPixels(2000);
+  //  SetNxPixels(500);
+  SetNzPixels(J4ParameterTable::GetValue("J4VTX.NzPixels",2000));
+  SetNxPixels(J4ParameterTable::GetValue("J4VTX.NxPixels",500));
 
 #if __VTXACFAREPCONF__
   // Number of laysers
@@ -128,13 +147,13 @@ void J4VTXParameterList::SetDefaults()
 #endif
 #if __VTXSTDCONF__  
   // Number of laysers
-  SetNLayers(4);
+  //  SetNLayers(4);
   // Number of sensors in a ladder in a layer
-  G4int nsensors[] = {  2,  3,  4,  5 };
+  //  G4int nsensors[] = {  2,  3,  4,  5 };
   // Number of ladders in a layer
-  G4int nladders[] = { 16, 24, 32, 40 };
+  //  G4int nladders[] = { 16, 24, 32, 40 };
   // Radius of the layer
-  G4double layerradius[] = { 2.4*cm, 3.6*cm, 4.8*cm, 6.0*cm };
+  //  G4double layerradius[] = { 2.4*cm, 3.6*cm, 4.8*cm, 6.0*cm };
 #endif
 #if __VTX5LYRCONF__
   SetNLayers(5);
@@ -142,12 +161,25 @@ void J4VTXParameterList::SetDefaults()
   G4int nladders[] = { 8, 16, 24, 32 ,40};
   G4double layerradius[] = { 1.5*cm, 2.7*cm, 3.9*cm, 5.1*cm ,6.3*cm};
 #endif
+  int nlayers=J4ParameterTable::GetValue("J4VTX.NLayers",4);
+  SetNLayers(nlayers);
+  // Number of sensors in a ladder in a layer
+  //  G4int nsensors[] = {  2,  3,  4,  5 };
+  std::vector<int> nsensors=J4ParameterTable::GetIValue("J4VTX.NSensors","2 3 4 5",nlayers);
+  // Number of ladders in a layer
+  //  G4int nladders[] = { 16, 24, 32, 40 };
+  std::vector<int> nladders=J4ParameterTable::GetIValue("J4VTX.NLadders","16 24 32 40",nlayers);
+  // Radius of the layer
+  //  G4double layerradius[] = { 2.4*cm, 3.6*cm, 4.8*cm, 6.0*cm };
+  std::vector<double> layerradius=J4ParameterTable::GetDValue("J4VTX.Layer.Radius","2.4 3.6 4.8 6.0",nlayers);
+  for(int iii=0;iii<nlayers;iii++){ layerradius[iii]*=cm; }
 
   // Cover angle of VTX Mother Volume  ( not Used.)
   SetVTXAngle(205.*milliradian);
 
   // Tilt of ladders
-  SetTilt(10*deg);
+  //  SetTilt(10*deg);
+  SetTilt(J4ParameterTable::GetValue("J4VTX.TiltAngle",10.0*deg));
 
   // Set parameters 
   for ( G4int ilayer = 0; ilayer < GetNLayers() ; ilayer++ ){
@@ -158,7 +190,9 @@ void J4VTXParameterList::SetDefaults()
 
   // MaxAllowedStep
   //SetMaxAllowedStep(0.001*mm);
-  SetMaxAllowedStep(0.01*mm);
+  //  SetMaxAllowedStep(0.01*mm);
+  SetMaxAllowedStep(J4ParameterTable::GetValue("J4VTX.MaxAllowedStep",0.001)*cm);
+
 }
 //=====================================================================
 //* SetParameters ------------------------------------------------------
@@ -230,19 +264,37 @@ void J4VTXParameterList::SetVisAttributes()
   fEpitaxialVisAtt = FALSE;
   fPixelAreaVisAtt = FALSE;
   fPixelVisAtt = FALSE;
+
+  fVTXVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt",FALSE);
+  fLayerVisAtt     = J4ParameterTable::GetValue("J4VTX.VisAtt.Layer",TRUE);
+  fLadderVisAtt    = J4ParameterTable::GetValue("J4VTX.VisAtt.Ladder",FALSE);
+  fSensorVisAtt    = J4ParameterTable::GetValue("J4VTX.VisAtt.Sensor",FALSE); 
+  fSubstrateVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt.Subtrate",FALSE); 
+  fEpitaxialVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt.Epitaxial",FALSE); 
+  fPixelAreaVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt.PixelArea",FALSE); 
+  fPixelVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt.Pixel",FALSE); 
+
 }
 
 //=====================================================================
 //* SetColors ---------------------------------------------------------
 void J4VTXParameterList::SetColors()
 {
-    fVTXColor       = new G4Color(0.5,0.5,0.5);  // gray
-    fLayerColor     = new G4Color(0.5,0.5,0.5);  // gray
-    fLadderColor    = new G4Color(1.0,1.0,0.0);  // yellow
-    fSensorColor    = new G4Color(0.0,0.0,1.0);  // blue
-    fSubstrateColor = new G4Color( 0.0,1.0,1.0); // cyan
-    fEpitaxialColor = new G4Color(0.0,1.0,0.0);  // green
-    fPixelAreaColor = new G4Color(1.0,0.0,1.0);  // magenta
+  std::vector<double> col;
+  col=J4ParameterTable::GetDValue("J4VTX.Color","0.5 0.5 0.5 1.0",4); // gray
+  fVTXColor       = new G4Color(col[0], col[1], col[2], col[3]);  
+  col=J4ParameterTable::GetDValue("J4VTX.Color.Layer","0.5 0.5 0.5 1.0",4); //gray
+  fLayerColor     = new G4Color(col[0], col[1], col[2], col[3]);  
+  col=J4ParameterTable::GetDValue("J4VTX.Color.Ladder","1.0 1.0 0.0 1.0",4);// yellow
+  fLadderColor    = new G4Color(col[0], col[1], col[2], col[3]);  
+  col=J4ParameterTable::GetDValue("J4VTX.Color.Sensor","1.0 1.0 0.0 1.0",4);//blue
+  fSensorColor    = new G4Color(col[0], col[1], col[2], col[3]);  
+  col=J4ParameterTable::GetDValue("J4VTX.Color.Subtrate","0.0 1.0 1.0 1.0",4);//cyan
+  fSubstrateColor = new G4Color(col[0], col[1], col[2], col[3]);
+  col=J4ParameterTable::GetDValue("J4VTX.Color.Epitaxial","0.0 1.0 0.0 1.0",4);//green
+  fEpitaxialColor = new G4Color(col[0], col[1], col[2], col[3]);  // green
+  col=J4ParameterTable::GetDValue("J4VTX.Color.PixelArea","1.0 0.0 1.0 1.0",4);//magenta
+  fPixelAreaColor = new G4Color(col[0], col[1], col[2], col[3]);  // magenta
 }
 
 
