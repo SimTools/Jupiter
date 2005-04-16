@@ -87,3 +87,27 @@ Some usefull parameters
 
 
     
++ -----------------------------------------------------------
+How to access parameters in the jupiter program.
+
+  To use it, include
+  #include "J4ParameterTable.hh"
+  in the source code.
+
+  At any where in the program, get a parameter by 
+
+   <type> a=J4ParameterTable::GetValue("para_name",default_value);
+
+  where <type> can be 
+    double, int, float, char*, bool
+  type of default_value should be same as <type>
+
+  To get lists of type, special functions are prepared.
+
+   std::vector<type> vec=J4ParameterTable::GetXValue("par_name","par_list",N)
+
+   where X= D, F, I corresponding to double, fload, int type.
+   By "par_list", parameter values are specified as a space-separated list.
+   N is the number of parameters.
+
+
