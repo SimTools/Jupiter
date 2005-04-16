@@ -1,0 +1,89 @@
+How to run Jupiter
+
++ --------------------------------------------------------------
+After a successful installation of Jupiter, the Jupiter application 
+$JUPITERROOT/bin/$G4SYSTEM/Jupiter is created.  
+At the time of this writing, the standard way to run Jupiter is to 
+run it in JSF environment which is provided in Satellites package.
+However, Jupiter standalone application would be still useful to create 
+display of detector geometry and to debug Jupiter itself, etc.
+
++ --------------------------------------------------------------
+When Jupiter is executed as an stand alone application, command 
+line arguments could be specified as follows
+
+  Jupiter [options]
+
+  options:
+    -v N : N is a message level.
+           > 10 ; Write message every time new geometry is created.
+           5-10 ; Write message of geometry whose rank is less than N-4.
+           < 5  ; No message is written at geometry creation.
+    -f FILE : Read parameters from the file FILE
+              More than one -f option can be specified.  In this case
+	      a value in the first file is used.
+    -w      : Write default parameters defined in the program 
+              to the file, jupiter.defaults
+    -help   : Print help message
+
+  After initialization of geometry and various constants, Jupiter
+can accepts commands using the Geant4 standard framework.  
+Such commands includes to draw geometry, specify input generator 
+data, etc.  Please see whole lists of commands prepared at 
+http://www-jlc.kek.jp/~miyamoto/Jupiter
+
+ 
++ --------------------------------------------------------------
+Jupiter parameter file
+
+Jupiter parameter files specify geometry parameters 
+( dimensions, positions, etc.) and visibility abilities, etc.
+In the program, default values are usually defined in programs,
+J4XXXParameterList.cc/hh, where XXX is sub-detector names.
+If a parameter is not given in the file, a default value is 
+used. Default values are listed in the file, gld_v1.dat. 
+
+At execution, files are specified by -f option.
+If more than one value is specified for a parameter,
+a value which appear at first is used. More than one 
+-f option can be used.  In such case a value which appear 
+in the first file is used.
+
+Format of the file is
+  - each line consists of parameter name and its value.
+  - First columns of comment line is #
+  - Units and conventions
+   	   length cm
+           angle  radian
+           weight g
+           Magnetic field  Tesla
+           For on-off type values, 0=Off, 1=On
+           For color data, red, green, blue, transparency
+
++ --------------------------------------------------------------
+Some usefull parameters
+
+ - Display related
+   xxx.Color.yyy:   red green blue transparency
+   xxx.VisAtt.yyy:  1(Display), 0(not display)
+
+ - Calorimeter geometry
+   J4CAL.xx.AbsLayerMaterial      : absorber material (lead, ...)
+   J4CAL.xx.AbsLayerThickness     : absorber thickness ( in cm)
+   J4CAL.xx.ActiveLayerMaterial   : active layer material
+   J4CAL.xx.ActiveLayerThickness  : active layer thickness ( in cm)
+   J4CAL.xx.MiniCone.NCLones      : N division of tower in phi(?) direction
+   J4CAL.xx.MiniTower.NClones     : N division of tower in z(?) direction 
+
+         xx=EM or HD
+
+   J4CAL.BarrelTower.FrontRadius  : barrel tower front radius
+   J4CAL.BarrelTower.FrontSize    : barrel tower front size
+   J4CAL.Endcap.InnerRadius       : endcap tower inner radius
+   J4CAL.EndcapTower.FrontSize    : endcap tower front size
+   J4CAL.EndcapTower.FrontZ       : endcap tower front Z position
+
+   Default CAL size is 4cmx4cm for EM and 12 cmx12cm for HD
+
+
+    
