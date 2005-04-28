@@ -56,7 +56,7 @@ void J4IRQC1SUS::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance();
   G4double qc1SUSInnerRadius = qc1List->GetQC1SUSRadius();
   G4double qc1SUSThickness   = qc1List->GetQC1SUSThick();
   G4double qc1SUSZLength     = qc1List->GetQC1ZLength();

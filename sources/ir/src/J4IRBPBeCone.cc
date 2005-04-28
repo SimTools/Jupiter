@@ -58,7 +58,7 @@ void J4IRBPBeCone::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRBPParameterList *bpList = new J4IRBPParameterList(OpenParameterList());
+    J4IRBPParameterList *bpList = J4IRBPParameterList::GetInstance();
     G4double rmin1 = bpList->GetBPIPRadius();
     G4double rmax1 = bpList->GetBPIPRadius()+bpList->GetBPIPThick();
     G4double rmin2 = bpList->GetBPDrumRadius();

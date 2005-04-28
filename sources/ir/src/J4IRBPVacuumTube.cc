@@ -59,9 +59,8 @@ void J4IRBPVacuumTube::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRBPParameterList* bpList=new J4IRBPParameterList(OpenParameterList());
-    J4IRWMaskParameterList* wmList =
-      new J4IRWMaskParameterList(OpenParameterList());
+    J4IRBPParameterList* bpList=J4IRBPParameterList::GetInstance();
+    J4IRWMaskParameterList* wmList =J4IRWMaskParameterList::GetInstance();
     G4double rmax = bpList->GetBPDrumRadius()+bpList->GetBPDrumThick();
     G4double zlen  = wmList->GetWMask2ZLength();
 
@@ -100,7 +99,7 @@ G4RotationMatrix* J4IRBPVacuumTube::GetRotation(){
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRBPVacuumTube::GetTranslation(){
   G4ThreeVector* position= new G4ThreeVector; 
-  J4IRBPParameterList* bpList=new J4IRBPParameterList(OpenParameterList());
+  J4IRBPParameterList* bpList=J4IRBPParameterList::GetInstance();
   G4double zpos = bpList->GetBPENDZPosition()+bpList->GetBPENDZLength()/2.;
   position->setZ(zpos);
   //position->setZ(_BPZPOS_+_BPZLEN_/2.);

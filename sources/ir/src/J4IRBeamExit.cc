@@ -57,7 +57,7 @@ void J4IRBeamExit::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance();
   G4double Rin = 0.*mm;
   G4double Rout= 10.*mm;
   G4double ZLength     = qc1List->GetQC1ZLength();
@@ -101,7 +101,7 @@ G4RotationMatrix* J4IRBeamExit::GetRotation(){
 //=====================================================================
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRBeamExit::GetTranslation(){
-  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance();
   G4double qc1ZLength     = qc1List->GetQC1ZLength();
   G4ThreeVector* position= new G4ThreeVector; 
   J4IRParameterList* list = OpenParameterList();

@@ -61,7 +61,7 @@ void J4IRQC1::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance();
   G4double qc1InnerRadius = qc1List->GetQC1Radius();
   G4double qc1Thickness   = qc1List->GetQC1Thick();
   G4double qc1ZLength     = qc1List->GetQC1ZLength();
@@ -127,7 +127,7 @@ G4RotationMatrix* J4IRQC1::GetRotation(){
 //=====================================================================
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRQC1::GetTranslation(){
-  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance(); 
   G4double qc1ZLength     = qc1List->GetQC1ZLength();
   G4ThreeVector* position= new G4ThreeVector; 
   J4IRParameterList* list = OpenParameterList();

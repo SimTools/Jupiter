@@ -55,7 +55,7 @@ void J4IRQC1Collar::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  J4IRQC1ParameterList* qc1List = J4IRQC1ParameterList::GetInstance();
   G4double qc1CollarInnerRadius = qc1List->GetQC1CollarRadius();
   G4double qc1CollarThickness   = qc1List->GetQC1CollarThick();
   G4double qc1CollarZLength     = qc1List->GetQC1ZLength();
@@ -93,7 +93,7 @@ void J4IRQC1Collar::Assemble()
 //* GetRotation  --------------------------------------------------------
 G4RotationMatrix* J4IRQC1Collar::GetRotation(){
   G4RotationMatrix* rotM = new G4RotationMatrix;
-  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance();
   G4double phi = qc1List->GetQC1CollarPhi();
   G4double dphi = qc1List->GetQC1CollarDPhi();
   //rotM->rotateZ((_QC1PHI_COLLAR_+_QC1DPHI_COLLAR_)+pi/2.*GetMyID());

@@ -92,7 +92,7 @@ void J4IR::Assemble()
   if(!GetLV()){
 
     J4IRParameterList* list = OpenParameterList();
-    J4IRWMaskParameterList* wlist = new J4IRWMaskParameterList(list);
+    J4IRWMaskParameterList* wlist = J4IRWMaskParameterList::GetInstance();
 
     // Calcurate parameters ----------
     G4double innersupporttubrad = list->GetIRSupportInnerRadius();
@@ -102,56 +102,59 @@ void J4IR::Assemble()
     G4double cylinderhalfz      = list->GetIRDrumZLength()/2.;
     G4double boxhalfx           = list->GetDxyzIRBox().x();
     G4double boxhalfy           = list->GetDxyzIRBox().y();
-    G4double boxhalfz           = list->GetDxyzIRBox().z();
+    G4double boxhalfz           = list->GetDxyzIRBox().z()+
+				list->GetDxyzMarginSize().z();
     G4double coneglobalz        = list->GetIRConeZPosition();
     G4double cylinderglobalz    = list->GetIRDrumZPosition();
     G4double boxglobalz         = list->GetIRBoxZPosition();
 
-    G4cout << "XX Beampipe Outer " << outerbeampiperad/mm << G4endl;
     // MakeSolid ---------------
     
     G4String beampipename( GetName() );
-    beampipename += ".Beampipe";
+    beampipename += "/Beampipe";
     G4VSolid *beampipe = new G4Tubs( beampipename, 0, outerbeampiperad,
                                      beampipehalfzlen, 0, 2*M_PI);  
     G4String irconerightname( GetName() );
-    irconerightname += ".IRconeright";
+    irconerightname += "/IRconeright";
     G4VSolid *irconeright = new G4Cons( irconerightname, 0, outerbeampiperad, 0,
                                         innersupporttubrad, conehalfz, 0, 2*M_PI); 
     G4String irconeleftname( GetName() );
-    irconeleftname += ".IRconelert";
+    irconeleftname += "/IRconelert";
     G4VSolid *irconeleft = new G4Cons( irconeleftname, 0, innersupporttubrad, 0,
                                        outerbeampiperad, conehalfz, 0, 2*M_PI); 
     G4String ircylindername( GetName() );
-    ircylindername += ".IRcylinder";
+    ircylindername += "/IRcylinder";
     G4VSolid *ircylinder = new G4Tubs( ircylindername, 0, innersupporttubrad,
                                        cylinderhalfz, 0, 2*M_PI);
     G4String irboxname( GetName() );
-    irboxname += ".IRbox";
+    irboxname += "/IRbox";
     G4VSolid *irbox = new G4Box( irboxname, boxhalfx, boxhalfy, boxhalfz);
-    
+
     G4String tmpsolid1name( GetName() );
-    tmpsolid1name += ".tmpsolid1";
+    tmpsolid1name += "/tmpsolid1";
     G4ThreeVector tmpsolid1tlate(0, 0, coneglobalz);
     G4VSolid *tmpsolid1 = new J4UnionSolid(tmpsolid1name, beampipe, irconeright,
                                        0, tmpsolid1tlate );
+
     G4String tmpsolid2name( GetName() );
-    tmpsolid2name += ".tmpsolid2";
+    tmpsolid2name += "/tmpsolid2";
     G4ThreeVector tmpsolid2tlate(0, 0, -coneglobalz);
     G4VSolid *tmpsolid2 = new J4UnionSolid(tmpsolid2name, tmpsolid1, irconeleft,
                                        0, tmpsolid2tlate );
+
     G4String tmpsolid3name( GetName() );
-    tmpsolid3name += ".tmpsolid3";
+    tmpsolid3name += "/tmpsolid3";
     G4ThreeVector tmpsolid3tlate(0, 0, cylinderglobalz);
     G4VSolid *tmpsolid3 = new J4UnionSolid(tmpsolid3name, tmpsolid2, ircylinder,
                                        0, tmpsolid3tlate );
     G4String tmpsolid4name( GetName() );
-    tmpsolid4name += ".tmpsolid4";
+    tmpsolid4name += "/tmpsolid4";
     G4ThreeVector tmpsolid4tlate(0, 0, -cylinderglobalz);
     G4VSolid *tmpsolid4 = new J4UnionSolid(tmpsolid4name, tmpsolid3, ircylinder,
                                        0, tmpsolid4tlate );
+
     G4String tmpsolid5name( GetName() );
-    tmpsolid5name += ".tmpsolid5";
+    tmpsolid5name += "/tmpsolid5";
     G4ThreeVector tmpsolid5tlate(0, 0, boxglobalz);
     G4VSolid *tmpsolid5 = new J4UnionSolid(tmpsolid5name, tmpsolid4, irbox,
                                        0, tmpsolid5tlate );
@@ -163,14 +166,13 @@ void J4IR::Assemble()
     Register(lastsolid);
     SetSolid(lastsolid);	// Don't forgat call it!
 
-
     // MakeLogicalVolume -------------
     MakeLVWith(OpenMaterialStore()->Order(list->GetIRMaterial()));
     
     // SetVisAttribute ---------------
-    //PaintLV(list->GetIRVisAtt(),list->GetIRColor());
-    PaintLV(FALSE,list->GetIRColor());
-  	
+    PaintLV(list->GetIRVisAtt(),list->GetIRColor());
+    // PaintLV(FALSE,list->GetIRColor());
+
     // Install daughter PV -----------
 #if 1
     fBeampipe = new J4IRBPPipe(this,1,1,0,-1);
@@ -179,40 +181,43 @@ void J4IR::Assemble()
     SetDaughter(fBeampipe);
 
     fBeamConeR = new J4IRBPCone(this,1,2,0,-1,FALSE);
-    fBeamConeL = new J4IRBPCone(this,1,2,1,-1,TRUE);
     Register(fBeamConeR);
-    Register(fBeamConeL);
     fBeamConeR->InstallIn(this);
-    fBeamConeL->InstallIn(this);
     SetDaughter(fBeamConeR);
+
+    fBeamConeL = new J4IRBPCone(this,1,2,1,-1,TRUE);
+    Register(fBeamConeL);
+    fBeamConeL->InstallIn(this);
     SetDaughter(fBeamConeL);
 
     fAlDrumR =  new J4IRBPAlDrum(this,1,2,0,-1,FALSE);
-    fAlDrumL =  new J4IRBPAlDrum(this,1,2,1,-1,TRUE);
     Register(fAlDrumR);
-    Register(fAlDrumL);
     fAlDrumR->InstallIn(this);
-    fAlDrumL->InstallIn(this);
     SetDaughter(fAlDrumR);
-    SetDaughter(fAlDrumL);
 
+    fAlDrumL =  new J4IRBPAlDrum(this,1,2,1,-1,TRUE);
+    Register(fAlDrumL);
+    fAlDrumL->InstallIn(this);
+    SetDaughter(fAlDrumL);
     if ( ! list->IsCompact() ){
       fAlBeamPipeR = new J4IRBPAlTube(this,1,2,0,-1,FALSE);
-      fAlBeamPipeL = new J4IRBPAlTube(this,1,2,1,-1,TRUE);
       Register(fAlBeamPipeR);
-      Register(fAlBeamPipeL);
       fAlBeamPipeR->InstallIn(this);
-      fAlBeamPipeL->InstallIn(this);
       SetDaughter(fAlBeamPipeR);
+
+      fAlBeamPipeL = new J4IRBPAlTube(this,1,2,1,-1,TRUE);
+      Register(fAlBeamPipeL);
+      fAlBeamPipeL->InstallIn(this);
       SetDaughter(fAlBeamPipeL);
     }else{
       fVacuumBeamPipeR = new J4IRBPVacuumTube(this,1,2,0,-1,FALSE);
-      fVacuumBeamPipeL = new J4IRBPVacuumTube(this,1,2,1,-1,TRUE);
       Register(fVacuumBeamPipeR);
-      Register(fVacuumBeamPipeL);
       fVacuumBeamPipeR->InstallIn(this);
-      fVacuumBeamPipeL->InstallIn(this);
       SetDaughter(fVacuumBeamPipeR);
+
+      fVacuumBeamPipeL = new J4IRBPVacuumTube(this,1,2,1,-1,TRUE);
+      Register(fVacuumBeamPipeL);
+      fVacuumBeamPipeL->InstallIn(this);
       SetDaughter(fVacuumBeamPipeL);
     }
 #endif
@@ -275,52 +280,61 @@ void J4IR::Assemble()
 #if 1
     if ( list->IsCompact() ){
       fCH2MR = new J4IRCH2MaskCompact(this,1,2,0,-1);
-      fCH2ML = new J4IRCH2MaskCompact(this,1,2,1,-1,true);
+      Register(fCH2MR);
       fCH2MR->InstallIn(this);
-      fCH2ML->InstallIn(this);
       SetDaughter(fCH2MR);
+
+      fCH2ML = new J4IRCH2MaskCompact(this,1,2,1,-1,true);
+      Register(fCH2ML);
+      fCH2ML->InstallIn(this);
       SetDaughter(fCH2ML);
+
       fBMExitR = new J4IRBeamExit(this,1,2,0,-1);
-      fBMExitL = new J4IRBeamExit(this,1,2,0,-1,true);
       Register(fBMExitR);
-      Register(fBMExitL);
       fBMExitR->InstallIn(this);
-      fBMExitL->InstallIn(this);
       SetDaughter(fBMExitR);
+
+      fBMExitL = new J4IRBeamExit(this,1,2,0,-1,true);
+      Register(fBMExitL);
+      fBMExitL->InstallIn(this);
       SetDaughter(fBMExitL);
     }else{
       fCH2MR = new J4IRCH2Mask(this,1,2,0,-1);
-      fCH2ML = new J4IRCH2Mask(this,1,2,1,-1,true);
       Register(fCH2MR);
-      Register(fCH2ML);
       fCH2MR->InstallIn(this);
-      fCH2ML->InstallIn(this);
       SetDaughter(fCH2MR);
+
+      fCH2ML = new J4IRCH2Mask(this,1,2,1,-1,true);
+      Register(fCH2ML);
+      fCH2ML->InstallIn(this);
       SetDaughter(fCH2ML);
+
    }
 #endif
-
 
 #if 1
     if( wlist->IsWMask1Valid() ){
       fWM1R = new J4IRWMask1(this,1,2,0,-1);
-      fWM1L = new J4IRWMask1(this,1,2,1,-1,true);
       Register(fWM1R);
-      Register(fWM1L);
       fWM1R->InstallIn(this);
-      fWM1L->InstallIn(this);
       SetDaughter(fWM1R);
+
+      fWM1L = new J4IRWMask1(this,1,2,1,-1,true);
+      Register(fWM1L);
+      fWM1L->InstallIn(this);
       SetDaughter(fWM1L);
     }
 
     fWM2R = new J4IRWMask2(this,1,2,0,-1);
-    fWM2L = new J4IRWMask2(this,1,2,1,-1,true);
     Register(fWM2R);
-    Register(fWM2L);
     fWM2R->InstallIn(this);
-    fWM2L->InstallIn(this);
     SetDaughter(fWM2R);
+
+    fWM2L = new J4IRWMask2(this,1,2,1,-1,true);
+    Register(fWM2L);
+    fWM2L->InstallIn(this);
     SetDaughter(fWM2L);
+
 #endif
 
 #if 0
@@ -338,22 +352,24 @@ void J4IR::Assemble()
 
 #if 1
     fWSC1R = new J4IRWSiCAL1(this,1,2,0,-1);
-    fWSC1L = new J4IRWSiCAL1(this,1,2,1,-1,true);
     Register(fWSC1R);
-    Register(fWSC1L);
     fWSC1R->InstallIn(this);
-    fWSC1L->InstallIn(this);
     SetDaughter(fWSC1R);
+
+    fWSC1L = new J4IRWSiCAL1(this,1,2,1,-1,true);
+    Register(fWSC1L);
+    fWSC1L->InstallIn(this);
     SetDaughter(fWSC1L);
 
     if (wlist->IsWSiCAL2Valid()){
       fWSC2R = new J4IRWSiCAL2(this,1,2,0,-1);
-      fWSC2L = new J4IRWSiCAL2(this,1,2,1,-1,true);
       Register(fWSC2R);
-      Register(fWSC2L);
       fWSC2R->InstallIn(this);
-      fWSC2L->InstallIn(this);
       SetDaughter(fWSC2R);
+
+      fWSC2L = new J4IRWSiCAL2(this,1,2,1,-1,true);
+      Register(fWSC2L);
+      fWSC2L->InstallIn(this);
       SetDaughter(fWSC2L);
     }
 #endif

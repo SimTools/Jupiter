@@ -58,8 +58,7 @@ void J4IRPairMonitorCompactBPout::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRWMaskParameterList* wmList =
-      new J4IRWMaskParameterList(OpenParameterList());
+    J4IRWMaskParameterList* wmList = J4IRWMaskParameterList::GetInstance();
     G4double angle = OpenParameterList()->GetCrossAngle();
     rmin = 0.*mm;
     r1max = 10.*mm;
@@ -102,8 +101,7 @@ G4RotationMatrix* J4IRPairMonitorCompactBPout::GetRotation(){
 //=====================================================================
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRPairMonitorCompactBPout::GetTranslation(){
-  J4IRWMaskParameterList* wmList = 
-    new J4IRWMaskParameterList(OpenParameterList());
+  J4IRWMaskParameterList* wmList = J4IRWMaskParameterList::GetInstance();
   G4double angle = OpenParameterList()->GetCrossAngle();
 
   G4double zpos = 

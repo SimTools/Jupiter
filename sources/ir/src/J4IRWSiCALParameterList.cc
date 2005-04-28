@@ -11,14 +11,26 @@
 //*************************************************************************
 
 #include "J4IRWSiCALParameterList.hh"
+#include "J4ParameterTable.hh"
+
+J4IRWSiCALParameterList* J4IRWSiCALParameterList::fgInstance = 0;
 
 //=====================================================================
+//* public getter -----------------------------------------------------
+J4IRWSiCALParameterList* J4IRWSiCALParameterList::GetInstance()
+{
+   if (!fgInstance) {
+      fgInstance = new J4IRWSiCALParameterList("IRWSiCAL");
+   }
+   return fgInstance;
+}
 //* constructor -------------------------------------------------------
 
-J4IRWSiCALParameterList::J4IRWSiCALParameterList(J4IRParameterList* list)
+J4IRWSiCALParameterList::J4IRWSiCALParameterList(const G4String& name)
+  : J4VParameterList(name)
 {
-  fList = list;
-  fbpList = new J4IRBPParameterList(fList);
+  //  fList = list;
+  fbpList = J4IRBPParameterList::GetInstance();
   SetParameters();
   SetMaterials();
   SetVisAttributes();
@@ -29,8 +41,8 @@ J4IRWSiCALParameterList::J4IRWSiCALParameterList(J4IRParameterList* list)
 
 J4IRWSiCALParameterList::~J4IRWSiCALParameterList()
 {
-  delete  fbpList;
-  delete  fList;
+  // delete  fbpList;
+  // delete  fList;
   delete  fWSiCALColor;
 }
 
@@ -38,7 +50,9 @@ J4IRWSiCALParameterList::~J4IRWSiCALParameterList()
 //* SetMaterials ------------------------------------------------------
 void J4IRWSiCALParameterList::SetMaterials()
 {
-  SetWSiCALMaterial("Tungsten");
+//  SetWSiCALMaterial("Tungsten");
+  SetWSiCALMaterial(J4ParameterTable::GetValue("J4IR.WSiCal.Material","Tungsten"));
+
 }
 
 //=====================================================================
@@ -54,8 +68,8 @@ void J4IRWSiCALParameterList::SetDefaults()
 {
 
 // Shape of WSiCAL
-  SetWSiCALNLayer(128);
-  SetWSiCAL2ZLength(64.*cm);
+  SetWSiCALNLayer(J4ParameterTable::GetValue("J4IR.WSiCal.NLayers",128));
+  SetWSiCAL2ZLength(J4ParameterTable::GetValue("J4IR.WSiCal.ZLength",64.0)*cm);
 }
 //=====================================================================
 //* SetParameters ------------------------------------------------------
@@ -66,13 +80,18 @@ void J4IRWSiCALParameterList::BuildParameters()
 //* SetVtsAttributes ------------------------------------------------------
 void J4IRWSiCALParameterList::SetVisAttributes()
 {
-  SetWSiCALVisAtt(TRUE);
+//  SetWSiCALVisAtt(TRUE);
+  SetWSiCALVisAtt(J4ParameterTable::GetValue("J4IR.VisAtt.WSiCal",true));
+
 }
 //=====================================================================
 //* SetColors ---------------------------------------------------------
 void J4IRWSiCALParameterList::SetColors()
 {
-   SetWSiCALColor(new G4Color(1.0,0.0,1.));  
+//   SetWSiCALColor(new G4Color(1.0,0.0,1.));  
+   std::vector<double> col=J4ParameterTable::GetDValue("J4IR.WSiCal.Color","1.0 0.0 1.0 1.0",4);
+   SetWSiCALColor(new G4Color(col[0], col[1], col[2], col[3]));  
+
 }
 
 

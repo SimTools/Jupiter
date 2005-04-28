@@ -59,7 +59,7 @@ void J4IRBPCone::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRBPParameterList* bpList =new J4IRBPParameterList(OpenParameterList());
+    J4IRBPParameterList* bpList = J4IRBPParameterList::GetInstance();
     G4double rmax1 = bpList->GetBPIPRadius()+bpList->GetBPIPThick();
     G4double rmax2 = bpList->GetBPDrumRadius()+bpList->GetBPDrumThick();
     G4double zlen  = bpList->GetBPDrumZPosition()-bpList->GetBPIPZLength();
@@ -113,7 +113,7 @@ G4RotationMatrix* J4IRBPCone::GetRotation(){
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRBPCone::GetTranslation(){
   G4ThreeVector* position= new G4ThreeVector; 
-  J4IRBPParameterList* bpList = new J4IRBPParameterList(OpenParameterList());
+  J4IRBPParameterList* bpList = J4IRBPParameterList::GetInstance();
   G4double zpos = bpList->GetBPIPZLength()
     +(bpList->GetBPDrumZPosition() - bpList->GetBPIPZLength())/2.;
     //position->setZ(_BPZLEN_IP_+(_BPZPOS_DRUM_-_BPZLEN_IP_)/2.);

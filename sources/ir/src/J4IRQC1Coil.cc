@@ -47,7 +47,7 @@ J4IRQC1Coil::J4IRQC1Coil(J4VAcceleratorComponent *parent,
 
 J4IRQC1Coil::~J4IRQC1Coil()
 {
-  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance();
   G4int    qc1NCollar         = qc1List->GetQC1NCollar();
   //for ( int i = 0; i < _QC1NCOLLAR_ ; i++){
   for ( int i = 0; i < qc1NCollar ; i++){
@@ -65,7 +65,7 @@ void J4IRQC1Coil::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance();
   G4double qc1COILInnerRadius = qc1List->GetQC1CollarRadius();
   G4double qc1COILThickness   = qc1List->GetQC1CollarThick();
   G4double qc1COILZLength     = qc1List->GetQC1ZLength();
@@ -124,7 +124,7 @@ void J4IRQC1Coil::Assemble()
 //* GetRotation  --------------------------------------------------------
 G4RotationMatrix* J4IRQC1Coil::GetRotation(){
   G4RotationMatrix* rotM = new G4RotationMatrix;
-  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance(); 
   G4double phi = qc1List->GetQC1CollarPhi();
   G4double dphi = qc1List->GetQC1CollarDPhi();
     //rotM->rotateZ((_QC1PHI_COIL_+_QC1DPHI_COIL_)+90.*degree*GetMyID());

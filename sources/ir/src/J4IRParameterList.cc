@@ -18,6 +18,7 @@
 #define __A20MRAD__ 0
 
 #include "J4IRParameterList.hh"
+#include "J4ParameterTable.hh"
 
 J4IRParameterList* J4IRParameterList::fgInstance = 0;
 
@@ -62,13 +63,16 @@ J4IRParameterList::~J4IRParameterList()
 //* SetSensitiveDetector-----------------------------------------------
 void J4IRParameterList::SetSensitiveDetector()
 {
-  SetPairMonitorSD(FALSE);
+//  SetPairMonitorSD(FALSE);
+  SetPairMonitorSD(J4ParameterTable::GetValue("J4IR.Activate.PairMonitorSD",FALSE));
+
 }
 //=====================================================================
 //* SetMaterials ------------------------------------------------------
 void J4IRParameterList::SetMaterials()
 {
-  SetIRMaterial("Air");
+//  SetIRMaterial("Air");
+  SetIRMaterial(J4ParameterTable::GetValue("J4IR.Material","Air"));
 }
 
 //=====================================================================
@@ -96,6 +100,7 @@ void J4IRParameterList::SetDefaults()
 #if __A20MRAD__
   SetCrossAngle(10.*milliradian);
 #endif
+  SetCrossAngle(J4ParameterTable::GetValue("J4IR.CrossingAngle",0.0035)*radian);
   //SetCrossAngle(0.*milliradian);
   //SetCrossAngle(-3.*milliradian);
   //SetCrossAngle(-3.5*milliradian);
@@ -117,12 +122,17 @@ void J4IRParameterList::SetDefaults()
   // Z Mid length
   SetIRZMid(500*cm);
 #endif
+  SetLStar(J4ParameterTable::GetValue("J4IR.LStar",430.0)*cm);
+  SetIRZMax(J4ParameterTable::GetValue("J4IR.IRZMax",900.0)*cm);
+  SetIRZMid(J4ParameterTable::GetValue("J4IR.IRZMid",850.0)*cm);
+
   // Support Tube
 #ifdef __GLD_V1__
   SetIRSupportInnerRadius(38*cm);
 #else
   SetIRSupportInnerRadius(40*cm);
 #endif
+  SetIRSupportInnerRadius(J4ParameterTable::GetValue("J4IR.Support.InnerRadius",38.0)*cm);
   // Be BeamPipe
 #if __VTXACFAREPCONF__ 
   SetBeamPipeRadius(1.8*cm);
@@ -133,7 +143,10 @@ void J4IRParameterList::SetDefaults()
 #if __VTX5LYRCONF__
   SetBeamPipeRadius(1.1*cm);
 #endif
+  SetBeamPipeRadius(J4ParameterTable::GetValue("J4IR.BeamPipe.Radius",1.8)*cm);
+
   SetBeamPipeThick(0.05*cm);
+  SetBeamPipeThick(J4ParameterTable::GetValue("J4IR.BeamPipe.Thickness",0.05)*cm);
   // Minimum radius of IR = Outer of beam-pipe at IR
   SetIRMinimumRadius(GetBeamPipeRadius()+GetBeamPipeThick()+0.1*cm);
   // IR Theta max
@@ -142,8 +155,13 @@ void J4IRParameterList::SetDefaults()
 #else
   SetIRThetaMax(200*mrad);
 #endif
+  SetIRThetaMax(J4ParameterTable::GetValue("J4IR.ThetaMax",0.150)*radian);
+
   // Acc tunnel box (half)
-  SetDxyzIRBox(G4ThreeVector(3.99*m,3.99*m,(GetIRZMax()-GetIRZMid())/2.));
+  G4double actbx=J4ParameterTable::GetValue("J4IR.AccTunnelBox.X",399.0)*cm;
+  G4double actby=J4ParameterTable::GetValue("J4IR.AccTunnelBox.Y",399.0)*cm;
+
+  SetDxyzIRBox(G4ThreeVector(actbx,actby,(GetIRZMax()-GetIRZMid())/2.));
 }
 //=====================================================================
 //* SetParameters ------------------------------------------------------
@@ -154,14 +172,20 @@ void J4IRParameterList::BuildParameters()
 //* SetVtsAttributes ------------------------------------------------------
 void J4IRParameterList::SetVisAttributes()
 {
-  fIRVisAtt       = TRUE;
+//  fIRVisAtt       = TRUE;
+  fIRVisAtt = J4ParameterTable::GetValue("J4IR.VisAtt",false);
+
 }
 //=====================================================================
 //* SetColors ---------------------------------------------------------
 void J4IRParameterList::SetColors()
 {
-  fIRColor       = new G4Color(0.5,0.5,0.5);  // gray
+//  fIRColor       = new G4Color(0.5,0.5,0.5);  // gray
   //fIRColor       = new G4Color(1,0.,0.);  // red
+  std::vector<double> col;
+  col=J4ParameterTable::GetDValue("J4IR.Color","0.5 0.5 0.5 1.0",4);
+  fIRColor       = new G4Color(col[0], col[1], col[2], col[3]);  // gray
+
 }
 
 

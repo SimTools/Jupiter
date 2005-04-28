@@ -58,8 +58,7 @@ void J4IRPairMonitorCompactSP::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRWMaskParameterList* wmList =
-      new J4IRWMaskParameterList(OpenParameterList());
+    J4IRWMaskParameterList* wmList =J4IRWMaskParameterList::GetInstance();
     G4double rmin = 0.*mm;
     G4double rmax = wmList->GetWMask2Radius();
     G4double zlen  = wmList->GetWMask2ZLength();
@@ -103,8 +102,7 @@ G4RotationMatrix* J4IRPairMonitorCompactSP::GetRotation(){
 //=====================================================================
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRPairMonitorCompactSP::GetTranslation(){
-  J4IRWMaskParameterList* wmList = 
-    new J4IRWMaskParameterList(OpenParameterList());
+  J4IRWMaskParameterList* wmList = J4IRWMaskParameterList::GetInstance();
   G4double zpos = wmList->GetWMask2ZPosition()+wmList->GetWMask2ZLength()/2.;
 
   G4ThreeVector* position = new G4ThreeVector(0,0.,zpos);

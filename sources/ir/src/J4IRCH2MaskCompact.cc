@@ -57,8 +57,7 @@ void J4IRCH2MaskCompact::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRCH2MaskParameterList* ch2List = 
-      new J4IRCH2MaskParameterList(OpenParameterList());
+    J4IRCH2MaskParameterList* ch2List = J4IRCH2MaskParameterList::GetInstance();
     G4double rmin = 0.*mm;
     G4double rmax = OpenParameterList()->GetIRSupportInnerRadius();
     G4double zlen = ch2List->GetCH2MaskZLength();
@@ -108,8 +107,7 @@ G4RotationMatrix* J4IRCH2MaskCompact::GetRotation(){
 //=====================================================================
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRCH2MaskCompact::GetTranslation(){
-  J4IRCH2MaskParameterList* ch2List = 
-    new J4IRCH2MaskParameterList(OpenParameterList());
+  J4IRCH2MaskParameterList* ch2List = J4IRCH2MaskParameterList::GetInstance();
   G4double zpos = 
     ch2List->GetCH2MaskZPosition()+ch2List->GetCH2MaskZLength()/2.;
   G4ThreeVector* position = new G4ThreeVector;

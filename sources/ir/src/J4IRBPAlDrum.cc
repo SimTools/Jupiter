@@ -60,7 +60,7 @@ void J4IRBPAlDrum::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRBPParameterList *bpList = new J4IRBPParameterList(OpenParameterList());
+    J4IRBPParameterList *bpList =J4IRBPParameterList::GetInstance();
     G4double rmax = bpList->GetBPDrumRadius()+bpList->GetBPDrumThick();
     G4double zlen = bpList->GetBPDrumZLength()+bpList->GetBPDrumcapZLength();
     // MakeSolid ---------------
@@ -111,7 +111,7 @@ G4RotationMatrix* J4IRBPAlDrum::GetRotation(){
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRBPAlDrum::GetTranslation(){
   G4ThreeVector* position= new G4ThreeVector; 
-  J4IRBPParameterList* bpList = new J4IRBPParameterList(OpenParameterList()); 
+  J4IRBPParameterList* bpList = J4IRBPParameterList::GetInstance();
   G4double zpos = bpList->GetBPDrumZPosition()
     +( bpList->GetBPDrumZLength()+bpList->GetBPDrumcapZLength() )/2.;
   //position->setZ(_BPZPOS_DRUM_+ (_BPZLEN_DRUM_+_BPZLEN_DRUMCAP_)/2.);

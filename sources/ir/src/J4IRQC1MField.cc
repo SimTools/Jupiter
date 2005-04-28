@@ -24,8 +24,7 @@
 
 J4IRQC1MField::J4IRQC1MField(G4double beamE, G4double k):J4VMField()
 {   
-  J4IRQC1ParameterList* qc1List=
-    new J4IRQC1ParameterList(J4IRParameterList::GetInstance()); 
+  J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance();
   fqc1ZLength     = qc1List->GetQC1ZLength();
   fqc1InnerRadius     = qc1List->GetQC1Radius();
   fqc1Thickness     = qc1List->GetQC1Thick();

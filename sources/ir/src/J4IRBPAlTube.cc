@@ -59,7 +59,7 @@ void J4IRBPAlTube::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRBPParameterList* bpList=new J4IRBPParameterList(OpenParameterList());
+    J4IRBPParameterList* bpList=J4IRBPParameterList::GetInstance();
     G4double rmax = bpList->GetBPENDRadius()+bpList->GetBPENDThick();
     G4double zlen = bpList->GetBPENDZLength();
 
@@ -103,7 +103,7 @@ G4RotationMatrix* J4IRBPAlTube::GetRotation(){
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRBPAlTube::GetTranslation(){
   G4ThreeVector* position= new G4ThreeVector; 
-  J4IRBPParameterList* bpList=new J4IRBPParameterList(OpenParameterList());
+  J4IRBPParameterList* bpList=J4IRBPParameterList::GetInstance();
   G4double zpos = bpList->GetBPENDZPosition()+bpList->GetBPENDZLength()/2.;
   position->setZ(zpos);
   //position->setZ(_BPZPOS_+_BPZLEN_/2.);

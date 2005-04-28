@@ -58,7 +58,7 @@ void J4IRBPAlPipe::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRBPParameterList* bpList=new J4IRBPParameterList(OpenParameterList());
+    J4IRBPParameterList* bpList=J4IRBPParameterList::GetInstance();
     G4double rmin = bpList->GetBPENDRadius();
     G4double rmax = bpList->GetBPENDRadius()+bpList->GetBPENDThick();
     G4double zlen = bpList->GetBPENDZLength();

@@ -58,7 +58,7 @@ void J4IRBPAlDrumPipe::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRBPParameterList* bpList = new J4IRBPParameterList(OpenParameterList());
+    J4IRBPParameterList* bpList = J4IRBPParameterList::GetInstance();
     G4double rmin = bpList->GetBPDrumRadius();
     G4double rmax = bpList->GetBPDrumRadius()+bpList->GetBPDrumThick();
     G4double zlen = bpList->GetBPDrumZLength();
@@ -100,7 +100,7 @@ G4RotationMatrix* J4IRBPAlDrumPipe::GetRotation(){
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRBPAlDrumPipe::GetTranslation(){
   G4ThreeVector* position= new G4ThreeVector; 
-  J4IRBPParameterList* bpList = new J4IRBPParameterList(OpenParameterList());
+  J4IRBPParameterList* bpList = J4IRBPParameterList::GetInstance();
   G4double zpos = bpList->GetBPDrumZLength()/2.
     - ( bpList->GetBPDrumZLength()+bpList->GetBPDrumcapZLength() )/2.;
   //position->setZ(_BPZLEN_DRUM_/2. - (_BPZLEN_DRUM_+_BPZLEN_DRUMCAP_)/2.);

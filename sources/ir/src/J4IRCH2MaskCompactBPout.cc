@@ -57,8 +57,7 @@ void J4IRCH2MaskCompactBPout::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRCH2MaskParameterList* ch2List = 
-      new J4IRCH2MaskParameterList(OpenParameterList());
+    J4IRCH2MaskParameterList* ch2List = J4IRCH2MaskParameterList::GetInstance();
     G4double angle = OpenParameterList()->GetCrossAngle();
     G4double rmin = 0.*mm;
     G4double r1max = 10.*mm;
@@ -104,8 +103,7 @@ G4RotationMatrix* J4IRCH2MaskCompactBPout::GetRotation(){
 //=====================================================================
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRCH2MaskCompactBPout::GetTranslation(){
-  J4IRCH2MaskParameterList* ch2List = 
-    new J4IRCH2MaskParameterList(OpenParameterList());
+  J4IRCH2MaskParameterList* ch2List = J4IRCH2MaskParameterList::GetInstance();
   G4double angle = OpenParameterList()->GetCrossAngle();
 
   G4double zpos = 

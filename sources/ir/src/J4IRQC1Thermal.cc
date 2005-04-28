@@ -55,7 +55,7 @@ void J4IRQC1Thermal::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-  J4IRQC1ParameterList* qc1List=new J4IRQC1ParameterList(OpenParameterList()); 
+  J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance();
   G4double qc1InnerRadius = qc1List->GetQC1CoolingRadius();
   G4double qc1ThermalRadius = qc1List->GetQC1ThermalRadius();
   G4double qc1ThermalThickness=qc1List->GetQC1ThermalThick();

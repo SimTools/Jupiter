@@ -57,15 +57,17 @@ void J4IRWMask1::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRWMaskParameterList* wmList =
-      new J4IRWMaskParameterList(OpenParameterList());
+    J4IRWMaskParameterList* wmList = J4IRWMaskParameterList::GetInstance();
     G4double rmin = wmList->GetWMask1Radius();
     G4double rmax = wmList->GetWMask1Radius()+wmList->GetWMask1Thick();
     G4double zlen  = wmList->GetWMask1ZLength();
+
+    std::cerr << " IRWMask1  rmin=" << rmin ;
+    std::cerr << " rmax=" << rmax << "zlen=" << zlen << std::endl;
   	
     // MakeSolid ---------------
     G4String name( GetName() );
-    name += ".CH2";
+    name += "/WMask1";
     G4VSolid *tube = new G4Tubs( name,rmin,rmax,zlen/2., 0, 2*M_PI);  
 
     Register(tube);
@@ -99,8 +101,7 @@ G4RotationMatrix* J4IRWMask1::GetRotation(){
 //=====================================================================
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRWMask1::GetTranslation(){
-  J4IRWMaskParameterList* wmList = 
-    new J4IRWMaskParameterList(OpenParameterList());
+  J4IRWMaskParameterList* wmList = J4IRWMaskParameterList::GetInstance();
   G4double zpos = wmList->GetWMask1ZPosition()+wmList->GetWMask1ZLength()/2.;
 
   G4ThreeVector* position = new G4ThreeVector(0,0.,zpos);

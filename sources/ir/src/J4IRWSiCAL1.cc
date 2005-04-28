@@ -57,8 +57,7 @@ void J4IRWSiCAL1::Assemble()
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRWSiCALParameterList* fwsiList = 
-      new J4IRWSiCALParameterList(OpenParameterList());
+    J4IRWSiCALParameterList* fwsiList = J4IRWSiCALParameterList::GetInstance();
     G4double rmin = fwsiList->GetWSiCAL1Radius();
     G4double rmax1 = fwsiList->GetWSiCAL1Radius()+fwsiList->GetWSiCAL1Thick();
     G4double rmax2 = OpenParameterList()->GetIRSupportInnerRadius();
@@ -99,8 +98,7 @@ G4RotationMatrix* J4IRWSiCAL1::GetRotation(){
 //=====================================================================
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRWSiCAL1::GetTranslation(){
-  J4IRWSiCALParameterList* wsiList=
-    new J4IRWSiCALParameterList(OpenParameterList());
+  J4IRWSiCALParameterList* wsiList=J4IRWSiCALParameterList::GetInstance();
   G4double zpos = 
     wsiList->GetWSiCAL1ZPosition()+wsiList->GetWSiCAL1ZLength()/2.;
 
