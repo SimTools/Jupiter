@@ -125,7 +125,8 @@ void J4CALParameterList::SetParameters()
                                    // see CalcNextTowerEdgeAngle().
 #endif
 
-   fConstNTowers        = 1500;    // Temporary number of towers to check cellID.
+   //   fConstNTowers        = 1500;    // Temporary number of towers to check cellID.
+   fConstNTowers  = J4ParameterTable::GetValue("J4CAL.Const.NTowers",1500);
 
    fBarrelCoverageAngle = atan2(fEndcapTowerFrontZ, fBarrelTowerFrontRho);
    // as a dip angle(lambda)
@@ -584,9 +585,9 @@ void J4CALParameterList::ShowTowerParameters()
 //* SetVisAttributes --------------------------------------------------
 void J4CALParameterList::SetVisAttributes()
 {
-   fCALVisAtt         = J4ParameterTable::GetValue("J4CAL.VisAtt",TRUE);
-   fBarrelVisAtt      = J4ParameterTable::GetValue("J4CAL.VisAtt.Barrel",TRUE);
-   fEndcapVisAtt      = J4ParameterTable::GetValue("J4CAL.VisAtt.Endcap",TRUE);
+   fCALVisAtt         = J4ParameterTable::GetValue("J4CAL.VisAtt",true);
+   fBarrelVisAtt      = J4ParameterTable::GetValue("J4CAL.VisAtt.Barrel",true);
+   fEndcapVisAtt      = J4ParameterTable::GetValue("J4CAL.VisAtt.Endcap",true);
 
 #if 0
 #ifdef __DRAWONETOWER__
@@ -610,14 +611,14 @@ void J4CALParameterList::SetVisAttributes()
 #endif
 #endif
 
-   fConeVisAtt        = J4ParameterTable::GetValue("J4CAL.VisAtt.Cone",FALSE);
-   fTowerVisAtt       = J4ParameterTable::GetValue("J4CAL.VisAtt.Tower",TRUE);
-   fEMVisAtt          = J4ParameterTable::GetValue("J4CAL.VisAtt.EM",FALSE);
-   fHDVisAtt          = J4ParameterTable::GetValue("J4CAL.VisAtt.HD",FALSE);
-   fMiniConeVisAtt    = J4ParameterTable::GetValue("J4CAL.VisAtt.MiniCone",FALSE);
-   fMiniTowerVisAtt   = J4ParameterTable::GetValue("J4CAL.VisAtt.MiniTower",FALSE);
-   fLayerVisAtt       = J4ParameterTable::GetValue("J4CAL.VisAtt.Layer",FALSE);
-   fSubLayerVisAtt    = J4ParameterTable::GetValue("J4CAL.VisAtt.SubLayer",FALSE);
+   fConeVisAtt        = J4ParameterTable::GetValue("J4CAL.VisAtt.Cone",false);
+   fTowerVisAtt       = J4ParameterTable::GetValue("J4CAL.VisAtt.Tower",true);
+   fEMVisAtt          = J4ParameterTable::GetValue("J4CAL.VisAtt.EM",false);
+   fHDVisAtt          = J4ParameterTable::GetValue("J4CAL.VisAtt.HD",false);
+   fMiniConeVisAtt    = J4ParameterTable::GetValue("J4CAL.VisAtt.MiniCone",false);
+   fMiniTowerVisAtt   = J4ParameterTable::GetValue("J4CAL.VisAtt.MiniTower",false);
+   fLayerVisAtt       = J4ParameterTable::GetValue("J4CAL.VisAtt.Layer",false);
+   fSubLayerVisAtt    = J4ParameterTable::GetValue("J4CAL.VisAtt.SubLayer",false);
 
 }
 
@@ -649,17 +650,4 @@ void J4CALParameterList::SetColors()
    SetLayerColor(G4Color(col[0], col[1], col[2], col[3]));
    col=J4ParameterTable::GetDValue("J4CAL.Color.SubLayer","0.0 1.0 0.0 1.0",4);
    SetSubLayerColor(G4Color(col[0], col[1], col[2], col[3]));
-/*
-   SetCALColor(G4Color(0., 0., 1.));
-   SetBarrelColor(G4Color(0., 0., 1.));
-   SetEndcapColor(G4Color(0., 0., 1.));
-   SetConeColor(G4Color(1., 0., 0.));
-   SetTowerColor(G4Color(0., 1., 0.));
-   SetEMColor(G4Color(0., 0., 1.));
-   SetHDColor(G4Color(1., 0., 0.));
-   SetMiniConeColor(G4Color(1., 1., 0.));
-   SetMiniTowerColor(G4Color(0., 1., 0.));
-   SetLayerColor(G4Color(0., 1., 0.));
-   SetSubLayerColor(G4Color(0., 1., 0.));
-*/
 }
