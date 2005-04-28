@@ -30,9 +30,10 @@ class J4IRBPParameterList : public J4VParameterList
 {
 
 public:
-  J4IRBPParameterList(J4IRParameterList* irlist );
+  J4IRBPParameterList(const G4String& name);
   virtual ~J4IRBPParameterList();
   virtual void PrintParameterList(){};
+  static J4IRBPParameterList *GetInstance();
 
 public:
   //*
@@ -51,9 +52,12 @@ public:
   inline void SetBPVisAtt(G4bool b) { fBPVisAtt=b; }
 
   //   Crossing Angle
-  inline G4double GetCrossAngle() const { return fIRList->GetCrossAngle();} 
+  inline G4double GetCrossAngle() const { 
+    return J4IRParameterList::GetInstance()->GetCrossAngle();
+  } 
   //   L* position of QC1
-  inline G4double GetLStar() const { return fIRList->GetLStar();} 
+  inline G4double GetLStar() const { 
+    return J4IRParameterList::GetInstance()->GetLStar();} 
 
   inline G4double GetMargin() const { return fMargin; }
   inline void SetMargin(G4double m)  { fMargin = m; }
@@ -62,12 +66,14 @@ public:
    // J4IRParameteList
   //inline void SetBPRadiusSmall(G4double r){ fBPRadiusSmall = r; }
   //inline G4double GetBPRadiusSmall(){ return fBPRadiusSmall; }
-  inline G4double GetBPRadiusSmall(){ return fIRList->GetBeamPipeRadius(); }
+  inline G4double GetBPRadiusSmall(){ 
+    return J4IRParameterList::GetInstance()->GetBeamPipeRadius(); }
   inline void SetBPRadiusLarge(G4double r){ fBPRadiusLarge = r; }
   inline G4double GetBPRadiusLarge(){ return fBPRadiusLarge; }
   //inline void SetBPBeThick(G4double th){ fBPBeThick = th; } 
   //inline G4double GetBPBeThick(){ return fBPBeThick; }  // J4IRParameteList
-  inline G4double GetBPBeThick() { return fIRList->GetBeamPipeThick();}
+  inline G4double GetBPBeThick() { 
+    return J4IRParameterList::GetInstance()->GetBeamPipeThick();}
   inline void SetBPAlThick(G4double th){ fBPAlThick = th; } 
   inline G4double GetBPAlThick(){ return fBPAlThick; } 
 
@@ -88,8 +94,8 @@ public:
   inline G4double GetBPENDThick() { return GetBPAlThick(); }
   inline G4double GetBPENDZLength() { return fBPENDZLength; }
   inline void  SetBPENDZLength(G4double zl) { fBPENDZLength = zl-GetMargin(); }
-  inline G4double GetBPENDZPosition()
-              { return fIRList->GetLStar()-GetBPENDZLength()-GetMargin();}
+  inline G4double GetBPENDZPosition() { 
+    return J4IRParameterList::GetInstance()->GetLStar()-GetBPENDZLength()-GetMargin();}
 
 // Structure 4 DrumCap  (Al)
   inline G4double GetBPDrumcapRadius(){ return GetBPENDRadius(); }
@@ -117,8 +123,9 @@ private:
   virtual void BuildParameters();
 
 private:
+  static J4IRBPParameterList *fgInstance;  
   // IRParameterList
-  J4IRParameterList* fIRList;
+  //  J4IRParameterList* fIRList;
 
   // Materials
   G4String fBPIPMaterial;

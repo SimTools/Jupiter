@@ -28,11 +28,14 @@
 
 class J4IRWSiCALParameterList : public J4VParameterList
 {
+private:
+  static J4IRWSiCALParameterList *fgInstance;
 
 public:
-  J4IRWSiCALParameterList(J4IRParameterList* irlist );
+  J4IRWSiCALParameterList(const G4String& name);
   virtual ~J4IRWSiCALParameterList();
   virtual void PrintParameterList(){};
+  static J4IRWSiCALParameterList *GetInstance();
 
 public:
   //*
@@ -59,10 +62,10 @@ public:
   { return fbpList->GetBPDrumRadius()+fbpList->GetBPDrumThick(); }
   inline G4double GetWSiCAL1Thick() const
   { return GetWSiCAL1Radius()/
-    std::tan(50.*mrad)*std::tan(fList->GetIRThetaMax())-GetWSiCAL1Radius();}
+    std::tan(50.*mrad)*std::tan(J4IRParameterList::GetInstance()->GetIRThetaMax())-GetWSiCAL1Radius();}
   inline G4double GetWSiCAL1ZLength() const
-  { return fList->GetIRSupportInnerRadius()/
-    std::tan(fList->GetIRThetaMax())
+  { return J4IRParameterList::GetInstance()->GetIRSupportInnerRadius()/
+    std::tan(J4IRParameterList::GetInstance()->GetIRThetaMax())
       -GetWSiCAL1Radius()/std::tan(50.*mrad); }
   inline G4double GetWSiCAL1ZPosition() const
   { return GetWSiCAL1Radius()/std::tan(50.*mrad); }
@@ -70,7 +73,7 @@ public:
   inline G4double GetWSiCAL2Radius() const
   { return fbpList->GetBPDrumRadius()+fbpList->GetBPDrumThick(); }
   inline G4double GetWSiCAL2Thick() const
-  { return fList->GetIRSupportInnerRadius()-GetWSiCAL2Radius();}
+  { return J4IRParameterList::GetInstance()->GetIRSupportInnerRadius()-GetWSiCAL2Radius();}
   inline G4double GetWSiCAL2ZPosition() const
   { return fbpList->GetBPENDZPosition() - GetWSiCAL2ZLength(); }
 
@@ -84,7 +87,7 @@ private:
 
 private:
   // IRParameterList
-  J4IRParameterList* fList;
+  // J4IRParameterList* fList;
   J4IRBPParameterList* fbpList;
 
   // Materials

@@ -30,11 +30,14 @@
 
 class J4IRWMaskParameterList : public J4VParameterList
 {
+private:
+  static J4IRWMaskParameterList *fgInstance;
 
 public:
-  J4IRWMaskParameterList(J4IRParameterList* irlist );
+  J4IRWMaskParameterList(const G4String& name);
   virtual ~J4IRWMaskParameterList();
   virtual void PrintParameterList(){};
+  static J4IRWMaskParameterList *GetInstance();
 
 public:
   //*
@@ -57,8 +60,8 @@ public:
   inline void SetMargin(G4double m) {fMargin=m;}
 
   inline G4double GetWMask1ZPosition() const 
-  { return fList->GetIRSupportInnerRadius()/
-      std::tan(fList->GetIRThetaMax())+GetMargin(); }
+  { return ( J4IRParameterList::GetInstance()->GetIRSupportInnerRadius()/
+      std::tan(J4IRParameterList::GetInstance()->GetIRThetaMax())+GetMargin()); }
   inline G4double GetWMask2ZLength() const 
   { return fch2List->GetCH2MaskZPosition()-fbpList->GetBPENDZPosition(); }
   inline G4double GetWMask2ZPosition() const 
@@ -66,16 +69,16 @@ public:
   inline G4double GetWMask2Radius() const 
   { return fbpList->GetBPDrumRadius()+fbpList->GetBPDrumThick();}
   inline G4double GetWMask2Thick() const
-  { return fList->GetIRSupportInnerRadius()-GetWMask2Radius(); }
+  { return J4IRParameterList::GetInstance()->GetIRSupportInnerRadius()-GetWMask2Radius(); }
   inline G4double GetWMask1Thick() const { return fWMask1Thick; }
   inline void SetWMask1Thick(G4double t) { fWMask1Thick=t; }
   inline G4double GetWMask1Radius() const 
-  { return fList->GetIRSupportInnerRadius()-GetWMask1Thick();}
+  { return J4IRParameterList::GetInstance()->GetIRSupportInnerRadius()-GetWMask1Thick();}
   inline G4double GetWMask1ZLengthA() const
   { return fwsiList->GetWSiCAL2ZPosition()-GetWMask1ZPosition();}
   inline G4double GetWMask1ZLengthB() const
-  { return fList->GetIRSupportInnerRadius()/
-      std::tan(fList->GetIRThetaMax()-50.*mrad)
+  { return J4IRParameterList::GetInstance()->GetIRSupportInnerRadius()/
+      std::tan(J4IRParameterList::GetInstance()->GetIRThetaMax()-50.*mrad)
       -GetWMask1ZPosition();}
   inline G4double GetWMask1ZLength() const
   { return ( GetWMask1ZLengthA() < GetWMask1ZLengthB() ?
@@ -95,7 +98,7 @@ private:
 
 private:
   // IRParameterList
-  J4IRParameterList* fList;
+  // J4IRParameterList* fList;
   J4IRBPParameterList* fbpList;
   J4IRWSiCALParameterList* fwsiList;
   J4IRCH2MaskParameterList* fch2List;

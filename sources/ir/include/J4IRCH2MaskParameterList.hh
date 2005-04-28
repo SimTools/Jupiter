@@ -30,11 +30,13 @@
 
 class J4IRCH2MaskParameterList : public J4VParameterList
 {
-
+private:
+  static J4IRCH2MaskParameterList *fgInstance;
 public:
-  J4IRCH2MaskParameterList(J4IRParameterList* irlist );
+  J4IRCH2MaskParameterList(const G4String& name);
   virtual ~J4IRCH2MaskParameterList();
   virtual void PrintParameterList(){};
+  static J4IRCH2MaskParameterList *GetInstance();
 
 public:
   //*
@@ -74,7 +76,7 @@ private:
 
 private:
   // IRParameterList
-  J4IRParameterList*   fList;
+  //  J4IRParameterList*   fList;
   J4IRBPParameterList* fbpList;
   J4IRQC1ParameterList* fqc1List;
 

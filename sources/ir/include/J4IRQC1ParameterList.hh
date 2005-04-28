@@ -27,11 +27,13 @@
 
 class J4IRQC1ParameterList : public J4VParameterList
 {
-
+private:
+  static J4IRQC1ParameterList *fgInstance;
 public:
-  J4IRQC1ParameterList(J4IRParameterList* irlist );
+  J4IRQC1ParameterList(const G4String& name);
   virtual ~J4IRQC1ParameterList();
   virtual void PrintParameterList(){};
+  static J4IRQC1ParameterList *GetInstance();
 
 public:
   //*
@@ -79,7 +81,8 @@ public:
   inline void SetQC1Radius(G4double r)  { fQC1Radius = r ;}
   inline void SetQC1Thick(G4double t)   { fQC1Thick = t;}
   inline void SetQC1ZLength(G4double zlen) { fQC1ZLength=zlen; }
-  inline G4double GetQC1ZPosition() const { return fList->GetLStar(); }
+  inline G4double GetQC1ZPosition() const { 
+    return J4IRParameterList::GetInstance()->GetLStar(); }
 
 
   inline G4double GetQC1SUSRadius() const {return fQC1SUSRadius; }
@@ -152,7 +155,7 @@ private:
 
 private:
   // IRParameterList
-  J4IRParameterList* fList;
+  //  J4IRParameterList* fList;
 
   // Materials
   G4String fQC1Material;
