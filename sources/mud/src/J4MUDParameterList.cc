@@ -179,6 +179,7 @@ void J4MUDParameterList::SetVisAttributes()
    fEndcapAbsVisAtt         = J4ParameterTable::GetValue("J4MUD.VisAtt.EndcapAbs",true);
    fFrontEndcapActiveVisAtt = J4ParameterTable::GetValue("J4MUD.VisAtt.FrontEndcapActive",false);
    fFrontEndcapAbsVisAtt    = J4ParameterTable::GetValue("J4MUD.VisAtt.FrontEndcapAbs",true);
+
 }
 
 //=====================================================================

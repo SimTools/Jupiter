@@ -144,16 +144,16 @@ void J4TPCParameterList::SetVisAttributes()
    fPadVisAtt             = TRUE;
    fDriftRegionVisAtt     = FALSE;
   */
-   fTPCVisAtt             = J4ParameterTable::GetValue("J4TPC.VisAtt",FALSE);
-   fTPCHalfVisAtt         = J4ParameterTable::GetValue("J4TPC.VisAtt.Half",FALSE);
-   fLayerVisAtt           = J4ParameterTable::GetValue("J4TPC.VisAtt.Layer",FALSE);
-   fEndcapVisAtt          = J4ParameterTable::GetValue("J4TPC.VisAtt.Endcap",TRUE);
-   fSupportTubVisAtt      = J4ParameterTable::GetValue("J4TPC.VisAtt.SupportTube",TRUE);
-   fCentralMembraneVisAtt = J4ParameterTable::GetValue("J4TPC.VisAtt.CentralMembrane",TRUE);
-   fPadPlaneVisAtt        = J4ParameterTable::GetValue("J4TPC.VisAtt.PadPlane",FALSE);
-   fPadRowVisAtt          = J4ParameterTable::GetValue("J4TPC.VisAtt.PadRow",FALSE);
-   fPadVisAtt             = J4ParameterTable::GetValue("J4TPC.VisAtt.Pad",TRUE);
-   fDriftRegionVisAtt     = J4ParameterTable::GetValue("J4TPC.VisAtt.DriftRegion",FALSE);
+   fTPCVisAtt             = J4ParameterTable::GetValue("J4TPC.VisAtt",false);
+   fTPCHalfVisAtt         = J4ParameterTable::GetValue("J4TPC.VisAtt.Half",false);
+   fLayerVisAtt           = J4ParameterTable::GetValue("J4TPC.VisAtt.Layer",false);
+   fEndcapVisAtt          = J4ParameterTable::GetValue("J4TPC.VisAtt.Endcap",true);
+   fSupportTubVisAtt      = J4ParameterTable::GetValue("J4TPC.VisAtt.SupportTube",true);
+   fCentralMembraneVisAtt = J4ParameterTable::GetValue("J4TPC.VisAtt.CentralMembrane",true);
+   fPadPlaneVisAtt        = J4ParameterTable::GetValue("J4TPC.VisAtt.PadPlane",false);
+   fPadRowVisAtt          = J4ParameterTable::GetValue("J4TPC.VisAtt.PadRow",false);
+   fPadVisAtt             = J4ParameterTable::GetValue("J4TPC.VisAtt.Pad",true);
+   fDriftRegionVisAtt     = J4ParameterTable::GetValue("J4TPC.VisAtt.DriftRegion",false);
 
 }
 

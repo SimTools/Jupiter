@@ -95,6 +95,14 @@ void J4VTXParameterList::SetSensitiveDetector()
   SetSensorSD(J4ParameterTable::GetValue("J4VTX.Activate.SensorSD",FALSE));
   SetPixelAreaSD(J4ParameterTable::GetValue("J4VTX.Activate.PixelAreaSD",FALSE));
   SetPixelSD(J4ParameterTable::GetValue("J4VTX.Activate.PixelSD",FALSE));
+
+  if( !IsLayerSD() && !IsLadderSD() && !IsSensorSD() && !IsPixelAreaSD() && !IsPixelSD() ) {
+    std::cerr << "!! Error in J4VTXParameterList;;SetSensitiveDetetor" << std::endl;
+    std::cerr << "All Sensitive detector in VTX are off. ";
+    std::cerr << "At least one SD has to be activated." << std::endl;
+    exit(-1);
+  }
+
 }
 //=====================================================================
 //* SetParameters ------------------------------------------------------
@@ -265,14 +273,14 @@ void J4VTXParameterList::SetVisAttributes()
   fPixelAreaVisAtt = FALSE;
   fPixelVisAtt = FALSE;
 
-  fVTXVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt",FALSE);
-  fLayerVisAtt     = J4ParameterTable::GetValue("J4VTX.VisAtt.Layer",TRUE);
-  fLadderVisAtt    = J4ParameterTable::GetValue("J4VTX.VisAtt.Ladder",FALSE);
-  fSensorVisAtt    = J4ParameterTable::GetValue("J4VTX.VisAtt.Sensor",FALSE); 
-  fSubstrateVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt.Subtrate",FALSE); 
-  fEpitaxialVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt.Epitaxial",FALSE); 
-  fPixelAreaVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt.PixelArea",FALSE); 
-  fPixelVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt.Pixel",FALSE); 
+  fVTXVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt",false);
+  fLayerVisAtt     = J4ParameterTable::GetValue("J4VTX.VisAtt.Layer",true);
+  fLadderVisAtt    = J4ParameterTable::GetValue("J4VTX.VisAtt.Ladder",false);
+  fSensorVisAtt    = J4ParameterTable::GetValue("J4VTX.VisAtt.Sensor",false); 
+  fSubstrateVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt.Subtrate",false); 
+  fEpitaxialVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt.Epitaxial",false); 
+  fPixelAreaVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt.PixelArea",false); 
+  fPixelVisAtt = J4ParameterTable::GetValue("J4VTX.VisAtt.Pixel",false); 
 
 }
 

@@ -81,7 +81,8 @@ const bool J4AParameter::GetValue(const bool val)
 {
    if ( 1 == 0 ) { cout << val << endl; }  // To avoid warning message
    if ( fInput.substr(0,1) == string("T") || 
-        fInput.substr(0,1) == string("t") ) { 
+        fInput.substr(0,1) == string("t") ||
+        fInput.substr(0,1) == string("1") ) { 
 	return true;
    }
    else {

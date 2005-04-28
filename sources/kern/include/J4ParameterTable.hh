@@ -21,18 +21,19 @@ class J4ParameterTable
 {
   protected:
     static bool fCollectDefaults;
-    static std::vector<J4AParameter> fParameters;
-    static std::vector<J4AParameter> fDefaults;
+    static std::vector<J4AParameter*> fParameters;
+    static std::vector<J4AParameter*> fDefaults;
   public:
     J4ParameterTable();
     virtual ~J4ParameterTable(){}
 
     inline static bool CollectDefaults(){ return fCollectDefaults;}
     inline static void SetCollectDefaults(bool flag){ fCollectDefaults=flag; }
+    static std::vector<J4AParameter*> *GetTable(){ return &fParameters; }
     static void PrintDefaults(const char *fname="jupiter.defaults");
     static void LoadFile(const char *fname);
     static void Print();
-    static const J4AParameter FindName(const char *name);
+    static J4AParameter *FindName(const char *name);
     static const double GetValue(const char *name, const double val);
     static const int    GetValue(const char *name, const int val);
     static const float  GetValue(const char *name, const float val);

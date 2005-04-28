@@ -116,8 +116,8 @@ void J4ITParameterList::SetVisAttributes()
   //   fITVisAtt          = FALSE;
   //   fLayerVisAtt       = TRUE;
 
-   fITVisAtt = J4ParameterTable::GetValue("J4IT.VisAtt",FALSE);
-   fLayerVisAtt = J4ParameterTable::GetValue("J4IT.VisAtt.Layer",TRUE);
+   fITVisAtt = J4ParameterTable::GetValue("J4IT.VisAtt",false);
+   fLayerVisAtt = J4ParameterTable::GetValue("J4IT.VisAtt.Layer",true);
 
 }
 

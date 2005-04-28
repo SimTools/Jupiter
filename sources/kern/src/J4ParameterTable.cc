@@ -20,17 +20,15 @@ using namespace std;
 #include "J4AParameter.hh"
 #include "J4ParameterTable.hh"
 
-vector<J4AParameter> J4ParameterTable::fParameters;
-vector<J4AParameter> J4ParameterTable::fDefaults;
+vector<J4AParameter*> J4ParameterTable::fParameters;
+vector<J4AParameter*> J4ParameterTable::fDefaults;
 bool J4ParameterTable::fCollectDefaults=false;
 
 //------------------------------------------------------
 J4ParameterTable::J4ParameterTable()
 {
-  cerr << " J4ParameterTable was constructed." << endl;
-
-  fParameters.push_back(*(new J4AParameter("sample","4.5")));
-  fParameters.push_back(*(new J4AParameter("sample2","Hello World")));
+  fParameters.push_back((new J4AParameter("sample","4.5")));
+  fParameters.push_back((new J4AParameter("sample2","Hello World")));
 
 }
 
@@ -38,10 +36,10 @@ J4ParameterTable::J4ParameterTable()
 void J4ParameterTable::Print()
 {
   cout << "There are " << fParameters.size() << " parameters" << endl;
-  vector<J4AParameter>::iterator ip;
+  vector<J4AParameter*>::iterator ip;
   for(ip=fParameters.begin();ip!=fParameters.end();ip++) {
-    J4AParameter p=*ip;
-    cout << p.GetName() << ":" << p.GetInput() << endl;
+    J4AParameter *p=*ip;
+    cout << p->GetName() << ":" << p->GetInput() << endl;
   }
 
 
@@ -60,13 +58,13 @@ void J4ParameterTable::PrintDefaults(const char *fname)
   fout << "# " << endl;
 
   fout.setf(ios::left, ios::adjustfield );
-  vector<J4AParameter>::iterator ip;
+  vector<J4AParameter*>::iterator ip;
   for(ip=fDefaults.begin();ip!=fDefaults.end();ip++) {
-    J4AParameter p=*ip;
-    int lenw=(p.GetName()).length();
+    J4AParameter *p=*ip;
+    int lenw=(p->GetName()).length();
     if ( lenw < 30 ) lenw=30;
     fout.width(lenw);
-    fout << p.GetName() << " : " << p.GetInput() << endl;
+    fout << p->GetName() << " : " << p->GetInput() << endl;
   }
   fout.close();
 
@@ -86,10 +84,18 @@ void J4ParameterTable::LoadFile(const char* fname)
      instr=string(inbuf);
      int ip0=instr.find(':');
      if ( ip0 < 0 ) continue;
-     pname=instr.substr(0,ip0);
+     string work=instr.substr(0,ip0);
+     int ip0e=work.find_last_not_of(' ');
+     if( ip0e >= 0 ) {
+       pname=work.substr(0,ip0e+1);
+     }
+     else {
+       pname=work;
+     }
+
      int ip1 = instr.find_first_not_of(' ',ip0+1);
      pinput=instr.substr(ip1);
-     fParameters.push_back(*(new J4AParameter(pname, pinput)));
+     fParameters.push_back((new J4AParameter(pname, pinput)));
   }
   fin.close();
 
@@ -103,11 +109,11 @@ const double  J4ParameterTable::GetValue(const char *name, const double val)
      char buf[1000];
      sprintf(buf,"%f",val); 
      J4AParameter *p1=new J4AParameter(name, buf);
-     fDefaults.push_back(*p1);
+     fDefaults.push_back(p1);
    } 
-   J4AParameter a=FindName(name);
-   if ( a.GetName() == string("???") ) { return val; }
-   return a.GetValue(val) ;
+   J4AParameter *a=J4ParameterTable::FindName(name);
+   if ( a->GetName() == string("???") ) { return val; }
+   return a->GetValue(val) ;
 
 }
 
@@ -118,11 +124,11 @@ const int  J4ParameterTable::GetValue(const char *name, const int val)
      char buf[1000];
      sprintf(buf, "%d",val);
      J4AParameter *p1=new J4AParameter(name, buf);
-     fDefaults.push_back(*p1);
+     fDefaults.push_back(p1);
    } 
-   J4AParameter a=FindName(name);
-   if ( a.GetName() == string("???") ) { return val; }
-   return a.GetValue(val) ;
+   J4AParameter *a=J4ParameterTable::FindName(name);
+   if ( a->GetName() == string("???") ) { return val; }
+   return a->GetValue(val) ;
 
 }
 
@@ -133,11 +139,11 @@ const float  J4ParameterTable::GetValue(const char *name, const float val)
      char buf[1000];
      sprintf(buf, "%f",val);
      J4AParameter *p1=new J4AParameter(name, buf);
-     fDefaults.push_back(*p1);
+     fDefaults.push_back(p1);
    } 
-   J4AParameter a=FindName(name);
-   if ( a.GetName() == string("???") ) { return val; }
-   return a.GetValue(val) ;
+   J4AParameter *a=J4ParameterTable::FindName(name);
+   if ( a->GetName() == string("???") ) { return val; }
+   return a->GetValue(val) ;
 
 }
 
@@ -145,27 +151,24 @@ const float  J4ParameterTable::GetValue(const char *name, const float val)
 const char *J4ParameterTable::GetValue(const char *name, const char* val)
 {
    if( J4ParameterTable::CollectDefaults() ) { 
-     fDefaults.push_back(*(new J4AParameter(name, val)));
+     fDefaults.push_back((new J4AParameter(name, val)));
    } 
-   J4AParameter a=FindName(name);
-   if ( a.GetName() == string("???") ) { return val; }
-   return a.GetValue(val) ;
+   J4AParameter *a=J4ParameterTable::FindName(name);
+   if ( a->GetName() == string("???") ) { return val; }
+   return a->GetValue(val) ;
 
 }
 
 //------------------------------------------------------
 const bool J4ParameterTable::GetValue(const char *name, const bool val)
 {
-
    if( J4ParameterTable::CollectDefaults() ) { 
-     char buf[1000];
-     sprintf(buf, "%d",val);
-     fDefaults.push_back(*(new J4AParameter(name, buf)));
+     if ( val ) { fDefaults.push_back(new J4AParameter(name,"true")); }
+     else { fDefaults.push_back(new J4AParameter(name,"false")); }
    } 
-
-   J4AParameter a=FindName(name);
-   if ( a.GetName() == string("???") ) { return val; }
-   return a.GetValue(val) ;
+   J4AParameter *a=J4ParameterTable::FindName(name);
+   if ( a->GetName() == string("???") ) { return val; }
+   return a->GetValue(val) ;
 
 }
 
@@ -173,13 +176,13 @@ const bool J4ParameterTable::GetValue(const char *name, const bool val)
 const vector<float> J4ParameterTable::GetFValue(const char *name, const char *val, const int n)
 {
    if( J4ParameterTable::CollectDefaults() ) { 
-     fDefaults.push_back(*(new J4AParameter(name, val)));
+     fDefaults.push_back((new J4AParameter(name, val)));
    } 
-   J4AParameter a=FindName(name);
+   J4AParameter *a=J4ParameterTable::FindName(name);
    vector<float> vec(n);
    string fin(val);   
-   if ( a.GetName() != string("???") ) { 
-      fin=a.GetInput();   
+   if ( a->GetName() != string("???") ) { 
+      fin=a->GetInput();   
    }  
    istringstream instream(fin);
    float x;
@@ -194,13 +197,13 @@ const vector<float> J4ParameterTable::GetFValue(const char *name, const char *va
 const vector<double> J4ParameterTable::GetDValue(const char *name, const char *val, const int n)
 {
    if( J4ParameterTable::CollectDefaults() ) { 
-     fDefaults.push_back(*(new J4AParameter(name, val)));
+     fDefaults.push_back((new J4AParameter(name, val)));
    } 
-   J4AParameter a=FindName(name);
+   J4AParameter *a=J4ParameterTable::FindName(name);
    vector<double> vec(n);
    string fin(val);   
-   if ( a.GetName() != string("???") ) { 
-      fin=a.GetInput();   
+   if ( a->GetName() != string("???") ) { 
+      fin=a->GetInput();   
    }  
    istringstream instream(fin);
    double x;
@@ -216,13 +219,13 @@ const vector<double> J4ParameterTable::GetDValue(const char *name, const char *v
 const vector<int> J4ParameterTable::GetIValue(const char *name, const char *val, const int n)
 {
    if( J4ParameterTable::CollectDefaults() ) { 
-     fDefaults.push_back(*(new J4AParameter(name, val)));
+     fDefaults.push_back((new J4AParameter(name, val)));
    } 
-   J4AParameter a=FindName(name);
+   J4AParameter *a=J4ParameterTable::FindName(name);
    vector<int> vec(n);
    string fin(val);   
-   if ( a.GetName() != string("???") ) { 
-      fin=a.GetInput();   
+   if ( a->GetName() != string("???") ) { 
+      fin=a->GetInput();   
    }  
    istringstream instream(fin);
    int x;
@@ -234,16 +237,16 @@ const vector<int> J4ParameterTable::GetIValue(const char *name, const char *val,
 }
 
 //------------------------------------------------------
-const J4AParameter J4ParameterTable::FindName(const char *name)
+J4AParameter *J4ParameterTable::FindName(const char *name)
 {
-  vector<J4AParameter>::iterator ip;
+  vector<J4AParameter*>::iterator ip;
   for(ip=fParameters.begin();ip!=fParameters.end();ip++) {
-    J4AParameter p=*ip;
-    if ( p.GetName() == string(name) ) {
+    J4AParameter *p=*ip;
+    if ( p->GetName() == string(name) ) {
        return p;
     }
   }
-  J4AParameter notfind("???","");
-  return notfind;
+  static J4AParameter notfind("???","");
+  return &notfind;
 }
 

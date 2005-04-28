@@ -485,7 +485,7 @@ void J4VComponent::OrderNewTubs( G4double rmin,
     G4Transform3D lefttransform   (rotation, lefttranslation);
     
     G4String cylindername(GetName());                       //* description of ccenter
-    cylindername += ".Cylinder";
+    cylindername += "/Cylinder";
     std::cerr << "Make " << cylindername << std::endl;
 #if 1
     G4double cylinderlen = halfzlen - endcaphalfthickness * 2;
@@ -497,11 +497,18 @@ void J4VComponent::OrderNewTubs( G4double rmin,
        cylinderlen = halfzlen;
     }
 #endif
-    G4Tubs*  cylinder    
-        = new G4Tubs( cylindername, rmin, rmax, cylinderlen, sphi, dphi );
+    std::cerr << " cylidername=" << cylindername ;
+    std::cerr << " rmin, rmax=" << rmin << "," << rmax ;
+    std::cerr << " cylinderlen=" << cylinderlen ;
+    std::cerr << " sphi, dphi=" << sphi << "," << dphi << std::endl;
+
+    G4Tubs *cylinder=new G4Tubs( cylindername, rmin, rmax, cylinderlen, sphi, dphi);
+
+//    G4Tubs*  cylinder    
+//        = new G4Tubs( cylindername, rmin, rmax, cylinderlen, sphi, dphi );
 
     G4String leftendcapname(GetName());                     //* description of left
-    leftendcapname += ".LeftEndcap";
+    leftendcapname += "/LeftEndcap";
     std::cerr << "Make " << leftendcapname << std::endl;
 
     G4VSolid* leftendcap;
@@ -518,7 +525,7 @@ void J4VComponent::OrderNewTubs( G4double rmin,
     }
     
     G4String cupname(GetName());                            //* description of uniting
-    cupname += ".Cup";
+    cupname += "/Cup";
     std::cerr << "Make " << cupname << std::endl;
 #if 1
     J4UnionSolid*  cup = new J4UnionSolid ( cupname, cylinder, leftendcap, lefttransform );
@@ -532,7 +539,7 @@ void J4VComponent::OrderNewTubs( G4double rmin,
 #endif
         
     G4String rightendcapname(GetName());                    //* description of right
-    rightendcapname += ".RightEndcap";
+    rightendcapname += "/RightEndcap";
     std::cerr << "Make " << rightendcapname << std::endl;
 
     G4VSolid* rightendcap;
@@ -611,7 +618,7 @@ void J4VComponent::OrderNewBox(
   // construct solid -------------------------
 
   G4String outerboxname(GetName());
-  outerboxname += ".Outerbox";
+  outerboxname += "/Outerbox";
   G4VSolid *outerbox = new G4Box (outerboxname, outerboxhalfx, outerboxhalfy, outerboxhalfz );
 
   if (!innertubrad && !innerboxhalfx) {
@@ -620,7 +627,7 @@ void J4VComponent::OrderNewBox(
 
   } else if (innertubrad) {
     G4String innertubname(GetName());
-    innertubname += ".Innertub";
+    innertubname += "/Innertub";
     G4VSolid *innertub = new G4Tubs( innertubname, 0, innertubrad, outerboxhalfz, 0, 2*M_PI);
 
     if (!innerboxhalfx) {
@@ -628,11 +635,11 @@ void J4VComponent::OrderNewBox(
 
     } else {
       G4String holedboxname(GetName());
-      holedboxname += ".Holedbox";
+      holedboxname += "/Holedbox";
       G4VSolid *holedbox = new J4SubtractionSolid( holedboxname, outerbox,
                                                   innertub, ptubrot, tubtlate );
       G4String innerboxname(GetName());
-      innerboxname += ".Innerbox";
+      innerboxname += "/Innerbox";
       G4VSolid *innerbox = new G4Box( innerboxname, innerboxhalfx, innerboxhalfy, innerboxhalfz );
 
       fSolid = new J4SubtractionSolid( GetName(), holedbox, innerbox, pboxrot, boxtlate );
@@ -640,7 +647,7 @@ void J4VComponent::OrderNewBox(
 
   } else if (innerboxhalfx) {
     G4String innerboxname(GetName());
-    innerboxname += ".Innerbox";
+    innerboxname += "/Innerbox";
     G4VSolid *innerbox = new G4Box( innerboxname, innerboxhalfx, innerboxhalfy, innerboxhalfz );
 
     fSolid = new J4SubtractionSolid( GetName(), outerbox, innerbox, pboxrot, boxtlate );

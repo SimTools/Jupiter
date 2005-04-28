@@ -36,6 +36,7 @@
 
 #include "J4DetectorConstruction.hh"
 #include "J4PhysicsList.hh"
+#include "LCPhysicsList.hh"
 #include "J4PrimaryGeneratorAction.hh"
 #include "J4RunAction.hh"
 #include "J4EventAction.hh"
@@ -202,8 +203,12 @@ int main(int argc, char** argv)
   runManager-> SetUserInitialization(dtcptr);
   
   // particles and physics processes
-
-  runManager-> SetUserInitialization(new J4PhysicsList);
+  if( J4ParameterTable::GetValue("J4.PhysicsList",1 ) == 1 ) {
+	runManager->SetUserInitialization(new LCPhysicsList() );
+  }
+  else {
+    runManager-> SetUserInitialization(new J4PhysicsList);
+  }
 
   //---------------------------------------------
   // set mandatory user action class...

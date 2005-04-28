@@ -48,7 +48,7 @@ J4ParameterList::~J4ParameterList()
 void J4ParameterList::SetParameters()
 {
    fEXPHallMaterial = J4ParameterTable::GetValue("J4.EXPHall.Material","Air");
-   fEXPHallVisAtt   = J4ParameterTable::GetValue("J4.EXPHall.VisAtt",FALSE);
+   fEXPHallVisAtt   = J4ParameterTable::GetValue("J4.EXPHall.VisAtt",false);
    std::vector<double> col = J4ParameterTable::GetDValue("J4.EXPHall.Color","1.0 0.0 1.0 1.0", 4);
    SetEXPHallColor(G4Color(col[0], col[1], col[2], col[3]));
 
@@ -81,7 +81,7 @@ void J4ParameterList::SetParameters()
    fCALOuterHalfZ    = J4ParameterTable::GetValue("J4.CAL.OuterHalfZ",425.0)*cm;   // half z length of outersurface of CAL
 
    fSOLInnerR        = J4ParameterTable::GetValue("J4.SOL.InnerRadius",375.0)*cm;   // InnerR of Solenoid
-   fSOLOuterR        = J4ParameterTable::GetValue("J4.SOL.InnerRadius",450.0)*cm;   // OuterR of Solenoid
+   fSOLOuterR        = J4ParameterTable::GetValue("J4.SOL.OuterRadius",450.0)*cm;   // OuterR of Solenoid
    fSOLHalfZ         = J4ParameterTable::GetValue("J4.SOL.HalfZ",530.0)*cm;         // half z length of Solenoid
 
    fEXPHallHalfX    = J4ParameterTable::GetValue("J4.EXPHall.HalfX",1000.0)*cm;
