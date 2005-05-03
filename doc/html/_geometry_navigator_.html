@@ -1,0 +1,46 @@
+<html><head><title>Commands in /geometry/navigator/</title></head>
+<body bgcolor="#ffffff"><h2>/geometry/navigator/</h2><p>
+Geometry navigator control setup.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>reset</b>
+<p><dd>
+Reset navigator and navigation history.<br>
+NOTE: must be called only after kernel has been<br>
+      initialized once through the run manager!<br>
+<p><dd>Available Geant4 state(s) : Idle 
+<p><br><p><dt><b>verbose [<i>level</i>]</b>
+<p><dd>
+Set run-time verbosity for the navigator.<br>
+ 0 : Silent (default)<br>
+ 1 : Display volume positioning and step lengths<br>
+ 2 : Display step/safety info on point location<br>
+ 3 : Display minimal state at -every- step<br>
+ 4 : Maximum verbosity (very detailed!)<br>
+NOTE: this command has effect -only- if Geant4 has<br>
+      been installed with the G4VERBOSE flag set!<br>
+<p><dd>Range : level &gt;=0 &amp;&amp; level &lt;=4
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>level
+<td>type i
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>check_mode [<i>checkFlag</i>]</b>
+<p><dd>
+Set navigator in -check_mode- state.<br>
+This will cause extra checks to be applied during<br>
+navigation. More strict and less tolerant conditions<br>
+are applied. A run-time performance penalty may be<br>
+observed when the -check_mode- state is activated.<br>
+NOTE: this command has effect -only- if Geant4 has<br>
+      been installed with the G4VERBOSE flag set!<br>
+<p><dd>Available Geant4 state(s) : Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>checkFlag
+<td>type b
+<td>Omittable : default value = 0
+<td></table>
+</dl></body></html>

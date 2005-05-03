@@ -1,0 +1,55 @@
+<html><head><title>Commands in /particle/property/</title></head>
+<body bgcolor="#ffffff"><h2>/particle/property/</h2><p>
+Paricle Table control commands.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+<p><br><p><dt><a href="_particle_property_decay_.html">/particle/property/decay/</a>
+<p><dd>Decay Table control commands.
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>dump</b>
+<p><dd>
+dump particle properties.<br>
+<p><dd>Available at all Geant4 states.
+<p><br><p><dt><b>stable [<i>stable</i>]</b>
+<p><dd>
+Set stable flag.<br>
+  false: Unstable   true: Stable<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+GeomClosed 
+<p><dd>Parameters<table border=1>
+<tr><td>stable
+<td>type b
+<td><td></table>
+<p><br><p><dt><b>lifetime [<i>life</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set life time.<br>
+Unit of the time can be :<br>
+ s, ms, ns (default)<br>
+<p><dd>Range : life &gt;0.0
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+GeomClosed 
+<p><dd>Parameters<table border=1>
+<tr><td>life
+<td>type d
+<td><td><tr><td>Unit
+<td>type s
+<td>Omittable : default value = ns
+<td>Parameter candidates : s ms mus ns ps second millisecond microsecond nanosecond picosecond
+</table>
+<p><br><p><dt><b>verbose [<i>verbose_level</i>]</b>
+<p><dd>
+Set Verbose level of particle property.<br>
+ 0 : Silent (default)<br>
+ 1 : Display warning messages<br>
+ 2 : Display more<br>
+<p><dd>Range : verbose_level &gt;=0
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>verbose_level
+<td>type i
+<td>Omittable : default value = 0
+<td></table>
+</dl></body></html>

@@ -1,0 +1,134 @@
+<html><head><title>Commands in /gun/</title></head>
+<body bgcolor="#ffffff"><h2>/gun/</h2><p>
+Particle Gun control commands.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>List</b>
+<p><dd>
+List available particles.<br>
+ Invoke G4ParticleTable.<br>
+<p><dd>Available at all Geant4 states.
+<p><br><p><dt><b>particle [<i>particleName</i>]</b>
+<p><dd>
+Set particle to be generated.<br>
+ (geantino is default)<br>
+ (ion can be specified for shooting ions)<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>particleName
+<td>type s
+<td>Omittable : default value = geantino
+<td>Parameter candidates : B+ B- B0 Bs0 D+ D- D0 Ds+ Ds- GenericIon He3 J/psi alpha anti_B0 anti_Bs0 anti_D0 anti_kaon0 anti_lambda anti_lambda_c+ anti_neutron anti_nu_e anti_nu_mu anti_nu_tau anti_omega- anti_omega_c0 anti_proton anti_sigma+ anti_sigma- anti_sigma0 anti_sigma_c+ anti_sigma_c++ anti_sigma_c0 anti_xi- anti_xi0 anti_xi_c+ anti_xi_c0 chargedgeantino deuteron e+ e- eta eta_prime gamma geantino kaon+ kaon- kaon0 kaon0L kaon0S lambda lambda_c+ mu+ mu- neutron nu_e nu_mu nu_tau omega- omega_c0 opticalphoton pi+ pi- pi0 proton sigma+ sigma- sigma0 sigma_c+ sigma_c++ sigma_c0 tau+ tau- triton xi- xi0 xi_c+ xi_c0 ion 
+</table>
+<p><br><p><dt><b>direction [<i>Px</i>] [<i>Py</i>] [<i>Pz</i>]</b>
+<p><dd>
+Set momentum direction.<br>
+Direction needs not to be a unit vector.<br>
+<p><dd>Range : Px != 0 || Py != 0 || Pz != 0
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>Px
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Py
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Pz
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>energy [<i>Energy</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set kinetic energy.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>Energy
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Unit
+<td>type s
+<td>Omittable : default value = GeV
+<td>Parameter candidates : eV keV MeV GeV TeV PeV J electronvolt kiloelectronvolt megaelectronvolt gigaelectronvolt teraelectronvolt petaelectronvolt joule
+</table>
+<p><br><p><dt><b>position [<i>X</i>] [<i>Y</i>] [<i>Z</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set starting position of the particle.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>X
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Y
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Z
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Unit
+<td>type s
+<td>Omittable : default value = cm
+<td>Parameter candidates : pc km m cm mm mum nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+</table>
+<p><br><p><dt><b>time [<i>t0</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set initial time of the particle.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>t0
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Unit
+<td>type s
+<td>Omittable : default value = ns
+<td>Parameter candidates : s ms mus ns ps second millisecond microsecond nanosecond picosecond
+</table>
+<p><br><p><dt><b>polarization [<i>Px</i>] [<i>Py</i>] [<i>Pz</i>]</b>
+<p><dd>
+Set polarization.<br>
+<p><dd>Range : Px&gt;=-1.&amp;&amp;Px&lt;=1.&amp;&amp;Py&gt;=-1.&amp;&amp;Py&lt;=1.&amp;&amp;Pz&gt;=-1.&amp;&amp;Pz&lt;=1.
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>Px
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Py
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Pz
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>number [<i>N</i>]</b>
+<p><dd>
+Set number of particles to be generated.<br>
+<p><dd>Range : N&gt;0
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>N
+<td>type i
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>ion [<i>Z</i>] [<i>A</i>] [<i>Q</i>] [<i>E</i>]</b>
+<p><dd>
+Set properties of ion to be generated.<br>
+[usage] /gun/ion Z A Q<br>
+        Z:(int) AtomicNumber<br>
+        A:(int) AtomicMass<br>
+        Q:(int) Charge of Ion (in unit of e)<br>
+        E:(double) Excitation energy (in keV)<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>Z
+<td>type i
+<td><td><tr><td>A
+<td>type i
+<td><td><tr><td>Q
+<td>type i
+<td>Omittable : default value = 0
+<td><tr><td>E
+<td>type d
+<td>Omittable : default value = 0.0
+<td></table>
+</dl></body></html>

@@ -1,0 +1,135 @@
+<html><head><title>Commands in /vis/</title></head>
+<body bgcolor="#ffffff"><h2>/vis/</h2><p>
+Visualization commands.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+<p><br><p><dt><a href="_vis_scene_.html">/vis/scene/</a>
+<p><dd>Operations on Geant4 scenes.
+<p><br><p><dt><a href="_vis_sceneHandler_.html">/vis/sceneHandler/</a>
+<p><dd>Operations on Geant4 scene handlers.
+<p><br><p><dt><a href="_vis_viewer_.html">/vis/viewer/</a>
+<p><dd>Operations on Geant4 viewers.
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>enable [<i>enabled</i>]</b>
+<p><dd>
+/vis/enable [true|false]<br>
+Enables/disables visualization system.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>enabled
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>disable</b>
+<p><dd>
+Disables visualization system.<br>
+<p><dd>Available at all Geant4 states.
+<p><br><p><dt><b>verbose [<i>verbosity</i>]</b>
+<p><dd>
+/vis/verbose [&lt;verbosity&gt;]<br>
+
+  default:    warnings
+Simple graded message scheme - digit or string (1st character defines):
+  0) quiet,         // Nothing is printed.
+  1) startup,       // Startup and endup messages are printed...
+  2) errors,        // ...and errors...
+  3) warnings,      // ...and warnings...
+  4) confirmations, // ...and confirming messages...
+  5) parameters,    // ...and parameters of scenes and views...
+  6) all            // ...and everything available.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>verbosity
+<td>type s
+<td>Omittable : default value = warnings
+<td></table>
+<p><br><p><dt><b>drawTree [<i>PVname</i>] [<i>system</i>]</b>
+<p><dd>
+/vis/drawTree [&lt;physical-volume-name&gt;] [&lt;system&gt;]<br>
+Default: world ATree<br>
+(DTREE) Creates a scene consisting of this physical volume and
+  produces a represntation of the geometry hieracrhy.<br>
+The scene becomes current.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>PVname
+<td>type s
+<td>Omittable : default value = world
+<td><tr><td>system
+<td>type s
+<td>Omittable : default value = ATree
+<td></table>
+<p><br><p><dt><b>drawVolume [<i>physical-volume-name</i>]</b>
+<p><dd>
+/vis/drawVolume [&lt;physical-volume-name&gt;]<br>
+Default: world volume<br>
+Creates a scene consisting of this physical volume and asks the
+  current viewer to draw it.<br>
+The scene becomes current.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>physical-volume-name
+<td>type s
+<td>Omittable : default value = world
+<td></table>
+<p><br><p><dt><b>drawView [<i>theta-deg</i>] [<i>phi-deg</i>] [<i>pan-right</i>] [<i>pan-up</i>] [<i>pan-unit</i>] [<i>zoom-factor</i>] [<i>dolly</i>] [<i>dolly-unit</i>]</b>
+<p><dd>
+/vis/drawView [&lt;theta-deg&gt;] [&lt;phi-deg&gt;] [&lt;pan-right&gt;] [&lt;pan-up&gt;] [&lt;pan-unit&gt;] [&lt;zoom-factor&gt;] [&lt;dolly&gt;] [&lt;dolly-unit&gt;]<br>
+Default: 0 0 0 0 cm 1 0 cm<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>theta-deg
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>phi-deg
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>pan-right
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>pan-up
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>pan-unit
+<td>type s
+<td>Omittable : default value = cm
+<td><tr><td>zoom-factor
+<td>type d
+<td>Omittable : default value = 1
+<td><tr><td>dolly
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>dolly-unit
+<td>type s
+<td>Omittable : default value = cm
+<td></table>
+<p><br><p><dt><b>open [<i>graphics-system-name</i>] [<i>pixels</i>]</b>
+<p><dd>
+/vis/open [&lt;graphics-system-name&gt;] [&lt;pixels&gt;]<br>
+For this graphics system, creates a scene handler ready for drawing.<br>
+The scene handler becomes current.<br>
+The scene handler name is auto-generated.<br>
+The 2nd parameter is the window size hint.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>graphics-system-name
+<td>type s
+<td><td>Parameter candidates : DAWNFILE OGLIX OGLSX VRML1FILE VRML2FILE
+<tr><td>pixels
+<td>type i
+<td>Omittable : default value = 600
+<td></table>
+<p><br><p><dt><b>specify [<i>logical-volume-name</i>]</b>
+<p><dd>
+/vis/specify &lt;logical-volume-name&gt;<br>
+Creates a scene consisting of this logical volume and asks the
+  current viewer to draw it and the geometry to print the
+  specification.<br>
+The scene becomes current.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>logical-volume-name
+<td>type s
+<td><td></table>
+</dl></body></html>

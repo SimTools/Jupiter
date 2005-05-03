@@ -1,0 +1,206 @@
+<html><head><title>Commands in /run/</title></head>
+<body bgcolor="#ffffff"><h2>/run/</h2><p>
+Run control commands.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+<p><br><p><dt><a href="_run_particle_.html">/run/particle/</a>
+<p><dd>Commands for G4VUserPhysicsList.
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>initialize</b>
+<p><dd>
+Initialize G4 kernel.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><br><p><dt><b>beamOn [<i>numberOfEvent</i>] [<i>macroFile</i>] [<i>nSelect</i>]</b>
+<p><dd>
+Start a Run.<br>
+If G4 kernel is not initialized, it will be initialized.<br>
+Default number of events to be processed is 1.<br>
+The second and third arguments can be used for<br>
+executing a macro file at the end of each event.<br>
+If the second argument, i.e. name of the macro<br>
+file, is given but the third argument is not,<br>
+the macro file will be executed for all of the<br>
+event.<br>
+If the third argument (nSelect) is given, the<br>
+macro file will be executed only for the first<br>
+nSelect events.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>numberOfEvent
+<td>type i
+<td>Omittable : default value = 1
+<td>Parameter range : numberOfEvent &gt;= 0
+<tr><td>macroFile
+<td>type s
+<td>Omittable : default value = ***NULL***
+<td><tr><td>nSelect
+<td>type i
+<td>Omittable : default value = -1
+<td>Parameter range : nSelect&gt;=-1
+</table>
+<p><br><p><dt><b>verbose [<i>level</i>]</b>
+<p><dd>
+Set the Verbose level of G4RunManager.<br>
+ 0 : Silent (default)<br>
+ 1 : Display main topics<br>
+ 2 : Display main topics and run summary<br>
+<p><dd>Range : level &gt;=0 &amp;&amp; level &lt;=2
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>level
+<td>type i
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>dumpRegion [<i>regionName</i>]</b>
+<p><dd>
+Dump region information.<br>
+In case name of a region is not given, all regions will be displayed.<br>
+<p><dd>Available Geant4 state(s) : Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>regionName
+<td>type s
+<td>Omittable : default value = **ALL**
+<td></table>
+<p><br><p><dt><b>dumpCouples</b>
+<p><dd>
+Dump material-cuts-couple information.<br>
+Note that material-cuts-couple information is updated<br>
+after BeamOn has started.<br>
+<p><dd>Available Geant4 state(s) : Idle 
+<p><br><p><dt><b>optimizeGeometry [<i>optimizeFlag</i>]</b>
+<p><dd>
+Set the optimization flag for geometry.<br>
+If it is set to TRUE, G4GeometryManager will optimize<br>
+the geometry definitions.<br>
+GEANT4 is initialized with this flag as TRUE.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>optimizeFlag
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>breakAtBeginOfEvent [<i>flag</i>]</b>
+<p><dd>
+Set a break point at the begining of every event.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>flag
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>breakAtEndOfEvent [<i>flag</i>]</b>
+<p><dd>
+Set a break point at the end of every event.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>flag
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>abort [<i>softAbort</i>]</b>
+<p><dd>
+Abort current run processing.<br>
+If softAbort is false (default), currently processing event will be immediately aborted,<br>
+while softAbort is true, abortion occurs after processing the current event.<br>
+<p><dd>Available Geant4 state(s) : GeomClosed 
+EventProc 
+<p><dd>Parameters<table border=1>
+<tr><td>softAbort
+<td>type b
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>abortCurrentEvent</b>
+<p><dd>
+Abort currently processing event.<br>
+<p><dd>Available Geant4 state(s) : EventProc 
+<p><br><p><dt><b>geometryModified</b>
+<p><dd>
+Force geometry to be closed again.<br>
+This command must be applied<br>
+ if geometry has been modified after the<br>
+ first initialization (or BeamOn).<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><br><p><dt><b>physicsModified</b>
+<p><dd>
+Force all physics tables recalculated again.<br>
+This command must be applied<br>
+ if physics process has been modified after the<br>
+ first initialization (or BeamOn).<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><br><p><dt><b>cutoffModified</b>
+<p><dd>
+/run/cutoffModified becomes obsolete.<br>
+It is safe to remove invoking this command.<br>
+<p><dd>Available at all Geant4 states.
+<p><br><p><dt><b>randomNumberStatusDirectory [<i>fileName</i>]</b>
+<p><dd>
+Define the directory name of the rndm status files.<br>
+Directory must be creates before storing the files.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+GeomClosed 
+<p><dd>Parameters<table border=1>
+<tr><td>fileName
+<td>type s
+<td>Omittable : default value = ./
+<td></table>
+<p><br><p><dt><b>storeRandomNumberStatus [<i>flag</i>]</b>
+<p><dd>
+The randomNumberStatus will be saved at :<br>
+begining of run (currentRun.rndm) and begining of event (currentEvent.rndm) <br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>flag
+<td>type i
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>restoreRandomNumberStatus [<i>fileName</i>]</b>
+<p><dd>
+Reset the status of the rndm engine from a file.<br>
+See CLHEP manual for detail.<br>
+The engine status must be stored beforehand.<br>
+Directory of the status file should be set by /random/setDirectoryName.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+GeomClosed 
+<p><dd>Parameters<table border=1>
+<tr><td>fileName
+<td>type s
+<td>Omittable : default value = currentRun.rndm
+<td></table>
+<p><br><p><dt><b>setCut [<i>cut</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set default cut value <br>
+<p><dd>Range : cut &gt;0.0
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>cut
+<td>type d
+<td><td><tr><td>Unit
+<td>type s
+<td>Omittable : default value = mm
+<td>Parameter candidates : pc km m cm mm mum nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+</table>
+<p><br><p><dt><b>setCutForRegion [<i>Region</i>] [<i>cut</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set cut value for a region<br>
+<p><dd>Available Geant4 state(s) : Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>Region
+<td>type s
+<td><td><tr><td>cut
+<td>type d
+<td><td>Parameter range : cut &gt;0.0
+<tr><td>Unit
+<td>type s
+<td>Omittable : default value = mm
+<td>Parameter candidates : pc km m cm mm mum nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+</table>
+</dl></body></html>

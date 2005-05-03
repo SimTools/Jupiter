@@ -1,0 +1,63 @@
+<html><head><title>Commands in /jupiter/cain/</title></head>
+<body bgcolor="#ffffff"><h2>/jupiter/cain/</h2><p>
+Commands to control CAIN event interface.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>file [<i>FileName</i>]</b>
+<p><dd>
+Set a file name of CAIN data<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>FileName
+<td>type s
+<td>Omittable : default value = cain.dat
+<td></table>
+<p><br><p><dt><b>gengamma [<i>GenGamma</i>]</b>
+<p><dd>
+Gamma track is passed to Jupiter<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>GenGamma
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>genelectron [<i>GenElectron</i>]</b>
+<p><dd>
+Electron track is passed to Jupiter<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>GenElectron
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>genpositron [<i>GenPositron</i>]</b>
+<p><dd>
+Positron prack is passed to Jupiter<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>GenPositron
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>gendirection [<i>GenPositron</i>]</b>
+<p><dd>
+Only particles generated in the given direction is passed to Jupiter<br>
+1.0(+Z direction), -1(-Z direction), 0(+-Z)<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>GenPositron
+<td>type d
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>verbose [<i>Verbose</i>]</b>
+<p><dd>
+Verbose output<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>Verbose
+<td>type i
+<td>Omittable : default value = 0
+<td></table>
+</dl></body></html>

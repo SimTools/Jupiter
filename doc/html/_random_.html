@@ -1,0 +1,54 @@
+<html><head><title>Commands in /random/</title></head>
+<body bgcolor="#ffffff"><h2>/random/</h2><p>
+Random number status control commands.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>setDirectoryName [<i>fileName</i>]</b>
+<p><dd>
+Define the directory name of the rndm status files.<br>
+Directory must be creates before storing the files.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+GeomClosed 
+<p><dd>Parameters<table border=1>
+<tr><td>fileName
+<td>type s
+<td>Omittable : default value = ./
+<td></table>
+<p><br><p><dt><b>setSavingFlag [<i>flag</i>]</b>
+<p><dd>
+The randomNumberStatus will be saved at :<br>
+begining of run (currentRun.rndm) and begining of event (currentEvent.rndm) <br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>flag
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>saveThisRun</b>
+<p><dd>
+copy currentRun.rndm to runXXX.rndm<br>
+<p><dd>Available Geant4 state(s) : Idle 
+GeomClosed 
+EventProc 
+<p><br><p><dt><b>saveThisEvent</b>
+<p><dd>
+copy currentEvent.rndm to runXXXevtYYY.rndm<br>
+<p><dd>Available Geant4 state(s) : EventProc 
+<p><br><p><dt><b>resetEngineFrom [<i>fileName</i>]</b>
+<p><dd>
+Reset the status of the rndm engine from a file.<br>
+See CLHEP manual for detail.<br>
+The engine status must be stored beforehand.<br>
+Directory of the status file should be set by /random/setDirectoryName.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+GeomClosed 
+<p><dd>Parameters<table border=1>
+<tr><td>fileName
+<td>type s
+<td>Omittable : default value = currentRun.rndm
+<td></table>
+</dl></body></html>

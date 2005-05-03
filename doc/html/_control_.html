@@ -1,0 +1,155 @@
+<html><head><title>Commands in /control/</title></head>
+<body bgcolor="#ffffff"><h2>/control/</h2><p>
+UI control commands.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>execute [<i>fileName</i>]</b>
+<p><dd>
+Execute a macro file.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>fileName
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>loop [<i>macroFile</i>] [<i>counterName</i>] [<i>initialValue</i>] [<i>finalValue</i>] [<i>stepSize</i>]</b>
+<p><dd>
+Execute a macro file more than once.<br>
+Loop counter can be used as an aliased variable.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>macroFile
+<td>type s
+<td><td><tr><td>counterName
+<td>type s
+<td><td><tr><td>initialValue
+<td>type d
+<td><td><tr><td>finalValue
+<td>type d
+<td><td><tr><td>stepSize
+<td>type d
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>foreach [<i>macroFile</i>] [<i>counterName</i>] [<i>valueList</i>]</b>
+<p><dd>
+Execute a macro file more than once.<br>
+Loop counter can be used as an aliased variable.<br>
+Values must be separated by a space.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>macroFile
+<td>type s
+<td><td><tr><td>counterName
+<td>type s
+<td><td><tr><td>valueList
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>suppressAbortion [<i>level</i>]</b>
+<p><dd>
+Suppress the program abortion caused by G4Exception.<br>
+Suppression level = 0 : no suppression<br>
+                  = 1 : suppress during EventProc state<br>
+                  = 2 : full suppression, i.e. no abortion by G4Exception<br>
+When abortion is suppressed, you will get error messages issued by G4Exception,<br>
+and there is NO guarantee for the correct result after the G4Exception error message.<br>
+<p><dd>Range : level &gt;= 0 &amp;&amp; level &lt;= 2
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>level
+<td>type i
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>verbose [<i>switch</i>]</b>
+<p><dd>
+Applied command will also be shown on screen.<br>
+This command is useful with MACRO file.<br>
+  0 : silent<br>
+  1 : only the valid commands are shown.<br>
+  2 : comment lines are also shown (default).<br>
+<p><dd>Range : switch &gt;= 0 &amp;&amp; switch &lt;=2
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>switch
+<td>type i
+<td>Omittable : default value = 2
+<td></table>
+<p><br><p><dt><b>saveHistory [<i>fileName</i>]</b>
+<p><dd>
+Store command history to a file.<br>
+Defaul file name is G4history.macro.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>fileName
+<td>type s
+<td>Omittable : default value = G4History.macro
+<td></table>
+<p><br><p><dt><b>stopSavingHistory</b>
+<p><dd>
+Stop saving history file.<br>
+<p><dd>Available at all Geant4 states.
+<p><br><p><dt><b>alias [<i>aliasName</i>] [<i>aliasValue</i>]</b>
+<p><dd>
+Set an alias.<br>
+String can be aliased by this command.<br>
+The string may contain one or more spaces,<br>
+the string must be enclosed by double quotes (").<br>
+To use an alias, enclose the alias name with<br>
+parenthis "{" and "}".<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>aliasName
+<td>type s
+<td><td><tr><td>aliasValue
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>unalias [<i>aliasName</i>]</b>
+<p><dd>
+Remove an alias.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>aliasName
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>listAlias</b>
+<p><dd>
+List aliases.<br>
+<p><dd>Available at all Geant4 states.
+<p><br><p><dt><b>shell [<i></i>]</b>
+<p><dd>
+Execute a (Unix) SHELL command.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>manual [<i>dirPath</i>]</b>
+<p><dd>
+Display all of sub-directories and commands.<br>
+Directory path should be given by FULL-PATH.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>dirPath
+<td>type s
+<td>Omittable : default value = /
+<td></table>
+<p><br><p><dt><b>createHTML [<i>dirPath</i>]</b>
+<p><dd>
+Generate HTML files for all of sub-directories and commands.<br>
+Directory path should be given by FULL-PATH.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>dirPath
+<td>type s
+<td>Omittable : default value = /
+<td></table>
+<p><br><p><dt><b>maximumStoredHistory [<i>max</i>]</b>
+<p><dd>
+Set maximum number of stored UI commands.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>max
+<td>type i
+<td>Omittable : default value = 20
+<td></table>
+</dl></body></html>

@@ -1,0 +1,297 @@
+<html><head><title>Commands in /vis/viewer/set/</title></head>
+<body bgcolor="#ffffff"><h2>/vis/viewer/set/</h2><p>
+Set view parameters of current viewer.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>all [<i>from-viewer-name</i>]</b>
+<p><dd>
+/vis/viewer/set/all &lt;from-viewer-name&gt;
+Copies view parameters (except the autoRefresh status) from
+  from-viewer to current viewer.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>from-viewer-name
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>autoRefresh [<i>auto-refresh</i>]</b>
+<p><dd>
+/vis/viewer/set/autoRefresh [true|false]<br>
+  default: false<br>
+View is automatically refreshed after a change of view parameters.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>auto-refresh
+<td>type b
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>auxiliaryEdge [<i>edge</i>]</b>
+<p><dd>
+/vis/viewer/set/auxiliaryEdge [true|false]<br>
+  default: false<br>
+Auxiliary edges become visible/invisible.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>edge
+<td>type b
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>culling [<i>culling-option</i>] [<i>flag</i>] [<i>density</i>] [<i>unit</i>]</b>
+<p><dd>
+/vis/viewer/set/culling global|coveredDaughters|invisible|density [true|false] [density] [unit]<br>
+  default: none true 0.01 g/cm3
+  global: enables other culling options/disables culling.
+  coveredDaughters: does not send volumes that would not be seen on the
+    screen because covered by ancester volumes in surface drawing mode,
+    and then only if the volumes are visible and opaque, and then only if
+    no sections or cutways are in operation.  Intended solely to improve
+    the speed of rendering visible volumes.
+  invisible: culls objects with invisible attribute.
+  density: culls volumes with density lower than threshold.  Useful for
+    eliminating "container volumes" with no physical correspondence whose
+    material is usually air.  If this is selected, provide threshold
+    density and unit (g/cm3, mg/cm3 or kg/m3).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>culling-option
+<td>type s
+<td><td>Parameter candidates : global coveredDaughters invisible density
+<tr><td>flag
+<td>type b
+<td>Omittable : default value = true
+<td><tr><td>density
+<td>type d
+<td>Omittable : default value = 0.01
+<td><tr><td>unit
+<td>type s
+<td>Omittable : default value = g/cm3
+<td></table>
+<p><br><p><dt><b>edge [<i>edge</i>]</b>
+<p><dd>
+/vis/viewer/set/edge [true|false]<br>
+  default: true<br>
+Edges become visible/invisible in surface mode.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>edge
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>globalMarkerScale [<i>scale-factorr</i>]</b>
+<p><dd>
+/vis/viewer/set/globalMarkerScale [&lt;scale-factor&gt;]<br>
+  default: 1<br>
+Multiplies marker sizes by this factor.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>scale-factorr
+<td>type d
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>hiddenEdge [<i>hidden-edge</i>]</b>
+<p><dd>
+/vis/viewer/set/hiddenEdge [true|false]<br>
+  default: true<br>
+Edges become hidden/seen in wireframe or surface mode.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>hidden-edge
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>hiddenMarker [<i>hidden-marker</i>]</b>
+<p><dd>
+/vis/viewer/set/hiddenMarker [true|false]<br>
+  default: true<br>
+Markers are hidden by/seen though closer objects.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>hidden-marker
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>lightsMove [<i>lightsMove</i>]</b>
+<p><dd>
+/vis/viewer/set/lightsMove with-camera|with-object<br>
+Note: parameter will be parsed for "cam" or "obj".<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>lightsMove
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>lightsThetaPhi [<i>theta</i>] [<i>phi</i>] [<i>unit</i>]</b>
+<p><dd>
+/vis/viewer/set/lightsThetaPhi  [&lt;theta&gt;] [&lt;phi&gt;] [deg|rad]<br>
+  default: 60 45 deg - becomes "current as default"<br>
+Set direction from target to lights.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>theta
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>phi
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>unit
+<td>type s
+<td>Omittable : default value = deg
+<td></table>
+<p><br><p><dt><b>lightsVector [<i>x</i>] [<i>y</i>] [<i>z</i>]</b>
+<p><dd>
+/vis/viewer/set/lightsVector  [&lt;x&gt;] [&lt;y&gt;] [&lt;z&gt;]<br>
+  default: 1 1 1 - becomes "current as default"<br>
+Set direction from target to lights.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>x
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>y
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>z
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>lineSegmentsPerCircle [<i>line-segments</i>]</b>
+<p><dd>
+/vis/viewer/set/lineSegmentsPerCircle  [&lt;number-of-sides-per-circle&gt;]<br>
+  default: 24<br>
+Number of sides per circle in polygon/polyhedron graphical
+representation of objects with curved lines/surfaces.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>line-segments
+<td>type i
+<td>Omittable : default value = 24
+<td></table>
+<p><br><p><dt><b>projection [<i>projection</i>] [<i>field-half-angle</i>] [<i>unit</i>]</b>
+<p><dd>
+/vis/viewer/set/projection o[rthogonal]|p[erspective] [&lt;field-half-angle&gt;] [deg|rad]<br>
+  default: orthogonal 30 deg<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>projection
+<td>type s
+<td>Omittable : default value = orthogonal
+<td><tr><td>field-half-angle
+<td>type d
+<td>Omittable : default value = 30
+<td><tr><td>unit
+<td>type s
+<td>Omittable : default value = deg
+<td></table>
+<p><br><p><dt><b>sectionPlane on|off [x] [y] [z] [units] [nx] [ny] [nz] [<i>Selector</i>] [<i>x</i>] [<i>y</i>] [<i>z</i>] [<i>unit</i>] [<i>nx</i>] [<i>ny</i>] [<i>nz</i>]</b>
+<p><dd>
+  default: none 0 0 0 cm 1 0 0<br>
+Set plane for drawing section (DCUT).  Specify plane by
+x y z units nx ny nz, e.g., for a y-z plane at x = 1 cm:
+/vis/viewer/set/sectionPlane on 1 0 0 cm 1 0 0
+To turn off: /vis/viewer/set/sectionPlane off<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>Selector
+<td>type c
+<td>Omittable : default value = ?
+<td><tr><td>x
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>y
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>z
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>unit
+<td>type s
+<td>Omittable : default value = cm
+<td><tr><td>nx
+<td>type d
+<td>Omittable : default value = 1
+<td><tr><td>ny
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>nz
+<td>type d
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>style [<i>style</i>]</b>
+<p><dd>
+/vis/viewer/set/style w[ireframe]|s[urface]<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>style
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>upThetaPhi [<i>theta</i>] [<i>phi</i>] [<i>unit</i>]</b>
+<p><dd>
+/vis/viewer/set/upThetaPhi  [&lt;theta&gt;] [&lt;phi&gt;] [deg|rad]<br>
+  default: 90 90 deg - becomes "current as default"<br>
+Set up vector.  Viewer will attempt always to show this direction upwards.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>theta
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>phi
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>unit
+<td>type s
+<td>Omittable : default value = deg
+<td></table>
+<p><br><p><dt><b>upVector [<i>x</i>] [<i>y</i>] [<i>z</i>]</b>
+<p><dd>
+/vis/viewer/set/upVector  [&lt;x&gt;] [&lt;y&gt;] [&lt;z&gt;]<br>
+  default: 0 1 0 - becomes "current as default"<br>
+Set up vector.  Viewer will attempt always to show this direction upwards.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>x
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>y
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>z
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>viewpointThetaPhi [<i>theta</i>] [<i>phi</i>] [<i>unit</i>]</b>
+<p><dd>
+/vis/viewer/set/viewpointThetaPhi  [&lt;theta&gt;] [&lt;phi&gt;] [deg|rad]<br>
+  default: 0 0 deg - becomes "current as default"<br>
+Set direction from target to camera.  Also changes lightpoint direction
+if lights are set to move with camera.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>theta
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>phi
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>unit
+<td>type s
+<td>Omittable : default value = deg
+<td></table>
+<p><br><p><dt><b>viewpointVector [<i>x</i>] [<i>y</i>] [<i>z</i>]</b>
+<p><dd>
+/vis/viewer/set/viewpointVector  [&lt;x&gt;] [&lt;y&gt;] [&lt;z&gt;]<br>
+  default: 0 0 1 - becomes "current as default"<br>
+Set direction from target to camera.  Also changes lightpoint direction
+if lights are set to move with camera.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>x
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>y
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>z
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td></table>
+</dl></body></html>

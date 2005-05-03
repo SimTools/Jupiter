@@ -1,0 +1,216 @@
+<html><head><title>Commands in /vis/viewer/</title></head>
+<body bgcolor="#ffffff"><h2>/vis/viewer/</h2><p>
+Operations on Geant4 viewers.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+<p><br><p><dt><a href="_vis_viewer_set_.html">/vis/viewer/set/</a>
+<p><dd>Set view parameters of current viewer.
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>clear [<i>viewer-name</i>]</b>
+<p><dd>
+/vis/viewer/clear [&lt;viewer-name&gt;]<br>
+Clears viewer.<br>
+Viewer becomes current.<br>
+Specify viewer by name ("/vis/viewer/list"
+  to see possibilities).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>viewer-name
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>create [<i>scene-handler</i>] [<i>viewer-name</i>] [<i>pixels</i>]</b>
+<p><dd>
+/vis/viewer/create  [&lt;scene-handler&gt;] [&lt;viewer-name&gt;] [&lt;pixels&gt;]<br>
+Creates an viewer for a specific scene handler.<br>
+Default scene handler is the current scene handler.<br>
+Invents a name if not supplied.  (Note: the system adds information<br>
+to the name for identification - only the characters up to the first<br>
+blank are used for removing, selecting, etc.)<br>
+The 3rd parameter is a window size hint.<br>
+This scene handler and viewer become current.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>scene-handler
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td><tr><td>viewer-name
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td><tr><td>pixels
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>dolly [<i>increment</i>] [<i>Unit</i>]</b>
+<p><dd>
+/vis/viewer/dolly [&lt;increment&gt;] [&lt;unit&gt;]<br>
+Moves the camera incrementally in by this distance.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>increment
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Unit
+<td>type s
+<td>Omittable : default value = m
+<td>Parameter candidates : pc km m cm mm mum nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+</table>
+<p><br><p><dt><b>dollyTo [<i>distance</i>] [<i>Unit</i>]</b>
+<p><dd>
+/vis/viewer/dollyTo [&lt;distance&gt;] [&lt;unit&gt;]<br>
+Moves the camera in this distance relative to standard target point.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>distance
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Unit
+<td>type s
+<td>Omittable : default value = m
+<td>Parameter candidates : pc km m cm mm mum nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+</table>
+<p><br><p><dt><b>flush [<i>viewer-name</i>]</b>
+<p><dd>
+/vis/viewer/flush [&lt;viewer-name&gt;]<br>
+Compound command: /vis/viewer/refresh + /vis/viewer/update.<br>
+Useful for refreshing and initiating post-processing for graphics
+  systems which need post-processing.  Viewer becomes current.<br>
+Specify viewer by name ("/vis/viewer/list"
+  to see possibilities).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>viewer-name
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>list [<i>viewer-name</i>] [<i>verbosity</i>]</b>
+<p><dd>
+/vis/viewer/list [&lt;viewer-name&gt;] [&lt;verbosity&gt;]<br>
+Lists viewers(s).<br>
+&lt;viewer-name&gt; default is "all"<br>
+See /vis/verbose for definition of verbosity.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>viewer-name
+<td>type s
+<td>Omittable : default value = all
+<td><tr><td>verbosity
+<td>type s
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>pan [<i>right-increment</i>] [<i>up-increment</i>] [<i>unit</i>]</b>
+<p><dd>
+/vis/viewer/pan [&lt;right-increment&gt;] [&lt;up-increment&gt;] [&lt;unit&gt;]<br>
+Moves the camera incrementally right and up by these amounts.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>right-increment
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>up-increment
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>unit
+<td>type s
+<td>Omittable : default value = m
+<td></table>
+<p><br><p><dt><b>panTo [<i>right</i>] [<i>up</i>] [<i>unit</i>]</b>
+<p><dd>
+/vis/viewer/panTo [&lt;right&gt;] [&lt;up&gt;] [&lt;unit&gt;]<br>
+Moves the camera to this position right and up relative to standardtarget point (as seen from viewpoint direction).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>right
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>up
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>unit
+<td>type s
+<td>Omittable : default value = m
+<td></table>
+<p><br><p><dt><b>refresh [<i>viewer-name</i>]</b>
+<p><dd>
+/vis/viewer/refresh [&lt;viewer-name&gt;]<br>
+Refreshes viewer.<br>
+Viewer becomes current.<br>
+Specify viewer by name ("/vis/viewer/list"
+  to see possibilities).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>viewer-name
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>remove [<i>viewer-name</i>]</b>
+<p><dd>
+/vis/viewer/remove &lt;viewer-name&gt;<br>
+Removes viewer.<br>
+Specify viewer by name ("/vis/viewer/list"
+  to see possibilities).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>viewer-name
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>reset [<i>viewer-name</i>]</b>
+<p><dd>
+/vis/viewer/reset [&lt;viewer-name&gt;]<br>
+Resets viewer.<br>
+Viewer becomes current.<br>
+Specify viewer by name ("/vis/viewer/list"
+  to see possibilities).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>viewer-name
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>select [<i>viewer-name</i>]</b>
+<p><dd>
+/vis/viewer/select &lt;viewer-name&gt;<br>
+Selects current viewer.<br>
+Specify viewer by name ("/vis/viewer/list"
+  to see possibilities).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>viewer-name
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>update [<i>viewer-name</i>]</b>
+<p><dd>
+/vis/viewer/update [&lt;viewer-name&gt;]<br>
+Triggers graphical database post-processing for viewers using that technique.<br>
+For such viewers the view only becomes visible with this command.<br>
+Viewer becomes current.<br>
+Specify viewer by name ("/vis/viewer/list"
+  to see possibilities).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>viewer-name
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>zoom [<i>multiplier</i>]</b>
+<p><dd>
+/vis/viewer/zoom [&lt;multiplier&gt;]<br>
+Multiplies magnification by this factor.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>multiplier
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>zoomTo [<i>factor</i>]</b>
+<p><dd>
+/vis/viewer/zoomTo [&lt;factor&gt;]<br>
+Magnifies by this factor relative to standard view.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>factor
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td></table>
+</dl></body></html>

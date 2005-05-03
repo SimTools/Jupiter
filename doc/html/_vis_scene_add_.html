@@ -1,0 +1,189 @@
+<html><head><title>Commands in /vis/scene/add/</title></head>
+<body bgcolor="#ffffff"><h2>/vis/scene/add/</h2><p>
+Add model to current scene.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>axes [<i>x0</i>] [<i>y0</i>] [<i>z0</i>] [<i>length</i>] [<i>unit</i>]</b>
+<p><dd>
+/vis/scene/add/axes [&lt;x0&gt;] [&lt;y0&gt;] [&lt;z0&gt;] [&lt;length&gt;] [&lt;unit&gt;]<br>
+Default: 0 0 0 1 m<br>
+Draws axes at (x0, y0, z0) of given length.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>x0
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>y0
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>z0
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>length
+<td>type d
+<td>Omittable : default value = 1
+<td><tr><td>unit
+<td>type s
+<td>Omittable : default value = m
+<td></table>
+<p><br><p><dt><b>ghosts [<i>particle</i>]</b>
+<p><dd>
+/vis/scene/add/ghosts [&lt;particle-name&gt;]<br>
+Adds ghost volumes (G4FlavoredParallelWorld) to the current scene.<br>
+Selects by particle (default = "all").<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>particle
+<td>type s
+<td>Omittable : default value = all
+<td></table>
+<p><br><p><dt><b>hits</b>
+<p><dd>
+Adds hits to current scene.<br>
+Hits are drawn at end of event when the scene in which they are added is current.<br>
+<p><dd>Available at all Geant4 states.
+<p><br><p><dt><b>logicalVolume [<i>volume</i>] [<i>depth</i>]</b>
+<p><dd>
+/vis/scene/add/logicalVolume &lt;logical-volume-name&gt; [&lt;depth-of-descending&gt;]<br>
+Adds a logical volume to the current scene,<br>
+  showing voxels and boolean components (if any).<br>
+1st parameter: volume name.<br>
+2nd parameter: depth of descending geometry hierarchy (default 1).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>volume
+<td>type s
+<td><td><tr><td>depth
+<td>type i
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>scale [<i>length</i>] [<i>unit</i>] [<i>direction</i>] [<i>red</i>] [<i>green</i>] [<i>blue</i>] [<i>auto|manual</i>] [<i>xmid</i>] [<i>ymid</i>] [<i>zmid</i>] [<i>unit</i>]</b>
+<p><dd>
+/vis/scene/add/scale [&lt;length&gt; &lt;length-unit&gt;] [x|y|z] [&lt;red&gt;] [&lt;green&gt;] [&lt;blue&gt;] [auto|manual] [&lt;xmid&gt; &lt;ymid&gt; &lt;zmid&gt; &lt;unit&gt;]<br>
+Defaults: 1 m x 1 0 0 auto 0 0 0 m<br>
+Adds an annotated scale line to the current scene.<br>
+An annotated line in the specified direction with tick marks at the
+end.  If autoPlacing is true it is required to be centred at the
+front, right, bottom corner of the world space, comfortably outside
+the existing bounding box/sphere so that existing objects do not
+obscure it.  Otherwise it is required to be drawn with mid-point at
+(xmid, ymid, zmid).
+
+The auto placing algorithm might be:
+  x = xmin + (1 + comfort) * (xmax - xmin)
+  y = ymin - comfort * (ymax - ymin)
+  z = zmin + (1 + comfort) * (zmax - zmin)
+  if direction == x then (x - length,y,z) to (x,y,z)
+  if direction == y then (x,y,z) to (x,y + length,z)
+  if direction == z then (x,y,z - length) to (x,y,z)<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>length
+<td>type d
+<td>Omittable : default value = 1
+<td><tr><td>unit
+<td>type s
+<td>Omittable : default value = m
+<td><tr><td>direction
+<td>type s
+<td>Omittable : default value = x
+<td><tr><td>red
+<td>type d
+<td>Omittable : default value = 1
+<td><tr><td>green
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>blue
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>auto|manual
+<td>type s
+<td>Omittable : default value = auto
+<td><tr><td>xmid
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>ymid
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>zmid
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>unit
+<td>type s
+<td>Omittable : default value = m
+<td></table>
+<p><br><p><dt><b>text [<i>x</i>] [<i>y</i>] [<i>z</i>] [<i>unit</i>] [<i>font_size</i>] [<i>x_offset</i>] [<i>y_offset</i>] [<i>text</i>]</b>
+<p><dd>
+Adds text at (x*unit, y*unit, z*unit) with font_size x_offset y_offset.<br>
+Font size and offsets in pixels.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>x
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>y
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>z
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>unit
+<td>type s
+<td>Omittable : default value = mm
+<td><tr><td>font_size
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>x_offset
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>y_offset
+<td>type d
+<td>Omittable : default value = 0
+<td><tr><td>text
+<td>type s
+<td>Omittable : default value = text
+<td></table>
+<p><br><p><dt><b>trajectories [<i>drawing-mode</i>]</b>
+<p><dd>
+/vis/scene/add/trajectories [drawing-mode]<br>
+Default integer parameter: 0<br>
+Adds trajectories to current scene.<br>
+Causes trajectories, if any, to be drawn at the end of processiing an
+event. The drawing mode is an integer that is passed to the
+DrawTrajectory method.  The default implementation in G4VTrajectory,
+if drawing-mode &gt; 0, draws the trajectory as a polyline and, if
+drawing-mode != 0, draws markers of screen size std::abs(drawing-mode)/1000
+in pixels at each step and auxiliary point, if any.  So drawing-mode
+== 5000 is a good choice.
+Enable storing with "/tracking/storeTrajectory 1".
+See also "/vis/scene/endOfEventAction".<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>drawing-mode
+<td>type i
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>volume [<i>volume</i>] [<i>copy-no</i>] [<i>depth</i>]</b>
+<p><dd>
+/vis/scene/add/volume [&lt;physical-volume-name&gt;] [&lt;copy-no&gt;] [&lt;depth-of-descending&gt;]<br>
+Adds a physical volume to the current scene.<br>
+Note: adds first occurence only.<br>
+1st parameter: volume name (default "world").<br>
+2nd parameter: copy number (default -1).
+  If negative, first occurrence of physical-volume-name is selected.<br>
+3rd parameter: depth of descending geometry hierarchy (default G4Scene::UNLIMITED (-1)).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>volume
+<td>type s
+<td>Omittable : default value = world
+<td><tr><td>copy-no
+<td>type i
+<td>Omittable : default value = -1
+<td><tr><td>depth
+<td>type i
+<td>Omittable : default value = -1
+<td></table>
+</dl></body></html>

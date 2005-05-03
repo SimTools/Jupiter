@@ -1,0 +1,208 @@
+<html><head><title>Commands in /geometry/test/</title></head>
+<body bgcolor="#ffffff"><h2>/geometry/test/</h2><p>
+Geometry verification control setup.<br>
+Helps in detecting possible overlapping regions.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>tolerance [<i>Tolerance</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set error tolerance value.<br>
+Initial default value: 1E-4*mm.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>Tolerance
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Unit
+<td>type s
+<td>Omittable : default value = mm
+<td>Parameter candidates : pc km m cm mm mum nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+</table>
+<p><br><p><dt><b>position [<i>X</i>] [<i>Y</i>] [<i>Z</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set starting position for the line_test.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>X
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Y
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Z
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Unit
+<td>type s
+<td>Omittable : default value = cm
+<td>Parameter candidates : pc km m cm mm mum nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+</table>
+<p><br><p><dt><b>direction [<i>Px</i>] [<i>Py</i>] [<i>Pz</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set momentum direction for the line_test.<br>
+Direction needs not to be a unit vector.<br>
+<p><dd>Range : Px != 0 || Py != 0 || Pz != 0
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>Px
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Py
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Pz
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Unit
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>line_test [<i>recursionFlag</i>]</b>
+<p><dd>
+Performs test along a single specified direction/position.<br>
+Use position and direction commands to change default.<br>
+Initial default: position(0,0,0), direction(0,0,1).<br>
+If recursion flag is set to TRUE, the intersection checks<br>
+will be performed recursively in the geometry tree.<br>
+<p><dd>Available Geant4 state(s) : Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>recursionFlag
+<td>type b
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>grid_cells [<i>X</i>] [<i>Y</i>] [<i>Z</i>]</b>
+<p><dd>
+Define resolution of grid geometry as number of cells,<br>
+specifying them for each dimension, X, Y and Z.<br>
+Will be applied to grid_test and recursive_test commands.<br>
+Initial default values: X=100, Y=100, Z=100.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>X
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Y
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>Z
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>grid_test [<i>recursionFlag</i>]</b>
+<p><dd>
+Start running the default grid test.<br>
+A grid of lines parallel to a cartesian axis is used;<br>
+By default, only direct daughters of the mother volumes are checked.<br>
+If recursion flag is set to TRUE, the intersection checks<br>
+will be performed recursively in the geometry tree.<br>
+NOTE: the recursion may take a very long time,<br>
+      depending on the geometry complexity !<br>
+<p><dd>Available Geant4 state(s) : Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>recursionFlag
+<td>type b
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>cylinder_geometry [<i>nPhi</i>] [<i>nZ</i>] [<i>nRho</i>]</b>
+<p><dd>
+Define details of the cylinder geometry, specifying:<br>
+  nPhi - number of lines per Phi<br>
+  nZ   - number of Z points<br>
+  nRho - number of Rho points<br>
+Will be applied to the cylinder_test command.<br>
+Initial default values: nPhi=90, nZ=50, nRho=50.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>nPhi
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>nZ
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td><tr><td>nRho
+<td>type d
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>cylinder_scaleZ [<i>fracZ</i>]</b>
+<p><dd>
+Define the resolution of the cylinder geometry, specifying<br>
+the fraction scale for points along Z.<br>
+Initial default values: fracZ=0.8<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>fracZ
+<td>type d
+<td>Omittable : default value = 0.8
+<td></table>
+<p><br><p><dt><b>cylinder_scaleRho [<i>fracRho</i>]</b>
+<p><dd>
+Define the resolution of the cylinder geometry, specifying<br>
+the fraction scale for points along Rho.<br>
+Initial default values: fracRho=0.8<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>fracRho
+<td>type d
+<td>Omittable : default value = 0.8
+<td></table>
+<p><br><p><dt><b>cylinder_test [<i>recursionFlag</i>]</b>
+<p><dd>
+Start running the cylinder test.<br>
+A set of lines in a cylindrical pattern of gradually<br>
+increasing mesh size.<br>
+By default, only direct daughters of the mother volumes are checked.<br>
+If recursion flag is set to TRUE, the intersection checks<br>
+will be performed recursively in the geometry tree.<br>
+NOTE: the recursion may take a very long time,<br>
+      depending on the geometry complexity !<br>
+<p><dd>Available Geant4 state(s) : Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>recursionFlag
+<td>type b
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>recursion_start [<i>initial_level</i>]</b>
+<p><dd>
+Set the initial level in the geometry tree for recursion.<br>
+recursive_test will then start from the specified level.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>initial_level
+<td>type i
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>recursion_depth [<i>recursion_depth</i>]</b>
+<p><dd>
+Set the depth in the geometry tree for recursion.<br>
+recursive_test will then stop after reached the specified depth.<br>
+By default, recursion will proceed for the whole depth.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>recursion_depth
+<td>type i
+<td>Omittable : default value = -1
+<td></table>
+<p><br><p><dt><b>run [<i>recursionFlag</i>]</b>
+<p><dd>
+Start running the default grid test.<br>
+Same as the grid_test command.<br>
+If recursion flag is set to TRUE, the intersection checks<br>
+will be performed recursively in the geometry tree.<br>
+NOTE: the recursion may take a very long time,<br>
+      depending on the geometry complexity !<br>
+<p><dd>Available Geant4 state(s) : Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>recursionFlag
+<td>type b
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>recursive_test</b>
+<p><dd>
+Start running the recursive grid test.<br>
+A grid of lines along a cartesian axis is recursively<br>
+to all daughters and daughters of daughters, etc.<br>
+NOTE: it may take a very long time,<br>
+      depending on the geometry complexity !<br>
+<p><dd>Available Geant4 state(s) : Idle 
+</dl></body></html>

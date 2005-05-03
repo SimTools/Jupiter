@@ -1,0 +1,109 @@
+<html><head><title>Commands in /vis/scene/</title></head>
+<body bgcolor="#ffffff"><h2>/vis/scene/</h2><p>
+Operations on Geant4 scenes.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+<p><br><p><dt><a href="_vis_scene_add_.html">/vis/scene/add/</a>
+<p><dd>Add model to current scene.
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>create [<i>scene-name</i>]</b>
+<p><dd>
+/vis/scene/create [&lt;scene-name&gt;]<br>
+Creates an empty scene.<br>
+Invents a name if not supplied.<br>
+This scene becomes current.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>scene-name
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>endOfEventAction [<i>action</i>]</b>
+<p><dd>
+/vis/scene/endOfEventAction [accumulate|refresh]<br>
+Requests viewer
+a) to accumulate hits, etc., event by event, or
+b) to show them at end of event or, for direct-screen viewers,
+   to refresh the screen just before drawing the next event.
+ Detector remains or is redrawn.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>action
+<td>type s
+<td>Omittable : default value = refresh
+<td>Parameter candidates : accumulate refresh
+</table>
+<p><br><p><dt><b>endOfRunAction [<i>action</i>]</b>
+<p><dd>
+/vis/scene/endOfRunAction [accumulate|refresh]<br>
+Requests viewer
+a) to accumulate hits, etc., run by run, or
+b) to show them at end of run or, for direct-screen viewers,
+   to refresh the screen just before drawing the next event.
+ Detector remains or is redrawn.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>action
+<td>type s
+<td>Omittable : default value = refresh
+<td>Parameter candidates : accumulate refresh
+</table>
+<p><br><p><dt><b>list [<i>scene-name</i>] [<i>verbosity</i>]</b>
+<p><dd>
+/vis/scene/list [&lt;scene-name&gt;] [&lt;verbosity&gt;]<br>
+Lists scene(s).<br>
+&lt;scene-name&gt; default is "all"<br>
+See /vis/verbose for definition of verbosity.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>scene-name
+<td>type s
+<td>Omittable : default value = all
+<td><tr><td>verbosity
+<td>type s
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>notifyHandlers [<i>scene-name</i>] [<i>refresh-flush</i>]</b>
+<p><dd>
+/vis/scene/notifyHandlers [&lt;scene-name&gt;] [r[efresh]|f[lush]]<br>
+Notifies scene handlers of possible changes of scene and forces areconstruction of any graphical databases.<br>
+&lt;scene-name&gt; default is current scene name.<br>
+Clears and refreshes all viewers of current scene.
+  The default action "refresh" does not issue "update" (see
+    /vis/viewer/update).
+If "flush" is specified, it issues an "update" as well as
+  "refresh".  Useful for refreshing and initiating post-processing
+  for graphics systems which need post-processing.<br>
+This command does not change current scene, scene handler or viewer.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>scene-name
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td><tr><td>refresh-flush
+<td>type s
+<td>Omittable : default value = refresh
+<td></table>
+<p><br><p><dt><b>remove [<i>scene-name</i>]</b>
+<p><dd>
+/vis/scene/remove &lt;scene-name&gt;<br>
+Removes scenes.<br>
+/vis/scene/list to see possibilities.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>scene-name
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>select [<i>scene-name</i>]</b>
+<p><dd>
+/vis/scene/select [&lt;scene-name&gt;]<br>
+Selects current scene.<br>
+Specify scene by name ("/vis/scene/list" to see possibilities).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>scene-name
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td></table>
+</dl></body></html>

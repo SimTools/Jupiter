@@ -1,0 +1,125 @@
+<html><head><title>Commands in /process/eLoss/</title></head>
+<body bgcolor="#ffffff"><h2>/process/eLoss/</h2><p>
+Commands for G4VEnergyLoss.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>rndmStep [<i>choice</i>]</b>
+<p><dd>
+Randomize the proposed step by eLoss.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>choice
+<td>type b
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>fluct [<i>choice</i>]</b>
+<p><dd>
+Switch true/false the energy loss fluctuations.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>choice
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>subsec [<i>choice</i>]</b>
+<p><dd>
+Switch true/false the subcutoff generation.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>choice
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>minsubsec [<i>rcmin</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set the min. cut for subcutoff delta in range.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>rcmin
+<td>type d
+<td>Omittable : default value = 
+<td><tr><td>Unit
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>StepFunction [<i>dRoverR</i>] [<i>finalRange</i>] [<i>unit</i>]</b>
+<p><dd>
+Set the energy loss step limitation parameters.<br>
+  dRoverR   : max Range variation per step<br>
+  finalRange: range for final step<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>dRoverR
+<td>type d
+<td><td>Parameter range : dRoverR&gt;0. &amp;&amp; dRoverR&lt;=1.
+<tr><td>finalRange
+<td>type d
+<td><td>Parameter range : finalRange&gt;0.
+<tr><td>unit
+<td>type s
+<td>Omittable : default value = mm
+<td>Parameter candidates : pc km m cm mm mum nm Ang fm parsec kilometer meter centimeter millimeter micrometer nanometer angstrom fermi
+</table>
+<p><br><p><dt><b>minKinEnergy [<i>emin</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set the min kinetic energy<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>emin
+<td>type d
+<td>Omittable : default value = 
+<td><tr><td>Unit
+<td>type s
+<td><td>Parameter candidates : eV keV MeV GeV TeV PeV J electronvolt kiloelectronvolt megaelectronvolt gigaelectronvolt teraelectronvolt petaelectronvolt joule
+</table>
+<p><br><p><dt><b>maxKinEnergy [<i>emax</i>] [<i>Unit</i>]</b>
+<p><dd>
+Set the max kinetic energy<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>emax
+<td>type d
+<td>Omittable : default value = 
+<td><tr><td>Unit
+<td>type s
+<td><td>Parameter candidates : eV keV MeV GeV TeV PeV J electronvolt kiloelectronvolt megaelectronvolt gigaelectronvolt teraelectronvolt petaelectronvolt joule
+</table>
+<p><br><p><dt><b>integral [<i>integ</i>]</b>
+<p><dd>
+Switch true/false the integration of cross section over step.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>integ
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>preciseRange [<i>range</i>]</b>
+<p><dd>
+Switch true/false the precise range calculation.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>range
+<td>type b
+<td>Omittable : default value = 1
+<td></table>
+<p><br><p><dt><b>verbose [<i>verb</i>]</b>
+<p><dd>
+Set verbose level for EM physics.<br>
+<p><dd>Available Geant4 state(s) : PreInit 
+Idle 
+<p><dd>Parameters<table border=1>
+<tr><td>verb
+<td>type i
+<td>Omittable : default value = 1
+<td></table>
+</dl></body></html>

@@ -1,0 +1,79 @@
+<html><head><title>Commands in /vis/sceneHandler/</title></head>
+<body bgcolor="#ffffff"><h2>/vis/sceneHandler/</h2><p>
+Operations on Geant4 scene handlers.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>attach [<i>scene-name</i>]</b>
+<p><dd>
+/vis/sceneHandler/attach [&lt;scene-name&gt;]<br>
+Attaches scene to current scene handler.<br>
+If scene-name is omitted, current scene is attached.<br>
+To see scenes and scene handlers, use "/vis/scene/list"
+  and "/vis/sceneHandler/list"<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>scene-name
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>create [<i>graphics-system-name</i>] [<i>scene-handler-name</i>]</b>
+<p><dd>
+/vis/sceneHandler/create<br>
+     [&lt;graphics-system-name&gt;] [&lt;scene-handler-name&gt;]<br>
+Creates an scene handler for a specific graphics system.<br>
+Attaches current scene, if any.  You can change attached scenes with<br>
+  /vis/sceneHandler/attach [&lt;scene-name&gt;].<br>
+Default graphics system is current graphics system.<br>
+Invents a scene handler name if not supplied.<br>
+This scene handler becomes current.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>graphics-system-name
+<td>type s
+<td>Omittable : default value = error
+<td>Parameter candidates : DAWNFILE OGLIX OGLSX VRML1FILE VRML2FILE
+<tr><td>scene-handler-name
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td></table>
+<p><br><p><dt><b>list [<i>scene-handler-name</i>] [<i>verbosity</i>]</b>
+<p><dd>
+/vis/sceneHandler/list [&lt;scene-handler-name&gt;] [&lt;verbosity&gt;]<br>
+Lists scene handler(s).<br>
+&lt;scene-handler-name&gt; default is "all"<br>
+See /vis/verbose for definition of verbosity.<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>scene-handler-name
+<td>type s
+<td>Omittable : default value = all
+<td><tr><td>verbosity
+<td>type s
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>remove [<i>scene-handler-name</i>]</b>
+<p><dd>
+/vis/sceneHandler/remove &lt;scene-handler-name&gt;<br>
+Removes scene handlers.<br>
+Specify scene handler by name ("/vis/sceneHandler/list"
+  to see possibilities).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>scene-handler-name
+<td>type s
+<td><td></table>
+<p><br><p><dt><b>select [<i>scene-handler-name</i>]</b>
+<p><dd>
+/vis/sceneHandler/select [&lt;scene-handler-name&gt;]<br>
+Selects current scene handler.<br>
+Specify scene handler by name ("/vis/sceneHandler/list"
+  to see possibilities).<br>
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>scene-handler-name
+<td>type s
+<td>Omittable : current value is used as the default value.
+<td></table>
+</dl></body></html>

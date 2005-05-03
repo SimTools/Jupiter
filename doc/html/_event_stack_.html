@@ -1,0 +1,28 @@
+<html><head><title>Commands in /event/stack/</title></head>
+<body bgcolor="#ffffff"><h2>/event/stack/</h2><p>
+Stack control commands.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>status</b>
+<p><dd>
+List current status of the stack.<br>
+<p><dd>Available at all Geant4 states.
+<p><br><p><dt><b>clear [<i>level</i>]</b>
+<p><dd>
+Clear stacked tracks.<br>
+ 2 : clear all tracks in all stacks<br>
+ 1 : clear tracks in the urgent and waiting stacks<br>
+ 0 : clear tracks in the waiting stack (default)<br>
+-1 : clear tracks in the urgent stack<br>
+-2 : clear tracks in the postponed stack<br>
+<p><dd>Range : level&gt;=-2&amp;&amp;level&lt;=2
+<p><dd>Available Geant4 state(s) : GeomClosed 
+EventProc 
+<p><dd>Parameters<table border=1>
+<tr><td>level
+<td>type i
+<td>Omittable : default value = 0
+<td></table>
+</dl></body></html>

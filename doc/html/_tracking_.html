@@ -1,0 +1,47 @@
+<html><head><title>Commands in /tracking/</title></head>
+<body bgcolor="#ffffff"><h2>/tracking/</h2><p>
+TrackingManager and SteppingManager control commands.<br>
+<p><hr><p>
+<h2>Sub-directories : </h2><dl>
+</dl><p><hr><p>
+<h2>Commands : </h2><dl>
+<p><br><p><dt><b>abort</b>
+<p><dd>
+Abort current G4Track processing.<br>
+<p><dd>Available at all Geant4 states.
+<p><br><p><dt><b>resume</b>
+<p><dd>
+Resume current G4Track processing.<br>
+<p><dd>Available at all Geant4 states.
+<p><br><p><dt><b>storeTrajectory [<i>Store</i>]</b>
+<p><dd>
+Store trajectories or not.<br>
+ 1 : Store trajectories.<br>
+ 0 : Don't Store trajectories.<br>
+<p><dd>Range : Store &gt;=0 &amp;&amp; Store &lt;= 1
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>Store
+<td>type i
+<td>Omittable : default value = 0
+<td></table>
+<p><br><p><dt><b>verbose [<i>verbose_level</i>]</b>
+<p><dd>
+Set Verbose level of tracking category.<br>
+ 0 : Silent.<br>
+ 1 : Minium information of each Step.<br>
+ 2 : Addition to Level=1, info of secondary particles.<br>
+ 3 : Addition to Level=1, pre/postStepoint information<br>
+     after all AlongStep/PostStep process executions.<br>
+ 4 : Addition to Level=3, pre/postStepoint information<br>
+     at each AlongStepPostStep process execuation.<br>
+ 5 : Addition to Level=4, proposed Step length information<br>
+     from each AlongStepPostStep process.<br>
+<p><dd>Range : verbose_level &gt;=0  
+<p><dd>Available at all Geant4 states.
+<p><dd>Parameters<table border=1>
+<tr><td>verbose_level
+<td>type i
+<td>Omittable : default value = 0
+<td></table>
+</dl></body></html>
