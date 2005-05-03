@@ -1,0 +1,30 @@
+# =====================================================================
+#   initialize visualization in DAWNFILE and display detector by Dawn
+# =====================================================================
+# 
+# // create empty scene ("world" is default)
+/vis/scene/create
+# 
+# // add volume to scene
+/vis/scene/add/volume
+#  
+# // create a scene handler for a specific graphics system
+# // edit the next line(s) to choose another graphic system
+/vis/sceneHandler/create DAWNFILE
+# 
+# // create a viewer
+/vis/viewer/create
+#/vis/sceneHandler/attach
+
+/vis/viewer/reset
+/vis/viewer/viewpointThetaPhi 0. 90.
+/vis/viewer/zoom 2.0
+
+#  
+# // for drawing the tracks 
+#/tracking/storeTrajectory 1
+/vis/scene/add/trajectories
+
+/vis/scene/notifyHandlers
+/vis/viewer/update
+

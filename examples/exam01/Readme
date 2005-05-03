@@ -1,0 +1,18 @@
+Jupiter example
+
+Example to draw detector geometry using Dawn.
+
+To run, do
+
+$ Jupiter -v 8 showgeom.g4mac
+
+here, option "-v 8" is to suppress lengthy message of geometry initialization.
+When completed, it creates an input file for the command dawn, g4_00.prim.
+Using this file, dawn command can create an eps file of detector geometry 
+by doing,
+
+$ dawn g4_00.prim
+
+Various display options can be specified through a dawn control panel.
+
+
