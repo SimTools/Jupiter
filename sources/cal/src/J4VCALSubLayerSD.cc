@@ -158,8 +158,11 @@ G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
     // cell is not yet hit.
     // make new hit for that cell and insert to hit buffer.
     G4double nminitower=ptrList->GetHDMiniTowerNClones();
-    if ( isEM ) nminitower=ptrList->GetEMMiniTowerNClones(); 
+    if ( isEM ) { 
+	nminitower=ptrList->GetEMMiniTowerNClones(); 
+    }
     G4double phitower= nminitower*towerID  + miniTowerID;
+    G4double thetacone= miniConeID;
 
     G4Sphere *cellsphere = (G4Sphere*)(ptrSubLayerComponent->GetSolid());
 /*
@@ -170,7 +173,7 @@ G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
     std::cerr << " DeltaPhi=" << cellsphere->GetDeltaPhiAngle() << std::endl;
 */
     G4double cellrho = cellsphere->GetInsideRadius();
-    G4double celltheta = cellsphere->GetStartThetaAngle() + 0.5*cellsphere->GetDeltaThetaAngle();
+    G4double celltheta = cellsphere->GetStartThetaAngle() + (thetacone+0.5)*cellsphere->GetDeltaThetaAngle();
     G4double cellphi = cellsphere->GetStartPhiAngle() + (phitower+0.5)*cellsphere->GetDeltaPhiAngle();
     G4double cellX = cellrho*std::sin(celltheta)*std::cos(cellphi);
     G4double cellY = cellrho*std::sin(celltheta)*std::sin(cellphi);
@@ -205,10 +208,15 @@ G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
       }
     }
     if ( makeNewHit ) {
+      G4double nminitower=ptrList->GetHDMiniTowerNClones();
+      if ( isEM ) nminitower=ptrList->GetEMMiniTowerNClones(); 
+      G4double phitower= nminitower*towerID  + miniTowerID;
+      G4double thetacone= miniConeID;
+
       G4Sphere *cellsphere = (G4Sphere*)(ptrSubLayerComponent->GetSolid());
       G4double cellrho = cellsphere->GetInsideRadius();
-      G4double celltheta = cellsphere->GetStartThetaAngle() + 0.5*cellsphere->GetDeltaThetaAngle();
-      G4double cellphi = cellsphere->GetStartPhiAngle() + 0.5*cellsphere->GetDeltaPhiAngle();
+      G4double celltheta = cellsphere->GetStartThetaAngle() + (thetacone+0.5)*cellsphere->GetDeltaThetaAngle();
+      G4double cellphi = cellsphere->GetStartPhiAngle() + (phitower+0.5)*cellsphere->GetDeltaPhiAngle();
       G4double cellX = cellrho*std::sin(celltheta)*std::cos(cellphi);
       G4double cellY = cellrho*std::sin(celltheta)*std::sin(cellphi);
       G4double cellZ = cellrho*std::cos(celltheta);
