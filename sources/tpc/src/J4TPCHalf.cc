@@ -74,17 +74,6 @@ void J4TPCHalf::Assemble()
     PaintLV(list->GetTPCVisAtt(), list->GetTPCColor());
   	
     // Install daughter PV //
-    // Install T0 detector       //
-#if 1
-    fLayer = new J4TPCLayer(this, 1, list->GetNlayers(), 0);
-    Register(fLayer);
-    G4ThreeVector tlate(0., 0., list->GetCentralMembraneHalfThick() / 2
-                              - list->GetEndcapHalfThick()
-                              - list->GetPadPlaneHalfThick());
-
-    fLayer->InstallIn(this, 0, tlate);
-    SetDaughter(fLayer);
-#endif
     // Install DriftRegion       //
 
     fDriftRegion = new J4TPCDriftRegion(this);

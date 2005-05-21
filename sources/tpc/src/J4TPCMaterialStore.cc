@@ -44,14 +44,43 @@ G4Material* J4TPCMaterialStore::Create(const G4String &name,
     //  const G4double expTemp= STP_Temperature+20.*kelvin; 
 #endif  
   }
+    
+  if (name == "Mylar") {
+    //--------------
+    // elements...
+    //--------------
+    G4double A, Z;
+    G4String name, symbol;
                                                                                 
-  
+    A= 1.00794 *g/mole;
+    G4Element* elH= new G4Element(name="Hydrogen", symbol="H", Z=1., A);
+    A= 12.011 *g/mole;
+    G4Element* elC= new G4Element(name="Carbon", symbol="C", Z=6., A);
+    A= 15.9994 *g/mole;
+    G4Element* elO= new G4Element(name="Oxygen", symbol="O", Z=8., A);
+                                                                                
+    //--------------
+    // materials...
+    //--------------
+    G4int natoms, ncomponents;
+                                                                                
+    // Mylar
+    const G4double denMylar= 1.39 *g/cm3;
+    G4Material* Mylar= new G4Material(name="Mylar", denMylar, ncomponents=3);
+    Mylar-> AddElement(elC, natoms=5);
+    Mylar-> AddElement(elH, natoms=4);
+    Mylar-> AddElement(elO, natoms=2);
+                                                                                
+    material = Mylar;
+  }
+
+ 
   if (name == "InShellC") {
     G4double A, Z, density;
     G4String name;
 
     A= 12.011 *g/mole;
-    density = 0.1317 * (4.215 - 0.056) / 4.215 *g/cm3;
+    density = 0.1317 *g/cm3;
     G4Material *InShellC = new G4Material(name="InShellC", Z=6., A, density);
 
     material = InShellC;
@@ -67,17 +96,6 @@ G4Material* J4TPCMaterialStore::Create(const G4String &name,
 
     material = OutShellC;
   }
-
-  if (name == "Copper") {
-    G4double A, Z, density;
-    G4String name;
-
-    A = 63.546 *g/mole;
-    density = 8.92 *g/cm3;
-    G4Material *Copper = new G4Material(name="Copper", Z=29., A, density);
-
-    material = Copper;
-  }   
 
 
   if (name == "EndCu") {

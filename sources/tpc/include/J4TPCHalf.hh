@@ -53,7 +53,6 @@ private:
   J4TPCEndcap           *fEndcaps;
   J4TPCCentralMembrane  *fCentralMembrane;
   J4TPCPadPlane         *fPadPlanes; 
-  J4TPCLayer            *fLayer;
  
 };
 

@@ -109,8 +109,6 @@ class J4TPCParameterList : public J4VParameterList
    inline G4double GetLayerThick()           const { return fLayerThick;      }
    inline G4double GetLayerRspacing()        const;
    inline G4double GetFirstLayerInnerR()     const { return fFirstLayerInnerR;}
-   inline G4double GetT0detInnerR()          const;
-   inline G4double GetT0detOuterR()          const;
                  
    //*DriftRegion -----------------------------------------------------------
    inline G4double GetDriftRegionDeltaPhi()  const { return fTPCDeltaPhi;     }
@@ -122,7 +120,6 @@ class J4TPCParameterList : public J4VParameterList
    inline G4String GetOuterSupportTubMaterial() const { return fOuterSupportTubMaterial; }
    inline G4String GetEndcapMaterial()        const { return fEndcapMaterial;  }
    inline G4String GetLayerMaterial()         const { return fLayerMaterial;   }
-   inline G4String GetT0detMaterial()         const { return fT0detMaterial;   }
    inline
        G4String GetCentralMembraneMaterial()  const { return fCentralMembraneMaterial;}
    inline G4String GetPadPlaneMaterial()      const { return fPadPlaneMaterial;}
@@ -233,7 +230,6 @@ class J4TPCParameterList : public J4VParameterList
    // material
    G4String  fTPCMaterial;
    G4String  fLayerMaterial;
-   G4String  fT0detMaterial;
    G4String  fInnerSupportTubMaterial;
    G4String  fOuterSupportTubMaterial;
    G4String  fEndcapMaterial;
@@ -294,7 +290,6 @@ class J4TPCParameterList : public J4VParameterList
    G4int     fNlayers;
    G4double  fLayerThick;
    G4double  fFirstLayerInnerR;
-   G4double  fT0detThick;
    
 };
 
@@ -343,7 +338,7 @@ G4double J4TPCParameterList::GetOuterSupportTubOuterR() const
                                                                                 
 G4double J4TPCParameterList::GetInnerSupportTubInnerR() const
 {
-   return GetT0detOuterR();
+   return GetTPCInnerR();
 }
                                                                                 
 G4double J4TPCParameterList::GetInnerSupportTubOuterR() const
@@ -387,16 +382,6 @@ G4double J4TPCParameterList::GetDriftRegionHalfZ() const
 {
    return (GetTPCHalfZ() - fCentralMembraneHalfThick - 
            2 * (fEndcapHalfThick + fPadPlaneHalfThick)) / 2;
-}
-
-G4double J4TPCParameterList::GetT0detInnerR() const
-{
-   return GetTPCInnerR();
-}
-
-G4double J4TPCParameterList::GetT0detOuterR() const
-{
-   return GetT0detInnerR() + fT0detThick;
 }
 
 G4double J4TPCParameterList::GetPadPlaneFrontZ() const

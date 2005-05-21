@@ -56,25 +56,22 @@ void J4TPCParameterList::SetMaterials()
    fPadPlaneMaterial        = "P10";
    fPadRowMaterial          = "P10";
    fDriftRegionMaterial     = "P10";
-   fT0detMaterial           = "Silicon";
    fInnerSupportTubMaterial = "InShellC";
-   fCentralMembraneMaterial = "Copper";
+   fCentralMembraneMaterial = "Mylar";
 
    fTPCMaterial             = J4ParameterTable::GetValue("J4TPC.Material","P10");
    fLayerMaterial           = J4ParameterTable::GetValue("J4TPC.Material.Layer","P10");
    fPadPlaneMaterial        = J4ParameterTable::GetValue("J4TPC.Material.PadPlane","P10");
    fPadRowMaterial          = J4ParameterTable::GetValue("J4TPC.Material.PadRow","P10");
    fDriftRegionMaterial     = J4ParameterTable::GetValue("J4TPC.Material.DriftRegion","P10");
-   fT0detMaterial           = J4ParameterTable::GetValue("J4TPC.Material.T0det","Silicon");
    fInnerSupportTubMaterial = J4ParameterTable::GetValue("J4TPC.Material.InnerSupportTube","InShellC");
-   fCentralMembraneMaterial = J4ParameterTable::GetValue("J4TPC.Material.CentralMembrane","Copper");
+   fCentralMembraneMaterial = J4ParameterTable::GetValue("J4TPC.Material.CentralMembrane","Mylar");
 
 #else
    fTPCMaterial             = "vacuum";
    fLayerMaterial           = "vacuum";
    fPadPlaneMaterial        = "vacuum";
    fPadRowMaterial          = "vacuum";
-   fT0detMaterial           = "vacuum";
    fInnerSupportTubMaterial = "vacuum";
    fCentralMembraneMaterial = "vacuum";
    fDriftRegionMaterial     = "vacuum";
@@ -96,7 +93,7 @@ void J4TPCParameterList::SetParameters()
    fEndcapHalfThick     = J4ParameterTable::GetValue("J4TPC.Endcap.HalfThickness",1.0)*cm;
                                                                                 
    // SupportTub
-   fInnerSupportTubHalfThick = J4ParameterTable::GetValue("J4TPC.InnerSupportTube.HalfThickness",2.0795)*cm;
+   fInnerSupportTubHalfThick = J4ParameterTable::GetValue("J4TPC.InnerSupportTube.HalfThickness",2.1075)*cm;
    fOuterSupportTubHalfThick = J4ParameterTable::GetValue("J4TPC.OuterSupportTube.HalfThickness",4.1175)*cm;
 
    // Layer
@@ -112,10 +109,9 @@ void J4TPCParameterList::SetParameters()
    fFirstLayerInnerR    = 10.*cm;
 #endif
    fLayerThick          = J4ParameterTable::GetValue("J4TPC.Layer.Thickness",0.0001)*cm;   // temporary, it should be more thick.
-   fT0detThick          = J4ParameterTable::GetValue("J4TPC.T0det.Thickness",0.056)*cm;
 
    // CentralMembrane
-   fCentralMembraneHalfThick = J4ParameterTable::GetValue("J4TPC.CentralMembrane.HalfThickness",0.005)*cm;
+   fCentralMembraneHalfThick = J4ParameterTable::GetValue("J4TPC.CentralMembrane.HalfThickness",0.00125)*cm;
 
    // PadPlane 
    fPadPlaneHalfThick   = J4ParameterTable::GetValue("J4TPC.PadPlane.HalfThickness",1.5)*cm;
