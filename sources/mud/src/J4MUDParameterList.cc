@@ -64,6 +64,9 @@ void J4MUDParameterList::SetMaterials()
 //* SetParameters -----------------------------------------------------
 void J4MUDParameterList::SetParameters()
 {
+  // Magnetic field magnitude
+  fBField    = J4ParameterTable::GetValue("J4MUD.BFiled",3.0 )*tesla;
+  
   // Detector outer size = 700.0*cm
   fMUDHeight = J4ParameterTable::GetValue("J4MUD.Height",700.0)*cm;
   fDeltaPhi                 = 360.*deg;                           
@@ -94,10 +97,10 @@ void J4MUDParameterList::SetParameters()
   fEndcapNAbsLayers         = fEndcapNSuperLayers + 1;            
   // Number of Endcap Active Layer
   fEndcapNActiveLayers      = fEndcapNSuperLayers;               
-
   // Endcap Active Layer thickness
-  fEndcapActiveThick = J4ParameterTable::GetValue("J4MUD.Endcap.ActiveThickness",10.0)*cm;                        
-  fEndcapAbsThick           = (fEndcapThick - fEndcapNActiveLayers*fEndcapActiveThick ) / fEndcapNAbsLayers; // Endcap Absorber thickness
+  fEndcapActiveThick = J4ParameterTable::GetValue("J4MUD.Endcap.ActiveThickness",10.0)*cm;
+  // Endcap Absorber thickness
+  fEndcapAbsThick    = (fEndcapThick - fEndcapNActiveLayers*fEndcapActiveThick ) / fEndcapNAbsLayers; 
   
   // frontEndcap -----------------------------------------------------//
   // Number of FrontEndcap SuperLayer
@@ -108,13 +111,14 @@ void J4MUDParameterList::SetParameters()
   fFrontEndcapNActiveLayers = fFrontEndcapNSuperLayers;           
   // FrontEndcap front z-axis position
   fFrontEndcapFrontZ        = J4ParameterTable::GetValue("J4MUD.FrontEndcap.FrontZ",430.0)*cm;
-  //fFrontEndcapOuterR        = 370.0*cm;                            // FrontEndcap Outer radius
   // FrontEndcap Outer radius
-  fFrontEndcapOuterR        = J4ParameterTable::GetValue("J4MUD.FrontEndcap.OuterRadius",360.0)*cm;                          
-  fFrontEndcapThick         = fEndcapFrontZ - fFrontEndcapFrontZ;  // FrontEndcap Thickness
+  fFrontEndcapOuterR        = J4ParameterTable::GetValue("J4MUD.FrontEndcap.OuterRadius",360.0)*cm;
+  // FrontEndcap Thickness
+  fFrontEndcapThick         = fEndcapFrontZ - fFrontEndcapFrontZ;  
   // FrontEndcap Active Layer Thickness
-  fFrontEndcapActiveThick   = J4ParameterTable::GetValue("J4MUD.FrontEndcap.ActiveThickness",10.0)*cm;                            
-  fFrontEndcapAbsThick      = ( fFrontEndcapThick - fFrontEndcapNActiveLayers*fFrontEndcapActiveThick ) / fFrontEndcapNAbsLayers; // FrontEndcap Absorber thickness
+  fFrontEndcapActiveThick   = J4ParameterTable::GetValue("J4MUD.FrontEndcap.ActiveThickness",10.0)*cm;
+  // FrontEndcap Absorber thickness
+  fFrontEndcapAbsThick      = ( fFrontEndcapThick - fFrontEndcapNActiveLayers*fFrontEndcapActiveThick ) / fFrontEndcapNAbsLayers; 
   
   // Barrel -----------------------------------------------------------//
   //fBarrelInnerR             = 455.0*cm;                            // Barrel inner radius
@@ -131,8 +135,9 @@ void J4MUDParameterList::SetParameters()
   // Number of Barrel Active Layer
   fBarrelNActiveLayers      = fBarrelNSuperLayers;               
   // Barrel Active Layer thickness
-  fBarrelActiveThick   = J4ParameterTable::GetValue("J4MUD.Barrel.ActiveThickness",10.0)*cm;                          
-  fBarrelAbsThick           = (fBarrelThick - fBarrelNActiveLayers*fBarrelActiveThick ) / fBarrelNAbsLayers; // Barrel Absorber thickness
+  fBarrelActiveThick   = J4ParameterTable::GetValue("J4MUD.Barrel.ActiveThickness",10.0)*cm;
+  // Barrel Absorber thickness
+  fBarrelAbsThick           = (fBarrelThick - fBarrelNActiveLayers*fBarrelActiveThick ) / fBarrelNAbsLayers; 
 
   // MUD and Block, MUD is fTolerance size larger than Block ---------------------//
   fMUDInnerR                = fBarrelInnerR - fTolerance;
@@ -145,7 +150,9 @@ void J4MUDParameterList::SetParameters()
   fMUDFrontEndcapThick      = fFrontEndcapThick;
   fMUDFrontEndcapFrontZ     = fFrontEndcapFrontZ - fTolerance;
   fMUDFrontEndcapOuterR     = fFrontEndcapOuterR + fTolerance;
-  fMUDHalfL                 = fMUDEndcapFrontZ + fMUDEndcapThick; // Half length of MUD : 845cm
+
+  // Half length of MUD : 845cm
+  fMUDHalfL                 = fMUDEndcapFrontZ + fMUDEndcapThick; 
 
   fBlockInnerR              = fBarrelInnerR;
   fBlockOuterR              = fMUDHeight / std::cos( 0.5*fTrapDeltaPhi );  
@@ -155,8 +162,9 @@ void J4MUDParameterList::SetParameters()
   fBlockFrontEndcapThick    = fFrontEndcapThick;
   fBlockFrontEndcapFrontZ   = fFrontEndcapFrontZ;
   fBlockFrontEndcapOuterR   = fFrontEndcapOuterR;
-  fBlockHalfL               = fBlockEndcapFrontZ + fBlockEndcapThick; // Half length of MUD : 845cm
-  
+
+  // Block Half length of MUD : 845cm
+  fBlockHalfL               = fBlockEndcapFrontZ + fBlockEndcapThick; 
 }
 
 //=====================================================================
