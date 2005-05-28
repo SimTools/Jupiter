@@ -8,6 +8,7 @@
 //*     
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
+//*	2005/05/26  H.Ono       Install magnetic field
 //*************************************************************************
 #include "J4MUD.hh"
 #include "J4MUDSD.hh"
@@ -15,6 +16,11 @@
 #include "J4MUDParameterList.hh"
 #include "J4UnionSolid.hh"
 #include "G4Tubs.hh"
+#include "G4FieldManager.hh"
+#include "J4MFieldMapStore.hh"
+#include "G4TransportationManager.hh"
+#include "G4ChordFinder.hh"
+#include "J4MUDMField.hh"
 
 // ====================================================================
 //--------------------------------
@@ -29,7 +35,8 @@ J4MUD::J4MUD( J4VDetectorComponent* parent,
                              G4int  nbrothers, 
                              G4int  me,
                              G4int  copyno )
-: J4VMUDDetectorComponent( fFirstName, parent, nclones, nbrothers, me, copyno )
+  : J4VMUDDetectorComponent( fFirstName, parent, nclones, nbrothers, me, copyno ),
+    J4AttMFieldMap()
 { }
 
 //=====================================================================
@@ -131,4 +138,37 @@ void J4MUD::InstallIn( J4VComponent*        /* mother */,
   SetPVPlacement();
   
   Cabling();
+
+  // Set magnetic field
+  SetMagField();
+}
+
+//====================================================================
+//* SetMagField ------------------------------------------------------
+void J4MUD::SetMagField()
+{
+  std::cerr << "-----------------------------------------------" << std::endl;
+  std::cerr << "-----------------------------------------------" << std::endl;
+  std::cerr << "J4DetectorConstruction:: new J4MagneticField!!!" << std::endl;
+  std::cerr << "-----------------------------------------------" << std::endl;
+  std::cerr << "-----------------------------------------------" << std::endl;
+
+  J4MUDParameterList *list = OpenParameterList();
+  J4MUDMField* mfield = new J4MUDMField( list );
+
+  if ( list->GetBField() != 0 ) {
+
+    SetMField( mfield ); 
+
+    G4FieldManager* fieldManager= G4TransportationManager::GetTransportationManager()->GetFieldManager();
+    J4MFieldMapStore* mfManager = J4MFieldMapStore::GetInstance();
+    mfManager->NameList();
+    Register( mfManager );
+    fieldManager->SetDetectorField( mfManager );
+    fieldManager->CreateChordFinder( mfManager );
+    fieldManager->GetChordFinder()-> SetDeltaChord( 3.*mm ); // if you need
+    fieldManager->SetDeltaOneStep( 0.0025*mm );
+    fieldManager->SetDeltaIntersection( 0.001*mm );
+    InstallMField( this );
+   }
 }
