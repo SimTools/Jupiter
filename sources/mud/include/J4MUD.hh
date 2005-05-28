@@ -14,13 +14,14 @@
 //*************************************************************************
 #include "J4MUDBlock.hh"
 #include "J4VMUDDetectorComponent.hh"
+#include "J4AttMFieldMap.hh"
 
 //=====================================================================
 //---------------------
 // class definition
 //---------------------
 class J4MUDBlock;
-class J4MUD : public J4VMUDDetectorComponent {	
+class J4MUD : public J4VMUDDetectorComponent, public J4AttMFieldMap {	
 
 public:
   J4MUD( J4VDetectorComponent* parent    = 0,
@@ -33,6 +34,9 @@ public:
   virtual void  InstallIn( J4VComponent*        mother,
                            G4RotationMatrix*    prot  = 0,
                            const G4ThreeVector& tlate = 0 );
+
+  virtual void SetMagField();
+  
   virtual void Draw() {};
   virtual void Print() const {};
 
@@ -42,7 +46,6 @@ private:
 
 private:  
   static G4String      fFirstName;
-
   J4MUDBlock**         fBlocks;
 };
 
