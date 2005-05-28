@@ -12,6 +12,7 @@
 //*     
 //* (Update Record)
 //*	2003/03/17  K.Hoshina	Original version.
+//*	2005/05/26  H.Ono       Edit from CAL
 //********************************************************************
 #include "G4Material.hh"
 #include "G4Color.hh"
@@ -33,7 +34,10 @@ public:
 
   //=== get parameters===========================================
   static J4MUDParameterList* GetInstance(); 
-   
+
+  //*MUD Magnetic field
+  inline G4double GetBField                   () const { return fBField;              }
+  
   //*MUD ------------------------------------------------------------------
   inline G4double GetMUDHeight                () const { return fMUDHeight;           }
   inline G4double GetMUDDeltaPhi              () const { return fDeltaPhi;            }
@@ -201,6 +205,9 @@ public:
   G4Color   fFrontEndcapAbsColor;
   G4Color   fFrontEndcapActiveColor;
 
+  // MUD Magnetic filed
+  G4double  fBField;
+  
   // MUD
   G4double  fMUDHeight;
   G4double  fTrapDeltaPhi;
