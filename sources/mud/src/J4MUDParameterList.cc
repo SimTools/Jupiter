@@ -65,7 +65,10 @@ void J4MUDParameterList::SetMaterials()
 void J4MUDParameterList::SetParameters()
 {
   // Magnetic field magnitude
-  fBField    = J4ParameterTable::GetValue("J4MUD.BFiled",3.0 )*tesla;
+  fBarrelBField    = J4ParameterTable::GetValue("J4MUD.BarrelBFiled",2.0 )*tesla;
+  fCornerBField    = J4ParameterTable::GetValue("J4MUD.CornerBFiled",1.5 )*tesla;
+  fEndcapBField    = J4ParameterTable::GetValue("J4MUD.EndcapBFiled",2.5 )*tesla;
+  fReturnBField    = J4ParameterTable::GetValue("J4MUD.ReturnBFiled",3.0 )*tesla;
   
   // Detector outer size = 700.0*cm
   fMUDHeight = J4ParameterTable::GetValue("J4MUD.Height",700.0)*cm;
@@ -123,7 +126,7 @@ void J4MUDParameterList::SetParameters()
   // Barrel -----------------------------------------------------------//
   //fBarrelInnerR             = 455.0*cm;                            // Barrel inner radius
   // Barrel inner radius
-  fBarrelInnerR  = J4ParameterTable::GetValue("J4MUD.Barrel.InnerRadius",460.0)*cm;                            
+  fBarrelInnerR  = J4ParameterTable::GetValue("J4MUD.Barrel.InnerRadius",460.0)*cm;
   // Barrel thickness : 250cm 
   fBarrelThick              = fMUDHeight - fBarrelInnerR;         
   // Half length of Barrel front layer

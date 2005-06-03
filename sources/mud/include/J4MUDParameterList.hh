@@ -36,7 +36,10 @@ public:
   static J4MUDParameterList* GetInstance(); 
 
   //*MUD Magnetic field
-  inline G4double GetBField                   () const { return fBField;              }
+  inline G4double GetBarrelBField             () const { return fBarrelBField;        }
+  inline G4double GetCornerBField             () const { return fCornerBField;        }
+  inline G4double GetEndcapBField             () const { return fEndcapBField;        }
+  inline G4double GetReturnBField             () const { return fReturnBField;        }
   
   //*MUD ------------------------------------------------------------------
   inline G4double GetMUDHeight                () const { return fMUDHeight;           }
@@ -115,7 +118,7 @@ public:
   inline G4double GetFrontEndcapActiveFront( G4int i )  const;
   inline G4double GetFrontEndcapAbsZ( G4int i )         const;
   inline G4double GetFrontEndcapActiveZ( G4int i )      const;
-
+  
   //*materials --------------------------------------------------------------
   inline G4String GetMUDMaterial()           const { return fMUDMaterial;          }
   inline G4String GetBlockMaterial()         const { return fBlockMaterial;        }
@@ -127,22 +130,22 @@ public:
   inline G4String GetFrontEndcapActiveMaterial()  const { return fFrontEndcapActiveMaterial; }
   
   //*VisAttributes ----------------------------------------------------------
-  inline G4bool   GetMUDVisAtt()             const { return fMUDVisAtt;          }
-  inline G4bool   GetBlockVisAtt()           const { return fBlockVisAtt;        }
-  inline G4bool   GetBarrelAbsVisAtt()       const { return fBarrelAbsVisAtt;    }
-  inline G4bool   GetBarrelActiveVisAtt()    const { return fBarrelActiveVisAtt; }
-  inline G4bool   GetEndcapAbsVisAtt()       const { return fEndcapAbsVisAtt;    }
-  inline G4bool   GetEndcapActiveVisAtt()    const { return fEndcapActiveVisAtt; }
+  inline G4bool   GetMUDVisAtt()               const { return fMUDVisAtt;               }
+  inline G4bool   GetBlockVisAtt()             const { return fBlockVisAtt;             }
+  inline G4bool   GetBarrelAbsVisAtt()         const { return fBarrelAbsVisAtt;         }
+  inline G4bool   GetBarrelActiveVisAtt()      const { return fBarrelActiveVisAtt;      }
+  inline G4bool   GetEndcapAbsVisAtt()         const { return fEndcapAbsVisAtt;         }
+  inline G4bool   GetEndcapActiveVisAtt()      const { return fEndcapActiveVisAtt;      }
   inline G4bool   GetFrontEndcapAbsVisAtt()    const { return fFrontEndcapAbsVisAtt;    }
   inline G4bool   GetFrontEndcapActiveVisAtt() const { return fFrontEndcapActiveVisAtt; }
   
   //*Color ------------------------------------------------------------------
-  inline G4Color  GetMUDColor()              const { return fMUDColor;           }
-  inline G4Color  GetBlockColor()            const { return fBlockColor;         }
-  inline G4Color  GetBarrelAbsColor()        const { return fBarrelAbsColor;     }
-  inline G4Color  GetBarrelActiveColor()     const { return fBarrelActiveColor;  }
-  inline G4Color  GetEndcapAbsColor()        const { return fEndcapAbsColor;     }
-  inline G4Color  GetEndcapActiveColor()     const { return fEndcapActiveColor;  }
+  inline G4Color  GetMUDColor()               const { return fMUDColor;                }
+  inline G4Color  GetBlockColor()             const { return fBlockColor;              }
+  inline G4Color  GetBarrelAbsColor()         const { return fBarrelAbsColor;          }
+  inline G4Color  GetBarrelActiveColor()      const { return fBarrelActiveColor;       }
+  inline G4Color  GetEndcapAbsColor()         const { return fEndcapAbsColor;          }
+  inline G4Color  GetEndcapActiveColor()      const { return fEndcapActiveColor;       }
   inline G4Color  GetFrontEndcapAbsColor()    const { return fFrontEndcapAbsColor;     }
   inline G4Color  GetFrontEndcapActiveColor() const { return fFrontEndcapActiveColor;  }
   
@@ -206,7 +209,10 @@ public:
   G4Color   fFrontEndcapActiveColor;
 
   // MUD Magnetic filed
-  G4double  fBField;
+  G4double  fBarrelBField;
+  G4double  fCornerBField;
+  G4double  fEndcapBField;
+  G4double  fReturnBField;
   
   // MUD
   G4double  fMUDHeight;
