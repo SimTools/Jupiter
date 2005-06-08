@@ -156,7 +156,7 @@ void J4MUD::SetMagField()
   J4MUDParameterList *list = OpenParameterList();
   J4MUDMField* mfield = new J4MUDMField( list );
 
-  if ( list->GetBField() != 0 ) {
+  if ( list->GetBarrelBField() != 0 || list->GetCornerBField() !=0 || list->GetEndcapBField() !=0 || list->GetReturnBField() != 0 ) {
 
     SetMField( mfield ); 
 
