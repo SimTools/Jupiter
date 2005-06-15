@@ -13,6 +13,8 @@
 #include "J4CALParameterList.hh"
 #include <algorithm>
 #include <vector>
+#include <fstream.h>
+#include <iostream>
 #include "TVNewton.hh"
 #include "geomdefs.hh"
 #include "J4ParameterTable.hh"
@@ -109,8 +111,13 @@ void J4CALParameterList::SetParameters()
    fEndcapPhiOffset =   0.*deg;
 
    // Tower -------------------
+#if 1
    fNominalBarrelTowerFrontSize = J4ParameterTable::GetValue("J4CAL.BarrelTower.FrontSize",12.0)*cm;
    fNominalEndcapTowerFrontSize = J4ParameterTable::GetValue("J4CAL.EndcapTower.FrontSize",12.0)*cm;
+#else
+   fNominalBarrelTowerFrontSize = J4ParameterTable::GetValue("J4CAL.BarrelTower.FrontSize",6.0)*cm;
+   fNominalEndcapTowerFrontSize = J4ParameterTable::GetValue("J4CAL.EndcapTower.FrontSize",6.0)*cm;
+#endif
 
 #if defined(__GLD_V1__)
    // default: __GLD_V1__
@@ -125,20 +132,19 @@ void J4CALParameterList::SetParameters()
                                    // see CalcNextTowerEdgeAngle().
 #endif
 
-   //   fConstNTowers        = 1500;    // Temporary number of towers to check cellID.
    fConstNTowers  = J4ParameterTable::GetValue("J4CAL.Const.NTowers",1500);
-
+   // Temporary number of towers to check cellID.
    fBarrelCoverageAngle = atan2(fEndcapTowerFrontZ, fBarrelTowerFrontRho);
    // as a dip angle(lambda)
 
    // EM ------------------
    fEMNLayers          = J4ParameterTable::GetValue("J4CAL.EM.NLayers",38);
-   fEMMiniConeNClones  = J4ParameterTable::GetValue("J4CAL.EM.MiniCone.NCLones",3);
+   fEMMiniConeNClones  = J4ParameterTable::GetValue("J4CAL.EM.MiniCone.NClones",3);
    fEMMiniTowerNClones = J4ParameterTable::GetValue("J4CAL.EM.MiniTower.NClones",3);
 
    // HD ------------------
    fHDNLayers          = J4ParameterTable::GetValue("J4CAL.HD.NLayers",130);
-   fHDMiniTowerNClones = J4ParameterTable::GetValue("J4CAL.HD.MiniCone.NCLones",1);
+   fHDMiniTowerNClones = J4ParameterTable::GetValue("J4CAL.HD.MiniCone.NClones",1);
    fHDMiniConeNClones  = J4ParameterTable::GetValue("J4CAL.HD.MiniTower.NClones",1);
 
    // SubLeyars -----------
@@ -175,6 +181,7 @@ void J4CALParameterList::SetParameters()
                        fNominalEndcapTowerFrontSize, FALSE );  
 
    ShowTowerParameters();
+   DrawTowerParameters();
 
 
 }
@@ -582,6 +589,25 @@ void J4CALParameterList::ShowTowerParameters()
 }
 
 //=====================================================================
+//* DrawTowerParameters -----------------------------------------------
+void J4CALParameterList::DrawTowerParameters()
+{
+  G4String PATH = getenv("JUPITERROOT");
+  G4String file = "/doc/towergeom.dat";
+  PATH += file;
+  ofstream out_file(PATH);
+  G4cerr << "make file " << PATH <<  G4endl;
+   for (G4int i=0; i < GetNcones(); i++) {
+     G4double radius = GetTowerParam(i)->GetR() / 10; 
+     G4double theta  = GetTowerParam(i)->GetTheta();
+     G4double dtheta = GetTowerParam(i)->GetDlambda();
+     G4int    nphi   = GetTowerParam(i)->GetNphi();
+
+     out_file << radius << " " << theta << " " << dtheta << " " << nphi << std::endl;
+   }
+}
+
+//=====================================================================
 //* SetVisAttributes --------------------------------------------------
 void J4CALParameterList::SetVisAttributes()
 {
@@ -612,7 +638,7 @@ void J4CALParameterList::SetVisAttributes()
 #endif
 
    fConeVisAtt        = J4ParameterTable::GetValue("J4CAL.VisAtt.Cone",false);
-   fTowerVisAtt       = J4ParameterTable::GetValue("J4CAL.VisAtt.Tower",true);
+   fTowerVisAtt       = J4ParameterTable::GetValue("J4CAL.VisAtt.Tower",false);
    fEMVisAtt          = J4ParameterTable::GetValue("J4CAL.VisAtt.EM",false);
    fHDVisAtt          = J4ParameterTable::GetValue("J4CAL.VisAtt.HD",false);
    fMiniConeVisAtt    = J4ParameterTable::GetValue("J4CAL.VisAtt.MiniCone",false);

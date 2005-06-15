@@ -157,34 +157,23 @@ G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
   if ( itr_range.first == fgCalHits.end() ) {
     // cell is not yet hit.
     // make new hit for that cell and insert to hit buffer.
-    G4double nminitower=ptrList->GetHDMiniTowerNClones();
-    if ( isEM ) { 
-	nminitower=ptrList->GetEMMiniTowerNClones(); 
-    }
-    G4double phitower= nminitower*towerID  + miniTowerID;
-    G4double thetacone= miniConeID;
 
-    G4Sphere *cellsphere = (G4Sphere*)(ptrSubLayerComponent->GetSolid());
-/*
-    std::cerr << " isEM=" << isEM << " nminitower=" << nminitower ;
-    std::cerr << " phitower=" << phitower ;
-    std::cerr << " towerID=" << towerID << " minitowerID=" << miniTowerID ;
-    std::cerr << " nTowers=" << ptrList->GetConstNTowers() ;
-    std::cerr << " DeltaPhi=" << cellsphere->GetDeltaPhiAngle() << std::endl;
-*/
-    G4double cellrho = cellsphere->GetInsideRadius();
-    G4double celltheta = cellsphere->GetStartThetaAngle() + (thetacone+0.5)*cellsphere->GetDeltaThetaAngle();
-    G4double cellphi = cellsphere->GetStartPhiAngle() + (phitower+0.5)*cellsphere->GetDeltaPhiAngle();
+    //caluclate hit cell position.
+    G4double nminitower = isEM ?
+                          ptrList->GetEMMiniTowerNClones(): 
+                          ptrList->GetHDMiniTowerNClones();
+    G4double phitower   = nminitower*towerID  + miniTowerID;
+
+    G4Sphere *cellsphere  = (G4Sphere*)(ptrSubLayerComponent->GetSolid());
+    G4Sphere *towersphere = (G4Sphere*)(ptrTowerComponent->GetSolid());
+    G4double cellrho   = cellsphere->GetInsideRadius();
+    G4double celltheta = cellsphere->GetStartThetaAngle() + 0.5*cellsphere->GetDeltaThetaAngle();
+    G4double cellphi   = towersphere->GetStartPhiAngle() + (phitower + 0.5)*cellsphere->GetDeltaPhiAngle();
+
     G4double cellX = cellrho*std::sin(celltheta)*std::cos(cellphi);
     G4double cellY = cellrho*std::sin(celltheta)*std::sin(cellphi);
     G4double cellZ = cellrho*std::cos(celltheta);
 
-/*
-    std::cout << " cell rho=" << cellrho << " theta=" << celltheta ;
-    std::cout << " phi=" << cellphi << " cellX " << cellX ;
-    std::cout << " cellY=" << cellY << " cellZ=" << cellZ ;
-    std::cout << std::endl;
-*/
     J4CALHit *aHit = new J4CALHit( ptrSubLayerComponent, preHitID, cellID, isEM, isBarrel, edep, tof, GetParticle(), Xcm, G4ThreeVector(cellX,cellY,cellZ) );
     fgCalHits.insert( std::make_pair( cellID, aHit ) );
     ((J4CALHitBuf*)GetHitBuf())->insert( aHit );
@@ -208,15 +197,18 @@ G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
       }
     }
     if ( makeNewHit ) {
-      G4double nminitower=ptrList->GetHDMiniTowerNClones();
-      if ( isEM ) nminitower=ptrList->GetEMMiniTowerNClones(); 
-      G4double phitower= nminitower*towerID  + miniTowerID;
-      G4double thetacone= miniConeID;
+      //caluclate hit cell position.
+      G4double nminitower = isEM ?
+                            ptrList->GetEMMiniTowerNClones(): 
+                            ptrList->GetHDMiniTowerNClones();
+      G4double phitower   = nminitower*towerID  + miniTowerID;
 
-      G4Sphere *cellsphere = (G4Sphere*)(ptrSubLayerComponent->GetSolid());
-      G4double cellrho = cellsphere->GetInsideRadius();
-      G4double celltheta = cellsphere->GetStartThetaAngle() + (thetacone+0.5)*cellsphere->GetDeltaThetaAngle();
-      G4double cellphi = cellsphere->GetStartPhiAngle() + (phitower+0.5)*cellsphere->GetDeltaPhiAngle();
+      G4Sphere *cellsphere  = (G4Sphere*)(ptrSubLayerComponent->GetSolid());
+      G4Sphere *towersphere = (G4Sphere*)(ptrTowerComponent->GetSolid());
+      G4double cellrho   = cellsphere->GetInsideRadius();
+      G4double celltheta = cellsphere->GetStartThetaAngle() + 0.5*cellsphere->GetDeltaThetaAngle();
+      G4double cellphi   = towersphere->GetStartPhiAngle() + (phitower + 0.5)*cellsphere->GetDeltaPhiAngle();
+
       G4double cellX = cellrho*std::sin(celltheta)*std::cos(cellphi);
       G4double cellY = cellrho*std::sin(celltheta)*std::sin(cellphi);
       G4double cellZ = cellrho*std::cos(celltheta);
