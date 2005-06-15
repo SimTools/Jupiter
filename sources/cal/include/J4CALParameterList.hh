@@ -48,6 +48,8 @@ class J4CALParameterList : public J4VParameterList
 
    virtual void    ShowTowerParameters();
 
+   virtual void    DrawTowerParameters();
+
    //
    // Getters
    //
