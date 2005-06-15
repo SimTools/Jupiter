@@ -17,6 +17,8 @@
 #include "J4VCALLayer.hh"
 #include "J4CALParameterList.hh"
 #include "G4Sphere.hh"
+#include "G4UserLimits.hh"
+#include "J4ParameterTable.hh"
 
 // ====================================================================
 //--------------------------------
@@ -74,7 +76,10 @@ void J4VCALSubLayer::Assemble()
    SetSolid( sublayer );
       
    // MakeLogicalVolume --//  
-   MakeLVWith( OpenMaterialStore()->Order( GetMaterial()) );
+   G4double ullen= J4ParameterTable::GetValue("J4CAL.UserLimits",0.1)*mm;
+   G4UserLimits *userlimits = new G4UserLimits(ullen);
+
+   MakeLVWith( OpenMaterialStore()->Order( GetMaterial()), userlimits );
      
    // SetVisAttribute ----//
    PaintLV( GetVisAtt(), GetColor() );
