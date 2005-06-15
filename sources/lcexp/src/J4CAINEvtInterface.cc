@@ -136,11 +136,11 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
       }
 
 #ifdef __USEISOCXX__
-      std::istringstream std::sin(input);
+      std::istringstream sinput(input);
 #else
-      std::istringstream std::sin(input);
+      std::istringstream sinput(input);
 #endif
-      sin >>  id >> kgen >> genname >> weight >> ct >> cx >> cy >> cs >> 
+      sinput >>  id >> kgen >> genname >> weight >> ct >> cx >> cy >> cs >> 
 	   ce >> cpx >> cpy >> cps >> csx >> csy >> css ;
 
       
