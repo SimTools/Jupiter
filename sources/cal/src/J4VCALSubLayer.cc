@@ -76,7 +76,7 @@ void J4VCALSubLayer::Assemble()
    SetSolid( sublayer );
       
    // MakeLogicalVolume --//  
-   G4double ullen= J4ParameterTable::GetValue("J4CAL.UserLimits",0.1)*mm;
+   G4double ullen= J4ParameterTable::GetValue("J4CAL.UserLimits",0.1)*cm;
    G4UserLimits *userlimits = new G4UserLimits(ullen);
 
    MakeLVWith( OpenMaterialStore()->Order( GetMaterial()), userlimits );
