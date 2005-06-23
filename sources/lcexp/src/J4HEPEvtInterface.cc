@@ -98,7 +98,6 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
             << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " << G4endl;
   }
   eventID = evt->GetEventID();
-  
   G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
 
   // skip events. Default is no skip.
@@ -183,7 +182,7 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
       = new G4PrimaryParticle( IDHEP, PHEP1*GeV, PHEP2*GeV, PHEP3*GeV );
     particle->SetMass( PHEP5*GeV );
     G4ParticleDefinition *particleDefinition=particleTable->FindParticle(IDHEP);
-    particle->SetCharge( particleDefinition->GetPDGCharge() );
+    if ( particleDefinition ) particle->SetCharge( particleDefinition->GetPDGCharge() );
 
     // create G4HEPEvtParticle object
     G4HEPEvtParticle* hepParticle
