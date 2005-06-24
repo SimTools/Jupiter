@@ -89,7 +89,8 @@ void J4IRQC1ThermalVessel::Assemble()
     //    MakeLVWith(OpenMaterialStore()->Order(_QC1MAT_THERMALVESSEL_));
      MakeLVWith(OpenMaterialStore()->Order(qc1Material));
     // SetVisAttribute ---------------
-    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(0, 0, 1));
+//    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(0, 0, 1));
+    PaintLV(qc1List->GetQC1VisAtt(), G4Color(0,0,1));
 
     // Install daughter PV -----------
     fthermal = new J4IRQC1Thermal(this,1,1,0,-1);

@@ -93,7 +93,8 @@ void J4IRQC1Coil::Assemble()
     // MakeLogicalVolume -------------
      MakeLVWith(OpenMaterialStore()->Order(qc1COILMaterial));
     // SetVisAttribute ---------------
-     PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(0, 1, 1));
+//     PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(0, 1, 1));
+    PaintLV(qc1List->GetQC1VisAtt(), G4Color(0, 1, 1));
 
     // Install daughter PV -----------
      //fcollar = new J4IRQC1Collar*[_QC1NCOLLAR_];

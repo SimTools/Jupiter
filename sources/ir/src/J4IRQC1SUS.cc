@@ -83,7 +83,8 @@ void J4IRQC1SUS::Assemble()
     // MakeLogicalVolume -------------
     MakeLVWith(OpenMaterialStore()->Order(qc1SUSMaterial));
     // SetVisAttribute ---------------
-    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(0, 0, 1));
+//    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(0, 0, 1));
+    PaintLV(qc1List->GetQC1VisAtt(), G4Color(0,0,1));
 
     // Install daughter PV -----------
   }     

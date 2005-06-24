@@ -11,6 +11,7 @@
 //*************************************************************************
 
 #include "J4IRQC1QLayer.hh"
+#include "J4IRQC1ParameterList.hh"
 
 #include "G4Tubs.hh"
 #include <cmath>
@@ -78,7 +79,9 @@ void J4IRQC1QLayer::Assemble()
     // MakeLogicalVolume -------------
     MakeLVWith(OpenMaterialStore()->Order(_QC1MAT_COIL_));
     // SetVisAttribute ---------------
-    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(1, 1, 0));
+//    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(1, 1, 0));
+    J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance();
+    PaintLV(qc1List->GetQC1VisAtt(), G4Color(1,1,0));
 
     // Install daughter PV -----------
   }     

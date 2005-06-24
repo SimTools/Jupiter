@@ -11,6 +11,7 @@
 //*************************************************************************
 
 #include "J4IRQC2Coil.hh"
+#include "J4IRQC1ParameterList.hh"
 
 #include "G4Box.hh"
 #include <cmath>
@@ -70,7 +71,9 @@ void J4IRQC2Coil::Assemble()
     // MakeLogicalVolume -------------
     MakeLVWith(OpenMaterialStore()->Order(_QC2MAT_COIL_));
     // SetVisAttribute ---------------
-    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(0, 0, 0));
+//    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(0, 0, 0));
+    J4IRQC1ParameterList *qc1List=J4IRQC1ParameterList::GetInstance();
+    PaintLV(qc1List->GetQC1VisAtt(), G4Color(0,0,0));
 
     // Install daughter PV -----------
   }

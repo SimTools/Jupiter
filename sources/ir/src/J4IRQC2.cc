@@ -11,6 +11,7 @@
 //*************************************************************************
 
 #include "J4IRQC2.hh"
+#include "J4IRQC1ParameterList.hh"
 
 
 #include "G4Box.hh"
@@ -93,7 +94,9 @@ void J4IRQC2::Assemble()
     MakeLVWith(OpenMaterialStore()->Order(_QC2MAT_));
     
     // SetVisAttribute ---------------
-    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(1, 0, 1));
+//    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(1, 0, 1));
+    J4IRQC1ParameterList *qc1List=J4IRQC1ParameterList::GetInstance();
+    PaintLV(qc1List->GetQC1VisAtt(), G4Color(1,0,1));
   	
     // Install daughter PV -----------
     firon1 = new J4IRQC2Iron1*[_QC2NIRON1_];

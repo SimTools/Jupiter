@@ -84,7 +84,7 @@ void J4IRQC1Collar::Assemble()
     //    MakeLVWith(OpenMaterialStore()->Order(_QC1MAT_COLLAR_));
         MakeLVWith(OpenMaterialStore()->Order(qc1CollarMaterial));
     // SetVisAttribute ---------------
-    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(0, 0, 1));
+    PaintLV(qc1List->GetQC1VisAtt(), qc1List->GetQC1Color());
 
     // Install daughter PV -----------
   }     
