@@ -46,7 +46,7 @@ J4CAL.EM.AbsLayerMaterial      : Lead
 J4CAL.EM.AbsLayerThickness     : 0.400000
 J4CAL.EM.ActiveLayerMaterial   : Scintillator
 J4CAL.EM.ActiveLayerThickness  : 0.100000
-J4CAL.EM.MiniCone.NCLones      : 3
+J4CAL.EM.MiniCone.NClones      : 3
 J4CAL.EM.MiniTower.NClones     : 3
 J4CAL.EM.NLayers               : 38
 J4CAL.Endcap.InnerRadius       : 39.900000
@@ -56,7 +56,7 @@ J4CAL.HD.AbsLayerMaterial      : Lead
 J4CAL.HD.AbsLayerThickness     : 0.800000
 J4CAL.HD.ActiveLayerMaterial   : Scintillator
 J4CAL.HD.ActiveLayerThickness  : 0.200000
-J4CAL.HD.MiniCone.NCLones      : 1
+J4CAL.HD.MiniCone.NClones      : 1
 J4CAL.HD.MiniTower.NClones     : 1
 J4CAL.HD.NLayers               : 130
 J4CAL.NSubLayers               : 2
