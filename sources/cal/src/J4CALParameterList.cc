@@ -592,19 +592,24 @@ void J4CALParameterList::ShowTowerParameters()
 //* DrawTowerParameters -----------------------------------------------
 void J4CALParameterList::DrawTowerParameters()
 {
-  G4String PATH = getenv("JUPITERROOT");
+#if 0
+  G4String FILE = getenv("JUPITERROOT");
   G4String file = "/doc/towergeom.dat";
-  PATH += file;
-  ofstream out_file(PATH);
-  G4cerr << "make file " << PATH <<  G4endl;
+  FILE += file;
+#endif
+  G4String FILE = "towergeom.dat";
+  G4String ftowergeom;
+  ftowergeom = J4ParameterTable::GetValue("J4CAL.TowerGeometryData",FILE);
+  ofstream out_file(ftowergeom);
+  G4cerr << "J4CALParameterList::DrawTowerParameters() make file " << ftowergeom <<  G4endl;
    for (G4int i=0; i < GetNcones(); i++) {
      G4double radius = GetTowerParam(i)->GetR() / 10; 
      G4double theta  = GetTowerParam(i)->GetTheta();
      G4double dtheta = GetTowerParam(i)->GetDlambda();
      G4int    nphi   = GetTowerParam(i)->GetNphi();
-
      out_file << radius << " " << theta << " " << dtheta << " " << nphi << std::endl;
    }
+   out_file.close();
 }
 
 //=====================================================================
