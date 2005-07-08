@@ -342,7 +342,7 @@ int main(int argc, char** argv)
 
   if ( J4ParameterTable::CollectDefaults() ) {
 	J4ParameterTable::PrintDefaults("jupiter.defaults"); 
-        cerr << "Default parameters has been written to jupiter.defaults" << endl;
+        std::cerr << "Default parameters has been written to jupiter.defaults" << std::endl;
   }
 
 #ifdef G4VIS_USE
