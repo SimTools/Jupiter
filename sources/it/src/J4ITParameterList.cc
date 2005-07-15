@@ -80,11 +80,7 @@ void J4ITParameterList::SetParameters()
    fNlayers = J4ParameterTable::GetValue("J4IT.NLayers",4);
 
    fLayerPhiOffset      = new G4double[fNlayers];
-   fLayerPhiOffset[0]   = 0.*rad; // 
-   fLayerPhiOffset[1]   = 0.*rad; //
-   fLayerPhiOffset[2]   = 0.*rad; // 
-   fLayerPhiOffset[3]   = 0.*rad; // 
-   fLayerPhiOffset[4]   = 0.*rad; //
+   for(int i=0;i<fNlayers;i++) { fLayerPhiOffset[i] = 0.*rad ; }
 
    //   fLayerThick          = 0.5616*mm; 
    //   fLayerRspacing       = 7.0*cm;
