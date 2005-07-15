@@ -64,7 +64,8 @@ void J4ParameterTable::PrintDefaults(const char *fname)
     int lenw=(p->GetName()).length();
     if ( lenw < 30 ) lenw=30;
     fout.width(lenw);
-    fout << p->GetName() << " : " << p->GetInput() << endl;
+    string nameout=p->GetName()+":";
+    fout << nameout << p->GetInput() << endl;
   }
   fout.close();
 
