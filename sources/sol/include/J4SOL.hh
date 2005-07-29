@@ -15,6 +15,7 @@
 
 #include "J4VSOLDetectorComponent.hh"
 #include "J4AttMFieldMap.hh"
+#include "J4SOLCoil.hh"
 
 //=====================================================================
 //---------------------
@@ -45,6 +46,7 @@ private:
   
 private:  
   static G4String	fFirstName;
+  J4SOLCoil*            fCoil;
 };
 
 #endif

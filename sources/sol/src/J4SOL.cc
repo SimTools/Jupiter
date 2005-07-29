@@ -49,6 +49,7 @@ J4SOL::J4SOL(J4VDetectorComponent *parent,
 
 J4SOL::~J4SOL()
 {
+  if ( Deregister( fCoil ) ) delete fCoil;
 }
 
 //=====================================================================
@@ -71,6 +72,12 @@ void J4SOL::Assemble()
 
       // SetVisAttribute ----//
       PaintLV(list->GetSOLVisAtt(), list->GetSOLColor());
+
+      // Install Daugher volume
+      fCoil = new J4SOLCoil( this );
+      Register( fCoil );
+      fCoil -> InstallIn( this );
+      SetDaughter( fCoil );
    }
 }
 
