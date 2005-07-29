@@ -108,7 +108,6 @@ void J4TPCParameterList::SetParameters()
    fNlayers             = 5;
    fFirstLayerInnerR    = 10.*cm;
 #endif
-   fLayerThick          = J4ParameterTable::GetValue("J4TPC.Layer.Thickness",0.0001)*cm;   // temporary, it should be more thick.
 
    // CentralMembrane
    fCentralMembraneHalfThick = J4ParameterTable::GetValue("J4TPC.CentralMembrane.HalfThickness",0.00125)*cm;

@@ -106,7 +106,7 @@ class J4TPCParameterList : public J4VParameterList
    inline G4double GetLayerPhiOffset()       const { return fTPCPhiOffset;    }
    inline G4double GetLayerInnerR(G4int i)   const; 
    inline G4double GetLayerOuterR(G4int i)   const; 
-   inline G4double GetLayerThick()           const { return fLayerThick;      }
+   inline G4double GetLayerThick()           const;
    inline G4double GetLayerRspacing()        const;
    inline G4double GetFirstLayerInnerR()     const { return fFirstLayerInnerR;}
                  
@@ -159,7 +159,6 @@ class J4TPCParameterList : public J4VParameterList
 
    //*Layer -------------------------------------------------------------------
    inline void SetNlayers(G4int n)                    { fNlayers = n;          }
-   inline void SetLayerThick(G4double x)              { fLayerThick = x;       }
    inline void SetFirstLayerInnerR(G4double x)        { fFirstLayerInnerR = x; } 
    //*Endcap -----------------------------------------------------------------
    inline void SetEndcapHalfThick(G4double x)         { fEndcapHalfThick = x;  }
@@ -288,7 +287,6 @@ class J4TPCParameterList : public J4VParameterList
 
    // Layer
    G4int     fNlayers;
-   G4double  fLayerThick;
    G4double  fFirstLayerInnerR;
    
 };
@@ -375,8 +373,13 @@ G4double J4TPCParameterList::GetLayerInnerR(G4int ilayer) const
 
 G4double J4TPCParameterList::GetLayerOuterR(G4int ilayer) const
 {
-   return GetLayerInnerR(ilayer) + fLayerThick;
+   return GetLayerInnerR(ilayer + 1);
 } 
+
+G4double J4TPCParameterList::GetLayerThick() const
+{
+   return GetLayerRspacing();
+}
 
 G4double J4TPCParameterList::GetDriftRegionHalfZ() const
 {
