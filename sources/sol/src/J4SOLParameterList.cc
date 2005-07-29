@@ -17,7 +17,7 @@
 J4SOLParameterList * J4SOLParameterList::fgInstance = 0;
 
 //=====================================================================
-J4SOLParameterList::J4SOLParameterList(G4double ri, G4double ro, G4double len)
+J4SOLParameterList::J4SOLParameterList( G4double /*ri*/, G4double /*ro*/, G4double /*len*/ )
   : J4VParameterList("SOL")
 {
    fSOLMaterial = J4ParameterTable::GetValue("J4SOL.Material","Air");
@@ -26,6 +26,15 @@ J4SOLParameterList::J4SOLParameterList(G4double ri, G4double ro, G4double len)
    fSOLColor=G4Color(col[0], col[1], col[2], col[3]);
    fFieldR = J4ParameterTable::GetValue("J4SOL.FieldR",157.0)*cm;
    fBField = J4ParameterTable::GetValue("J4SOL.BField",3.0)*tesla;
+   
+   // Coil
+   fSOLCoilInnerR   = J4ParameterTable::GetValue("J4SOL.Coil.InnerR",397.5)*cm;
+   fSOLCoilOuterR   = J4ParameterTable::GetValue("J4SOL.Coil.OuterR",402.5)*cm;
+   fSOLCoilHalfZ    = J4ParameterTable::GetValue("J4SOL.Coil.HalfZ",430.0)*cm;
+   fSOLCoilMaterial = J4ParameterTable::GetValue("J4SOL.Coil.Material","Copper");
+   fSOLCoilVisAtt   = J4ParameterTable::GetValue("J4SOL.Coil.VisAtt",true);
+   std::vector<double> coilcol=J4ParameterTable::GetDValue("J4SOL.Coil.Color","0.0 1.0 0.0 1.0",4);
+   fSOLCoilColor=G4Color(coilcol[0], coilcol[1], coilcol[2], coilcol[3]);
 
 }
 
@@ -46,5 +55,3 @@ J4SOLParameterList::~J4SOLParameterList()
 {
    fgInstance = 0;
 }
-
-
