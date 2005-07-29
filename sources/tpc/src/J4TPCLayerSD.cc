@@ -56,17 +56,14 @@ G4bool J4TPCLayerSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   //Only when a charged particle has just come into a sensitive detector,
   //create a new hit
   
-  if(GetCharge() == 0.) return FALSE;
-  
-      
   //Get particle information
-
+  G4double               edep          = GetEnergyDeposit();
+  if (edep == 0.) return FALSE;
   J4VComponent*          location      = GetComponent();
   G4int                  trackID       = GetTrackID();
   G4int                  mothertrackID = GetMotherTrackID();
   G4ParticleDefinition  *particle      = GetParticle();
   G4double               tof           = GetTof();
-  G4double               edep          = GetEnergyDeposit();
   G4double               etot          = GetTotalEnergy();
   G4ThreeVector          p             = GetMomentum();
   const G4ThreeVector   &pre           = GetPrePosition();
