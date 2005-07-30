@@ -1,0 +1,57 @@
+#$ID$
+# =====================================================================
+#  A sample Jupiter script to display backgdound hit data 
+#  This example reads a CAIN data from a file defined by 
+#  /jupiter/cain/file
+#  and display events without resetting picture at every events,
+#  i.e, overlay all background hits on one picture
+#
+# ======================================================================
+
+
+/control/verbose 2
+/control/saveHistory
+/run/verbose 2
+
+/run/particle/setCut 0.01 mm
+
+
+# =====================================================================
+#   initialize visualization in DAWNFILE
+# =====================================================================
+# 
+# // create empty scene ("world" is default)
+/vis/scene/create
+# 
+# // add volume to scene
+/vis/scene/add/volume
+#  
+# // create a scene handler for a specific graphics system
+# // edit the next line(s) to choose another graphic system
+/vis/sceneHandler/create DAWNFILE
+# 
+# // create a viewer
+/vis/viewer/create
+#/vis/sceneHandler/attach
+
+/vis/viewer/reset
+# /vis/viewer/viewpointThetaPhi 0. 90.
+/vis/viewer/zoom 2.0
+
+#  
+# // for drawing the tracks 
+/tracking/storeTrajectory 1
+/vis/scene/add/trajectories
+
+/vis/scene/endOfEventAction accumulate
+
+/jupiter/generator CAINEvt
+/jupiter/cain/file /home/miyamoto/Data/cain/500.nominal_pair.dat
+/jupiter/cain/verbose 19
+
+# /jupiter/beam/List
+/run/beamOn 100
+
+
+# /vis/scene/notifyHandlers
+# /vis/viewer/update

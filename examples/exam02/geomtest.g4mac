@@ -1,0 +1,10 @@
+#$ID$
+# =============================
+# A simple script to run geometry test.
+# More help will be shown from interactive help command.
+#
+# =============================
+
+
+/geometry/test/run
+

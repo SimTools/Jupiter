@@ -1,0 +1,43 @@
+Jupiter/exam02
+
+Examples for background study using Jupiter.
+
+This directory contains several Geant4 macro for beam backgrounds
+study. Examples here are to run as a Jupiter standalone job.
+Examples to run with jsfj4 command will be given in Sattelites 
+directory.
+
+Functions of each macro files are as follows.
+
+- run.g4mac 
+  Read CAIN backgrounds file and run Jupiter
+
+- visrun.g4mac
+  An example to overlay background events created by Jupiter
+  on a single screen.  In this example, generated hits information 
+  are overlayed on a screen withour resets at every events.  
+  This feature is useful for background studies.
+
+- geomtest.g4mac
+  Simple macro to test geometry is given.
+
+
+To run, do
+
+  $ Jupiter [options] [macro]
+
+where [macro] is a g4mac file described above.
+[options] includes
+  -f [geom.dat]
+  -w
+
+-f option is to define detector geometry at run time.
+Sample geometry data for 2mrad crossing and 20 mrad crossing 
+are prepared as $JUPITERROOT/doc/gld_2m.dat 
+and $JUPITERROOT/doc/gld_20m.dat 
+
+-w option is to write geometry data used during the job execution.
+Most of users don't need to use it.
+
+
+

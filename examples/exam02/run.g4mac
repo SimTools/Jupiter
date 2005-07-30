@@ -1,0 +1,21 @@
+#$ID$
+# ============================================================
+# A simple example to read CAIN background events and 
+# run standalone Jupiter job.
+#
+# ============================================================
+
+/control/verbose 2
+/control/saveHistory
+/run/verbose 2
+
+/run/particle/setCut 0.01 mm
+
+
+/jupiter/generator CAINEvt
+/jupiter/cain/file /home/miyamoto/Data/cain/500.nominal_pair.dat
+/jupiter/cain/verbose 19
+
+# /jupiter/beam/List
+/run/beamOn 100
+
