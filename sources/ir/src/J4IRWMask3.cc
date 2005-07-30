@@ -1,17 +1,17 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* J4IRBPAlDrumPipe
+//* J4IRWMask3
 //* --------------------
 //* (Description)
 //* 	Class for describing his/her detector compornents.
 //*     
 //* (Update Record)
-//*	2000/12/08  K.Hoshina	Original version.
+//*	2005/07/09  A.Miyamoto 	Original version.
 //*************************************************************************
 
-#include "J4IRBPAlDrumPipe.hh"
-#include "J4IRBPParameterList.hh"
+#include "J4IRWMask3.hh"
+#include "J4ParameterTable.hh"
 
 #include "G4Tubs.hh"
 #include <cmath>
@@ -22,7 +22,7 @@
 // constants (detector parameters)
 //--------------------------------
 
-G4String J4IRBPAlDrumPipe::fName("IRBPAlDrumPipe");
+G4String J4IRWMask3::fName("IRWMask3");
 
 //=====================================================================
 //---------------------
@@ -32,92 +32,101 @@ G4String J4IRBPAlDrumPipe::fName("IRBPAlDrumPipe");
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4IRBPAlDrumPipe::J4IRBPAlDrumPipe(J4VAcceleratorComponent *parent,
+J4IRWMask3::J4IRWMask3(J4VAcceleratorComponent *parent,
                                           G4int  nclones,
                                           G4int  nbrothers, 
                                           G4int  me,
-                                          G4int  copyno,
-		                          G4bool reflect) :
+                                          G4int  copyno,G4bool reflect ) :
             J4VIRAcceleratorComponent( fName, parent, nclones,
-                                    nbrothers, me, copyno, reflect  ) 
+                                    nbrothers, me, copyno,reflect  ) 
 {   
 }
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
-J4IRBPAlDrumPipe::~J4IRBPAlDrumPipe()
+J4IRWMask3::~J4IRWMask3()
 {
 }
 
 //=====================================================================
 //* Assemble   --------------------------------------------------------
 
-void J4IRBPAlDrumPipe::Assemble() 
+void J4IRWMask3::Assemble() 
 {   
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    J4IRBPParameterList* bpList = J4IRBPParameterList::GetInstance();
-    G4double rmin = bpList->GetBPDrumRadius();
-    G4double rmax = bpList->GetBPDrumRadius()+bpList->GetBPDrumThick();
-    G4double zlen = bpList->GetBPDrumZLength();
+    G4double rmin = J4ParameterTable::GetValue("J4IR.WMask3.InnerRadius",20.0)*cm;
+    G4double rmax = J4ParameterTable::GetValue("J4IR.WMask3.OuterRadius",35.0)*cm;
+    G4double zlen =J4ParameterTable::GetValue("J4IR.WMask3.Length",160.0)*cm;
 
     // MakeSolid ---------------
-    G4String drumpipename( GetName() );
-    drumpipename += ".drumPipe";
-    G4VSolid *drumPipe = new G4Tubs( drumpipename, rmin,rmax,zlen/2.,
-				   0, 2*M_PI);
-    Register(drumPipe);
-    SetSolid(drumPipe);	// Don't forgat call it!
+    G4String name( GetName() );
+    name += "/WMask3";
+    G4VSolid *tube = new G4Tubs( name,rmin,rmax,zlen/2., 0, 2*M_PI);  
+
+    Register(tube);
+    SetSolid(tube);	// Don't forgat call it!
 
     // MakeLogicalVolume -------------
-    MakeLVWith(OpenMaterialStore()->Order(bpList->GetBPSTDMaterial()));
+    G4String material= J4ParameterTable::GetValue("J4IR.WMask3.Material","Tungsten");
+    MakeLVWith(OpenMaterialStore()->Order(material));
     
     // SetVisAttribute ---------------
-    PaintLV(bpList->GetBPVisAtt(), bpList->GetBPColor());
+    G4bool visatt = J4ParameterTable::GetValue("J4IR.VisAtt.WMask3",true);
+
+    std::vector<double> col=J4ParameterTable::GetDValue("J4IR.Color.WMask3","1.0 0.0 1.0 1.0",4);
+    G4Color *icol=new G4Color(col[0], col[1], col[2], col[3]); 
+
+    PaintLV(visatt, *icol);
   	
     // Install daughter PV -----------
-    
   		  
   }     
 }
 
+
 //=====================================================================
 //* Cabling  ----------------------------------------------------------
 
-void J4IRBPAlDrumPipe::Cabling()
+void J4IRWMask3::Cabling()
 {
 }
-
 //=====================================================================
 //* GetRotation  --------------------------------------------------------
-G4RotationMatrix* J4IRBPAlDrumPipe::GetRotation(){
+G4RotationMatrix* J4IRWMask3::GetRotation(){
   G4RotationMatrix* rotM = new G4RotationMatrix;
   return rotM;
 }
 //=====================================================================
 //* GetTranslate  --------------------------------------------------------
-G4ThreeVector& J4IRBPAlDrumPipe::GetTranslation(){
-  G4ThreeVector* position= new G4ThreeVector; 
-  J4IRBPParameterList* bpList = J4IRBPParameterList::GetInstance();
-  G4double zpos = bpList->GetBPDrumZLength()/2.
-    - ( bpList->GetBPDrumZLength()+bpList->GetBPDrumcapZLength() )/2.;
-  //position->setZ(_BPZLEN_DRUM_/2. - (_BPZLEN_DRUM_+_BPZLEN_DRUMCAP_)/2.);
-  position->setZ(zpos);
+G4ThreeVector& J4IRWMask3::GetTranslation()
+{
+  G4double zpos = J4ParameterTable::GetValue("J4IR.WMask3.ZPosition",290.0)*cm;
+  G4double zlen = J4ParameterTable::GetValue("J4IR.WMask3.Length",160.0)*cm;
+  G4double zcnt = zpos + 0.5*zlen;
+
+  G4ThreeVector* position = new G4ThreeVector(0,0,zcnt);
+
   return *position;
 }
 
+
+
+
 //* Draw  --------------------------------------------------------
-void J4IRBPAlDrumPipe::Draw()
+void J4IRWMask3::Draw()
 {
   // set visualization attributes
   
 }
 	
 //* Print  --------------------------------------------------------
-void J4IRBPAlDrumPipe::Print() const
+void J4IRWMask3::Print() const
 {
 }
 
+	
+	
 

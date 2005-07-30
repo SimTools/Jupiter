@@ -1,27 +1,28 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* J4IRQC1QLayer
+//* J4IRBPIP
 //* --------------------
 //* (Description)
-//* 	Class for describing his/her detector compornents.
+//* 	For central part of beam pipe
 //*     
 //* (Update Record)
-//*	2002/09/13  T.Aso	Original version.
+//*	2005/07/25  A.Miyamoto  Created from T.Aso's original
 //*************************************************************************
 
-#include "J4IRQC1QLayer.hh"
-#include "J4IRQC1ParameterList.hh"
+#include "J4IRBPIP.hh"
+#include "J4ParameterTable.hh"
 
 #include "G4Tubs.hh"
 #include <cmath>
+
 
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
 
-G4String J4IRQC1QLayer::fName("IRQC1QLayer");
+G4String J4IRBPIP::fName("IRBPIP");
 
 //=====================================================================
 //---------------------
@@ -31,82 +32,93 @@ G4String J4IRQC1QLayer::fName("IRQC1QLayer");
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4IRQC1QLayer::J4IRQC1QLayer(J4VAcceleratorComponent *parent,
+J4IRBPIP::J4IRBPIP(J4VAcceleratorComponent *parent,
                                           G4int  nclones,
                                           G4int  nbrothers, 
                                           G4int  me,
-			       G4int  copyno):
+                                          G4int  copyno ) :
             J4VIRAcceleratorComponent( fName, parent, nclones,
-				       nbrothers, me, copyno  ) 
+                                    nbrothers, me, copyno  ) 
 {   
 }
+
 //=====================================================================
 //* destructor --------------------------------------------------------
 
-J4IRQC1QLayer::~J4IRQC1QLayer()
+J4IRBPIP::~J4IRBPIP()
 {
 }
 
 //=====================================================================
 //* Assemble   --------------------------------------------------------
 
-void J4IRQC1QLayer::Assemble() 
+void J4IRBPIP::Assemble() 
 {   
   if(!GetLV()){
   	
     // Calcurate parameters ----------
-    //G4double len  = ((G4Tubs *)GetMother()->GetLV()->GetSolid())->
-    //  GetZHalfLength() ;
-    G4double len = _QC1ZLEN_/2.;
-    G4double rmin = ((G4Tubs *)GetMother()->GetLV()->GetSolid())->
-      GetInnerRadius() ;
-    G4double rmax = ((G4Tubs *)GetMother()->GetLV()->GetSolid())->
-      GetOuterRadius() ;
-    G4double motherDphi = ((G4Tubs *)GetMother()->GetLV()->
-			   GetSolid())->GetDeltaPhiAngle();
-
-    G4double thick = ( rmax - rmin )/(G4double)GetNbrothers();
-    rmin = rmin+thick*(G4double)GetMyID();
-    rmax = rmin+thick;
+    G4double rout = J4ParameterTable::GetValue("J4IR.BeamPipeIP.OuterRadius", 1.525)*cm;
+    G4double rin  = rout - J4ParameterTable::GetValue("J4IR.BeamPipeIP.Thickness", 0.025)*cm; 
+    G4double zlen = J4ParameterTable::GetValue("J4IR.BeamPipeIP.HalfZLength",7.0)*cm;
+  	
     // MakeSolid ---------------
-    G4String name( GetName() );
-    name += ".QLayer";
-    // define geometry
-    G4VSolid *qc1 = new G4Tubs( name, rmin,rmax,len,0.,motherDphi);
-                                       
-    SetSolid(qc1);	// Don't forgat call it!
+    G4String iptubename( GetName() );
+    iptubename += ".BePipeTube";
+    G4VSolid *iptube = new G4Tubs( iptubename, rin,rout,zlen, 0, 2*M_PI);  
+
+    Register(iptube);
+    SetSolid(iptube);	// Don't forgat call it!
+
 
     // MakeLogicalVolume -------------
-    MakeLVWith(OpenMaterialStore()->Order(_QC1MAT_COIL_));
+    G4String material = J4ParameterTable::GetValue("J4IR.BeamPipeIP.Material","Beryllium");
+    MakeLVWith(OpenMaterialStore()->Order(material));
+    
     // SetVisAttribute ---------------
-//    PaintLV(OpenParameterList()->GetIRVisAtt(), G4Color(1, 1, 0));
-    J4IRQC1ParameterList* qc1List=J4IRQC1ParameterList::GetInstance();
-    PaintLV(qc1List->GetQC1VisAtt(), G4Color(1,1,0));
+    G4bool visatt = J4ParameterTable::GetValue("J4IR.VisAtt.BeamPipeIP",true);
+    std::vector<double> col=J4ParameterTable::GetDValue("J4IR.Color.BeamPipeIP","0.0 0.5 0.5 1.0",4);
+    G4Color icolor(col[0], col[1], col[2], col[3]);  // cyan
 
+    PaintLV(visatt, icolor);
+  	
     // Install daughter PV -----------
   }     
 }
-//=====================================================================
-//* GetRotation  --------------------------------------------------------
-G4RotationMatrix* J4IRQC1QLayer::GetRotation(){
-  G4RotationMatrix* rotM = new G4RotationMatrix;
-  //rotM->rotateZ(-_QC1DPHI_COIL_);
-  return rotM;
-}
+
+
 //=====================================================================
 //* Cabling  ----------------------------------------------------------
-void J4IRQC1QLayer::Cabling()
+
+void J4IRBPIP::Cabling()
 {
 }
+
 //=====================================================================
+//* InstallIn  --------------------------------------------------------
+
+void J4IRBPIP::InstallIn(J4VComponent         *, // mother
+                             G4RotationMatrix     *, // prot
+                             const G4ThreeVector  &) // tlate
+{ 
+  Assemble();			// You MUST call Assemble(); at first.
+  				// 
+  
+  // Placement function into mother object...
+  
+  SetPVPlacement();
+  
+}
+
+
 //* Draw  --------------------------------------------------------
-void J4IRQC1QLayer::Draw()
+void J4IRBPIP::Draw()
 {
   // set visualization attributes
+  
 }
 	
 //* Print  --------------------------------------------------------
-void J4IRQC1QLayer::Print() const
+void J4IRBPIP::Print() const
 {
 }
 

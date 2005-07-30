@@ -1,17 +1,16 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* J4IRWSiCAL2
+//* J4IRTubs
 //* --------------------
 //* (Description)
-//* 	Class for describing his/her detector compornents.
+//* 	General purpose tube solid
 //*     
 //* (Update Record)
-//*	2000/12/08  T.Aso	Original version.
+//*	2005/07/16  A.Miyamoto 	Original version.
 //*************************************************************************
 
-#include "J4IRWSiCAL2.hh"
-#include "J4IRWSiCALParameterList.hh"
+#include "J4IRTubs.hh"
 
 #include "G4Tubs.hh"
 #include <cmath>
@@ -22,8 +21,6 @@
 // constants (detector parameters)
 //--------------------------------
 
-G4String J4IRWSiCAL2::fName("IRWSiCAL2");
-
 //=====================================================================
 //---------------------
 // Class Description
@@ -32,51 +29,47 @@ G4String J4IRWSiCAL2::fName("IRWSiCAL2");
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4IRWSiCAL2::J4IRWSiCAL2(J4VAcceleratorComponent *parent,
-                                          G4int  nclones,
-                                          G4int  nbrothers, 
-                                          G4int  me,
-                                          G4int  copyno,G4bool reflect ) :
-            J4VIRAcceleratorComponent( fName, parent, nclones,
-                                    nbrothers, me, copyno,reflect  ) 
+J4IRTubs::J4IRTubs(G4String name, G4double rmin, G4double rmax, G4double hzlen, G4double zcnt, 
+	   G4String material, G4bool visatt, G4Color icol, 
+			 J4VAcceleratorComponent *parent,
+                           G4int  nclones   ,
+                           G4int  nbrothers , 
+                           G4int  me        ,
+ 	                   G4int  copyno    ,
+	                   G4bool reflect ):
+         J4VIRAcceleratorComponent( name, parent, nclones,
+                                    nbrothers, me, copyno,reflect  ),
+	fName(name), fRmin(rmin), fRmax(rmax), fHZlen(hzlen), fZcnt(zcnt),
+	fMaterial(material), fVisAtt(visatt), fColor(icol), fRotation(0.0),
+	fXcnt(0.0), fYcnt(0.0)     
 {   
 }
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
-J4IRWSiCAL2::~J4IRWSiCAL2()
+J4IRTubs::~J4IRTubs()
 {
 }
 
 //=====================================================================
 //* Assemble   --------------------------------------------------------
 
-void J4IRWSiCAL2::Assemble() 
+void J4IRTubs::Assemble() 
 {   
   if(!GetLV()){
   	
-    // Calcurate parameters ----------
-    J4IRWSiCALParameterList* wsiList =J4IRWSiCALParameterList::GetInstance();
-    G4double rmin = wsiList->GetWSiCAL2Radius();
-    G4double rmax = wsiList->GetWSiCAL2Radius()+wsiList->GetWSiCAL2Thick();
-    G4double zlen = wsiList->GetWSiCAL2ZLength();
-  	
     // MakeSolid ---------------
-    G4String name( GetName() );
-    name += ".CH2";
+    G4VSolid *tube = new G4Tubs( fName,fRmin, fRmax, fHZlen, 0, 2*M_PI);  
 
-    G4VSolid *tube = new G4Tubs( name, rmin,rmax,zlen/2.,0, 2*M_PI);  
-                                       
     Register(tube);
     SetSolid(tube);	// Don't forgat call it!
 
-
     // MakeLogicalVolume -------------
-    MakeLVWith(OpenMaterialStore()->Order(wsiList->GetWSiCALMaterial()));
+    MakeLVWith(OpenMaterialStore()->Order(fMaterial));
     
-    // SetVisAttribute ---------------
-    PaintLV(wsiList->GetWSiCALVisAtt(),wsiList->GetWSiCALColor());
+    // PaintLV -----------------------
+    PaintLV(fVisAtt, fColor);
   	
     // Install daughter PV -----------
   		  
@@ -87,39 +80,34 @@ void J4IRWSiCAL2::Assemble()
 //=====================================================================
 //* Cabling  ----------------------------------------------------------
 
-void J4IRWSiCAL2::Cabling()
+void J4IRTubs::Cabling()
 {
 }
 //=====================================================================
 //* GetRotation  --------------------------------------------------------
-G4RotationMatrix* J4IRWSiCAL2::GetRotation(){
-  G4RotationMatrix* rotM = new G4RotationMatrix;
+G4RotationMatrix* J4IRTubs::GetRotation(){
+  G4RotationMatrix* rotM = new G4RotationMatrix();
+  rotM->rotateY(fRotation);
   return rotM;
 }
 //=====================================================================
 //* GetTranslate  --------------------------------------------------------
-G4ThreeVector& J4IRWSiCAL2::GetTranslation(){
-  J4IRWSiCALParameterList* wsiList =J4IRWSiCALParameterList::GetInstance();
-  G4double zpos = wsiList->GetWSiCAL2ZPosition()
-    +wsiList->GetWSiCAL2ZLength()/2.;
-
-  G4ThreeVector* position = new G4ThreeVector(0,0.,zpos);
-
+G4ThreeVector& J4IRTubs::GetTranslation()
+{
+  G4ThreeVector* position = new G4ThreeVector(fXcnt,fYcnt,fZcnt);
   return *position;
 }
 
 
-
-
 //* Draw  --------------------------------------------------------
-void J4IRWSiCAL2::Draw()
+void J4IRTubs::Draw()
 {
   // set visualization attributes
   
 }
 	
 //* Print  --------------------------------------------------------
-void J4IRWSiCAL2::Print() const
+void J4IRTubs::Print() const
 {
 }
 

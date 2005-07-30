@@ -8,6 +8,7 @@
 //*     
 //* (Update Record)
 //*	2002/09/13  T.Aso	Original version.
+//*     2005/07/16  A.Miyamoto  Modified to include GLD IR
 //*************************************************************************
 
 #include "J4IR.hh"
@@ -18,11 +19,23 @@
 #include "J4UnionSolid.hh"
 #include <cmath>
 
-#include "J4IRQC1MField.hh"
-#include "J4IRQC2MField.hh"
-#include "J4IRSD0MField.hh"
+#include "J4IRQMField.hh"
 
-#include "J4IRWMaskParameterList.hh"
+#include "J4ParameterList.hh"
+#include "J4ParameterTable.hh"
+
+#include "J4IRBPIP.hh"
+#include "J4IRBPMiddle.hh"
+
+#include "J4IRCH2Mask.hh"
+
+#include "J4IRBCAL.hh"
+#include "J4IRFCAL.hh"
+#include "J4IRWMask3.hh"
+#include "J4IRTubs.hh"
+#include "J4IRCons.hh"
+#include "J4IRSlantTubs.hh"
+
 
 // ====================================================================
 //--------------------------------
@@ -54,34 +67,10 @@ J4IR::J4IR(J4VAcceleratorComponent *parent,
 
 J4IR::~J4IR()
 {
-  if(Deregister(fBeampipe)) delete fBeampipe;
-  if(Deregister(fBeamConeR)) delete fBeamConeR;
-  if(Deregister(fBeamConeL)) delete fBeamConeL;
-  if(Deregister(fAlDrumR)) delete fAlDrumR;  
-  if(Deregister(fAlDrumL)) delete fAlDrumL;  
-  if(Deregister(fAlBeamPipeR)) delete fAlBeamPipeR;
-  if(Deregister(fAlBeamPipeL)) delete fAlBeamPipeL;
-  if(Deregister(fVacuumBeamPipeR)) delete fVacuumBeamPipeR;
-  if(Deregister(fVacuumBeamPipeL)) delete fVacuumBeamPipeL;
-  if(Deregister(fQC1R)) delete fQC1R;
-  if(Deregister(fQC1L)) delete fQC1L;
-  if(Deregister(fSD0R)) delete fSD0R;
-  if(Deregister(fSD0L)) delete fSD0L;
-  if(Deregister(fQC2R)) delete fQC2R;
-  if(Deregister(fQC2L)) delete fQC2L;
-  if(Deregister(fCH2MR)) delete fCH2MR;
-  if(Deregister(fCH2ML)) delete fCH2ML;
-  if(Deregister(fWM1R)) delete fWM1R;
-  if(Deregister(fWM1L)) delete fWM1L;
-  if(Deregister(fWM2R)) delete fWM2R;
-  if(Deregister(fWM2L)) delete fWM2L;
-  if(Deregister(fWSC1R)) delete fWSC1R;
-  if(Deregister(fWSC1L)) delete fWSC1L;
-  if(Deregister(fWSC2R)) delete fWSC2R;
-  if(Deregister(fWSC2L)) delete fWSC2L;
-  if(Deregister(fPMNR)) delete fPMNR;
-  if(Deregister(fPMNL)) delete fPMNL;
-
+    std::vector<J4VComponent*>::iterator iv;
+    for( iv=fComponents.begin() ; iv!=fComponents.end(); iv++ ) {
+      if( Deregister(*iv) ) { delete *iv; }
+    }
 }
 
 //=====================================================================
@@ -91,251 +80,145 @@ void J4IR::Assemble()
 {   
   if(!GetLV()){
 
-    J4IRParameterList* list = OpenParameterList();
-    J4IRWMaskParameterList* wlist = J4IRWMaskParameterList::GetInstance();
+    J4ParameterList   *pl = J4ParameterList::GetInstance();
 
-    // Calcurate parameters ----------
-    G4double innersupporttubrad = list->GetIRSupportInnerRadius();
-    G4double outerbeampiperad   = list->GetIRMinimumRadius();
-    G4double beampipehalfzlen   = list->GetIRBeamPipeZLength()/2.;
-    G4double conehalfz          = list->GetIRConeZLength()/2.;
-    G4double cylinderhalfz      = list->GetIRDrumZLength()/2.;
-    G4double boxhalfx           = list->GetDxyzIRBox().x();
-    G4double boxhalfy           = list->GetDxyzIRBox().y();
-    G4double boxhalfz           = list->GetDxyzIRBox().z()+
-				list->GetDxyzMarginSize().z();
-    G4double coneglobalz        = list->GetIRConeZPosition();
-    G4double cylinderglobalz    = list->GetIRDrumZPosition();
-    G4double boxglobalz         = list->GetIRBoxZPosition();
+    G4int nsolids = pl->GetIRNSolids();
+    G4String bpname=GetName()+".Center";
+    G4VSolid *lastsolid=new G4Tubs(bpname, 0, pl->GetIRREdges(0), pl->GetIRZEdges(0), 0, 2*M_PI);
 
-    // MakeSolid ---------------
-    
-    G4String beampipename( GetName() );
-    beampipename += "/Beampipe";
-    G4VSolid *beampipe = new G4Tubs( beampipename, 0, outerbeampiperad,
-                                     beampipehalfzlen, 0, 2*M_PI);  
-    G4String irconerightname( GetName() );
-    irconerightname += "/IRconeright";
-    G4VSolid *irconeright = new G4Cons( irconerightname, 0, outerbeampiperad, 0,
-                                        innersupporttubrad, conehalfz, 0, 2*M_PI); 
-    G4String irconeleftname( GetName() );
-    irconeleftname += "/IRconelert";
-    G4VSolid *irconeleft = new G4Cons( irconeleftname, 0, innersupporttubrad, 0,
-                                       outerbeampiperad, conehalfz, 0, 2*M_PI); 
-    G4String ircylindername( GetName() );
-    ircylindername += "/IRcylinder";
-    G4VSolid *ircylinder = new G4Tubs( ircylindername, 0, innersupporttubrad,
-                                       cylinderhalfz, 0, 2*M_PI);
-    G4String irboxname( GetName() );
-    irboxname += "/IRbox";
-    G4VSolid *irbox = new G4Box( irboxname, boxhalfx, boxhalfy, boxhalfz);
+    std::ostringstream sname;
+    G4VSolid *tmpsolid=0;
+    G4String blank;
 
-    G4String tmpsolid1name( GetName() );
-    tmpsolid1name += "/tmpsolid1";
-    G4ThreeVector tmpsolid1tlate(0, 0, coneglobalz);
-    G4VSolid *tmpsolid1 = new J4UnionSolid(tmpsolid1name, beampipe, irconeright,
-                                       0, tmpsolid1tlate );
+    for(int i=1;i<nsolids;i++) {
+      for(int j=0;j<2;j++) {
+        G4double hzlen=(pl->GetIRZEdges(i) - pl->GetIRZEdges(i-1))*0.5;
+	sname.str(GetName());
+        sname << ".SolidTemp" << i << "-" << j << std::ends;
+        if( pl->GetIRShapes(i) == 0 ) {
+          tmpsolid = new G4Tubs(sname.str(), 0, pl->GetIRREdges(i-1), hzlen, 0, 2*M_PI);
+        }
+        else {
+          if( j == 0 ) {
+  	    tmpsolid=new G4Cons(sname.str(), 0, pl->GetIRREdges(i-1),
+			0, pl->GetIRREdges(i), hzlen, 0, 2*M_PI);
+          }
+	  else {
+  	    tmpsolid=new G4Cons(sname.str(), 0, pl->GetIRREdges(i),
+			0, pl->GetIRREdges(i-1), hzlen, 0, 2*M_PI);
+	  }
+        }
+        G4double  zpos = pl->GetIRZEdges(i-1) + hzlen ;
+	if ( j == 1 ) zpos *= -1 ;
+        G4ThreeVector tmptrans(0, 0, zpos);
+	sname.str(GetName());
+        sname << ".SolidJoin" << i << "-" << j << std::ends;
+        if( i == nsolids-1 && j == 1 ) { sname << GetName() << std::ends ; }
+        G4VSolid *irjoin = new J4UnionSolid(sname.str(), lastsolid, tmpsolid, 0, tmptrans);
+        lastsolid = irjoin;
+      }
+    }
 
-    G4String tmpsolid2name( GetName() );
-    tmpsolid2name += "/tmpsolid2";
-    G4ThreeVector tmpsolid2tlate(0, 0, -coneglobalz);
-    G4VSolid *tmpsolid2 = new J4UnionSolid(tmpsolid2name, tmpsolid1, irconeleft,
-                                       0, tmpsolid2tlate );
-
-    G4String tmpsolid3name( GetName() );
-    tmpsolid3name += "/tmpsolid3";
-    G4ThreeVector tmpsolid3tlate(0, 0, cylinderglobalz);
-    G4VSolid *tmpsolid3 = new J4UnionSolid(tmpsolid3name, tmpsolid2, ircylinder,
-                                       0, tmpsolid3tlate );
-    G4String tmpsolid4name( GetName() );
-    tmpsolid4name += "/tmpsolid4";
-    G4ThreeVector tmpsolid4tlate(0, 0, -cylinderglobalz);
-    G4VSolid *tmpsolid4 = new J4UnionSolid(tmpsolid4name, tmpsolid3, ircylinder,
-                                       0, tmpsolid4tlate );
-
-    G4String tmpsolid5name( GetName() );
-    tmpsolid5name += "/tmpsolid5";
-    G4ThreeVector tmpsolid5tlate(0, 0, boxglobalz);
-    G4VSolid *tmpsolid5 = new J4UnionSolid(tmpsolid5name, tmpsolid4, irbox,
-                                       0, tmpsolid5tlate );
-
-    G4ThreeVector lastsolidtlate(0, 0, -boxglobalz);
-    G4VSolid *lastsolid = new J4UnionSolid(GetName(), tmpsolid5, irbox,
-                                       0, lastsolidtlate );
+//    J4IRParameterList* list = OpenParameterList();
+//    J4IRWMaskParameterList* wlist = J4IRWMaskParameterList::GetInstance();
 
     Register(lastsolid);
     SetSolid(lastsolid);	// Don't forgat call it!
 
     // MakeLogicalVolume -------------
-    MakeLVWith(OpenMaterialStore()->Order(list->GetIRMaterial()));
+    G4String material = J4ParameterTable::GetValue("J4IR.Material","vacuum");
+    MakeLVWith(OpenMaterialStore()->Order(material));
     
     // SetVisAttribute ---------------
-    PaintLV(list->GetIRVisAtt(),list->GetIRColor());
-    // PaintLV(FALSE,list->GetIRColor());
+    G4bool visatt = J4ParameterTable::GetValue("J4IR.VisAtt",true);
+    std::vector<double> col=J4ParameterTable::GetDValue("J4IR.Color","0.5 0.5 0.5 0.0",4);
+    G4Color icolor(col[0], col[1], col[2], col[3]);  // cyan
 
+    PaintLV(visatt, icolor);
+
+    //
     // Install daughter PV -----------
-#if 1
-    fBeampipe = new J4IRBPPipe(this,1,1,0,-1);
-    Register(fBeampipe);
-    fBeampipe->InstallIn(this);
-    SetDaughter(fBeampipe);
+    //
+    
+    fComponents.push_back(new J4IRBPIP(this,1,1,0,-1));
+    
+    Assemble_BeamPipeMiddle();
 
-    fBeamConeR = new J4IRBPCone(this,1,2,0,-1,FALSE);
-    Register(fBeamConeR);
-    fBeamConeR->InstallIn(this);
-    SetDaughter(fBeamConeR);
+// QC1 geometry
+    G4double rmin,rmax,zlen,zpos;
 
-    fBeamConeL = new J4IRBPCone(this,1,2,1,-1,TRUE);
-    Register(fBeamConeL);
-    fBeamConeL->InstallIn(this);
-    SetDaughter(fBeamConeL);
-
-    fAlDrumR =  new J4IRBPAlDrum(this,1,2,0,-1,FALSE);
-    Register(fAlDrumR);
-    fAlDrumR->InstallIn(this);
-    SetDaughter(fAlDrumR);
-
-    fAlDrumL =  new J4IRBPAlDrum(this,1,2,1,-1,TRUE);
-    Register(fAlDrumL);
-    fAlDrumL->InstallIn(this);
-    SetDaughter(fAlDrumL);
-    if ( ! list->IsCompact() ){
-      fAlBeamPipeR = new J4IRBPAlTube(this,1,2,0,-1,FALSE);
-      Register(fAlBeamPipeR);
-      fAlBeamPipeR->InstallIn(this);
-      SetDaughter(fAlBeamPipeR);
-
-      fAlBeamPipeL = new J4IRBPAlTube(this,1,2,1,-1,TRUE);
-      Register(fAlBeamPipeL);
-      fAlBeamPipeL->InstallIn(this);
-      SetDaughter(fAlBeamPipeL);
-    }else{
-      fVacuumBeamPipeR = new J4IRBPVacuumTube(this,1,2,0,-1,FALSE);
-      Register(fVacuumBeamPipeR);
-      fVacuumBeamPipeR->InstallIn(this);
-      SetDaughter(fVacuumBeamPipeR);
-
-      fVacuumBeamPipeL = new J4IRBPVacuumTube(this,1,2,1,-1,TRUE);
-      Register(fVacuumBeamPipeL);
-      fVacuumBeamPipeL->InstallIn(this);
-      SetDaughter(fVacuumBeamPipeL);
-    }
-#endif
-
-#if 1
-    J4IRQC1MField* qc1fielde;
-    J4IRQC1MField* qc1fieldp;
-    if ( !list->IsCompact() ){
-      qc1fielde = new J4IRQC1MField(250.*GeV,-64.35*tesla/meter,"Grad");
-      qc1fieldp = new J4IRQC1MField(250.*GeV,+64.35*tesla/meter,"Grad");
-    }else{
-      qc1fielde = new J4IRQC1MField(250.*GeV,-114.*tesla/meter,"Grad");
-      qc1fieldp = new J4IRQC1MField(250.*GeV,+114.*tesla/meter,"Grad");
+//     AssembleSmallAngle_QC1();
+//    Q magnets
+    G4int nq=J4ParameterTable::GetValue("J4IR.NumberOfQ",1);
+    G4double ebeam=J4ParameterTable::GetValue("J4IR.Q.BeamEnergy",250.0)*GeV;
+    for(int i=0;i<nq;i++) {
+        std::vector<double> qpara;  // rmin, rmax, zlen, zpos, sign
+	sname.str(blank);
+	sname << "J4IR.Q" << i << ".Geometry" << std::ends;
+	qpara=J4ParameterTable::GetDValue((sname.str()).c_str(),
+			"3.0 8.0 300.0 450.0 1.0 -65.0", 6);
+        for(G4int j=0;j<4;j++) { qpara[j] *= cm; }
+        G4bool isDownStream=FALSE;
+        if( qpara[4] < 0.0 ) isDownStream = TRUE;
+	sname.str(blank);
+	sname << "J4IR_Q" << i << std::ends;
+	G4double bgrad = -65.0*tesla/meter;
+	Assemble_Qx((sname.str()).c_str(), 
+		qpara[0], qpara[1], qpara[2], qpara[3], isDownStream,
+		ebeam, bgrad);
     }
 
-    fQC1R = new J4IRQC1(this,1,2,0,-1);
-    fQC1R->SetMField(qc1fielde);
-    Register(fQC1R);
-    fQC1R->InstallIn(this);
-    SetDaughter(fQC1R);
+//
+    fComponents.push_back(new J4IRCH2Mask(this,1,2,0,-1, FALSE));
+    fComponents.push_back(new J4IRCH2Mask(this,1,2,1,-1, TRUE));
+    fComponents.push_back(new J4IRBCAL(this, 1, 2, 0, -1, FALSE));
+    fComponents.push_back(new J4IRBCAL(this, 1, 2, 1, -1, TRUE));
 
-    fQC1L = new J4IRQC1(this,1,2,1,-1,true);
-    fQC1L->SetMField(qc1fieldp);
-    Register(fQC1L);
-    fQC1L->InstallIn(this);
-    SetDaughter(fQC1L);
-#endif
+    fComponents.push_back(new J4IRFCAL(this, 1, 4, 0, -1, FALSE));
+    fComponents.push_back(new J4IRFCAL(this, 1, 4, 1, -1, FALSE));
+    fComponents.push_back(new J4IRFCAL(this, 1, 4, 2, -1, TRUE));
+    fComponents.push_back(new J4IRFCAL(this, 1, 4, 3, -1, TRUE));
 
-#if 0
+// Mask before QC1
+    rmin = J4ParameterTable::GetValue("J4IR.WMask3.InnerRadius",20.0)*cm;
+    rmax = J4ParameterTable::GetValue("J4IR.WMask3.OuterRadius",35.0)*cm;
+    zlen = J4ParameterTable::GetValue("J4IR.WMask3.Length",160.0)*cm;
+    zpos = J4ParameterTable::GetValue("J4IR.WMask3.ZPosition",290.0)*cm;
+    material= J4ParameterTable::GetValue("J4IR.WMask3.Material","Tungsten");
+    visatt = J4ParameterTable::GetValue("J4IR.VisAtt.WMask3",true);
+    col=J4ParameterTable::GetDValue("J4IR.Color.WMask3","1.0 0.0 1.0 1.0",4);
+    G4Color icol(col[0], col[1], col[2], col[3]); 
+    fComponents.push_back(new J4IRTubs("IRWMask3P", rmin, rmax, zlen*0.5,zpos+0.5*zlen, material, 
+	 visatt, icol, this, 1, 2, 0, -1, FALSE));
+    fComponents.push_back(new J4IRTubs("IRWMask3M", rmin, rmax, zlen*0.5,zpos+0.5*zlen, material, 
+	 visatt, icol, this, 1, 2, 1, -1, TRUE));
 
-    J4IRSD0MField* sd0fielde = new J4IRSD0MField(250.*GeV,-2.249174);
-    J4IRSD0MField* sd0fieldp = new J4IRSD0MField(250.*GeV,+2.249174);
+// Mask around QC1
+    rmin = J4ParameterTable::GetValue("J4IR.WMask4.InnerRadius",20.0)*cm;
+    rmax = J4ParameterTable::GetValue("J4IR.WMask4.OuterRadius",35.0)*cm;
+    zlen = J4ParameterTable::GetValue("J4IR.WMask4.Length",160.0)*cm;
+    zpos = J4ParameterTable::GetValue("J4IR.WMask4.ZPosition",450.0)*cm;
+    G4double zcnt=zpos+0.5*zlen;
 
-    fSD0R = new J4IRSD0(this,1,2,0,-1);
-    fSD0R->SetMField(sd0fielde);
-    fSD0L = new J4IRSD0(this,1,2,1,-1,true);
-    fSD0L->SetMField(sd0fieldp);
-    Register(fSD0R);
-    Register(fSD0L);
-    fSD0R->InstallIn(this);
-    fSD0L->InstallIn(this);
-    SetDaughter(fSD0R);
-    SetDaughter(fSD0L);
+    material= J4ParameterTable::GetValue("J4IR.WMask4.Material","Tungsten");
+    visatt = J4ParameterTable::GetValue("J4IR.VisAtt.WMask4",true);
+    col=J4ParameterTable::GetDValue("J4IR.Color.WMask4","0.5 0.0 0.5 1.0",4);
+    G4Color icol2(col[0], col[1], col[2], col[3]); 
+    fComponents.push_back(new J4IRTubs("IRWMask4P", rmin, rmax, zlen*0.5, 
+	zcnt, material, 
+	visatt, icol2, this, 1, 2, 0, -1, FALSE));
+    fComponents.push_back(new J4IRTubs("IRWMask4M", rmin, rmax, zlen*0.5, 
+	zcnt, material, 
+	visatt, icol2, this, 1, 2, 1, -1, TRUE));
 
-    J4IRQC2MField* qc2fielde = new J4IRQC2MField(250.*GeV,+0.0537249);
-    J4IRQC2MField* qc2fieldp = new J4IRQC2MField(250.*GeV,-0.0537249);
-
-    fQC2R = new J4IRQC2(this,1,2,0,-1);
-    fQC2R->SetMField(qc2fielde);
-    fQC2L = new J4IRQC2(this,1,2,1,-1,true);
-    fQC2L->SetMField(qc2fieldp);
-    Register(fQC2R);
-    Register(fQC2L);
-    fQC2R->InstallIn(this);
-    fQC2L->InstallIn(this);
-    SetDaughter(fQC2R);
-    SetDaughter(fQC2L);
-#endif
-
-#if 1
-    if ( list->IsCompact() ){
-      fCH2MR = new J4IRCH2MaskCompact(this,1,2,0,-1);
-      Register(fCH2MR);
-      fCH2MR->InstallIn(this);
-      SetDaughter(fCH2MR);
-
-      fCH2ML = new J4IRCH2MaskCompact(this,1,2,1,-1,true);
-      Register(fCH2ML);
-      fCH2ML->InstallIn(this);
-      SetDaughter(fCH2ML);
-
-      fBMExitR = new J4IRBeamExit(this,1,2,0,-1);
-      Register(fBMExitR);
-      fBMExitR->InstallIn(this);
-      SetDaughter(fBMExitR);
-
-      fBMExitL = new J4IRBeamExit(this,1,2,0,-1,true);
-      Register(fBMExitL);
-      fBMExitL->InstallIn(this);
-      SetDaughter(fBMExitL);
-    }else{
-      fCH2MR = new J4IRCH2Mask(this,1,2,0,-1);
-      Register(fCH2MR);
-      fCH2MR->InstallIn(this);
-      SetDaughter(fCH2MR);
-
-      fCH2ML = new J4IRCH2Mask(this,1,2,1,-1,true);
-      Register(fCH2ML);
-      fCH2ML->InstallIn(this);
-      SetDaughter(fCH2ML);
-
-   }
-#endif
-
-#if 1
-    if( wlist->IsWMask1Valid() ){
-      fWM1R = new J4IRWMask1(this,1,2,0,-1);
-      Register(fWM1R);
-      fWM1R->InstallIn(this);
-      SetDaughter(fWM1R);
-
-      fWM1L = new J4IRWMask1(this,1,2,1,-1,true);
-      Register(fWM1L);
-      fWM1L->InstallIn(this);
-      SetDaughter(fWM1L);
+// ----------------------------------------------------------------
+// Register solids set mother/daughter relation.
+    std::vector<J4VComponent*>::iterator iv;
+    for( iv=fComponents.begin() ; iv!=fComponents.end(); iv++ ) {
+      Register(*iv);
+      (*iv)->InstallIn(this);
+      SetDaughter(*iv);
     }
-
-    fWM2R = new J4IRWMask2(this,1,2,0,-1);
-    Register(fWM2R);
-    fWM2R->InstallIn(this);
-    SetDaughter(fWM2R);
-
-    fWM2L = new J4IRWMask2(this,1,2,1,-1,true);
-    Register(fWM2L);
-    fWM2L->InstallIn(this);
-    SetDaughter(fWM2L);
-
-#endif
 
 #if 0
     if (  list->IsCompact() ){
@@ -350,32 +233,127 @@ void J4IR::Assemble()
     }
 #endif
 
-#if 1
-    fWSC1R = new J4IRWSiCAL1(this,1,2,0,-1);
-    Register(fWSC1R);
-    fWSC1R->InstallIn(this);
-    SetDaughter(fWSC1R);
-
-    fWSC1L = new J4IRWSiCAL1(this,1,2,1,-1,true);
-    Register(fWSC1L);
-    fWSC1L->InstallIn(this);
-    SetDaughter(fWSC1L);
-
-    if (wlist->IsWSiCAL2Valid()){
-      fWSC2R = new J4IRWSiCAL2(this,1,2,0,-1);
-      Register(fWSC2R);
-      fWSC2R->InstallIn(this);
-      SetDaughter(fWSC2R);
-
-      fWSC2L = new J4IRWSiCAL2(this,1,2,1,-1,true);
-      Register(fWSC2L);
-      fWSC2L->InstallIn(this);
-      SetDaughter(fWSC2L);
-    }
-#endif
   }     
 }
 
+
+//=====================================================================
+//* Assemble beam pipe midle.
+//* Use of UnionSolids are abondoned because of too many error 
+//* From BoolOperation Unimplemented case.
+// ----------------------------------------------------------
+void J4IR::Assemble_BeamPipeMiddle()
+{
+
+    G4int nsolids  = J4ParameterTable::GetValue("J4IR.BeamPipeMiddle.NumSolides", 4);
+    std::vector<double> rmax;
+    rmax = J4ParameterTable::GetDValue("J4IR.BeamPipeMiddle.REdges","1.525 8.0 8.0 15.0",nsolids);
+    std::vector<double> zpos;
+    zpos = J4ParameterTable::GetDValue("J4IR.BeamPipeMiddle.ZEdges","7.0 80.0 320.0 410.0", nsolids);
+    std::vector<int> ishape;
+    ishape=J4ParameterTable::GetIValue("J4IR.BeamPipeMiddle.Shapes","0 1 0 1",nsolids);
+    G4double althick = J4ParameterTable::GetValue("J4IR.BeamPipeMiddle.Thickness",0.2)*cm;
+    G4double bethick = J4ParameterTable::GetValue("J4IR.BeamPipeIP.Thickness",0.025)*cm;
+
+    for(int i=0;i<nsolids;i++) {
+	rmax[i] *= cm;        zpos[i] *= cm;
+    }
+    G4String material = J4ParameterTable::GetValue("J4IR.BeamPipeMiddle.Material","Aluminum");
+    G4bool visatt = J4ParameterTable::GetValue("J4IR.VisAtt.BeamPipeMiddle",true);
+    std::vector<double> col=J4ParameterTable::GetDValue("J4IR.Color.BeamPipeMiddle","0.0 0.5 0.5 1.0",4);
+    G4Color icolor(col[0], col[1], col[2], col[3]);  // cyan
+
+ 
+   std::ostringstream sname;
+
+   for(int j=0;j<2;j++){
+     sname.str(fName+"/BPMiddle");
+     sname << j << ends;
+     G4bool flag=false;
+     if( j == 1 ) flag=true;
+     G4double hzlen=(zpos[1]-zpos[0])*0.5;
+     G4double zcnt =(zpos[1]+zpos[0])*0.5;
+     J4IRCons *cons1 = new J4IRCons(sname.str(), rmax[0]-bethick, rmax[0], 
+			rmax[1]-althick, rmax[1], hzlen, zcnt, this, 1, 2, j, -1, flag);
+     cons1->SetAttribute(material, visatt, icolor);
+     fComponents.push_back(cons1);
+
+     for(G4int i=2;i<nsolids;i++) {
+	sname.str(fName+"/BPMiddle");
+        sname << ".v" << i << std::ends;	
+        hzlen=(zpos[i]-zpos[i-1])*0.5;
+        zcnt =(zpos[i]+zpos[i-1])*0.5;
+        if( ishape[i] == 0 ) {
+ 	  J4IRTubs *tmps = new J4IRTubs(sname.str(), rmax[i]-althick, rmax[i], hzlen, zcnt,
+		material, visatt, icolor, this, 1, 2, j, -1, flag);
+	  fComponents.push_back(tmps);
+        }
+        else {
+          G4double thick=althick;
+          if( i==2 ) thick=bethick;
+          cons1 = new J4IRCons(sname.str(), rmax[i-1]-thick, rmax[i-1], 
+			rmax[i]-althick, rmax[i], hzlen, zcnt, this, 1, 2, j, -1, flag);
+          cons1->SetAttribute(material, visatt, icolor);
+          fComponents.push_back(cons1);
+        }
+      }           
+   }
+}
+
+
+//=====================================================================
+//* QC1/Wmask4(Arround QC1)
+// ----------------------------------------------------------
+void J4IR::Assemble_Qx(G4String name, G4double rmin, G4double rmax, 
+	G4double zlen, G4double zpos, G4double isDownStream, 
+	G4double ebeam, G4double bgrad) 
+//  ebeam : beam energy in unit of GeV.
+//  brad  : Magnetic field gradiant of QC ( For electron side Q magnet )
+{
+    G4double qcangle=J4ParameterTable::GetValue("J4IR.Q.Angle",0.00)*rad;
+    G4String material= J4ParameterTable::GetValue("J4IR.Q.Material","Iron");
+    G4bool visatt = J4ParameterTable::GetValue("J4IR.VisAtt.Q",true);
+    std::vector<double> col=J4ParameterTable::GetDValue("J4IR.Color.Q",
+	"1.0 0.5 0.5 1.0",4);
+    G4Color icolqc(col[0], col[1], col[2], col[3]); 
+    G4double zcnt = zpos + 0.5*zlen;
+    J4IRQMField* qc1fielde = new J4IRQMField(ebeam, -bgrad,rmin, rmax, zlen ) ;
+    J4IRQMField* qc1fieldp = new J4IRQMField(ebeam,  bgrad,rmin, rmax, zlen ) ;
+
+// Small angle case.  QD axis is along Z-axis
+
+    if( std::abs(qcangle) < 0.001 ) {
+	 J4IRTubs *qc1p=new J4IRTubs("IRQC1P", rmin, rmax, zlen*0.5,
+	    zcnt, material, visatt, icolqc, this, 1, 2, 0, -1, FALSE);
+	 fComponents.push_back(qc1p);
+	 qc1p->SetMField(qc1fielde);
+
+         J4IRTubs *qc1m=new J4IRTubs("IRQC1M", rmin, rmax, zlen*0.5,
+	    zcnt, material, visatt, icolqc, this, 1, 2, 1, -1, TRUE);
+	 fComponents.push_back(qc1m);    
+    	 qc1m->SetMField(qc1fieldp);
+    }
+
+// Large angle case.  QC axis is along beam line	
+    else {
+      if( isDownStream ) { qcangle *= -1.0 ; }
+      G4String tname=name+".plus";
+      J4IRSlantTubs *qcp=new J4IRSlantTubs(tname, rmin, rmax, 0.5*zlen,
+  	  zcnt, qcangle, this, 1, 2, 0, -1, FALSE);
+      qcp->SetAttribute(material, visatt, icolqc);
+      fComponents.push_back(qcp);
+      qcp->SetMField(qc1fielde);
+
+      tname=name+".minus";
+      J4IRSlantTubs *qcm=new J4IRSlantTubs(tname, rmin, rmax, 0.5*zlen,
+	 zcnt, qcangle, this, 1, 2, 1, -1, TRUE);
+      qcm->SetAttribute(material, visatt, icolqc);
+      fComponents.push_back(qcm);
+      qcm->SetMField(qc1fieldp);
+   }
+
+
+}
 
 //=====================================================================
 //* Cabling  ----------------------------------------------------------

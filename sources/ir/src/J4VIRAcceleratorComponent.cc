@@ -17,7 +17,6 @@
 J4IRMaterialStore* J4VIRAcceleratorComponent::fMaterialStore = 0;
 
 G4String J4VIRAcceleratorComponent::fSubGroup("IR");
-J4IRParameterList* J4VIRAcceleratorComponent::fParameterList = 0;
 
 //=====================================================================
 //---------------------
@@ -48,7 +47,6 @@ J4VIRAcceleratorComponent::J4VIRAcceleratorComponent(
 J4VIRAcceleratorComponent::~J4VIRAcceleratorComponent()
 {	
    if(Deregister(fMaterialStore)) delete fMaterialStore;
-   if(Deregister(fParameterList)) delete fParameterList;
 }
 
 //=====================================================================
@@ -107,20 +105,3 @@ void J4VIRAcceleratorComponent::InstallIn(J4VComponent      *, // mother
     SetPVPlacement(rotation,position);
 }
 
-#if 0
-//=====================================================================
-//* OpenParameterList -------------------------------------------------
-
-J4IRParameterList* J4VIRAcceleratorComponent::OpenParameterList()
-{
-
-  if(!fParameterList) {
-    fParameterList = new J4IRParameterList();
-    Register(fParameterList);
-    std::cerr << "*** Opend J4IRParameterList ***" << std::endl;
-  }
-
-  return fParameterList;
-}
-
-#endif

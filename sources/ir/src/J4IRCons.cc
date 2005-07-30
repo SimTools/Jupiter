@@ -1,19 +1,18 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* J4IRBPAlPipe
+//* J4IRCons
 //* --------------------
 //* (Description)
-//* 	Class for describing his/her detector compornents.
+//* 	General purpose tube solid
 //*     
 //* (Update Record)
-//*	2002/09/13  T.Aso	Original version.
+//*	2005/07/22  A.Miyamoto 	Original version.
 //*************************************************************************
 
-#include "J4IRBPAlPipe.hh"
-#include "J4IRBPParameterList.hh"
+#include "J4IRCons.hh"
 
-#include "G4Tubs.hh"
+#include "G4Cons.hh"
 #include <cmath>
 
 
@@ -21,8 +20,6 @@
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
-
-G4String J4IRBPAlPipe::fName("IRBPAlPipe");
 
 //=====================================================================
 //---------------------
@@ -32,87 +29,93 @@ G4String J4IRBPAlPipe::fName("IRBPAlPipe");
 //=====================================================================
 //* constructor -------------------------------------------------------
 
-J4IRBPAlPipe::J4IRBPAlPipe(J4VAcceleratorComponent *parent,
-                                          G4int  nclones,
-                                          G4int  nbrothers, 
-                                          G4int  me,
-                                          G4int  copyno,
-		                          G4bool reflect) :
-            J4VIRAcceleratorComponent( fName, parent, nclones,
-                                    nbrothers, me, copyno, reflect  ) 
+J4IRCons::J4IRCons(G4String name, G4double rmin1, G4double rmax1,
+	   G4double rmin2, G4double rmax2,  
+	   G4double hzlen, G4double zcnt, 
+			 J4VAcceleratorComponent *parent,
+                           G4int  nclones   ,
+                           G4int  nbrothers , 
+                           G4int  me        ,
+ 	                   G4int  copyno    ,
+	                   G4bool reflect ):
+         J4VIRAcceleratorComponent( name, parent, nclones,
+                                    nbrothers, me, copyno,reflect  ),
+	fName(name), fRmin1(rmin1), fRmax1(rmax1), fRmin2(rmin2), fRmax2(rmax2), 
+        fHZlen(hzlen), fZcnt(zcnt)
 {   
+	fMaterial="Vaccum";
+	fVisAtt=FALSE;
+        fColor=G4Color(0.0, 0.0, 0.0, 1.0);
 }
 
 //=====================================================================
 //* destructor --------------------------------------------------------
 
-J4IRBPAlPipe::~J4IRBPAlPipe()
+J4IRCons::~J4IRCons()
 {
 }
 
 //=====================================================================
 //* Assemble   --------------------------------------------------------
 
-void J4IRBPAlPipe::Assemble() 
+void J4IRCons::Assemble() 
 {   
   if(!GetLV()){
   	
-    // Calcurate parameters ----------
-    J4IRBPParameterList* bpList=J4IRBPParameterList::GetInstance();
-    G4double rmin = bpList->GetBPENDRadius();
-    G4double rmax = bpList->GetBPENDRadius()+bpList->GetBPENDThick();
-    G4double zlen = bpList->GetBPENDZLength();
-
     // MakeSolid ---------------
-    G4String pipename( GetName() );
-    pipename += ".pipe";
-    G4VSolid *pipe = new G4Tubs( pipename,rmin,rmax,zlen/2., 
-				   0, 2*M_PI);
-    Register(pipe);
-    SetSolid(pipe);	// Don't forgat call it!
+    G4VSolid *solid = new G4Cons( fName, fRmin1, fRmax1, fRmin2, fRmax2,  
+				 fHZlen, 0, 2*M_PI);  
+
+    Register(solid);
+    SetSolid(solid);	// Don't forgat call it!
 
     // MakeLogicalVolume -------------
-    MakeLVWith(OpenMaterialStore()->Order(bpList->GetBPSTDMaterial()));
+    MakeLVWith(OpenMaterialStore()->Order(fMaterial));
     
-    // SetVisAttribute ---------------
-    PaintLV(bpList->GetBPVisAtt(),bpList->GetBPColor());
+    // PaintLV -----------------------
+    PaintLV(fVisAtt, fColor);
   	
     // Install daughter PV -----------
+  		  
   }     
 }
+
 
 //=====================================================================
 //* Cabling  ----------------------------------------------------------
 
-void J4IRBPAlPipe::Cabling()
+void J4IRCons::Cabling()
 {
 }
 
 //=====================================================================
 //* GetRotation  --------------------------------------------------------
-G4RotationMatrix* J4IRBPAlPipe::GetRotation(){
-  G4RotationMatrix* rotM = new G4RotationMatrix;
+G4RotationMatrix* J4IRCons::GetRotation(){
+  G4RotationMatrix* rotM = new G4RotationMatrix();
   return rotM;
 }
 //=====================================================================
 //* GetTranslate  --------------------------------------------------------
-G4ThreeVector& J4IRBPAlPipe::GetTranslation(){
-  G4ThreeVector* position= new G4ThreeVector; 
-  //position->setX(0.*cm);
-  //position->setY(0.*cm);
-  //position->setZ(_BPZPOS_+_BPZLEN_/2.);
+G4ThreeVector& J4IRCons::GetTranslation()
+{
+  G4ThreeVector *position=new G4ThreeVector(0, 0, fZcnt);
   return *position;
 }
+                                                                                
+                                                                               
 
 //* Draw  --------------------------------------------------------
-void J4IRBPAlPipe::Draw()
+void J4IRCons::Draw()
 {
   // set visualization attributes
   
 }
 	
 //* Print  --------------------------------------------------------
-void J4IRBPAlPipe::Print() const
+void J4IRCons::Print() const
 {
 }
+
+	
+	
 
