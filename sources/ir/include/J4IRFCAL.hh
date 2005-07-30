@@ -1,49 +1,48 @@
 // $Id$
-#ifndef __J4IRQC1COOLANT__
-#define __J4IRQC1COOLANT__
+#ifndef __J4IRFCAL__
+#define __J4IRFCAL__
 //*************************************************************************
 //* --------------------
-//* J4IRQC1Coolant
+//* J4IRFCAL
 //* --------------------
 //* (Description)
-//* 	Derivation class for Coolant
+//* 	Derivation class for IR FCAL
 //*     Mother class : J4VIRAcceleratorComponent
 //*    
 //* (Update Record)
-//*	2002/09/13  T.Aso	Original version.
+//*	2005/07/08  A.Miyamoto	Original version.
 //*************************************************************************
 
 #include "J4VIRAcceleratorComponent.hh"
-//#include "J4IRQC1Parameter.hh"
-
-#include "J4IRQC1ThermalVessel.hh"
-
 //=====================================================================
 //---------------------
 // class definition
 //---------------------
 
-class J4IRQC1Coolant : public J4VIRAcceleratorComponent {	
+class J4IRFCAL : public J4VIRAcceleratorComponent {	
 
 public:
-  J4IRQC1Coolant(J4VAcceleratorComponent *parent = 0,
+  J4IRFCAL(J4VAcceleratorComponent *parent = 0,
                            G4int  nclones   = 1,
-                           G4int  nbrothers = 1,
+                           G4int  nbrothers = 1, 
                            G4int  me        = 0,
-		 G4int  copyno    = -1);
+ 	                  G4int  copyno    = -1,
+	                   G4bool reflect = false);
 
-  virtual ~J4IRQC1Coolant();
+  virtual ~J4IRFCAL();
+
+  G4RotationMatrix* GetRotation();
+  G4ThreeVector&  GetTranslation();
 
   virtual void	Draw()      ;
   virtual void	Print() const ;
-
+  
 private:
   void 	Assemble();    
   void  Cabling ();
   
 private:  
   static G4String	fName;
-  J4IRQC1ThermalVessel* fthVess;
   
 };
 

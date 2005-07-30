@@ -16,24 +16,6 @@
 #include "J4VIRAcceleratorComponent.hh"
 
 // Sub-Component
-#include "J4IRBPPipe.hh"
-#include "J4IRBPCone.hh"
-#include "J4IRBPAlDrum.hh"
-#include "J4IRBPAlTube.hh"
-#include "J4IRBPVacuumTube.hh"
-
-#include "J4IRQC1.hh"
-#include "J4IRSD0.hh"
-#include "J4IRQC2.hh"
-#include "J4IRCH2Mask.hh"
-#include "J4IRCH2MaskCompact.hh"
-#include "J4IRBeamExit.hh"
-
-#include "J4IRWSiCAL1.hh"
-#include "J4IRWSiCAL2.hh"
-#include "J4IRWMask1.hh"
-#include "J4IRWMask2.hh"
-#include "J4IRPairMonitorCompactSP.hh"
 
 //=====================================================================
 //---------------------
@@ -57,41 +39,17 @@ public:
 private:
   void 	Assemble();    
   void  Cabling ();
+  void  Assemble_Qx(G4String name, G4double rmin, G4double rmax, 
+	G4double zlen, G4double zpos, G4double isDownStream,
+	G4double ebeam, G4double bgrad);
+
+  void  Assemble_BeamPipeMiddle();
   
 private:  
   static G4String	fName;
 
-  J4IRBPPipe* fBeampipe;
-  J4IRBPCone* fBeamConeR;
-  J4IRBPCone* fBeamConeL;
-  J4IRBPAlDrum* fAlDrumR; 
-  J4IRBPAlDrum* fAlDrumL; 
-  J4IRBPAlTube* fAlBeamPipeR;
-  J4IRBPAlTube* fAlBeamPipeL;
-  J4IRBPVacuumTube* fVacuumBeamPipeR;
-  J4IRBPVacuumTube* fVacuumBeamPipeL;
-  J4IRQC1* fQC1R;
-  J4IRQC1* fQC1L;
-  J4IRSD0* fSD0R;
-  J4IRSD0* fSD0L;
-  J4IRQC2* fQC2R;
-  J4IRQC2* fQC2L;
-  //J4IRCH2Mask* fCH2MR;
-  //J4IRCH2Mask* fCH2ML;
-  J4VIRAcceleratorComponent* fCH2MR;
-  J4VIRAcceleratorComponent* fCH2ML;
-  J4IRBeamExit* fBMExitR;
-  J4IRBeamExit* fBMExitL;
-  J4IRWMask1* fWM1R;
-  J4IRWMask1* fWM1L;
-  J4IRWMask2* fWM2R;
-  J4IRWMask2* fWM2L;
-  J4IRWSiCAL1* fWSC1R;
-  J4IRWSiCAL1* fWSC1L;
-  J4IRWSiCAL2* fWSC2R;
-  J4IRWSiCAL2* fWSC2L;
-  J4VDetectorComponent* fPMNR;
-  J4VDetectorComponent* fPMNL;
+  std::vector<J4VComponent*> fComponents;
+
 };
 
 #endif

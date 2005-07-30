@@ -1,38 +1,35 @@
 // $Id$
-
-#ifndef __J4IRBPALTUBE__
-#define __J4IRBPALTUBE__
+#ifndef __J4IRBCAL__
+#define __J4IRBCAL__
 //*************************************************************************
 //* --------------------
-//* J4IRBPAlTube
+//* J4IRBCAL
 //* --------------------
 //* (Description)
-//* 	Derivation class for Beampipe.
-//*     Mother class : J4VAcceleratorComponent
+//* 	Derivation class for IR BCAL
+//*     Mother class : J4VIRAcceleratorComponent
 //*    
 //* (Update Record)
-//*	2002/09/13  T.Aso	Original version.
+//*	2005/07/08  A.Miyamoto	Original version.
 //*************************************************************************
 
 #include "J4VIRAcceleratorComponent.hh"
-#include "J4IRBPAlPipe.hh"
-
 //=====================================================================
 //---------------------
 // class definition
 //---------------------
 
-class J4IRBPAlTube : public J4VIRAcceleratorComponent {	
+class J4IRBCAL : public J4VIRAcceleratorComponent {	
 
 public:
-  J4IRBPAlTube(J4VAcceleratorComponent *parent = 0,
+  J4IRBCAL(J4VAcceleratorComponent *parent = 0,
                            G4int  nclones   = 1,
                            G4int  nbrothers = 1, 
                            G4int  me        = 0,
-                           G4int  copyno    = -1,
+ 	                  G4int  copyno    = -1,
 	                   G4bool reflect = false);
 
-  virtual ~J4IRBPAlTube();
+  virtual ~J4IRBCAL();
 
   G4RotationMatrix* GetRotation();
   G4ThreeVector&  GetTranslation();
@@ -46,7 +43,6 @@ private:
   
 private:  
   static G4String	fName;
-  J4IRBPAlPipe* fpipe;
   
 };
 

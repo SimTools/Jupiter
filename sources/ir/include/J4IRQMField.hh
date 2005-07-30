@@ -1,39 +1,42 @@
 // $Id$
-#ifndef __J4IRSD0MFIELD__
-#define __J4IRSD0MFIELD__
+#ifndef __J4IRQMFIELD__
+#define __J4IRQMFIELD__
 //*************************************************************************
 //* --------------------
-//* J4IRSD0MField
+//* J4IRQMField
 //* --------------------
 //* (Description)
-//* 	Derivation class for SD0 Magnetic field
+//* 	Provide magnetic field produced by Qs on the beamline
 //*     Mother class : J4MagneticField
 //*    
 //* (Update Record)
-//*	2002/09/13  T.Aso	Original version.
-//*	2002/12/05  T.Aso	k and Beam energy is given via  Constructor
+//*     2005/07/24  A.Miyamoto  Original version derived from the code 
+//*                             written by Aso san.
 //*************************************************************************
 
 #include "J4VMField.hh"
-#include "J4IRSD0Parameter.hh"
 
 //=====================================================================
 //---------------------
 // class definition
 //---------------------
 
-class J4IRSD0MField : public J4VMField {	
+class J4IRQMField : public J4VMField {	
 
 public:
-  J4IRSD0MField(G4double beamE, G4double k);
-  virtual ~J4IRSD0MField();
+  J4IRQMField(G4double beamE, G4double k, 
+	G4double rmin, G4double rmax, G4double zlength );
+//  J4IRQMField(G4double beamE, G4double grad, G4String tag);
+  virtual ~J4IRQMField();
 
   void GetLocalFieldValue(G4ThreeVector& lpos,
 			     G4ThreeVector& lb,G4bool& onlyFlag );  
   void GetLocalValidBox(G4double* Lpos);
 
-private:  
-
+private:
+  G4double fRmin;
+  G4double fRmax;
+  G4double fZlength;
   G4double fGradient;
 
 };
