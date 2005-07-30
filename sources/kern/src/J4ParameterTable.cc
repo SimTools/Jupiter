@@ -19,6 +19,8 @@
 using namespace std;
 #include "J4AParameter.hh"
 #include "J4ParameterTable.hh"
+#include "G4ExceptionHandler.hh"
+
 
 vector<J4AParameter*> J4ParameterTable::fParameters;
 vector<J4AParameter*> J4ParameterTable::fDefaults;
@@ -75,6 +77,11 @@ void J4ParameterTable::PrintDefaults(const char *fname)
 void J4ParameterTable::LoadFile(const char* fname)
 {
   ifstream fin(fname);
+  if ( fin.fail() ) {
+    std::cerr << "Fatal error in J4ParameterTable::LoadFIle";
+    std::cerr << "Failed to open " << fname << endl;
+    G4Exception("Fatal error in J4ParameterTable::LoadFile");
+  } 
   string instr;
   string pname;
   string pinput;
