@@ -69,15 +69,22 @@ J4ITLayer::J4ITLayer(G4double 	           rmin,
                                   nbrothers, me, copyno),
   	   fRmin(0), fRmax(0), fLen(0), fTotalPhi(0), fOffset(0) 
 {   
+//  IT layer is cylindrical for both barrel and endcap
+//  fLen is a half Z length.  
+//  fOffset gives Z position.  fOffset = 0 for barrel. 
+//  In the case of endcap, fOffset is a position away from IP.
 
     fRmin = rmin;
     fRmax = rmax;
     fLen  = len; 
-    fTotalPhi = ((G4Tubs *)parent->GetLV()->GetSolid())->GetDeltaPhiAngle();
+//    fTotalPhi = ((G4Tubs *)parent->GetLV()->GetSolid())->GetDeltaPhiAngle();
+    fTotalPhi = 360.0*deg;
     fOffset   = offset;
     
     				
 }
+
+
 
 //=====================================================================
 //* destructor --------------------------------------------------------
@@ -131,9 +138,17 @@ void J4ITLayer::InstallIn(J4VComponent         * /* mother */,
   				// 
   
   // Placement function into mother object ------//
-  
-  SetPVPlacement();
-  
+  if ( fOffset == 0.0 ) {
+    SetPVPlacement();
+  }
+  else {
+    G4double zcnt = fOffset - fLen;
+    if ( fOffset < 0.0 ) zcnt = fOffset + fLen;
+    G4RotationMatrix* rot = new G4RotationMatrix();
+    G4ThreeVector pos(0, 0, zcnt);
+    SetPVPlacement(rot, pos);
+  }                                                                              
+
   if (!GetSD()) Cabling(); 
   
 }
