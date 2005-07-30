@@ -55,7 +55,8 @@ void J4TPC::Assemble()
     J4TPCParameterList *list = OpenParameterList(); 
     G4double rmin = list->GetTPCInnerR(); 
     G4double rmax = list->GetTPCOuterR();
-    G4double len  = list->GetTPCHalfZ();
+    G4double margin = 0.0005*mm; 
+    G4double len  = list->GetTPCHalfZ() + 2*margin;
     G4double dphi = list->GetTPCDeltaPhi();
   	
     // MakeSolid ----------//
@@ -85,7 +86,7 @@ void J4TPC::Assemble()
 
     fTPCHalfs [0] = new J4TPCHalf(this, 1, 1, 0, 0);
     Register(fTPCHalfs[0]);
-    G4ThreeVector tlatepz(0., 0., +0.5 * len); 
+    G4ThreeVector tlatepz(0., 0., +0.5 * len + margin); 
     fTPCHalfs [0]->InstallIn(this, 0, tlatepz);
     SetDaughter(fTPCHalfs[0]);
 
@@ -95,7 +96,7 @@ void J4TPC::Assemble()
 
     fTPCHalfs [1] = new J4TPCHalf(*fTPCHalfs[0], 1);
     Register(fTPCHalfs[1]);
-    G4ThreeVector tlatemz(0., 0., -0.5 * len); 
+    G4ThreeVector tlatemz(0., 0., -0.5 * len + margin); 
     G4RotationMatrix *rotp = new G4RotationMatrix();
     G4ThreeVector xv(1., 0., 0);
     G4ThreeVector yv(0.,-1., 0);
