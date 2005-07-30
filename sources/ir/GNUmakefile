@@ -6,5 +6,7 @@
 
 name     := J4ir
 	     
+CPPFLAGS += -I$(JUPITERROOT)/sources/sol/include
+
 include $(JUPITERROOT)/config/common.gmk
 
