@@ -60,7 +60,7 @@ void J4BD::Assemble()
     
     // SetVisAttribute ----//
     PaintLV(list->GetBDVisAtt(), list->GetBDColor());
-  	
+
     // Install daughter PV //
     
   }
