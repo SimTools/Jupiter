@@ -14,7 +14,6 @@
 
 #include "J4IRMaterialStore.hh"
 #include "J4VAcceleratorComponent.hh"
-#include "J4IRParameterList.hh"
 
 //=====================================================================
 //---------------------
@@ -43,55 +42,19 @@ public:
 
   virtual G4RotationMatrix* GetRotation();
   virtual G4ThreeVector&  GetTranslation();
+  inline  G4bool  IsReflected(){ return fReflection; }
 
-#if 0 		          
-  J4VIRAcceleratorComponent(J4VIRAcceleratorComponent& right);
-  virtual const J4VIRAcceleratorComponent& 
-  		operator=(const J4VIRAcceleratorComponent& right);    
-#endif
-  
 protected:    
   J4VMaterialStore* 	 OpenMaterialStore();
-  J4IRParameterList*     OpenParameterList() { return J4IRParameterList::GetInstance(); }
   
 private:
   static J4IRMaterialStore* fMaterialStore;
-  static J4IRParameterList*  fParameterList;
   static G4String fSubGroup;
   G4bool fReflection   ;
 
 private:
   void Assemble()=0;
 };
-
-#if 0
-//=====================================================================
-//---------------------
-// inline function
-//---------------------
-
-inline J4VIRAcceleratorComponent::J4VIRAcceleratorComponent(J4VIRAcceleratorComponent& right)
-{
-
-  fMaterialStore = right.fMaterialStore;
-  fSubGroup      = right.fSubGroup;
-          
-}
-
-inline const J4VIRAcceleratorComponent& 
-J4VIRAcceleratorComponent::operator=(const J4VIRAcceleratorComponent& right)
-{
-
-  fMaterialStore = right.fMaterialStore;
-  fSubGroup      = right.fSubGroup;
-  
-  return *this;
-            
-}
-
-#endif
-
-
 
 #endif
 
