@@ -60,6 +60,13 @@ J4CAINEvtMessenger::J4CAINEvtMessenger(J4CAINEvtInterface * cainevt)
   fVerboseCmd->SetGuidance("Verbose output");
   fVerboseCmd->SetParameterName("Verbose",true);
   fVerboseCmd->SetDefaultValue(0);
+
+  fCrossingAngleCmd = new G4UIcmdWithADouble("/jupiter/cain/crossing_angle",this);
+  fCrossingAngleCmd->SetGuidance("Transfer particle momentum according to the crossing_angle");
+  fCrossingAngleCmd->SetGuidance("Crossing angle is twice the angle between beam line and Z-axis");
+  fCrossingAngleCmd->SetParameterName("CrossingAngle",true);
+  fCrossingAngleCmd->SetDefaultValue(0.0000001*rad); 
+
 }
 
 //-----------------------------------------------------------------
@@ -71,6 +78,7 @@ J4CAINEvtMessenger::~J4CAINEvtMessenger()
   delete fGenPositronCmd;
   delete fFileNameCmd;
   delete fDirectory;
+  delete fCrossingAngleCmd;
 }
 
 //--------------------------------------------------------------------
@@ -94,7 +102,9 @@ void J4CAINEvtMessenger::SetNewValue(G4UIcommand * command,G4String newValues)
   else if( command==fVerboseCmd ){ 
     fCAINEvt->SetVerboseLevel(fVerboseCmd->GetNewIntValue(newValues));
   }
-
+  else if( command==fCrossingAngleCmd ) {
+    fCAINEvt->SetCrossingAngle(fCrossingAngleCmd->GetNewDoubleValue(newValues));
+  }
 }
 
 
@@ -121,6 +131,8 @@ G4String J4CAINEvtMessenger::GetCurrentValue(G4UIcommand * command)
   else if ( command==fVerboseCmd ){ 
     cv = fVerboseCmd->ConvertToString(fCAINEvt->GetVerboseLevel());
   }
-
+  else if ( command==fCrossingAngleCmd ) {
+    cv = fCrossingAngleCmd->ConvertToString(fCAINEvt->GetCrossingAngle());
+  }
   return cv;
 }

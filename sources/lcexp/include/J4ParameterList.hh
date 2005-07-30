@@ -63,6 +63,7 @@ class J4ParameterList : public J4VParameterList
    inline G4double GetITOuterR        () const { return GetSupportTubInnerR();}
    inline G4double GetITZcoverage     () const { return fITZcoverage;    }
    inline G4double GetITHalfZ         () const ;
+   inline G4double GetITZMax          () const { return fITZMax; }
 
    inline G4double GetCDCInnerR       () const { return GetSupportTubOuterR();}
    inline G4double GetCDCOuterR       () const { return fCDCOuterR;       }
@@ -80,7 +81,12 @@ class J4ParameterList : public J4VParameterList
    inline G4double GetSOLInnerR       () const { return fSOLInnerR;       }
    inline G4double GetSOLOuterR       () const { return fSOLOuterR;       }
    inline G4double GetSOLHalfZ        () const { return fSOLHalfZ;        }
-  
+
+   inline G4int    GetIRNSolids       () const { return fIRNSolids;       }
+   inline G4double GetIRREdges(int i)    const { return fIRREdges[i];     }
+   inline G4double GetIRZEdges(int i)    const { return fIRZEdges[i];     }
+   inline G4int    GetIRShapes(int i)    const { return fIRShapes[i];     }
+
    // Setters
 
    inline void     SetEXPHallMaterial(G4String s) { fEXPHallMaterial  = s; }
@@ -151,6 +157,7 @@ class J4ParameterList : public J4VParameterList
    G4double  fVTXOuterR;        // OuterR of VTX 
    G4double  fVTXZcoverage;     // z coverage of VTX in cos_theta
 
+   G4double  fITZMax;           // Zcordinate maximum of IT
    G4double  fITZcoverage;      // z coverage of IT in cos_theta 
 
    G4double  fCDCOuterR;        // OuterR of CDC 
@@ -167,6 +174,11 @@ class J4ParameterList : public J4VParameterList
    G4double  fSOLInnerR;        // InnerR of CAL 
    G4double  fSOLOuterR;        // OuterR of CAL 
    G4double  fSOLHalfZ;         // half z length of CAL 
+
+   G4int     fIRNSolids;        // Number of solids to define IR and VTX/IT boundary
+   G4double  *fIRREdges;        // Radius of IR and VTX/IT boundary
+   G4double  *fIRZEdges;        // Z poistion of IR and VTX/IT boundary corner position
+   G4int     *fIRShapes;        // Shape of boundary (0=tubs, 1=cons)    
 
 };
 

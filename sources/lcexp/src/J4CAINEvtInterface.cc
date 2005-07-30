@@ -135,11 +135,7 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
          if( input[i] == '\00' ) break;
       }
 
-#ifdef __USEISOCXX__
       std::istringstream sinput(input);
-#else
-      std::istringstream sinput(input);
-#endif
       sinput >>  id >> kgen >> genname >> weight >> ct >> cx >> cy >> cs >> 
 	   ce >> cpx >> cpy >> cps >> csx >> csy >> css ;
 
@@ -156,6 +152,18 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 
   ct *= m;  cx *= m; cy*=m ; cs*= m ; 
   ce*= eV ; cpx *= eV ; cpy *= eV ; cps *= eV;
+
+// Apply Lorentz transfer according to the crossing angle 
+  if ( std::abs(fCrossingAngle) > 0.01*mrad ) {
+    G4double p=std::sqrt(cpx*cpx+cpy*cpy+cps*cps);
+    G4double betaf=p*std::sin(0.5*fCrossingAngle/rad)/ce;
+    G4double gammaf=1.0/std::sqrt( (1+betaf)*(1-betaf) );
+
+    G4double te=gammaf*(ce + betaf*cpx);
+    G4double tpx=gammaf*(betaf*ce + cpx);
+    ce=te;
+    cpx=tpx;
+  }
 
   if( fVerboseLevel > 0 ) {
     std::cout << "CAIN event generated: id=" << id;

@@ -63,6 +63,7 @@ public:
     void         SetGenGamma(G4bool flag);
     inline void  SetFileName(const char *file);
     inline void  SetVerboseLevel(G4int level) { fVerboseLevel=level; }
+    inline void  SetCrossingAngle(G4double xangle){ fCrossingAngle=xangle; }
 
     inline G4bool   GetGenGamma()     { return fGenGamma; }
     inline G4bool   GetGenElectron()  { return fGenElectron; }
@@ -70,6 +71,7 @@ public:
     inline G4double GetGenDirection() { return fGenDirection; }
     inline G4String GetFileName()     { return fFileName; }
     inline G4int    GetVerboseLevel() { return fVerboseLevel; }
+    inline G4double GetCrossingAngle(){ return fCrossingAngle; }
 
 private:
 
@@ -85,6 +87,7 @@ private:
     G4bool                fGenPositron;
     G4double              fGenDirection;
     G4int                 fVerboseLevel;
+    G4double              fCrossingAngle;
 
     J4CAINEvtMessenger   *fMessenger;
   
