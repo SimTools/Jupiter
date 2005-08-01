@@ -127,7 +127,7 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
   
   if(! HCTE) return;  // no hits in this events. nothing to do!
   
-  std::cerr << "EventAction :: HCTE = "<< HCTE->GetNumberOfCollections()<<std::endl;
+//  std::cerr << "EventAction :: HCTE = "<< HCTE->GetNumberOfCollections()<<std::endl;
   
   std::ofstream& ofs= ((J4RunAction*)usrRunAction)-> GetOutputFileStream();
   if(! ofs.good()) {
@@ -147,20 +147,20 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
      
    ofs << event << std::endl;
   
-   std::cerr << "EventAction::EndOfEvent is called " << std::endl;
+//   std::cerr << "EventAction::EndOfEvent is called " << std::endl;
      
    J4DetectorConstruction::GetEXPHall()->OutputAll(HCTE, ofs);
      
-   std::cerr << "EventAction::OutputAll finished " << std::endl;
+//   std::cerr << "EventAction::OutputAll finished " << std::endl;
   
    ofs << "*******_End_of_event_" << event << "_*******" <<std::endl;
 
    fEventTimer->Stop();
-   std::cerr << "**********************************************" << std::endl;
+//   std::cerr << "**********************************************" << std::endl;
    std::cerr << "*******_event_"<< event << "_finished *******" <<std::endl;
-   std::cerr << "**********************************************" << std::endl;
+//   std::cerr << "**********************************************" << std::endl;
 
-   J4Timer::PrintAllAccumulatedTimes();
+//   J4Timer::PrintAllAccumulatedTimes();
    
   // ---------------------------------------------------------------------
   // end of event.......
