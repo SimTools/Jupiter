@@ -13,6 +13,10 @@
 #include "J4VTXLayerSD.hh"
 #include <cmath>
 
+G4int J4VTXLayerSD::fLastTrackID=-1;
+G4int J4VTXLayerSD::fLastMyID=-1;
+J4VTXLayerHit  *J4VTXLayerSD::fLastHit=0;
+
 //=====================================================================
 //---------------------
 // class definition
@@ -55,6 +59,9 @@ G4bool J4VTXLayerSD::ProcessHits(G4Step*              aStep,
   //Only when a charged particle has just come into a sensitive detector,
   //create a new hit
   //if(GetCharge() == 0.) return FALSE;
+
+  G4double             edep      = GetEnergyDeposit();
+  if ( edep <= 0 ) return FALSE ;
       
   //Get perticle information
   G4int                 trackID         = GetTrackID();
@@ -63,7 +70,6 @@ G4bool J4VTXLayerSD::ProcessHits(G4Step*              aStep,
 
   G4int layerID = GetComponent()->GetMyID();
 
-  G4double             edep      = GetEnergyDeposit();
   G4ThreeVector        trkP      = GetMomentum();
   G4double             trkE      = GetTotalEnergy();
   G4double             tof       = GetTof();
@@ -71,14 +77,28 @@ G4bool J4VTXLayerSD::ProcessHits(G4Step*              aStep,
   const G4ThreeVector &outPos	   = GetPostPosition();
 
 // Create a new hit and push them to "Hit Collection"
-  J4VTXLayerHit* hit = new J4VTXLayerHit(
+//  std::cerr << "fLastHit=" << fLastHit;
+//  std::cerr << " layerID=" << layerID << " fLastMyID=" << fLastMyID;
+//  std::cerr << " trackID=" << trackID << " fLastTrackID=" << fLastTrackID ;
+//  std::cerr << " edep=" << edep ;
+//  std::cerr << std::endl;
+
+  if( layerID != fLastMyID || trackID != fLastTrackID ) {
+    fLastHit = new J4VTXLayerHit( 
                                GetComponent(),
                                trackID, mothertrackID, particle,
 			       layerID,
                                edep, trkP, trkE, tof,
                                inPos,outPos);
      G4int SColNo;
-     SColNo = ((J4VTXLayerHitBuf*)GetHitBuf())-> insert(hit);
+     SColNo = ((J4VTXLayerHitBuf*)GetHitBuf())-> insert(fLastHit);
+     fLastMyID = layerID;
+     fLastTrackID = trackID;
+  }
+  else {
+    edep += fLastHit->GetEnergyDeposit();
+    fLastHit->SetEnergyDeposit(edep);
+  }
 
   return TRUE;
 }
