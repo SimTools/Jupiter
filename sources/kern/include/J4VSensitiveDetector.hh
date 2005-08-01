@@ -265,7 +265,8 @@ inline G4double J4VSensitiveDetector::GetEnergyDeposit () const
 inline G4double J4VSensitiveDetector::GetKineticEnergy () const 
 {
   if (fNewStep) {
-     return fNewStep->GetTrack()->GetKineticEnergy(); 
+//     return fNewStep->GetTrack()->GetKineticEnergy(); 
+     return fNewStep->GetPreStepPoint()->GetKineticEnergy(); 
   } else {
       std::cerr << "J4VSensitiveDetector::GetKineticDeposit: fNewStep is empty! "
            << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
@@ -277,7 +278,8 @@ inline G4double J4VSensitiveDetector::GetKineticEnergy () const
 inline G4double J4VSensitiveDetector::GetTotalEnergy () const 
 {
   if (fNewStep) {
-      return fNewStep->GetTrack()->GetTotalEnergy(); 
+//      return fNewStep->GetTrack()->GetTotalEnergy(); 
+      return fNewStep->GetPreStepPoint()->GetTotalEnergy(); 
   } else {
       std::cerr << "J4VSensitiveDetector::GetTotalEnergy: fNewStep is empty! "
            << "Call SetNewStep(aStep) at ProcessHit() in your SensitiveDetector." << std::endl;
