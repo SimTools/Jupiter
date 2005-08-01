@@ -14,6 +14,7 @@
 #include "J4TPCMaterialStore.hh"
 #include "G4Element.hh"
 #include "G4Material.hh"
+#include "J4ParameterTable.hh"
 
 // ====================================================================
 // -----------------
@@ -84,6 +85,12 @@ G4Material* J4TPCMaterialStore::Create(const G4String &name,
     G4Material *InShellC = new G4Material(name="InShellC", Z=6., A, density);
 
     material = InShellC;
+    std::cerr << "TPC Material : InShellIC " << std::endl;
+    std::cerr << "  Radiation Length " << material->GetRadlen()/cm << " cm" ;
+    std::cerr << std::endl;
+    std::cerr << "  Nuclear Interaction Length " << 
+	material->GetNuclearInterLength()/cm << " cm" ;
+    std::cerr << std::endl;
   }
 
   if (name == "OutShellC") {
@@ -95,6 +102,13 @@ G4Material* J4TPCMaterialStore::Create(const G4String &name,
     G4Material *OutShellC = new G4Material(name="OutShellC", Z=6., A, density);
 
     material = OutShellC;
+
+    std::cerr << "TPC Material : OutShellIC " << std::endl;
+    std::cerr << "  Radiation Length " << material->GetRadlen()/cm << " cm" ;
+    std::cerr << std::endl;
+    std::cerr << "  Nuclear Interaction Length " << 
+	material->GetNuclearInterLength()/cm << " cm" ;
+    std::cerr << std::endl;
   }
 
 
@@ -103,10 +117,23 @@ G4Material* J4TPCMaterialStore::Create(const G4String &name,
     G4String name;
 
     A = 63.546 *g/mole;
+//  When density is 7.716e-2, Radiation length is 166.704cm
+//  For 5 cm of Endcap and Pad plane, it is about 3% R.L.
+    
     density = 7.716e-2 *g/cm3;
+    density = J4ParameterTable::GetValue("J4TPC.EndCu.Density",2.5725E-1)*g/cm3;
     G4Material *EndCu = new G4Material(name="EndCu", Z=29., A, density);
 
     material = EndCu;
+
+    std::cerr << "TPC Material : EndCu " << std::endl;
+    std::cerr << "  Radiation Length " << material->GetRadlen()/cm << " cm" ;
+    std::cerr << std::endl;
+    std::cerr << "  Nuclear Interaction Length " << 
+	material->GetNuclearInterLength()/cm << " cm" ;
+    std::cerr << std::endl;
+
+
   }   
 
 
