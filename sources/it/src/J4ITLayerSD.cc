@@ -13,6 +13,9 @@
 #include "J4ITLayerSD.hh"
 #include <cmath>
  
+G4int J4ITLayerSD::fLastMyID=-1;
+G4int J4ITLayerSD::fLastTrackID=-1;
+J4ITLayerHit *J4ITLayerSD::fLastHit=0;
 //=====================================================================
 //---------------------
 // class definition
@@ -57,17 +60,18 @@ G4bool J4ITLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* /* ROhist */)
   //Only when a charged particle has just come into a sensitive detector,
   //create a new hit
   
-  if(GetCharge() == 0.) return FALSE;
-  
+//  if(GetCharge() == 0.) return FALSE;
+  G4double               edep          = GetEnergyDeposit();
+  if ( edep <= 0.0 ) return FALSE;
       
   //Get perticle information
 
   J4VComponent*          location      = GetComponent();
+  G4int                  myID          = location->GetMyID();
   G4int                  trackID       = GetTrackID();
   G4int                  mothertrackID = GetMotherTrackID();
   G4ParticleDefinition  *particle      = GetParticle();
   G4double               tof           = GetTof();
-  G4double               edep          = GetEnergyDeposit();
   G4double               etot          = GetTotalEnergy();
   G4ThreeVector          p             = GetMomentum();
   const G4ThreeVector   &pre           = GetPrePosition();
@@ -82,12 +86,19 @@ G4bool J4ITLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* /* ROhist */)
 #endif
 
   // Create a new hit and push them to "Hit Coleltion"
+  if ( trackID != fLastTrackID || myID != fLastMyID ) {
  
-     J4ITLayerHit* hit = 
-       new J4ITLayerHit( location, trackID, mothertrackID, particle,
+     fLastHit = 
+     new J4ITLayerHit( location, trackID, mothertrackID, particle,
        			        tof, edep, etot, p, pre, pos);
- 
-     ((J4ITLayerHitBuf*)GetHitBuf())->insert(hit);
+     ((J4ITLayerHitBuf*)GetHitBuf())->insert(fLastHit);
+     fLastMyID = myID;
+     fLastTrackID = trackID;
+   }
+   else {
+     edep += fLastHit->GetEnergyDeposit();
+     fLastHit->SetEnergyDeposit(edep);
+   }
 
      return TRUE;
 }
