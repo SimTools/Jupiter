@@ -59,7 +59,10 @@ public:
   
   // set/get functions
 private:
-  
+  static G4int  fLastMyID;
+  static G4int  fLastTrackID;
+  static J4VTXLayerHit  *fLastHit;
+ 
 };
 
 #endif
