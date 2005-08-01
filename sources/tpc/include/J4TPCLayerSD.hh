@@ -23,6 +23,10 @@
 
 
 class J4TPCLayerSD : public J4VSD<J4TPCLayerHit>{
+private:
+  static G4int fLastMyID;
+  static G4int fLastTrackID;
+  static J4TPCLayerHit *fLastHit;
   
 public:
 
