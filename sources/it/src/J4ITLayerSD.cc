@@ -86,19 +86,19 @@ G4bool J4ITLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* /* ROhist */)
 #endif
 
   // Create a new hit and push them to "Hit Coleltion"
-  if ( trackID != fLastTrackID || myID != fLastMyID ) {
+//  if ( trackID != fLastTrackID || myID != fLastMyID ) {
  
      fLastHit = 
      new J4ITLayerHit( location, trackID, mothertrackID, particle,
        			        tof, edep, etot, p, pre, pos);
      ((J4ITLayerHitBuf*)GetHitBuf())->insert(fLastHit);
-     fLastMyID = myID;
-     fLastTrackID = trackID;
-   }
-   else {
-     edep += fLastHit->GetEnergyDeposit();
-     fLastHit->SetEnergyDeposit(edep);
-   }
+//     fLastMyID = myID;
+//     fLastTrackID = trackID;
+//   }
+//   else {
+//     edep += fLastHit->GetEnergyDeposit();
+//     fLastHit->SetEnergyDeposit(edep);
+//   }
 
      return TRUE;
 }
@@ -108,6 +108,9 @@ G4bool J4ITLayerSD::ProcessHits(G4Step* aStep, G4TouchableHistory* /* ROhist */)
 
 void J4ITLayerSD::EndOfEvent(G4HCofThisEvent* /* HCTE */)
 {			
+  fLastTrackID=-1;
+  fLastMyID=-1;
+  fLastHit=0;
 }
 
 //=====================================================================
