@@ -97,17 +97,17 @@ G4bool J4TPCLayerSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   std::cerr << std::endl;
 #endif
 
-  if ( trackID != fLastTrackID || myID != fLastMyID )  { 
+//  if ( trackID != fLastTrackID || myID != fLastMyID )  { 
     fLastHit = new J4TPCLayerHit( location, trackID, mothertrackID, particle,
     			        tof, edep, etot, p, pre, pos);
     ((J4TPCLayerHitBuf*)GetHitBuf())->insert(fLastHit);
-    fLastTrackID=trackID;
-    fLastMyID=myID;
-  }
-  else {
-    edep += fLastHit->GetEnergyDeposit();    
-    fLastHit->SetEnergyDeposit(edep);
-  }
+//    fLastTrackID=trackID;
+//    fLastMyID=myID;
+//  }
+//  else {
+//    edep += fLastHit->GetEnergyDeposit();    
+//    fLastHit->SetEnergyDeposit(edep);
+//  }
 
 
 
@@ -119,6 +119,8 @@ G4bool J4TPCLayerSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
 
 void J4TPCLayerSD::EndOfEvent(G4HCofThisEvent *)
 {			
+  fLastTrackID=-1;
+  fLastMyID=-1;
 }
 
 //=====================================================================
