@@ -69,12 +69,29 @@ void J4VTX::Assemble()
     G4String tmpname = vtxname+".master";
 
    // New Master
+
      G4int nlayer = list->GetNLayers();
+#if 0
     G4double rin = list->GetVTXInnerRadius();
     G4double rout = list->GetVTXOuterRadius();
     G4double margin= 1.0*mm;
     G4double zhlf = list->GetLayerZLength(nlayer-1)*0.5;
     G4VSolid *lastsolid = new G4Tubs(vtxname, rin,  rout, zhlf, 0, twopi); 
+#endif
+
+    G4double rin0 = list->GetVTXInnerRadius();
+    G4double rout0 = list->GetVTXOuterRadius();
+    G4double zhlf0 = list->GetLayerZLength(0)*0.5;
+    G4String name0 = vtxname + ".layer0";
+    G4VSolid *solid0 = new G4Tubs(name0, rin0, rout0, zhlf0, 0, twopi);
+
+    G4double rin1 = list->GetLayerInnerRadius(1);
+    G4double rout1 = list->GetVTXOuterRadius();
+    G4double zhlf1 = list->GetLayerZLength(nlayer-1)*0.5;
+    G4String name1 = vtxname + ".layer1";
+    G4VSolid *solid1 = new G4Tubs(name1, rin1, rout1, zhlf1, 0, twopi);
+
+    G4VSolid *lastsolid = new J4UnionSolid(vtxname, solid0, solid1);
 
 #if 0
     G4double rin,rout;
