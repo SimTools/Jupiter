@@ -15,6 +15,7 @@
 
 #include "J4VMField.hh"
 #include "J4SOLParameterList.hh"
+#include <vector>
 
 //=====================================================================
 //---------------------
@@ -22,6 +23,8 @@
 //---------------------
 
 class J4SOLMField : public J4VMField {	
+
+typedef std::vector<G4ThreeVector*> J4SOLBField;  // (z, Bz, Bx)
 
 public:
 
@@ -36,6 +39,10 @@ public:
   void GetLocalValidBox(G4double* lpos);
 
 private:  
+
+  J4SOLBField fBData;  
+  G4double    fBDataZMax;
+  G4int       fBDataSize;
 
   J4SOLParameterList* fParameterList;
 

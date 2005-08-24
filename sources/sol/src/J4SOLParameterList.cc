@@ -24,8 +24,12 @@ J4SOLParameterList::J4SOLParameterList( G4double /*ri*/, G4double /*ro*/, G4doub
    fSOLVisAtt   = J4ParameterTable::GetValue("J4SOL.VisAtt",true);
    std::vector<double> col=J4ParameterTable::GetDValue("J4SOL.Color","0.7 0.5 0.5 1.0",4);
    fSOLColor=G4Color(col[0], col[1], col[2], col[3]);
-   fFieldR = J4ParameterTable::GetValue("J4SOL.FieldR",157.0)*cm;
+//   fFieldR = J4ParameterTable::GetValue("J4SOL.FieldR",157.0)*cm;
    fBField = J4ParameterTable::GetValue("J4SOL.BField",3.0)*tesla;
+   
+   fBFieldType = J4ParameterTable::GetValue("J4SOL.BFieldType",0);
+   fBFieldMapFileName = J4ParameterTable::GetValue("J4SOL.BFieldMapFileName","map.file");
+
    
    // Coil
    fSOLCoilInnerR   = J4ParameterTable::GetValue("J4SOL.Coil.InnerR",397.5)*cm;

@@ -41,7 +41,7 @@ class J4SOLParameterList : public J4VParameterList
    inline G4String GetSOLMaterial() const { return fSOLMaterial; }
    inline G4bool   GetSOLVisAtt  () const { return fSOLVisAtt;   }
    inline G4Color  GetSOLColor   () const { return fSOLColor;    }
-   inline G4double GetFieldR     () const { return fFieldR;      }
+//   inline G4double GetFieldR     () const { return fFieldR;      }
    inline G4double GetBField     () const { return fBField;      }
 
    // Get Coil parameters
@@ -52,11 +52,14 @@ class J4SOLParameterList : public J4VParameterList
    inline G4bool   GetSOLCoilVisAtt  () const { return fSOLCoilVisAtt;   }
    inline G4Color  GetSOLCoilColor   () const { return fSOLCoilColor;    }
 
+   inline G4int    GetBFieldType(){ return fBFieldType; }
+   inline G4String GetBFieldMapFileName(){ return fBFieldMapFileName; }
+
    // Setters
    inline void     SetSOLMaterial    ( G4String s ) { fSOLMaterial = s; }
    inline void     SetSOLVisAtt      ( G4bool   b ) { fSOLVisAtt   = b; }
    inline void     SetSOlColor       ( G4Color  c ) { fSOLColor    = c; }
-   inline void     SetFieldR         ( G4double x ) { fFieldR      = x; }
+//   inline void     SetFieldR         ( G4double x ) { fFieldR      = x; }
    inline void     SetBField         ( G4double x ) { fBField      = x; }
   
    // Set Coil parameters
@@ -67,6 +70,7 @@ class J4SOLParameterList : public J4VParameterList
    inline void     SetSOLCoilVisAtt  ( G4bool   b ) { fSOLCoilVisAtt   = b; }
    inline void     SetSOlCoilColor   ( G4Color  c ) { fSOLCoilColor    = c; }
 
+
    virtual void    PrintParameterList(){};
     
  private:
@@ -76,8 +80,11 @@ class J4SOLParameterList : public J4VParameterList
    G4String  fSOLMaterial; 
    G4bool    fSOLVisAtt;
    G4Color   fSOLColor;
-   G4double  fFieldR;
+//   G4double  fFieldR;
    G4double  fBField;
+
+   G4int       fBFieldType;  // (0=uniform, 1=DID map)
+   G4String    fBFieldMapFileName; 
 
    //Coil
    G4double  fSOLCoilInnerR;
