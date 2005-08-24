@@ -1,0 +1,402 @@
+#
+# 
+#  Jupiter default parameter names and values 
+#  There are 31075 parameters 
+#  Units are cm, Tesla, GeV, tesla/meter, radian
+#
+#  20m crossing, Beam pipe for High_Luminosity option 
+#  Lstar=4.5m
+J4.Detector.Name:gldaug05_20m_hl
+# 
+#
+# --- IR parameters for 2mrad crossing
+#
+#J4IR.NumberOfQ:               2
+#J4IR.Q.Angle:                 0.000000
+#J4IR.Q.BeamEnergy:            250.000000
+#J4IR.Q0.Geometry:             4.5 21.0 400.0 351.0 1.0 -54.6956
+#J4IR.Q1.Geometry:             9.5 26.0 357.94  835.196  47.83036
+#   distance(cm)  lenght(cm) inner diameter(cm) pol.field(kG) outer-dia.(cm)
+# QD0  351  400 9.0  -24.6131  42
+# SD0  835.196  357.94  19.0  22.71942*2  52
+# ---- end of parameters only for 2mrad
+#
+# ---- IR parameters for 20mrad crossing angle
+#
+J4IR.NumberOfQ:               10
+J4IR.Q.Angle:                 0.010000
+J4IR.Q.BeamEnergy:            250.000000
+J4IR.Q0.Geometry:             1.0 3.05  220.0  451.0 1.0 141.6206
+J4IR.Q1.Geometry:             1.0 3.05   10.0  676.0 1.0 -25.65876
+J4IR.Q2.Geometry:             1.0 3.05   60.0  686.0 1.0 -64.5506
+J4IR.Q3.Geometry:             1.0 3.05  200.0  881.0 1.0 -80.2723
+J4IR.Q4.Geometry:             1.0 3.05   30.0 1096.0 1.0  60.48246
+J4IR.Q5.Geometry:             1.0 3.05   30.0 1156.0 1.0   2.713908
+J4IR.Q6.Geometry:             1.3 2.39  220.0  451.0 -1.0  19.23077
+J4IR.Q7.Geometry:             1.5 2.41  154.208  701.0  -1.0  40.0
+J4IR.Q8.Geometry:             2.1 3.19  154.208  885.208 -1.0 28.5714
+J4IR.Q9.Geometry:             2.8 3.89  180.584 1069.416 -1.0 -20.689655
+#   distance(cm)  lenght(cm) inner diameter(cm) pol.field(kG) outer-dia.(cm)
+# Incomming beamline
+# QD0  351 220  2.0  14.16206  6.1 
+# OC0  576  10  2.0  -0.427646*6  6.1
+# SD0  586  60  2.0  -3.22753*2   6.1
+# QF1  781 200  2.0  -8.02723     6.1
+# SF1  996  30  2.0   3.024123*2  6.1
+# OC1  1056 30  2.0   0.0452318*6  6.1
+# Extraction beam line
+# QX1A  351.0    220.0    2.6  2.5  4.78
+# QX1B  601.0    154.208  3.0  6.0  4.82
+# QX1C  785.208  154.208  4.2  6.0  6.38
+# QX2A  969.416  180.584  5.6  -6.0  7.78
+# QX2B 1350.0    225.8256 8.2  -5.0  10.38
+# QX2C 1605.826  225.8256 8.2  -5.0  10.38
+# QX2D 1861.651  225.8256 8.2  -5.0  10.38
+#
+J4IR.BCAL.InnerRadius:        0.0000
+J4IR.CH2Mask.InnerRadius:     0.00000
+J4IR.BCAL.HoleRadius.Upstream: 2.0
+J4IR.BCAL.HoleRadius.Downstream: 2.0
+J4IR.CH2Mask.HoleRadius.Upstream: 2.0
+J4IR.CH2Mask.HoleRadius.Downstream: 2.0
+#
+# --- IR parameters independant on crossing angle
+J4.IR.BoxEndZ:                1250.000000
+# Beam Pile standard
+# J4.IR.NumSolides:             4
+# J4.IR.REdges:                 1.525 8.1 38.0 38.0
+# J4.IR.Shapes:                 0 1 0 0
+# J4.IR.ZEdges:                 7.0 80.0 220.0 850.0
+# J4IR.BeamPipeIP.OuterRadius:  1.525000
+# J4IR.BeamPipeIP.HalfZLength:  7.000000
+# J4IR.BeamPipeMiddle.NumSolides:4
+# J4IR.BeamPipeMiddle.REdges:   1.525 8.0 8.0 15.0
+# J4IR.BeamPipeMiddle.ZEdges:   7.0 80.0 370.0 410.0
+# J4IR.BeamPipeMiddle.Shapes:   0 1 0 1
+#
+# Beampipe for 2mrad HighLum
+J4.IR.NumSolides:             6
+J4.IR.REdges:       1.825  4.4  4.4   9.2   38.0   38.0
+J4.IR.ZEdges:         5.5 25.0  35.0 110.0 230.0     1250.0
+J4.IR.Shapes:     0      1     0    1     0      0
+J4IR.BeamPipeIP.OuterRadius:  1.825000
+J4IR.BeamPipeIP.HalfZLength:  5.500000
+J4IR.BeamPipeMiddle.NumSolides: 9
+J4IR.BeamPipeMiddle.REdges: 1.825 4.4  4.4  9.2   9.2  10.374  16.2  16.2  8.0
+J4IR.BeamPipeMiddle.ZEdges:  5.5  25.0 35.0 110.0 230   260   320.0 399.0 405.0
+J4IR.BeamPipeMiddle.Shapes:  0   1    0    1     0     1     1     0     1      0 
+J4IR.BCAL.ZLength:            20.000000
+J4IR.BCAL.ZPosition:          430.000000
+J4IR.CH2Mask.ZLength:         25.000000
+J4IR.CH2Mask.ZPosition:       405.000000
+# J4IR.BCAL.InnerRadius:        2.20000
+# J4IR.CH2Mask.InnerRadius:     2.20000
+J4IR.FCAL.FrontGeom:  9.25 14.0 10.385    18.261   230.0 30.0
+J4IR.FCAL.TailGeom:   10.385 36.0  12.810  36.0  260.0 25.0
+# WMask3 is between FCAL and QC
+J4IR.WMask3.ZPosition:        285.000000
+J4IR.WMask3.Length:           164.99000
+
+J4IR.FCAL.Material:           Tungsten
+J4IR.BCAL.Material:           Tungsten
+J4IR.BCAL.OuterRadius:        20.000000
+J4IR.BeamPipeIP.Material:     Beryllium
+J4IR.BeamPipeIP.Thickness:    0.025000
+J4IR.BeamPipeMiddle.Material: Aluminum
+J4IR.BeamPipeMiddle.Thickness:0.200000
+J4IR.CH2Mask.Material:        Polyethylene
+J4IR.CH2Mask.OuterRadius:     20.000000
+J4IR.Color.BCAL:              0.0 0.0 1.0 1.0
+J4IR.Color.BeamPipeIP:        0.0 0.5 0.5 1.0
+J4IR.Color.BeamPipeMiddle:    0.0 0.5 0.5 1.0
+J4IR.Color.CH2Mask:           0.5 0.0 1.0 1.0
+J4IR.Color.FCAL:              0.0 0.5 1.0 1.0
+J4IR.Color.Q:                 1.0 0.5 0.5 1.0
+J4IR.Color.WMask3:            0.5 0.0 0.5 1.0
+J4IR.Color.WMask4:            0.5 0.0 0.5 1.0
+J4IR.Color:                   0.5 0.5 0.5 0.0
+J4IR.WMask3.InnerRadius:      22.000000
+J4IR.WMask3.Material:         Tungsten
+J4IR.WMask3.OuterRadius:      35.000000
+#
+J4IR.Material:                vacuum
+J4IR.Q.Material:              Iron
+J4IR.VisAtt.BCAL:             true
+J4IR.VisAtt.BeamPipeIP:       true
+J4IR.VisAtt.BeamPipeMiddle:   true
+J4IR.VisAtt.CH2Mask:          true
+J4IR.VisAtt.FCAL:             true
+J4IR.VisAtt.Q:                true
+J4IR.VisAtt.WMask3:           true
+J4IR.VisAtt.WMask4:           true
+J4IR.VisAtt:                  false
+#!
+# WMask4 is outsize QC
+J4IR.WMask4.InnerRadius:      22.000000
+J4IR.WMask4.Length:           360.000000
+J4IR.WMask4.ZPosition:        450.000000
+J4IR.WMask4.Material:         Tungsten
+J4IR.WMask4.OuterRadius:      35.000000
+#
+#  IT Parameters
+#
+J4IT.Barrel.HalfZ:            18.58  38.20  57.81  77.43
+J4IT.Barrel.InnerRadius:      9.0  18.5  28.0  37.5
+J4IT.Color.Layer:             1.0 0.0 1.0 1.0
+J4IT.Color:                   0.5 0.5 1.0 1.0
+#
+# V1 configuration
+#J4IT.Endcap.Rmax:             14.0 17.0 25.0 32.0 32.0 32.0 32.0
+#J4IT.Endcap.Rmin:             3.0 5.5 8.0 8.0 8.0 8.0 8.0
+#J4IT.Endcap.Zpos:             20.0 35.0 50.0 65.0 90.0 115.0 140.0
+# V2 Configuration
+J4IT.Endcap.Rmax:             7.0   14.0 21.0  28.0  36.0  38.0  38.0
+J4IT.Endcap.Rmin:             2.5   4.5   7.0   8.0  10.0  12.0  14.0
+J4IT.Endcap.Zpos:             14.5  29    43.5 58.0 72.5  87.0  101.5 
+#
+J4IT.Layer.Material:          Silicon
+J4IT.Layer.Thickness:         0.056160
+J4IT.Material:                Air
+J4IT.NBarrel:                 4
+J4IT.NEndcap:                 7
+J4IT.VisAtt.Layer:            true
+J4IT.VisAtt:                  false
+#
+#  Parameter files other than those related to IR
+#
+J4.CAL.InnerHalfZ:            265.000000
+J4.CAL.InnerRadius:           206.000000
+J4.CAL.OuterHalfZ:            425.000000
+J4.CAL.OuterRadius:           370.000000
+J4.EXPHall.Color:             1.0 0.0 1.0 1.0
+J4.EXPHall.HalfX:             1000.000000
+J4.EXPHall.HalfY:             1000.000000
+J4.EXPHall.HalfZ:             1300.000000
+J4.EXPHall.Material:          Air
+J4.EXPHall.VisAtt:            false
+J4.IT.ZCoverage:              0.900000
+J4.PhysicsList:               1
+J4.SOL.HalfZ:                 530.000000
+J4.SOL.InnerRadius:           375.000000
+J4.SOL.OuterRadius:           450.000000
+J4.SupportTube.InnerRadius:   38.000000
+J4.SupportTube.OuterRadius:   39.500000
+J4.TPC.HalfZ:                 260.000000
+J4.TPC.OuterRadius:           206.000000
+J4.VTX.OuterRadius:           7.900000
+J4.VTX.ZCoverage:             0.901500
+#
+#  Parameter for CAL
+#
+J4CAL.BarrelTower.FrontRadius:210.000000
+J4CAL.BarrelTower.FrontSize:  12.000000
+J4CAL.Color.Barrel:           0.0 0.0 1.0 1.0
+J4CAL.Color.Cone:             1.0 0.0 0.0 1.0
+J4CAL.Color.EM:               0.0 0.0 1.0 1.0
+J4CAL.Color.Endcap:           0.0 0.0 1.0 1.0
+J4CAL.Color.HD:               1.0 0.0 0.0 1.0
+J4CAL.Color.Layer:            0.0 1.0 0.0 1.0
+J4CAL.Color.MiniCone:         1.0 1.0 0.0 1.0
+J4CAL.Color.MiniTower:        0.0 1.0 0.0 1.0
+J4CAL.Color.SubLayer:         0.0 1.0 0.0 1.0
+J4CAL.Color.Tower:            0.0 1.0 0.0 1.0
+J4CAL.Color:                  0.0 0.0 1.0 1.0
+J4CAL.Const.NTowers:          150
+J4CAL.EM.AbsLayerMaterial:    Lead
+J4CAL.EM.AbsLayerThickness:   0.400000
+J4CAL.EM.ActiveLayerMaterial: Scintillator
+J4CAL.EM.ActiveLayerThickness:0.100000
+J4CAL.EM.MiniCone.NClones:    3
+J4CAL.EM.MiniTower.NClones:   3
+J4CAL.EM.NLayers:             38
+J4CAL.Endcap.InnerRadius:     39.900000
+J4CAL.EndcapTower.FrontSize:  12.000000
+J4CAL.EndcapTower.FrontZ:     270.000000
+J4CAL.HD.AbsLayerMaterial:    Lead
+J4CAL.HD.AbsLayerThickness:   0.800000
+J4CAL.HD.ActiveLayerMaterial: Scintillator
+J4CAL.HD.ActiveLayerThickness:0.200000
+J4CAL.HD.MiniCone.NClones:    1
+J4CAL.HD.MiniTower.NClones:   1
+J4CAL.HD.NLayers:             130
+J4CAL.NSubLayers:             2
+J4CAL.NumberOfBarrelTypes:    2
+J4CAL.NumberOfCalTypes:       2
+J4CAL.UserLimits:             0.100000
+J4CAL.VisAtt.Barrel:          false
+J4CAL.VisAtt.Cone:            false
+J4CAL.VisAtt.EM:              false
+J4CAL.VisAtt.Endcap:          false
+J4CAL.VisAtt.HD:              false
+J4CAL.VisAtt.Layer:           false
+J4CAL.VisAtt.MiniCone:        false
+J4CAL.VisAtt.MiniTower:       false
+J4CAL.VisAtt.SubLayer:        false
+J4CAL.VisAtt.Tower:           false
+J4CAL.VisAtt:                 true
+#
+# ----- MUD
+#
+J4MUD.Barrel.AbsMaterial:     Iron
+J4MUD.Barrel.ActiveMaterial:  Air
+J4MUD.Barrel.ActiveThickness: 10.000000
+J4MUD.Barrel.InnerRadius:     460.000000
+J4MUD.Barrel.NSuperLayers:    4
+J4MUD.BarrelBFiled:           2.000000
+J4MUD.BlockMaterial:          Air
+J4MUD.Color.BarrelAbs:        0.3 0.3 1.0 1.0
+J4MUD.Color.BarrelActive:     0.5 1.0 0.5 1.0
+J4MUD.Color.Block:            0.0 1.0 0.0 1.0
+J4MUD.Color.EndcapAbs:        0.3 0.3 1.0 1.0
+J4MUD.Color.EndcapActive:     0.5 1.0 0.5 1.0
+J4MUD.Color.FrontEndcapAbs:   0.3 0.3 1.0 1.0
+J4MUD.Color.FrontEndcapActive:0.5 1.0 0.5 1.0
+J4MUD.Color:                  1.0 0.0 0.0 1.0
+J4MUD.CornerBFiled:           1.500000
+J4MUD.Endcap.AbsMaterial:     Iron
+J4MUD.Endcap.ActiveMaterial:  Air
+J4MUD.Endcap.ActiveThickness: 10.000000
+J4MUD.Endcap.FrontZ:          535.000000
+J4MUD.Endcap.InnerRadius:     45.000000
+J4MUD.Endcap.NSuperLayers:    5
+J4MUD.Endcap.Thickness:       310.000000
+J4MUD.EndcapBFiled:           2.500000
+J4MUD.FrontEndcap.AbsMaterial:Iron
+J4MUD.FrontEndcap.ActiveMaterial:Air
+J4MUD.FrontEndcap.ActiveThickness:10.000000
+J4MUD.FrontEndcap.FrontZ:     430.000000
+J4MUD.FrontEndcap.NSuperLayers:2
+J4MUD.FrontEndcap.OuterRadius:360.000000
+J4MUD.Height:                 700.000000
+J4MUD.Material:               Air
+J4MUD.NTraps:                 8
+J4MUD.OuterRadius:            780.000000
+J4MUD.ReturnBFiled:           3.000000
+J4MUD.Tolerance:              0.010000
+J4MUD.VisAtt.BarrelAbs:       false
+J4MUD.VisAtt.BarrelActive:    false
+J4MUD.VisAtt.Block:           false
+J4MUD.VisAtt.EndcapAbs:       false
+J4MUD.VisAtt.EndcapActive:    false
+J4MUD.VisAtt.FrontEndcapAbs:  false
+J4MUD.VisAtt.FrontEndcapActive:false
+J4MUD.VisAtt:                 true
+#
+# SOL
+#
+J4SOL.BField:                 3.000000
+J4SOL.Color:                  0.7 0.5 0.5 1.0
+J4SOL.Coil.InnerR:            397.5
+J4SOL.Coil.OuterR:            402.5
+J4SOL.Coil.HalfZ:             430.0
+J4SOL.Material:               Air
+J4SOL.VisAtt:                 true
+#
+# TPC
+#
+J4TPC.CentralMembrane.HalfThickness:0.001250
+J4TPC.Color.CentralMembrane:  1.0 1.0 0.0 1.0
+J4TPC.Color.DriftRegion:      1.0 0.0 0.0 1.0
+J4TPC.Color.Endcap:           0.0 0.0 1.0 1.0
+J4TPC.Color.Half:             1.0 0.0 1.0 1.0
+J4TPC.Color.Layer:            1.0 0.0 1.0 1.0
+J4TPC.Color.Pad:              1.0 0.0 0.0 1.0
+J4TPC.Color.PadPlane:         1.0 1.0 1.0 1.0
+J4TPC.Color.PadRow:           1.0 1.0 1.0 1.0
+J4TPC.Color.SupportTube:      0.0 1.0 0.0 1.0
+J4TPC.Color:                  1.0 0.0 0.0 1.0
+J4TPC.Endcap.HalfThickness:   1.000000
+J4TPC.FirstLayer.InnerRadius: 0.500000
+J4TPC.InnerSupportTube.HalfThickness:2.107500
+J4TPC.Layer.Thickness:        0.000100
+J4TPC.Material.CentralMembrane:Mylar
+J4TPC.Material.DriftRegion:   P10
+J4TPC.Material.Endcap:        EndCu
+J4TPC.Material.InnerSupportTube:InShellC
+J4TPC.Material.Layer:         P10
+J4TPC.Material.OuterSupportTube:OutShellC
+J4TPC.Material.Pad:           EndCu
+J4TPC.Material.PadPlane:      P10
+J4TPC.Material.PadRow:        P10
+J4TPC.Material:               P10
+J4TPC.NFirstPads:             6
+J4TPC.NLayers:                200
+J4TPC.NPadRows:               2
+J4TPC.OuterSupportTube.HalfThickness:4.117500
+J4TPC.PadPlane.HalfThickness: 1.500000
+
+# J4TPC.VisAtt.CentralMembrane: true
+# J4TPC.VisAtt.DriftRegion:     false
+# J4TPC.VisAtt.Endcap:          true
+# J4TPC.VisAtt.Half:            false
+# J4TPC.VisAtt.Layer:           false
+# J4TPC.VisAtt.Pad:             true
+# J4TPC.VisAtt.PadPlane:        false
+# J4TPC.VisAtt.PadRow:          false
+# J4TPC.VisAtt.SupportTube:     true
+# J4TPC.VisAtt:                 false
+
+J4TPC.VisAtt.CentralMembrane: true
+J4TPC.VisAtt.DriftRegion:     false
+J4TPC.VisAtt.Endcap:          true
+J4TPC.VisAtt.Half:            false
+J4TPC.VisAtt.Layer:           false
+J4TPC.VisAtt.Pad:             false
+J4TPC.VisAtt.PadPlane:        true
+J4TPC.VisAtt.PadRow:          false
+J4TPC.VisAtt.SupportTube:     true
+J4TPC.VisAtt:                 false
+#
+# --- VTX 
+#     Non default value for GLD-Baseline configuration
+#
+J4VTX.Epitax.Thickness:       0.001500
+J4VTX.Layer.Radius:           2.0 2.2 3.2 3.4 4.8 5.0
+J4VTX.NLayers:                6
+J4VTX.Sensor.Length:          1.000000
+J4VTX.Sensor.Thickness:       0.005000
+#
+J4VTX.Activate.LadderSD:      0
+J4VTX.Activate.LayerSD:       1
+J4VTX.Activate.PixelAreaSD:   0
+J4VTX.Activate.PixelSD:       0
+J4VTX.Activate.SensorSD:      0
+J4VTX.Color.Epitaxial:        0.0 1.0 0.0 1.0
+J4VTX.Color.Ladder:           1.0 1.0 0.0 1.0
+J4VTX.Color.Layer:            0.5 0.5 0.5 1.0
+J4VTX.Color.PixelArea:        1.0 0.0 1.0 1.0
+J4VTX.Color.Sensor:           1.0 1.0 0.0 1.0
+J4VTX.Color.Subtrate:         0.0 1.0 1.0 1.0
+J4VTX.Color:                  0.5 0.5 0.5 1.0
+J4VTX.Material.Epitaxial:     Silicon
+J4VTX.Material.Ladder:        Air
+J4VTX.Material.Layer:         Silicon
+J4VTX.Material.PixelArea:     Silicon
+J4VTX.Material.Sensor:        Silicon
+J4VTX.Material.Substrate:     Silicon
+J4VTX.Material:               Air
+J4VTX.MaxAllowedStep:         0.001000
+J4VTX.NLadders:               16 24 32 40 48 56
+J4VTX.NSensors:               13 13 20 20 20 20 
+J4VTX.NxPixels:               500
+J4VTX.NzPixels:               2000
+# Sensor Z length is sensor length time nsensor
+# J4VTX.Sensor.Thickness:       0.033000
+J4VTX.Sensor.Width:           1.250000
+J4VTX.TiltAngle:              0.174533
+J4VTX.VisAtt.Epitaxial:       false
+J4VTX.VisAtt.Ladder:          false
+J4VTX.VisAtt.Layer:           true
+J4VTX.VisAtt.Pixel:           false
+J4VTX.VisAtt.PixelArea:       false
+J4VTX.VisAtt.Sensor:          false
+J4VTX.VisAtt.Subtrate:        false
+J4VTX.VisAtt:                 false
+#
+# Geometry for Beam dellivery system
+#
+J4BD.Material:        vacuum
+J4BD.VisAtt:          false
+J4BD.InnerHalfX:      399.0
+J4BD.InnerHalfY:      399.0
+J4BD.Color:           0.5 0.5 0.5 0.0
