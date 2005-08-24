@@ -97,9 +97,9 @@ void J4ParameterList::SetParameters()
    fTPCOuterR   = J4ParameterTable::GetValue("J4.TPC.OuterRadius",206.0)*cm ; // OuterR of TPC
    fTPCHalfZ    = J4ParameterTable::GetValue("J4.TPC.HalfZ",260.0)*cm ;       // half z length of TPC 
  
-   fCALInnerR        = J4ParameterTable::GetValue("J4.CAL.InnderRadius",206.0)*cm; // InnerR of CAL
+   fCALInnerR        = J4ParameterTable::GetValue("J4.CAL.InnerRadius",206.0)*cm; // InnerR of CAL
    fCALOuterR        = J4ParameterTable::GetValue("J4.CAL.OuterRadius",370.0)*cm;  // OuterR of CAL
-   fCALInnerHalfZ    = J4ParameterTable::GetValue("J4.CAL.InnderHalfZ",265.0)*cm;  // half z length of innerface of CAL 
+   fCALInnerHalfZ    = J4ParameterTable::GetValue("J4.CAL.InnerHalfZ",265.0)*cm;  // half z length of innerface of CAL 
    fCALOuterHalfZ    = J4ParameterTable::GetValue("J4.CAL.OuterHalfZ",425.0)*cm;   // half z length of outersurface of CAL
 
    fSOLInnerR        = J4ParameterTable::GetValue("J4.SOL.InnerRadius",375.0)*cm;   // InnerR of Solenoid

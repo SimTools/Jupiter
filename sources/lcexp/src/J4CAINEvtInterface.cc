@@ -124,7 +124,11 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
   while(1) { 
     fInputStream.getline(input,512);
     if( fInputStream.eof() ) {
-      G4Exception("End-Of-File while reading CAIN file, "+fFileName);
+      J4PrimaryGeneratorAction::GetPrimaryGeneratorAction()->SetAbortRun(true);
+//      G4Exception("End-Of-File while reading CAIN file, "+fFileName);
+//    G4Exception calls abort(), and not used any more
+      std::cerr << "End of File while reading CAIN file, " ;
+      std::cerr << fFileName << std::endl;
       return;
     }
     if( input[0] != '!' ) {
@@ -154,9 +158,12 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
   ce*= eV ; cpx *= eV ; cpy *= eV ; cps *= eV;
 
 // Apply Lorentz transfer according to the crossing angle 
+
+   std::cerr << " Crossing Angle is " << fCrossingAngle/rad << std::endl;
+
   if ( std::abs(fCrossingAngle) > 0.01*mrad ) {
     G4double p=std::sqrt(cpx*cpx+cpy*cpy+cps*cps);
-    G4double betaf=p*std::sin(0.5*fCrossingAngle/rad)/ce;
+    G4double betaf=p*std::sin(-0.5*fCrossingAngle/rad)/ce;
     G4double gammaf=1.0/std::sqrt( (1+betaf)*(1-betaf) );
 
     G4double te=gammaf*(ce + betaf*cpx);
@@ -167,6 +174,8 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 
   if( fVerboseLevel > 0 ) {
     std::cout << "CAIN event generated: id=" << id;
+    std::cout << "(cx,cy,cs)=(" << cx/mm << "," ;
+    std::cout << cy/mm << "," << cs/mm << ") (mm) " ;
     std::cout << "(px,py,pz)=(" << cpx/GeV << "," ;
     std::cout << cpy/GeV << "," << cps/GeV << ") (GeV) " << std::endl ;
   }

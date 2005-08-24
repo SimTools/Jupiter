@@ -35,7 +35,7 @@ J4PrimaryGeneratorAction::J4PrimaryGeneratorAction()
                           fParticleBeam(0),
                           fMessenger(0), fHEPEvtFileName(""), 
                           fEprimarygentype(kHEPEvt), 
-                          fIsInitialized(false)
+                          fIsInitialized(false),fAbortRun(false)
 {
    if (fPrimaryGeneratorAction) {
       G4Exception("J4PrimaryGeneratorAction constructed twice."); 
