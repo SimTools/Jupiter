@@ -53,6 +53,8 @@ public:
 
    inline G4bool IsInitialized() const           { return fIsInitialized;   }
    inline void   SetIsInitialized(G4bool f=false){ fIsInitialized = f;      } 
+   inline G4bool AbortRun() const { return fAbortRun; }
+   inline void   SetAbortRun(G4bool f=false) { fAbortRun=f; }
 
    static J4PrimaryGeneratorAction *GetPrimaryGeneratorAction() 
                                          { return fPrimaryGeneratorAction; }
@@ -69,6 +71,7 @@ private:
    G4String                     fHEPEvtFileName;
    EPrimaryGeneratorType        fEprimarygentype;
    G4bool                       fIsInitialized; 
+   G4bool                       fAbortRun;
 
    // this class is singleton.
    static J4PrimaryGeneratorAction *fPrimaryGeneratorAction;
