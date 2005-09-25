@@ -1185,7 +1185,11 @@ std::ostream& J4TwistedTubs::StreamInfo(std::ostream& os) const
 
 void J4TwistedTubs::DescribeYourselfTo (G4VGraphicsScene& scene) const 
 {
+#if __G4VERSION__ >= 71
+  scene.AddSolid (*this);
+#else
   scene.AddThis (*this);
+#endif
 }
 
 //=====================================================================
