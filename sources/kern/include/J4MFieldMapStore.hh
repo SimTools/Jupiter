@@ -68,5 +68,5 @@ inline void J4MFieldMapStore::NameList () {
     G4String* name = fmagCollection[i]->GetMFieldName();
     std::cout << i <<" "<< *name << std::endl;
   }
-};
+}
 #endif
