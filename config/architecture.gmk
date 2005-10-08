@@ -3,4 +3,7 @@ ifneq ($(findstring g++, $(G4SYSTEM)),)
 ifeq ($(GCCVER),3)
    CPPFLAGS  += -D__USEISOCXX__
 endif
+ifeq ($(GCCVER),4)
+   CPPFLAGS  += -D__USEISOCXX__
+endif
 endif
