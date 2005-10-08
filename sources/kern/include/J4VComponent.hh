@@ -230,10 +230,10 @@ J4VComponent::J4VComponent(const J4VComponent& orig, G4int copyno)
   G4String origname = orig.GetName();
   G4int loc1 = origname.rfind(':');
   if (loc1 < 0) loc1 = 0;
-  else          loc1 = loc1++;
+  else          loc1++;
   G4int loc2 = origname.rfind('_');
   if (loc2 < 0) loc2 = origname.length();
-  else          loc2 = loc2--;
+  else          loc2--;
   G4String name(origname.substr(loc1,loc2-loc1+1));
 
   SetName( name, fNbrothers, fMyID, fNclones, fCopyNo, fMother);
