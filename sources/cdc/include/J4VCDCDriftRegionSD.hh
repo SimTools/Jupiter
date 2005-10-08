@@ -33,6 +33,28 @@ public:
 
   ~J4VCDCDriftRegionSD() {}
 
+#if __GNUC__ > 3
+   using J4VSD<HitType>::MakeHitBuf;
+   using J4VSD<HitType>::SetNewStep;
+   using J4VSD<HitType>::GetCharge;
+   using J4VSD<HitType>::IncrementHitNumber;
+   using J4VSD<HitType>::GetComponent;
+   using J4VSD<HitType>::GetTrackID;
+   using J4VSD<HitType>::GetMotherTrackID;
+   using J4VSD<HitType>::GetCloneID;
+   using J4VSD<HitType>::GetParticle;
+   using J4VSD<HitType>::GetTof;
+   using J4VSD<HitType>::GetEnergyDeposit;
+   using J4VSD<HitType>::GetTotalEnergy;
+   using J4VSD<HitType>::GetMomentum;
+   using J4VSD<HitType>::GetPrePosition;
+   using J4VSD<HitType>::GetPostPosition;
+   using J4VSD<HitType>::GetTranslation;
+   using J4VSD<HitType>::GetRotation;
+   using J4VSD<HitType>::GetHitNumber;
+   using J4VSD<HitType>::GetHitBuf;
+#endif
+
   inline 
   virtual const J4VCDCDriftRegionSD & operator=(const J4VSD<HitType> &right)
   {
