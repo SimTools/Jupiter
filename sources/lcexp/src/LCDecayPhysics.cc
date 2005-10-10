@@ -15,7 +15,7 @@
 // #include <iomanip>   
 
 LCDecayPhysics::LCDecayPhysics(const G4String& name)
-                     :  G4VPhysicsConstructor(name)
+  :  G4VPhysicsConstructor(name)
 {
 }
 
@@ -45,5 +45,3 @@ void LCDecayPhysics::ConstructProcess()
     }
   }
 }
-
-

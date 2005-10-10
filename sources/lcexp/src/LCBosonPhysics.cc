@@ -33,7 +33,7 @@
 
 
 LCBosonPhysics::LCBosonPhysics(const G4String& name)
-                     :  G4VPhysicsConstructor(name)
+  :  G4VPhysicsConstructor(name)
 {;}
 
 
@@ -64,19 +64,19 @@ void LCBosonPhysics::ConstructProcess()
   // high energy part
   G4TheoFSGenerator* highEGammaModel = new G4TheoFSGenerator();
   G4GeneratorPrecompoundInterface* preComModel =
-                         new G4GeneratorPrecompoundInterface();
+    new G4GeneratorPrecompoundInterface();
   highEGammaModel->SetTransport(preComModel);
  
   G4QGSModel<G4GammaParticipants>* theStringModel =
-                         new G4QGSModel<G4GammaParticipants>;
+    new G4QGSModel<G4GammaParticipants>;
   G4QGSMFragmentation* fragModel = new G4QGSMFragmentation();
   G4ExcitedStringDecay* stringDecay =
-                            new G4ExcitedStringDecay(fragModel);
+    new G4ExcitedStringDecay(fragModel);
   theStringModel->SetFragmentationModel(stringDecay);
  
   highEGammaModel->SetHighEnergyGenerator(theStringModel);
   highEGammaModel->SetMinEnergy(3.*GeV);
-  highEGammaModel->SetMaxEnergy(20.*GeV);
+  highEGammaModel->SetMaxEnergy(100.*TeV);
  
   // Now add the processes to the gamma, including e+e- pair creation, 
   // Compton scattering and photo-electric effect

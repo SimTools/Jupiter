@@ -8,6 +8,12 @@
 /////////////////////////////////////////////////////////////////////////////
 //
 
+#if 1
+#ifndef G4BERTINI_KAON
+#error G4BERTINI_KAON not defined in CPPFLAGS.  
+#endif
+#endif
+
 #include "LCPhysicsList.hh"
 
 #include "LCDecayPhysics.hh"
@@ -46,6 +52,3 @@ void LCPhysicsList::SetCuts()
   // Use default cut values gamma and e processes
   SetCutsWithDefault();   
 }
-
-
-

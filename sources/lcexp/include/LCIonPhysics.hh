@@ -16,24 +16,19 @@
 
 class LCIonPhysics : public G4VPhysicsConstructor
 {
-  public: 
-    LCIonPhysics(const G4String& name ="ion");
-    virtual ~LCIonPhysics();
+public: 
+  LCIonPhysics(const G4String& name ="ion");
+  virtual ~LCIonPhysics();
 
-    // This method will be invoked in the Construct() method. 
-    // each particle type will be instantiated
-    virtual void ConstructParticle();
+  // This method will be invoked in the Construct() method. 
+  // each particle type will be instantiated
+  virtual void ConstructParticle();
  
-    // This method will be invoked in the Construct() method.
-    // each physics process will be instantiated and
-    // registered to the process manager of each particle type 
-    virtual void ConstructProcess();
+  // This method will be invoked in the Construct() method.
+  // each physics process will be instantiated and
+  // registered to the process manager of each particle type 
+  virtual void ConstructProcess();
 
 };
 
 #endif
-
-
-
-
-

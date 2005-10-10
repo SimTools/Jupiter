@@ -8,3 +8,4 @@ name     := J4lcexp
 
 include $(JUPITERROOT)/config/common.gmk
 
+CPPFLAGS += -DG4BERTINI_KAON
