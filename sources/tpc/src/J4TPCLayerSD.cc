@@ -63,7 +63,7 @@ G4bool J4TPCLayerSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   
   //Get particle information
   G4double               edep          = GetEnergyDeposit();
-  if (J4ParameterTable::GetValue("J4TPC.UseThinLayer",false)) {
+  if (J4ParameterTable::GetValue("J4TPC.UseThinLayer",true)) {
     if (GetCharge() == 0.) return FALSE;
   } else {
     if (edep <= 0) return FALSE;

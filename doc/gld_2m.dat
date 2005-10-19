@@ -276,7 +276,7 @@ J4TPC.Endcap.HalfThickness:   1.000000
 J4TPC.FirstLayer.InnerRadius: 0.500000
 J4TPC.InnerSupportTube.HalfThickness:2.107500
 J4TPC.Layer.Thickness:        0.000100
-J4TPC.UseThinLayer:           false
+J4TPC.UseThinLayer:           true
 J4TPC.Material.CentralMembrane:Mylar
 J4TPC.Material.DriftRegion:   P10
 J4TPC.Material.Endcap:        EndCu

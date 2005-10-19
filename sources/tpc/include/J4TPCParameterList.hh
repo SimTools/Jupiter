@@ -375,14 +375,14 @@ G4double J4TPCParameterList::GetLayerInnerR(G4int ilayer) const
 
 G4double J4TPCParameterList::GetLayerOuterR(G4int ilayer) const
 {
-   return J4ParameterTable::GetValue("J4TPC.UseThinLayer",false)
+   return J4ParameterTable::GetValue("J4TPC.UseThinLayer",true)
           ? GetLayerInnerR(ilayer) + fLayerThick
           : GetLayerInnerR(ilayer + 1);
 } 
 
 G4double J4TPCParameterList::GetLayerThick() const
 {
-   return J4ParameterTable::GetValue("J4TPC.UseThinLayer",false)
+   return J4ParameterTable::GetValue("J4TPC.UseThinLayer",true)
           ? fLayerThick
           : GetLayerRspacing();
 }
