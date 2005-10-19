@@ -10,6 +10,7 @@
 //*************************************************************************
 
 #include "J4TPCLayerSD.hh"
+#include "J4ParameterTable.hh"
 #include <cmath>
  
 //=====================================================================
@@ -62,7 +63,11 @@ G4bool J4TPCLayerSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   
   //Get particle information
   G4double               edep          = GetEnergyDeposit();
-  if (edep <= 0) return FALSE;
+  if (J4ParameterTable::GetValue("J4TPC.UseThinLayer",false)) {
+    if (GetCharge() == 0.) return FALSE;
+  } else {
+    if (edep <= 0) return FALSE;
+  }
   J4VComponent*          location      = GetComponent();
   G4int                  myID          = location->GetMyID();
   G4int                  trackID       = GetTrackID();

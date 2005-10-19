@@ -10,7 +10,6 @@
 //*************************************************************************
 
 #include "J4TPCParameterList.hh"
-#include "J4ParameterTable.hh"
 #include <vector>
 
 J4TPCParameterList * J4TPCParameterList::fgInstance = 0;
@@ -97,17 +96,10 @@ void J4TPCParameterList::SetParameters()
    fOuterSupportTubHalfThick = J4ParameterTable::GetValue("J4TPC.OuterSupportTube.HalfThickness",4.1175)*cm;
 
    // Layer
-#ifdef __GLD_V1__   
    fNlayers             = J4ParameterTable::GetValue("J4TPC.NLayers",200);
    fFirstLayerInnerR    = J4ParameterTable::GetValue("J4TPC.FirstLayer.InnerRadius",0.5)*cm;
-#else
-   fNlayers             = 130;
-   fFirstLayerInnerR    = 5.0*mm;
-#endif
-#if 0
-   fNlayers             = 5;
-   fFirstLayerInnerR    = 10.*cm;
-#endif
+   // fLayerThick is used only when "J4TPC.UseThinLayer" is true
+   fLayerThick          = J4ParameterTable::GetValue("J4TPC.Layer.Thickness",1.e-4);
 
    // CentralMembrane
    fCentralMembraneHalfThick = J4ParameterTable::GetValue("J4TPC.CentralMembrane.HalfThickness",0.00125)*cm;

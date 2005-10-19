@@ -16,6 +16,7 @@
 #include "G4Material.hh"
 #include "G4Color.hh"
 #include "J4ParameterList.hh"
+#include "J4ParameterTable.hh"
 
 // ====================================================================
 // ----------------
@@ -288,6 +289,7 @@ class J4TPCParameterList : public J4VParameterList
    // Layer
    G4int     fNlayers;
    G4double  fFirstLayerInnerR;
+   G4double  fLayerThick;
    
 };
 
@@ -373,12 +375,16 @@ G4double J4TPCParameterList::GetLayerInnerR(G4int ilayer) const
 
 G4double J4TPCParameterList::GetLayerOuterR(G4int ilayer) const
 {
-   return GetLayerInnerR(ilayer + 1);
+   return J4ParameterTable::GetValue("J4TPC.UseThinLayer",false)
+          ? GetLayerInnerR(ilayer) + fLayerThick
+          : GetLayerInnerR(ilayer + 1);
 } 
 
 G4double J4TPCParameterList::GetLayerThick() const
 {
-   return GetLayerRspacing();
+   return J4ParameterTable::GetValue("J4TPC.UseThinLayer",false)
+          ? fLayerThick
+          : GetLayerRspacing();
 }
 
 G4double J4TPCParameterList::GetDriftRegionHalfZ() const
