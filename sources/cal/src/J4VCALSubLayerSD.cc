@@ -91,12 +91,17 @@ G4bool J4VCALSubLayerSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
   //In order to use Get function, you must call SetNewStep() at first.
   SetNewStep( aStep );
 
+  //Don't create hit witout energy deposit.
+  if ( GetEnergyDeposit() <= 0 ) return FALSE;
+  
+#if 0  
   // don't process e/mu/gamma/pi/p with no edep
   G4String pname = GetParticleName();
   G4bool checkable = (pname=="e-") || (pname=="e+") || (pname=="gamma") ||
     (pname=="mu-") || (pname=="mu+") || (pname=="pi0") || (pname=="pi-") || (pname=="pi+") ||
     (pname=="proton") || (pname=="anti_proton");
   if( checkable && GetEnergyDeposit() <= 0 ) return FALSE; // don't process this hit if Edep=0
+#endif  
 
   ////////////////////////////////////////////////////////////////
   // Calorimeter sub structure and depth-------------------------
