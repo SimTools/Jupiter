@@ -16,6 +16,7 @@
 #include "G4Step.hh"
 #include "J4VSD.hh"
 #include "J4VCDCDriftRegion.hh"
+#include "J4CDCSenseWire.hh"
 
 
 //=====================================================================
