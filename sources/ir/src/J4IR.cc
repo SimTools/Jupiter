@@ -268,7 +268,7 @@ void J4IR::Assemble_BeamPipeMiddle()
 
    for(int j=0;j<2;j++){
      sname.str(fName+"/BPMiddle");
-     sname << j << ends;
+     sname << j << std::ends;
      G4bool flag=false;
      if( j == 1 ) flag=true;
      G4double hzlen=(zpos[1]-zpos[0])*0.5;

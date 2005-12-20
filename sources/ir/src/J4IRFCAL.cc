@@ -80,7 +80,7 @@ void J4IRFCAL::Assemble()
     // MakeSolid ---------------
     std::ostringstream sname;
     sname.str(GetName());
-    sname << GetMyID() << ends;
+    sname << GetMyID() << std::ends;
 
     G4VSolid *fcal = new G4Cons(sname.str(), geom[0], geom[1], geom[2], 
 	geom[3], geom[5]*0.5, 0, 2*M_PI);

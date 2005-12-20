@@ -24,6 +24,13 @@
 
 LCPhysicsList::LCPhysicsList():  G4VModularPhysicsList()
 {
+}
+
+LCPhysicsList::~LCPhysicsList()
+{;}
+
+void LCPhysicsList::ConstructProcess()
+{
   // default cut value  (1.0mm) 
   defaultCutValue = 1.0*mm;
   // SetVerboseLevel(1);
@@ -43,9 +50,6 @@ LCPhysicsList::LCPhysicsList():  G4VModularPhysicsList()
   // Ion Physics
   RegisterPhysics( new LCIonPhysics("ion"));
 }
-
-LCPhysicsList::~LCPhysicsList()
-{;}
 
 void LCPhysicsList::SetCuts()
 {

@@ -55,10 +55,12 @@
   #define TRUE 1
 #endif
 
+#if __CLHEPVERSION__ < 2
 #define CLHEP_ABS_DEFINED
 #define CLHEP_SQR_DEFINED
 #define CLHEP_MAX_MIN_DEFINED
 #include <CLHEP/config/TemplateFunctions.h>
+#endif
 
 class G4RWBoundsErr
 {

@@ -165,6 +165,9 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
   // ---------------------------------------------------------------------
   // end of event.......
 
+#if __CLHEPVERSION__ >= 2
+   using namespace CLHEP;
+#endif
 #ifdef __USEISOCXX__
    std::stringstream tmpstr;
    tmpstr << "seeds/seed.evt." << std::setw(5) << std::setfill('0')

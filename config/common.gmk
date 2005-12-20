@@ -28,6 +28,8 @@ CPPFLAGS  += -I../kern/include \
 
 include $(G4INSTALL)/config/common.gmk
 
+include $(JUPITERROOT)/config/CLHEPversion.gmk
+
 ifneq ($(findstring g++, $(G4SYSTEM)),)
    CXXFLAGS := $(subst -fno-for-scope,-ffor-scope,$(CXXFLAGS)) 
 endif

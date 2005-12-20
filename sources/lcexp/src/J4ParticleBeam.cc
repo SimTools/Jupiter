@@ -23,6 +23,10 @@
 //#define _BEAMCONVERGENCEEXTENT_   5.0*cm
 #define _BEAMCONVERGENCEEXTENT_   1.2*m
 
+#if __CLHEPVERSION__ >= 2
+using namespace CLHEP;
+#endif
+
 //=====================================================================
 //---------------------
 // Class Description

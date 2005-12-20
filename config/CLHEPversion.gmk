@@ -1,0 +1,2 @@
+CLHEPVER = $(shell clhep-config --version | sed -e 's;CLHEP \([1-9]\)\..*;\1;')
+CPPFLAGS += -D__CLHEPVERSION__=$(CLHEPVER)

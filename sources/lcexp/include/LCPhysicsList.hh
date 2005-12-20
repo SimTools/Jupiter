@@ -20,6 +20,7 @@ public:
   LCPhysicsList();
   virtual ~LCPhysicsList();
   
+  virtual void ConstructProcess();
   virtual void SetCuts();
 };
 

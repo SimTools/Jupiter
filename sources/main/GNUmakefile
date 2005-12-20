@@ -60,6 +60,8 @@ CPPFLAGS  += -I../ir/include \
 
 CPPFLAGS += -D__HOSHINA__
 
+include $(JUPITERROOT)/config/CLHEPversion.gmk
+
 ifneq ($(findstring g++, $(G4SYSTEM)),)
    CXXFLAGS := $(subst -fno-for-scope,-ffor-scope,$(CXXFLAGS)) 
 endif
