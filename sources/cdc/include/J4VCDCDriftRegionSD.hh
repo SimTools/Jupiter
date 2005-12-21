@@ -34,7 +34,7 @@ public:
 
   ~J4VCDCDriftRegionSD() {}
 
-#if __GNUC__ > 3
+#if __GNUC__ > 3 || (__GNUC__==3 && __GNUC_MINOR__>=4)
    using J4VSD<HitType>::MakeHitBuf;
    using J4VSD<HitType>::SetNewStep;
    using J4VSD<HitType>::GetCharge;

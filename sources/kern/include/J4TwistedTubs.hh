@@ -72,23 +72,23 @@ class J4TwistedTubs : public G4VSolid
                       
  // argument miss protection -------------------------------------------------
   J4TwistedTubs(const G4String &pname,              // Name of instance
-                      G4double  twistedangle,       // Twisted angle
-                      G4double  endinnerrad,        // Inner radius at endcap 
-                      G4double  endouterrad,        // Outer radius at endcap 
-                      G4double  halfzlen,           // half z length 
-                      G4int     dphi)               // Phi angle of a segment??
+                      G4double  /* twistedangle */, // Twisted angle
+                      G4double  /* endinnerrad */,  // Inner radius at endcap 
+                      G4double  /* endouterrad */,  // Outer radius at endcap 
+                      G4double  /* halfzlen */,     // half z length 
+                      G4int     /* dphi */)         // Phi angle of a segment??
                      :G4VSolid(pname)
   {
        std::cerr << "J4VTwistedTubs: dphi must be type G4double. abort." << std::endl;
        abort();
   }
   J4TwistedTubs(const G4String &pname,              // Name of instance
-                      G4double  twistedangle,       // Twisted angle
-                      G4double  innerrad,           // Inner radius at z=0 
-                      G4double  outerrad,           // Outer radius at z=0 
-                      G4double  negativeEndz,       // -ve z endplate
-                      G4double  positiveEndz,       // +ve z endplate
-                      G4int     dphi)               // Phi angle of a segment
+                      G4double  /* twistedangle */, // Twisted angle
+                      G4double  /* innerrad */,     // Inner radius at z=0 
+                      G4double  /* outerrad */,     // Outer radius at z=0 
+                      G4double  /* negativeEndz */, // -ve z endplate
+                      G4double  /* positiveEndz*/,  // +ve z endplate
+                      G4int     /* dphi */)         // Phi angle of a segment
                      :G4VSolid(pname)
   {
        std::cerr << "J4VTwistedTubs: dphi must be type G4double. abort." << std::endl;

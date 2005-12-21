@@ -26,7 +26,7 @@ public:
   J4Output() {}
   virtual ~J4Output() {}
   
-  virtual void Output(J4VHit *ahit) {}
+  virtual void Output(J4VHit *) {}
   virtual void Clear() {}
 
 };
