@@ -137,7 +137,7 @@ class J4TPCParameterList : public J4VParameterList
    inline G4bool GetPadPlaneVisAtt()          const { return fPadPlaneVisAtt;  }
    inline G4bool GetPadRowVisAtt()            const { return fPadRowVisAtt;   }
    inline G4bool GetPadVisAtt()               const { return fPadVisAtt;       }
-   inline G4bool GetDriftRegionVisAtt()       const { return fPadVisAtt;       }
+   inline G4bool GetDriftRegionVisAtt()       const { return fDriftRegionVisAtt;}
 
    //*Color ------------------------------------------------------------------
    inline G4Color GetTPCColor()               const { return fTPCColor;        }
@@ -148,7 +148,7 @@ class J4TPCParameterList : public J4VParameterList
    inline G4Color GetPadPlaneColor()          const { return fPadPlaneColor;   }
    inline G4Color GetPadRowColor()            const { return fPadRowColor;    }
    inline G4Color GetPadColor()               const { return fPadColor;        }
-   inline G4Color GetDriftRegionColor()       const { return fPadColor;        }
+   inline G4Color GetDriftRegionColor()       const { return fDriftRegionColor;}
   
    //
    // setters  
@@ -202,7 +202,7 @@ class J4TPCParameterList : public J4VParameterList
    inline void SetPadPlaneVisAtt(G4bool x)            { fPadPlaneVisAtt = x;   }
    inline void SetPadRowVisAtt(G4bool x)             { fPadRowVisAtt = x;    }
    inline void SetPadVisAtt(G4bool x)                 { fPadVisAtt = x;        }
-   inline void SetDriftRegionVisAtt(G4bool x)         { fPadVisAtt = x;        }
+   inline void SetDriftRegionVisAtt(G4bool x)         { fDriftRegionVisAtt = x;}
    
    //*Color ------------------------------------------------------------------
    inline void SetTPCColor(const G4Color &c)          { fTPCColor = c;         }
@@ -214,7 +214,7 @@ class J4TPCParameterList : public J4VParameterList
    inline void SetPadPlaneColor(const G4Color &c)     { fPadPlaneColor = c;    }
    inline void SetPadRowColor(const G4Color &c)      { fPadRowColor = c;     }
    inline void SetPadColor(const G4Color &c)          { fPadColor = c;         }
-   inline void SetDriftRegionColor(const G4Color &c)  { fPadColor = c;         }
+   inline void SetDriftRegionColor(const G4Color &c)  { fDriftRegionColor = c; }
 
 
  private:
