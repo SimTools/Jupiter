@@ -37,6 +37,7 @@ public:
    
   virtual void    PreUserTrackingAction (const G4Track* aTrack);
   virtual void    PostUserTrackingAction(const G4Track* aTrack);
+          void    Clear();
 
   inline  G4TrackingManager* GetTrackingManager() const { return fpTrackingManager;   }
   inline  G4int              GetCurrentTrackID () const { return fCurrentTrackID;     }

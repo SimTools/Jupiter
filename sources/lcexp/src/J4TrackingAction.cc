@@ -15,6 +15,7 @@
 #include "G4TrackingManager.hh"
 #include "G4Track.hh"
 #include "J4Global.hh"
+#include "J4BreakPoint.hh"
 
 J4TrackingAction                   *J4TrackingAction::fgInstance = 0;
 //=====================================================================
@@ -63,7 +64,7 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
   using namespace std;
   vector<J4VSubTrackingAction *>::iterator iter;
   for (iter = fRegs.begin(); iter != fRegs.end(); iter++) {
-    (*iter)->PreTrackDoIt();
+    (*iter)->PreTrackDoIt(aTrack);
   }
   
 #ifdef G4_STORE_TRAJECTORY
@@ -148,3 +149,13 @@ void J4TrackingAction::PostUserTrackingAction(const G4Track* /* aTrack */)
    
 }
 
+//=====================================================================
+//* Clear -------------------------------------------------------------
+void J4TrackingAction::Clear()
+{
+  using namespace std;
+  vector<J4VSubTrackingAction *>::iterator iter;
+  for (iter = fRegs.begin(); iter != fRegs.end(); iter++) {
+    (*iter)->Clear();
+  }
+}

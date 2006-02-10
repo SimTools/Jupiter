@@ -16,13 +16,15 @@
 //
 
 #include "G4Types.hh"
+#include "G4Track.hh"
 
 class J4VSubTrackingAction {
 public:
   J4VSubTrackingAction();
   virtual ~J4VSubTrackingAction();
    
-  virtual void    PreTrackDoIt() = 0;
+  virtual void    PreTrackDoIt(const G4Track* aTrack = 0) = 0;
+  virtual void    Clear() {}
 };
 
 #endif

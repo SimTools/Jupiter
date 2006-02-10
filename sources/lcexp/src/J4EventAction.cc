@@ -26,6 +26,9 @@
 
 #include "J4DetectorConstruction.hh"
 
+#include "J4HistoryKeeper.hh"
+#include "J4BreakPoint.hh"
+
 // SD of each detector componet
 
 // Visualization
@@ -100,7 +103,7 @@ void J4EventAction::BeginOfEventAction(const G4Event*)
    J4DetectorConstruction::GetEXPHall()->UnlockOutput();
    fEventTimer->Start();
    J4TrackingAction::GetInstance()->ResetTrackCounter();
-   
+   J4HistoryKeeper::GetInstance()->Clear();   
 }
 
 ///////////////////////////////////////////////////////////////
@@ -119,6 +122,12 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
      std::cerr << "*******_event_number_" << event << "_*******" <<std::endl;
      std::cerr << "**********************************************" << std::endl;
 
+  // ====================================================================  
+  // output "J4BreakPointMap"
+#ifdef __DEBUG__
+     J4BreakPoint::DebugPrint("debug"); 
+#endif
+     J4BreakPoint::Output(); 
 
   // ====================================================================  
   // output "Hit Collection of This Event" to a hit data file
