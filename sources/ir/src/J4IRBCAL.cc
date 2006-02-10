@@ -11,6 +11,7 @@
 //*************************************************************************
 
 #include "J4IRBCAL.hh"
+#include "J4IRBCALLayer.hh"
 #include "J4ParameterTable.hh"
 #include "J4SubtractionSolid.hh"
 
@@ -41,6 +42,7 @@ J4IRBCAL::J4IRBCAL(J4VAcceleratorComponent *parent,
             J4VIRAcceleratorComponent( fName, parent, nclones,
                                     nbrothers, me, copyno,reflect  ) 
 {   
+  fShape=0;
 }
 
 //=====================================================================
@@ -48,6 +50,13 @@ J4IRBCAL::J4IRBCAL(J4VAcceleratorComponent *parent,
 
 J4IRBCAL::~J4IRBCAL()
 {
+  if ( fLayers ) {
+    G4int nlayer=J4ParameterTable::GetValue("J4IR.BCAL.NLayer",30);
+    for( G4int i=0; i<nlayer; i++ ) {
+      if (Deregister(fLayers[i])) delete fLayers[i];
+    }
+    if( Deregister(fLayers) ) delete fLayers;
+  }
 }
 
 //=====================================================================
@@ -62,6 +71,7 @@ void J4IRBCAL::Assemble()
     G4double rmax = J4ParameterTable::GetValue("J4IR.BCAL.OuterRadius",20.0)*cm;
     G4double zlen = J4ParameterTable::GetValue("J4IR.BCAL.ZLength",20.0)*cm;
     G4double zpos = J4ParameterTable::GetValue("J4IR.BCAL.ZPosition",430.0)*cm;
+    fZpos=zpos;
     G4double zcnt = zpos + zlen*0.5;
   	
     // MakeSolid ---------------
@@ -72,6 +82,7 @@ void J4IRBCAL::Assemble()
     }
 // Case with a crossing angle.
     else {
+      fShape=1;
       G4String tubname=fName+".tubs";
       G4VSolid *tube = new G4Tubs( tubname, rmin, rmax, zlen*0.5, 0, 2*M_PI);  
 
@@ -115,7 +126,19 @@ void J4IRBCAL::Assemble()
     PaintLV(visatt, *icol);
   	
     // Install daughter PV -----------
-  		  
+
+    fLayers = 0 ;
+    if( fShape == 0 ) {
+      G4int nlayer=J4ParameterTable::GetValue("J4IR.BCAL.NLayer",30);
+      fLayers = new J4IRBCALLayer*[nlayer];
+      Register(fLayers);
+      for( G4int i=0;i<nlayer;i++) {
+	fLayers[i] = new J4IRBCALLayer(this, nlayer, i);
+	Register( fLayers[i] );
+	fLayers[i] -> InstallIn(this);
+	SetDaughter( fLayers[i] );
+      } 
+    }  		  
   }     
 }
 

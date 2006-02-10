@@ -44,9 +44,6 @@ J4IRFCAL::J4IRFCAL(J4VAcceleratorComponent *parent,
             J4VIRAcceleratorComponent( fName, parent, nclones,
                                     nbrothers, me, copyno,reflect  ) 
 {   
-
-	std::cerr << "J4IRFCAL constructor called." << std::endl;
-
 }
 
 //=====================================================================
@@ -54,6 +51,20 @@ J4IRFCAL::J4IRFCAL(J4VAcceleratorComponent *parent,
 
 J4IRFCAL::~J4IRFCAL()
 {
+  if ( fLayers ) {
+    G4int nlayer = 0;
+    if( GetMyID() == 0 || GetMyID() == 2 ) {
+      nlayer=J4ParameterTable::GetValue("J4IR.FCAL.Front.NLayer",30);
+    }
+    else {
+      nlayer=J4ParameterTable::GetValue("J4IR.FCAL.Tail.NLayer",30);
+    }
+    for( G4int i=0; i<nlayer; i++ ) {
+      if (Deregister(fLayers[i])) delete fLayers[i];
+    }
+    if( Deregister(fLayers) ) delete fLayers;
+  }
+
 }
 
 //=====================================================================
@@ -61,20 +72,28 @@ J4IRFCAL::~J4IRFCAL()
 
 void J4IRFCAL::Assemble() 
 {   
+
   if(!GetLV()){
-  	
+
+    G4int nlayer=0;
+    G4bool isFront=true;
     // Calcurate parameters ----------
     std::vector<double> geom;
     if ( GetMyID() == 0 || GetMyID() == 2 ) {
       geom = J4ParameterTable::GetDValue("J4IR.FCAL.FrontGeom",
             "8.0 13.0 9.043478 17.69565   230.0 30.0", 6); 
+      nlayer=J4ParameterTable::GetValue("J4IR.FCAL.Front.NLayer",30);
+      isFront=true;
     }
     else {
       geom = J4ParameterTable::GetDValue("J4IR.FCAL.TailGeom",
           "9.043478 36.0  12.52174 36.0 260.0 25.0", 6); 
+      nlayer=J4ParameterTable::GetValue("J4IR.FCAL.Tail.NLayer",30);
+      isFront=false;
     } 
-   for(int i=0;i<6;i++) {
+    for(int i=0;i<6;i++) {
 	geom[i] *= cm; 
+	fGeom[i] = geom[i];
     }
 
     // MakeSolid ---------------
@@ -87,7 +106,7 @@ void J4IRFCAL::Assemble()
                                        
     Register(fcal);
     SetSolid(fcal);	// Don't forgat call it!
-                                       
+
     // MakeLogicalVolume -------------
     G4String material= J4ParameterTable::GetValue("J4IR.FCAL.Material","Tungsten");
     MakeLVWith(OpenMaterialStore()->Order(material));
@@ -96,12 +115,21 @@ void J4IRFCAL::Assemble()
     G4bool visatt = J4ParameterTable::GetValue("J4IR.VisAtt.FCAL",true);
 
     std::vector<double> col=J4ParameterTable::GetDValue("J4IR.Color.FCAL","1.0 0.0 1.0 1.0",4);
-    G4Color *icol=new G4Color(col[0], col[1], col[2], col[3]); 
 
-    PaintLV(visatt, *icol);
+    PaintLV(visatt, G4Color(col[0], col[1], col[2], col[3])); 
   	
     // Install daughter PV -----------
-  		  
+
+    fLayers = 0 ;
+    fLayers = new J4IRFCALLayer*[nlayer];
+    Register(fLayers);
+    for( G4int i=0;i<nlayer;i++) {
+      fLayers[i] = new J4IRFCALLayer(this, nlayer, i);
+      Register( fLayers[i] );
+      fLayers[i] -> InstallIn(this);
+      SetDaughter( fLayers[i] );
+    } 
+
   }     
 }
 
@@ -123,20 +151,8 @@ G4RotationMatrix* J4IRFCAL::GetRotation()
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRFCAL::GetTranslation()
 {
-    std::vector<double> geom;
-    if ( GetMyID() == 0 || GetMyID() == 2 ) {
-      geom = J4ParameterTable::GetDValue("J4IR.FCAL.FrontGeom",
-            "8.0 13.0 9.043478 17.69565   230.0 30.0", 6); 
-    }
-    else {
-      geom = J4ParameterTable::GetDValue("J4IR.FCAL.TailGeom",
-          "9.043478 36.0  12.52174 36.0 260.0 25.0", 6); 
-    } 
-   for(int i=0;i<6;i++) {
-	geom[i] *= cm; 
-    }
 
-   G4double zcnt = (geom[4]+geom[5]*0.5); 
+   G4double zcnt = (fGeom[4]+fGeom[5]*0.5); 
    G4ThreeVector* position = new G4ThreeVector();
    position->setZ(zcnt);
    return *position;

@@ -21,9 +21,15 @@
 #else
 #define __INSTALLTPC__
 #endif
+// Either __INSTALLCAL__ or __INSTALLCLX__ should be defined.
 #define __INSTALLCAL__  
+// #define __INSTALLCLX__
+#ifdef __INSTALLCLX__
+#  undef __INSTALLCAL__
+#endif
 #define __INSTALLSOL__  
 #define __INSTALLMUD__  
+#define __INSTALLFCAL__
 
 #ifdef __USEISOCXX__
 #include <sstream>
@@ -42,6 +48,7 @@
 #include "J4EventAction.hh"
 #include "J4TrackingAction.hh"
 #include "J4StackingAction.hh"
+#include "J4SteppingAction.hh"
 #include "TBookKeeper.hh"
 
 #include "J4Timer.hh"
@@ -58,7 +65,12 @@
 #include "J4IT.hh"
 #include "J4CDC.hh"
 #include "J4TPC.hh"
+#ifdef __INSTALLCAL__
 #include "J4CAL.hh"
+#endif
+#ifdef __INSTALLCLX__
+#include "J4CLX.hh"
+#endif
 #include "J4SOL.hh"
 #include "J4MUD.hh"
 
@@ -71,7 +83,7 @@
 
 // temporary, for installation MUD without CAL
 #ifdef __INSTALLMUD__
-#ifndef __INSTALLCAL__
+#if !defined(__INSTALLCAL__)
 #include "J4CALPostHit.hh"
 #include "J4CALPostHitKeeper.hh"
 #include "J4CALPreHit.hh"
@@ -175,6 +187,18 @@ int main(int argc, char** argv)
   calptr->SetMother(dtcptr->GetEXPHall());
   dtcptr->AddComponent(calptr);
 #endif
+
+  // For Octagonal Calorimeter
+#ifdef __INSTALLCLX__  
+// temporary, for installation CLX without TPC
+#ifndef __INSTALLTPC__
+  J4TPCPostHit::GetCurPostHitID();
+#endif
+
+  J4CLX *calptr = new J4CLX();
+  calptr->SetMother(dtcptr->GetEXPHall());
+  dtcptr->AddComponent(calptr);
+#endif
   
   //* Solenoid Magnet (should come last)
     
@@ -185,7 +209,7 @@ int main(int argc, char** argv)
 #endif
 
 #ifdef __INSTALLMUD__
- #ifndef __INSTALLCAL__
+ #if !defined(__INSTALLCAL__)
   J4CALPostHitKeeper::GetInstance();
   J4CALPreHitKeeper::GetInstance();
   J4CALPostHit::GetCurPostHitID();
@@ -203,7 +227,7 @@ int main(int argc, char** argv)
   runManager-> SetUserInitialization(dtcptr);
   
   // particles and physics processes
-  if( J4ParameterTable::GetValue("J4.PhysicsList",1 ) == 1 ) {
+  if( J4ParameterTable::GetValue("J4.PhysicsList",0 ) == 1 ) {
 	runManager->SetUserInitialization(new LCPhysicsList() );
   }
   else {
@@ -225,6 +249,7 @@ int main(int argc, char** argv)
   runManager-> SetUserAction(new J4EventAction);
   runManager-> SetUserAction(new J4TrackingAction);
   runManager-> SetUserAction(new J4StackingAction);
+  runManager-> SetUserAction(new J4SteppingAction);
 
 #ifdef G4VIS_USE
   // initialize visualization package
@@ -253,7 +278,11 @@ int main(int argc, char** argv)
   //* "recursive" or other strings, however,
   //* default value is set as "recursive".
  
- 
+
+#ifdef __INSTALLFCAL__
+  irptr->J4VComponent::SwitchOn();
+#endif 
+
   //* vtx 
 #ifdef __INSTALLVTX__
   vtxptr->J4VDetectorComponent::SwitchOn();
@@ -298,6 +327,12 @@ int main(int argc, char** argv)
 #ifdef __INSTALLCAL__
   calptr->J4VDetectorComponent::SwitchOn();
 #endif
+
+  //* clx 
+#ifdef __INSTALLCLX__
+  calptr->J4VDetectorComponent::SwitchOn();
+#endif
+
 
   //* mud 
 #ifdef __INSTALLMUD__

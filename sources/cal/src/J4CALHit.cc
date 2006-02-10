@@ -38,14 +38,15 @@ J4CALHit::J4CALHit( J4VComponent* ptrDetector,    // He is in "location" now
                     G4double      tof,            // TOF
 		    G4ParticleDefinition* particle, // Particle data
 		    const G4ThreeVector& Xcm,     // Edep*position vector
-		    const G4ThreeVector& Xcell )  // cell center position    
+		    const G4ThreeVector& Xcell,   // cell center position    
+		    G4int         trackID,        // TrackID of inside particle
+		    G4int         motherTrackID ) // mother track's ID
   /* J4VHit( ptrDetector ), fPreHitID( preHitID ), fPDGCode( pdgCode ), fCellID( cellID ),
      fIsEM( isEM ), fIsBarrel( isBarrel ), fEdep( edep ), fTof( tof ), fXcm( Xcm ), fXcell( Xcell )*/
   // detector, trackID, motherTrackID, particle, tof, edep, totalE
-  : J4VHit(ptrDetector, -9999, -9999, particle, tof, edep),
+  : J4VHit(ptrDetector, trackID, motherTrackID, particle, tof, edep),
     fPreHitID(preHitID), fCellID(cellID), fIsEM(isEM), fIsBarrel(isBarrel),
     fXcm(Xcm), fXcell(Xcell)
-    
 { }
 
 //=========================================================================
@@ -80,6 +81,8 @@ void J4CALHit::Output( G4HCofThisEvent* /* HCTE */ )
 	<< std::setw(12) << fXcell.x() << " "
 	<< std::setw(12) << fXcell.y() << " "
 	<< std::setw(12) << fXcell.z() << " "
+        << std::setw(5)  << GetTrackID() << " "
+        << std::setw(5)  << GetMotherTrackID() << " "
 	<< std::endl;
   }
 }
@@ -109,5 +112,7 @@ void J4CALHit::Print()
 	    << std::setw(12) << "Xcell=(" << fXcell.x() << ", "
 	    << std::setw(12) << fXcell.y() << ", "
 	    << std::setw(12) << fXcell.z() << ") "
+	    << std::setw(5)  << GetTrackID() << " "
+	    << std::setw(5)  << GetMotherTrackID() << " "
 	    << std::endl;
 }

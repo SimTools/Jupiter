@@ -14,6 +14,7 @@
 //*************************************************************************
 
 #include "J4VIRAcceleratorComponent.hh"
+#include "J4IRBCALLayer.hh"
 //=====================================================================
 //---------------------
 // class definition
@@ -36,14 +37,19 @@ public:
 
   virtual void	Draw()      ;
   virtual void	Print() const ;
-  
+  inline G4int  GetShape(){ return fShape; }
+  inline G4double GetZpos(){ return fZpos; }
+
 private:
   void 	Assemble();    
   void  Cabling ();
   
 private:  
   static G4String	fName;
-  
+  G4int fShape; // =0 shape for 2mrad collision
+                // =1 shape for 20mrad collision
+  J4IRBCALLayer        **fLayers;  
+  G4double fZpos; 
 };
 
 #endif

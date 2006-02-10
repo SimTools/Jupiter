@@ -48,7 +48,9 @@ public:
             G4double      tof,
 	    G4ParticleDefinition *particle,
 	    const G4ThreeVector& xcm,
-	    const G4ThreeVector& xcell );
+	    const G4ThreeVector& xcell,
+	    G4int         trackID=-9999,
+	    G4int         motherTrackID=-9999 );
   
   virtual ~J4CALHit();
 

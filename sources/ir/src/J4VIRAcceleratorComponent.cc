@@ -94,6 +94,7 @@ void J4VIRAcceleratorComponent::InstallIn(J4VComponent      *, // mother
   if ( prot == 0 && tlate==0 ) {
     rotation = GetRotation();
     position = GetTranslation();
+
     if ( fReflection ){
       position.setZ(-position.z());
       G4double angle = (rotation->getAxis()).y()*rotation->getDelta();
@@ -101,7 +102,9 @@ void J4VIRAcceleratorComponent::InstallIn(J4VComponent      *, // mother
       rotation->rotateY(angle);
     } 
   }
+  SetPVPlacement(rotation,position);
 
-    SetPVPlacement(rotation,position);
+  //  if (!GetSD()) Cabling(); 
+
 }
 

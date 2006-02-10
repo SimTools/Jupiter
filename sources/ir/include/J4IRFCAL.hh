@@ -14,10 +14,12 @@
 //*************************************************************************
 
 #include "J4VIRAcceleratorComponent.hh"
+#include "J4IRFCALLayer.hh"
 //=====================================================================
 //---------------------
 // class definition
 //---------------------
+
 
 class J4IRFCAL : public J4VIRAcceleratorComponent {	
 
@@ -33,6 +35,7 @@ public:
 
   G4RotationMatrix* GetRotation();
   G4ThreeVector&  GetTranslation();
+  inline G4double GetGeom(G4int i){ return fGeom[i]; }
 
   virtual void	Draw()      ;
   virtual void	Print() const ;
@@ -43,7 +46,8 @@ private:
   
 private:  
   static G4String	fName;
-  
+  G4double              fGeom[6];
+  J4IRFCALLayer        **fLayers;  
 };
 
 #endif
