@@ -34,8 +34,8 @@ public:
 
   static J4BreakPoint  * GetBreakPoint(G4int trackID);
   static std::map<G4int, J4BreakPoint*> & 
-                         GetBreakPointMap()        { return fgBreakPointMap; }
-  static void            SetOutput(J4Output *outp) { fgOutputPtr = outp;     }
+                         GetBreakPointMap();
+  static void            SetOutput(J4Output *outp);
   static void            Clear();
   static void            Output();
   static void            DebugPrint(const char* opt = "");

@@ -43,6 +43,20 @@ J4BreakPoint * J4BreakPoint::GetBreakPoint(G4int trackID)
 }
 
 //=====================================================================
+//* GetBreakPointMap --------------------------------------------------
+std::map<G4int, J4BreakPoint*> & J4BreakPoint::GetBreakPointMap()
+{
+  return fgBreakPointMap;
+}
+
+//=====================================================================
+//* SetOutput ---------------------------------------------------------
+void J4BreakPoint::SetOutput(J4Output *outp)
+{
+  fgOutputPtr = outp;
+}
+
+//=====================================================================
 //* Clear -------------------------------------------------------------
 void J4BreakPoint::Clear()
 {
