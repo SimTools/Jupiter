@@ -15,7 +15,7 @@
 J4HistoryKeeper *J4HistoryKeeper::fgInstance = 0; 
 //=====================================================================
 //* Constructor -------------------------------------------------------
-J4HistoryKeeper::J4HistoryKeeper() : fPHitKeeperPtr(0)
+J4HistoryKeeper::J4HistoryKeeper()
 {
 }
 
@@ -29,9 +29,19 @@ J4HistoryKeeper::~J4HistoryKeeper()
 //* PreTrackDoIt ------------------------------------------------------
 void J4HistoryKeeper::PreTrackDoIt(const G4Track* aTrack)
 {
+  if (fPHitKeepers.empty()) return;
   // Create breakpoint
-
-  if (fPHitKeeperPtr && !fPHitKeeperPtr->IsPHitCreated()) { 
+  G4bool isnext = true;
+  std::vector<J4PHitKeeper *>::iterator iter;
+  for (iter  = fPHitKeepers.begin(); 
+       iter != fPHitKeepers.end(); iter++) {
+    J4PHitKeeper *phkp = *iter;
+    if (phkp && phkp->IsPHitCreated()) { 
+      isnext = false;
+      break;
+    }
+  }
+  if (isnext) {
 #ifndef __DEBUG__
     new J4BreakPoint(aTrack);
 #else

@@ -13,6 +13,7 @@
 
 #include "globals.hh"
 #include "J4PHitKeeper.hh"
+#include <vector>
 
 class J4HistoryKeeper : public J4VSubTrackingAction {
 private:
@@ -26,11 +27,11 @@ public:
   { 
     return fgInstance ? fgInstance : (fgInstance = new J4HistoryKeeper());
   }
-  void SetPHitKeeperPtr(J4PHitKeeper *phkp) { fPHitKeeperPtr = phkp; } 
+  void SetPHitKeeperPtr(J4PHitKeeper *phkp) { fPHitKeepers.push_back(phkp); } 
 
 private:
-  J4PHitKeeper *fPHitKeeperPtr;
-  static      J4HistoryKeeper *fgInstance; // pointer to this class (singleton)
+  std::vector<J4PHitKeeper *>  fPHitKeepers;
+  static J4HistoryKeeper      *fgInstance; // pointer to this class (singleton)
 };
 
 #endif
