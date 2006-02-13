@@ -1,4 +1,6 @@
 #
+# Update History:
+#   13-Feb-2006 A.Miyamoto : BCAL parameters are defined.
 # 
 #  Jupiter default parameter names and values 
 #  A file to define geometry of IT and its inside  
@@ -107,21 +109,13 @@ J4IR.FCAL.Tail.Absorber.Material: Tungsten
 J4IR.FCAL.Tail.Sensor.Material: Silicon
 J4IR.FCAL.Tail.Gap.Material: Air
 #
-J4IR.VisAtt.FCAL.Layer: true
-J4IR.VisAtt.FCAL.Front.Absorber: true
-J4IR.VisAtt.FCAL.Front.Sensor: true
-J4IR.VisAtt.FCAL.Front.Gap: false
-J4IR.VisAtt.FCAL.Tail.Absorber: true
-J4IR.VisAtt.FCAL.Tail.Sensor: true
-J4IR.VisAtt.FCAL.Tail.Gap: false
 #
-J4IR.Color.FCAL.Layer: 1.0 0.0 0.5 1.0
-J4IR.Color.FCAL.Front.Absorber: 1.0 0.0 0.2 1.0
-J4IR.Color.FCAL.Front.Sensor: 1.0 0.0 0.7 1.0
-J4IR.Color.FCAL.Front.Gap: 0.7 0.0 0.2 1.0
-J4IR.Color.FCAL.Tail.Absorber: 1.0 0.0 0.2 1.0
-J4IR.Color.FCAL.Tail.Sensor: 1.0 0.0 0.7 1.0
-J4IR.Color.FCAL.Tail.Gap: 0.7 0.0 0.2 1.0
+J4IR.BCAL.NLayer:  30
+J4IR.BCAL.AbsorberThickness:  0.3
+J4IR.BCAL.SensorThickness:  0.03
+J4IR.BCAL.Sensor.Material:  Silicon
+J4IR.BCAL.Absorber.Material:  Tungsten
+J4IR.BCAL.Gap.Material:       Air
 #
 J4IR.Material:                vacuum
 J4IR.Q.Material:              Iron
@@ -318,8 +312,8 @@ J4IR.Color.BeamPipeMiddle:    0.0 0.5 0.5 1.0
 J4IR.Color.CH2Mask:           0.5 0.0 1.0 1.0
 J4IR.Color.FCAL:              0.0 0.5 1.0 1.0
 J4IR.Color.Q:                 1.0 0.5 0.5 1.0
-J4IR.Color.WMask3:            1.0 0.0 1.0 1.0
-J4IR.Color.WMask4:            0.5 0.0 0.5 1.0
+J4IR.Color.WMask3:            0.5 0.2 0.2 1.0
+J4IR.Color.WMask4:            0.5 0.2 0.2 1.0
 J4IR.Color:                   0.5 0.5 0.5 0.0
 #
 J4IR.VisAtt.BCAL:             true
@@ -330,7 +324,32 @@ J4IR.VisAtt.FCAL:             true
 J4IR.VisAtt.Q:                true
 J4IR.VisAtt.WMask3:           true
 J4IR.VisAtt.WMask4:           true
-J4IR.VisAtt:                  true
+J4IR.VisAtt:                  false
+
+J4IR.VisAtt.FCAL.Layer:           false
+J4IR.VisAtt.FCAL.Front.Absorber:  true
+J4IR.VisAtt.FCAL.Front.Sensor:    true
+J4IR.VisAtt.FCAL.Front.Gap:       false
+J4IR.VisAtt.FCAL.Tail.Absorber:   true
+J4IR.VisAtt.FCAL.Tail.Sensor:     true
+J4IR.VisAtt.FCAL.Tail.Gap:        false
+J4IR.VisAtt.BCAL.Layer:     false
+J4IR.VisAtt.BCAL.Absorber:  true
+J4IR.VisAtt.BCAL.Sensor:    true
+J4IR.VisAtt.BCAL.Gap:       false
+#
+J4IR.Color.FCAL.Layer: 1.0 0.0 0.5 1.0
+J4IR.Color.FCAL.Front.Absorber: 1.0 0.0 0.2 1.0
+J4IR.Color.FCAL.Front.Sensor: 1.0 0.0 0.7 1.0
+J4IR.Color.FCAL.Front.Gap: 0.7 0.0 0.2 1.0
+J4IR.Color.FCAL.Tail.Absorber: 1.0 0.0 0.2 1.0
+J4IR.Color.FCAL.Tail.Sensor: 1.0 0.0 0.7 1.0
+J4IR.Color.FCAL.Tail.Gap: 0.7 0.0 0.2 1.0
+J4IR.Color.BCAL.Layer:     1.0 0.0 0.5 1.0
+J4IR.Color.BCAL.Absorber:  1.0 0.0 0.2 1.0
+J4IR.Color.BCAL.Sensor:    1.0 0.0 0.7 1.0
+J4IR.Color.BCAL.Gap:       0.7 0.0 0.2 1.0
+#
 #
 #  IT Parameters
 #
@@ -349,25 +368,25 @@ J4.EXPHall.VisAtt:            false
 #
 J4CAL.Color.Barrel:           0.0 0.0 1.0 1.0
 J4CAL.Color.Cone:             1.0 0.0 0.0 1.0
-J4CAL.Color.EM:               0.0 0.0 1.0 1.0
+J4CAL.Color.EM:               0.5 0.5 1.0 1.0
 J4CAL.Color.Endcap:           0.0 0.0 1.0 1.0
-J4CAL.Color.HD:               1.0 0.0 0.0 1.0
+J4CAL.Color.HD:               0.18 0.74 0.56 1.0
 J4CAL.Color.Layer:            0.0 1.0 0.0 1.0
 J4CAL.Color.MiniCone:         1.0 1.0 0.0 1.0
 J4CAL.Color.MiniTower:        0.0 1.0 0.0 1.0
 J4CAL.Color.SubLayer:         0.0 1.0 0.0 1.0
 J4CAL.Color.Tower:            0.0 1.0 0.0 1.0
-J4CAL.Color:                  0.0 0.0 1.0 1.0
+J4CAL.Color:                  0.9 0.9 1.0 1.0
 J4CAL.VisAtt.Barrel:          false
 J4CAL.VisAtt.Cone:            false
-J4CAL.VisAtt.EM:              false
-J4CAL.VisAtt.Endcap:          true
-J4CAL.VisAtt.HD:              false
+J4CAL.VisAtt.EM:              true
+J4CAL.VisAtt.Endcap:          false
+J4CAL.VisAtt.HD:              true
 J4CAL.VisAtt.Layer:           false
 J4CAL.VisAtt.MiniCone:        false
 J4CAL.VisAtt.MiniTower:       false
 J4CAL.VisAtt.SubLayer:        false
-J4CAL.VisAtt.Tower:           true
+J4CAL.VisAtt.Tower:           false
 J4CAL.VisAtt:                 true
 #
 # ----- MUD
@@ -381,13 +400,13 @@ J4MUD.Color.FrontEndcapAbs:   0.3 0.3 1.0 1.0
 J4MUD.Color.FrontEndcapActive:0.5 1.0 0.5 1.0
 J4MUD.Color:                  1.0 0.0 0.0 1.0
 J4MUD.VisAtt.BarrelAbs:       true
-J4MUD.VisAtt.BarrelActive:    false
-J4MUD.VisAtt.Block:           false
+J4MUD.VisAtt.BarrelActive:    true
+J4MUD.VisAtt.Block:           true
 J4MUD.VisAtt.EndcapAbs:       true
-J4MUD.VisAtt.EndcapActive:    false
+J4MUD.VisAtt.EndcapActive:    true
 J4MUD.VisAtt.FrontEndcapAbs:  true
-J4MUD.VisAtt.FrontEndcapActive:false
-J4MUD.VisAtt:                 true
+J4MUD.VisAtt.FrontEndcapActive:true
+J4MUD.VisAtt:                 false
 #
 # SOL
 #
@@ -397,26 +416,26 @@ J4SOL.VisAtt:                 true
 # TPC
 #
 J4TPC.Color.CentralMembrane:  1.0 1.0 0.0 1.0
-J4TPC.Color.DriftRegion:      1.0 0.0 0.0 1.0
+J4TPC.Color.DriftRegion:      0.8 0.8 0.0 1.0
 J4TPC.Color.Endcap:           0.0 0.0 1.0 1.0
-J4TPC.Color.Half:             1.0 0.0 1.0 1.0
+J4TPC.Color.Half:             1.0 1.0 0.8 1.0
 J4TPC.Color.Layer:            1.0 0.0 1.0 1.0
 J4TPC.Color.Pad:              1.0 0.0 0.0 1.0
-J4TPC.Color.PadPlane:         1.0 1.0 1.0 1.0
+J4TPC.Color.PadPlane:         1.0 0.7 1.0 1.0
 J4TPC.Color.PadRow:           1.0 1.0 1.0 1.0
 J4TPC.Color.SupportTube:      0.0 1.0 0.0 1.0
-J4TPC.Color:                  1.0 0.0 0.0 1.0
+J4TPC.Color:                  1.0 1.0 0.9 1.0
 
 J4TPC.VisAtt.CentralMembrane: true
-J4TPC.VisAtt.DriftRegion:     false
+J4TPC.VisAtt.DriftRegion:     true
 J4TPC.VisAtt.Endcap:          true
 J4TPC.VisAtt.Half:            false
 J4TPC.VisAtt.Layer:           false
 J4TPC.VisAtt.Pad:             true
-J4TPC.VisAtt.PadPlane:        false
+J4TPC.VisAtt.PadPlane:        true
 J4TPC.VisAtt.PadRow:          false
 J4TPC.VisAtt.SupportTube:     true
-J4TPC.VisAtt:                 true
+J4TPC.VisAtt:                 false
 
 #J4TPC.VisAtt.CentralMembrane: false
 #J4TPC.VisAtt.DriftRegion:     false
