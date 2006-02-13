@@ -103,9 +103,9 @@ void J4IRBCALSubLayer::Assemble()
     MakeLVWith(OpenMaterialStore()->Order(material));
     
     // SetVisAttribute ---------------
-    key=string("J4IR.VisAtt.BCAL.")+geoinfo[id].name;
+    key=std::string("J4IR.VisAtt.BCAL.")+geoinfo[id].name;
     G4bool visatt=J4ParameterTable::GetValue(key,geoinfo[id].visatt);
-    key=string("J4IR.Color.BCAL.")+geoinfo[id].name;
+    key=std::string("J4IR.Color.BCAL.")+geoinfo[id].name;
     std::vector<double> col=
       J4ParameterTable::GetDValue(key.data(),geoinfo[id].color.data(),4);    
 

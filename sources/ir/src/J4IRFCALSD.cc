@@ -76,7 +76,7 @@ void J4IRFCALSD::DefineCells(J4IRFCALSensor *detector)
     +(zmo+sbmo->GetZHalfLength())-zhlf;
   //  std::cerr << "FCAL " <<  detector->GetName() << " zsensor=" << zsensor << std::endl;
 
-  string fbname[2]={string("Front"),string("Tail")};
+  std::string fbname[2]={std::string("Front"),std::string("Tail")};
 // Cell sizes are defined by the fron surface of FCAL Fron or 
 // Tail, not by those at FCALSensor.  It defines ranges of costheta 
 // it is then transfered to the radius of FCALSensor.
@@ -87,12 +87,12 @@ void J4IRFCALSD::DefineCells(J4IRFCALSensor *detector)
 // Radial division of Front FCAL: 8.2 cm -> 13.0cm : NDIVR=5; (DeltaR=0.96cm)
 //                    Tail  FCAL: 9.2435 cm -> 17.696cm : NDIVPhi=9; (DeltaR=0.939cm) 
   G4int ndivr[2]={5, 9};
-  string ndivphi[2]={string("57 64 70 76 82"),
-		     string("65 72 78 84 91 97 103 108 116 122")};  
+  std::string ndivphi[2]={std::string("57 64 70 76 82"),
+		     std::string("65 72 78 84 91 97 103 108 116 122")};  
   G4int ind=(fFCAL->GetMyID())%2; 
-  string pname=string("FCAL.")+fbname[ind]+string(".NDIVR");
+  std::string pname=std::string("FCAL.")+fbname[ind]+std::string(".NDIVR");
   fNDivR = J4ParameterTable::GetValue(pname.data(),ndivr[ind]);
-  pname=string("FCAL.")+fbname[ind]+string(".NDIVPhi");
+  pname=std::string("FCAL.")+fbname[ind]+std::string(".NDIVPhi");
   fNDivPhi = J4ParameterTable::GetIValue(pname.data(),ndivphi[ind].data(),
 					 ndivr[ind]);
 

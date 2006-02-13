@@ -116,9 +116,9 @@ void J4IRFCALSubLayer::Assemble()
     MakeLVWith(OpenMaterialStore()->Order(material));
     
     // SetVisAttribute ---------------
-    key=string("J4IR.VisAtt.FCAL.")+ft[fid]+G4String(".")+geoinfo[id].name;
+    key=std::string("J4IR.VisAtt.FCAL.")+ft[fid]+G4String(".")+geoinfo[id].name;
     G4bool visatt=J4ParameterTable::GetValue(key,geoinfo[id].visatt);
-    key=string("J4IR.Color.FCAL.")+ft[fid]+G4String(".")+geoinfo[id].name;
+    key=std::string("J4IR.Color.FCAL.")+ft[fid]+G4String(".")+geoinfo[id].name;
     std::vector<double> col=
       J4ParameterTable::GetDValue(key.data(),geoinfo[id].color.data(),4);    
 
