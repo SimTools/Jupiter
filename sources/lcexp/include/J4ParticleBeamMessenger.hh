@@ -52,6 +52,7 @@ class J4ParticleBeamMessenger: public G4UImessenger
     G4UIcmdWithAnInteger    *   fBeamtypeCmd;
     G4UIcmdWithABool   *        fConvergenceCmd;
     G4UIcmdWithABool   *        fFlatPosCmd;
+    G4UIcmdWithABool   *        fPtConstCmd;
     G4UIcmdWith3Vector *        fDirectionCmd;
     G4UIcmdWithADoubleAndUnit * fEnergyCmd;
     G4UIcmdWithADoubleAndUnit * fMomentumMinCmd;

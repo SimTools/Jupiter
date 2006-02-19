@@ -69,6 +69,7 @@ class J4ParticleBeam : public G4ParticleGun
      inline virtual void SetConvergenceMode(G4bool mod = TRUE) 
                                                        { fIsConvergenceMode = mod; }
      inline virtual void SetBeamProfileType(G4bool is) { fIsFlatProfile = is     ; }
+     inline virtual void SetPtConstant(G4bool is)      { fIsPtConstant = is      ; }
      inline virtual void SetNumberOfParticles(G4int n) { fNParticlesPerVertex = n; }
      inline virtual void SetNumberOfVertices (G4int n) { fNVerticesPerBeam = n   ; }
      
@@ -109,6 +110,7 @@ class J4ParticleBeam : public G4ParticleGun
      EBeamType             fBeamType;
      G4bool                fIsConvergenceMode;
      G4bool                fIsFlatProfile;
+     G4bool                fIsPtConstant;
      G4double              fMomentumRange[2];
      G4double              fCosThetaRange[2];
      G4double              fPhiRange[2];

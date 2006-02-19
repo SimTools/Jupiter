@@ -38,6 +38,7 @@ using namespace CLHEP;
 J4ParticleBeam::J4ParticleBeam()
                :fBeamType(kEIsotropic), 
 	             fIsConvergenceMode(FALSE), fIsFlatProfile(FALSE), 
+                fIsPtConstant(FALSE),
                 fMeanMomentum(10.*GeV), fMomentumSigma(0.1*GeV),
                 fDirectionSigma(0.01), fMeanPosition(0.,0.,0.),
                 fNVerticesPerBeam(1), fNParticlesPerVertex(1)
@@ -59,6 +60,7 @@ J4ParticleBeam::J4ParticleBeam(G4int numberoparticles)
                :G4ParticleGun(numberoparticles), 
                 fBeamType(kEIsotropic),
                 fIsConvergenceMode(FALSE), fIsFlatProfile(FALSE), 
+                fIsPtConstant(FALSE),
                 fMeanMomentum(10.*GeV), fMomentumSigma(0.1*GeV),
                 fDirectionSigma(0.01), fMeanPosition(0.,0.,0.),
                 fNVerticesPerBeam(1), fNParticlesPerVertex(1)
@@ -82,6 +84,7 @@ J4ParticleBeam::J4ParticleBeam(G4ParticleDefinition * particleDe,
                :G4ParticleGun(particleDe, numberoparticles), 
                 fBeamType(kEIsotropic), 
                 fIsConvergenceMode(FALSE), fIsFlatProfile(FALSE), 
+                fIsPtConstant(FALSE),
                 fMeanMomentum(10.*GeV), fMomentumSigma(0.1*GeV), 
                 fDirectionSigma(0.01), fMeanPosition(0.,0.,0.),
                 fNVerticesPerBeam(1), fNParticlesPerVertex(1)
@@ -160,6 +163,7 @@ void J4ParticleBeam::GenerateIsotopicBeam(G4Event* evt)
    }
 
 	G4double sintheta = std::sqrt((1-costheta)*(1+costheta));
+   if (fIsPtConstant) fMeanMomentum /= sintheta;
 	G4double mvx      = fMeanMomentum * sintheta * std::cos(phi);
 	G4double mvy      = fMeanMomentum * sintheta * std::sin(phi);
    G4double mvz      = fMeanMomentum * costheta;

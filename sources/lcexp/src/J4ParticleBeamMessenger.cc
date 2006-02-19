@@ -71,6 +71,11 @@ J4ParticleBeamMessenger::J4ParticleBeamMessenger(J4ParticleBeam * fPtclBeam)
   fFlatPosCmd->SetParameterName("IsFlatProfile",true,true); 
   fFlatPosCmd->SetDefaultValue(false);
 
+  fPtConstCmd = new G4UIcmdWithABool("/jupiter/beam/ptconstant", this);
+  fPtConstCmd->SetGuidance("Set pt constant");
+  fPtConstCmd->SetParameterName("IsPtConstant",true,true);
+  fPtConstCmd->SetDefaultValue(false);
+
   fDirectionCmd = new G4UIcmdWith3Vector("/jupiter/beam/direction",this);
   fDirectionCmd->SetGuidance("Set momentum direction.");
   fDirectionCmd->SetGuidance("Direction needs not to be a unit vector.");
@@ -257,6 +262,8 @@ void J4ParticleBeamMessenger::SetNewValue(G4UIcommand * command,G4String newValu
      fParticleBeam->SetConvergenceMode(fConvergenceCmd->GetNewBoolValue(newValues)); 
   } else if( command==fFlatPosCmd ) {
      fParticleBeam->SetBeamProfileType(fFlatPosCmd->GetNewBoolValue(newValues)); 
+  } else if( command==fPtConstCmd ) {
+     fParticleBeam->SetPtConstant(fPtConstCmd->GetNewBoolValue(newValues));
   } else if( command==fDirectionCmd ) {
      fParticleBeam->SetParticleMomentumDirection(fDirectionCmd->GetNew3VectorValue(newValues)); 
   } else if( command==fEnergyCmd ) { 
