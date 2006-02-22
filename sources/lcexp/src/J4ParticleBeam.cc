@@ -47,6 +47,8 @@ J4ParticleBeam::J4ParticleBeam()
    fMomentumRange[1] = 100.*GeV;
    fCosThetaRange[0] = -1.;
    fCosThetaRange[1] = +1.;
+   fPhiRange[0]      = 0.;
+   fPhiRange[1]      = 2. * M_PI;
 
    for (G4int i=0; i<3; i++) {
       for (G4int j=0; j<2; j++) fPositionRange[i][j] = 0.;
@@ -70,6 +72,8 @@ J4ParticleBeam::J4ParticleBeam(G4int numberoparticles)
    fMomentumRange[1] = 100.*GeV;
    fCosThetaRange[0] = -1.;
    fCosThetaRange[1] = +1.;
+   fPhiRange[0]      = 0.;
+   fPhiRange[1]      = 2. * M_PI;
 
    for (G4int i=0; i<3; i++) {
       for (G4int j=0; j<2; j++) fPositionRange[i][j] = 0.;
@@ -94,6 +98,8 @@ J4ParticleBeam::J4ParticleBeam(G4ParticleDefinition * particleDe,
    fMomentumRange[1] = 100.*GeV;
    fCosThetaRange[0] = -1.;
    fCosThetaRange[1] = +1.;
+   fPhiRange[0]      = 0.;
+   fPhiRange[1]      = 2. * M_PI;
 
    for (G4int i=0; i<3; i++) {
       for (G4int j=0; j<2; j++) fPositionRange[i][j] = 0.;
