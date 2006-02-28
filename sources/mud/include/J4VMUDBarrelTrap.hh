@@ -41,7 +41,7 @@ public:
   virtual G4String GetFirstName () const    = 0;
   virtual G4double GetFront     ( G4int i ) = 0;
   virtual G4double GetHalfL     ( G4int i ) = 0;
-  virtual G4double GetThick     ()          = 0;
+  virtual G4double GetThick     ( G4int i ) = 0;
   virtual G4String GetMaterial  ()          = 0;
   virtual G4bool   GetVisAtt    ()          = 0;
   virtual G4Color  GetColor     ()          = 0;

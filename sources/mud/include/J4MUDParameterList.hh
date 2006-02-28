@@ -32,21 +32,26 @@ public:
   
   virtual void PrintParameterList() { }
 
-  //=== get parameters===========================================
-  static J4MUDParameterList* GetInstance(); 
+  //____Getter and Setters_________________________________________________
+  static J4MUDParameterList* GetInstance();
 
   //*MUD Magnetic field
-  inline G4double GetBarrelBField             () const { return fBarrelBField;        }
-  inline G4double GetCornerBField             () const { return fCornerBField;        }
-  inline G4double GetEndcapBField             () const { return fEndcapBField;        }
-  inline G4double GetReturnBField             () const { return fReturnBField;        }
+  inline G4double GetBarrelBField             () const { return fBarrelBField            ; }
+  inline G4double GetCornerBField             () const { return fCornerBField            ; }
+  inline G4double GetEndcapBField             () const { return fEndcapBField            ; }
+  inline G4double GetReturnBField             () const { return fReturnBField            ; }
   
   //*MUD ------------------------------------------------------------------
-  inline G4double GetMUDHeight                () const { return fMUDHeight;           }
-  inline G4double GetMUDDeltaPhi              () const { return fDeltaPhi;            }
-  inline G4int    GetNTraps                   () const { return fNTraps;              }
-  inline G4double GetTrapDeltaPhi             () const { return fTrapDeltaPhi;        }
-
+  inline G4double GetMUDHeight                () const { return fMUDHeight               ; }
+  inline G4double GetMUDDeltaPhi              () const { return fDeltaPhi                ; }
+  inline G4int    GetNTraps                   () const { return fNTraps                  ; }
+  inline G4int    GetNLayers                  () const { return fNLayers                 ; }
+  inline G4double GetTrapDeltaPhi             () const { return fTrapDeltaPhi            ; }
+  inline G4double GetPhiTolerance             () const { return fPhiTolerance            ; }
+  inline G4double GetAbsThick( G4int i )         const { return fAbsThick[i]             ; }
+  inline G4double GetActiveThick              () const { return fActiveThick             ; }
+  G4double GetTotalAbsThick( G4int i )           const ;
+  
   //*MUD and Block ----------------------------------------------------------
   inline G4double GetMUDInnerR                () const { return fMUDInnerR               ; }
   inline G4double GetMUDOuterR                () const { return fMUDOuterR               ; }
@@ -57,7 +62,6 @@ public:
   inline G4double GetMUDFrontEndcapOuterR     () const { return fMUDFrontEndcapOuterR    ; }
   inline G4double GetMUDFrontEndcapFrontZ     () const { return fMUDFrontEndcapFrontZ    ; }
   inline G4double GetMUDHalfL                 () const { return fMUDHalfL                ; }
-
   inline G4double GetBlockInnerR              () const { return fBlockInnerR             ; }
   inline G4double GetBlockOuterR              () const { return fBlockOuterR             ; }
   inline G4double GetBlockEndcapFrontZ        () const { return fBlockEndcapFrontZ       ; }
@@ -69,55 +73,58 @@ public:
   inline G4double GetBlockHalfL               () const { return fBlockHalfL              ; }
   
   //*Barrel -------------------------------------------------------------------
-  inline G4int    GetBarrelNSuperLayers       () const { return fBarrelNSuperLayers;  }
-  inline G4int    GetBarrelNActiveLayers      () const { return fBarrelNActiveLayers; }
-  inline G4int    GetBarrelNAbsLayers         () const { return fBarrelNAbsLayers;    }
-  inline G4double GetBarrelThick              () const { return fBarrelThick;         }
-  inline G4double GetBarrelAbsThick           () const { return fBarrelAbsThick;      }
-  inline G4double GetBarrelActiveThick        () const { return fBarrelActiveThick;   }
-  inline G4double GetBarrelDeltaPhi           () const { return fDeltaPhi;            }
-  inline G4double GetBarrelFrontHalfL         () const { return fBarrelFrontHalfL;    }
-  inline G4double GetBarrelInnerR             () const { return fBarrelInnerR;        }
-  inline G4double GetBarrelAbsFront( G4int i )         const;
-  inline G4double GetBarrelActiveFront( G4int i )      const;
-  inline G4double GetBarrelAbsHalfL( G4int i )         const;
-  inline G4double GetBarrelActiveHalfL( G4int i )      const;
+  inline G4int    GetBarrelNSuperLayers       () const { return fBarrelNSuperLayers      ; }
+  inline G4int    GetBarrelNActiveLayers      () const { return fBarrelNActiveLayers     ; }
+  inline G4int    GetBarrelNAbsLayers         () const { return fBarrelNAbsLayers        ; }
+  inline G4double GetBarrelThick              () const { return fBarrelThick             ; }
+  inline G4double GetBarrelActiveThick        () const { return fBarrelActiveThick       ; }
+  inline G4double GetBarrelAbsThick( G4int i )   const { return fAbsThick[i]             ; }
+  inline G4double GetBarrelDeltaPhi           () const { return fDeltaPhi                ; }
+  inline G4double GetBarrelFrontHalfL         () const { return fBarrelFrontHalfL        ; }
+  inline G4double GetBarrelInnerR             () const { return fBarrelInnerR            ; }
 
+  G4double GetBarrelAbsFront( G4int i )         const;
+  G4double GetBarrelActiveFront( G4int i )      const;
+  G4double GetBarrelAbsHalfL( G4int i )         const;
+  G4double GetBarrelActiveHalfL( G4int i )      const;
+  
   //*Endcap ----------------------------------------------------------------
-  inline G4int    GetEndcapNSuperLayers       () const { return fEndcapNSuperLayers;  }
-  inline G4int    GetEndcapNActiveLayers      () const { return fEndcapNActiveLayers; }
-  inline G4int    GetEndcapNAbsLayers         () const { return fEndcapNAbsLayers;    }
-  inline G4double GetEndcapThick              () const { return fEndcapThick;         }
-  inline G4double GetEndcapAbsThick           () const { return fEndcapAbsThick;      }
-  inline G4double GetEndcapActiveThick        () const { return fEndcapActiveThick;   }
-  inline G4double GetEndcapInnerR             () const { return fEndcapInnerR;        }
-  inline G4double GetEndcapOuterR             () const { return fBlockOuterR;         }
-  inline G4double GetEndcapFrontZ             () const { return fEndcapFrontZ;        }
-  inline G4double GetEndcapDeltaPhi           () const { return fDeltaPhi;            }
-  inline G4double GetEndcapAbsHeight( G4int i )    const;
-  inline G4double GetEndcapActiveHeight( G4int i ) const;
-  inline G4double GetEndcapAbsFront( G4int i )     const;
-  inline G4double GetEndcapActiveFront( G4int i )  const;
-  inline G4double GetEndcapAbsZ( G4int i )         const;
-  inline G4double GetEndcapActiveZ( G4int i )      const;
+  inline G4int    GetEndcapNSuperLayers       () const { return fEndcapNSuperLayers      ; }
+  inline G4int    GetEndcapNActiveLayers      () const { return fEndcapNActiveLayers     ; }
+  inline G4int    GetEndcapNAbsLayers         () const { return fEndcapNAbsLayers        ; }
+  inline G4double GetEndcapThick              () const { return fEndcapThick             ; }
+  inline G4double GetEndcapActiveThick        () const { return fEndcapActiveThick       ; }
+  inline G4double GetEndcapAbsThick( G4int i )   const { return fAbsThick[i]             ; }
+  inline G4double GetEndcapInnerR             () const { return fEndcapInnerR            ; }
+  inline G4double GetEndcapOuterR             () const { return fBlockOuterR             ; }
+  inline G4double GetEndcapFrontZ             () const { return fEndcapFrontZ            ; }
+  inline G4double GetEndcapDeltaPhi           () const { return fDeltaPhi                ; }
+
+  G4double GetEndcapAbsHeight( G4int i )    const;
+  G4double GetEndcapActiveHeight( G4int i ) const;
+  G4double GetEndcapAbsFront( G4int i )     const;
+  G4double GetEndcapActiveFront( G4int i )  const;
+  G4double GetEndcapAbsZ( G4int i )         const;
+  G4double GetEndcapActiveZ( G4int i )      const;
 
   //*FrontEndcap ------------------------------------------------------------
-  inline G4int    GetFrontEndcapNSuperLayers()  const { return fFrontEndcapNSuperLayers;  }
-  inline G4int    GetFrontEndcapNActiveLayers() const { return fFrontEndcapNActiveLayers; }
-  inline G4int    GetFrontEndcapNAbsLayers()    const { return fFrontEndcapNAbsLayers;    }
-  inline G4double GetFrontEndcapThick()         const { return fFrontEndcapThick;         }
-  inline G4double GetFrontEndcapAbsThick()      const { return fFrontEndcapAbsThick;      }
-  inline G4double GetFrontEndcapActiveThick()   const { return fFrontEndcapActiveThick;   }
-  inline G4double GetFrontEndcapInnerR()        const { return fEndcapInnerR;             }
-  inline G4double GetFrontEndcapOuterR()        const { return fFrontEndcapOuterR;        }
-  inline G4double GetFrontEndcapFrontZ()        const { return fFrontEndcapFrontZ;        }
-  inline G4double GetFrontEndcapDeltaPhi()      const { return fDeltaPhi;                 }
-  inline G4double GetFrontEndcapAbsHeight( G4int i )    const;
-  inline G4double GetFrontEndcapActiveHeight( G4int i ) const;
-  inline G4double GetFrontEndcapAbsFront( G4int i )     const;
-  inline G4double GetFrontEndcapActiveFront( G4int i )  const;
-  inline G4double GetFrontEndcapAbsZ( G4int i )         const;
-  inline G4double GetFrontEndcapActiveZ( G4int i )      const;
+  inline G4int    GetFrontEndcapNSuperLayers()  const { return fFrontEndcapNSuperLayers  ; }
+  inline G4int    GetFrontEndcapNActiveLayers() const { return fFrontEndcapNActiveLayers ; }
+  inline G4int    GetFrontEndcapNAbsLayers()    const { return fFrontEndcapNAbsLayers    ; }
+  inline G4double GetFrontEndcapThick()         const { return fFrontEndcapThick         ; }
+  inline G4double GetFrontEndcapActiveThick()   const { return fFrontEndcapActiveThick   ; }
+  inline G4double GetFrontEndcapAbsThick()      const { return fFrontEndcapAbsThick      ; }
+  inline G4double GetFrontEndcapInnerR()        const { return fEndcapInnerR             ; }
+  inline G4double GetFrontEndcapOuterR()        const { return fFrontEndcapOuterR        ; }
+  inline G4double GetFrontEndcapFrontZ()        const { return fFrontEndcapFrontZ        ; }
+  inline G4double GetFrontEndcapDeltaPhi()      const { return fDeltaPhi                 ; }
+
+  G4double GetFrontEndcapAbsHeight( G4int i )    const;
+  G4double GetFrontEndcapActiveHeight( G4int i ) const;
+  G4double GetFrontEndcapAbsFront( G4int i )     const;
+  G4double GetFrontEndcapActiveFront( G4int i )  const;
+  G4double GetFrontEndcapAbsZ( G4int i )         const;
+  G4double GetFrontEndcapActiveZ( G4int i )      const;
   
   //*materials --------------------------------------------------------------
   inline G4String GetMUDMaterial()           const { return fMUDMaterial;          }
@@ -174,54 +181,33 @@ public:
   virtual void  SetVisAttributes();
   virtual void  SetColors();
   virtual void  SetParameters();
- 
+
  private:
+  //____Data members_________________________________________________________
   static J4MUDParameterList* fgInstance;
-   
-  // material
-  G4String fMUDMaterial;
-  G4String fBlockMaterial;
-  G4String fBarrelAbsMaterial;
-  G4String fBarrelActiveMaterial;
-  G4String fEndcapAbsMaterial;
-  G4String fEndcapActiveMaterial;
-  G4String fFrontEndcapAbsMaterial;
-  G4String fFrontEndcapActiveMaterial;
-
-  // VisAttributes
-  G4bool    fMUDVisAtt;
-  G4bool    fBlockVisAtt;
-  G4bool    fBarrelAbsVisAtt;
-  G4bool    fBarrelActiveVisAtt;
-  G4bool    fEndcapAbsVisAtt;
-  G4bool    fEndcapActiveVisAtt;
-  G4bool    fFrontEndcapAbsVisAtt;
-  G4bool    fFrontEndcapActiveVisAtt;
-
-  // Color
-  G4Color   fMUDColor;
-  G4Color   fBlockColor;
-  G4Color   fBarrelAbsColor;
-  G4Color   fBarrelActiveColor;
-  G4Color   fEndcapAbsColor;
-  G4Color   fEndcapActiveColor;
-  G4Color   fFrontEndcapAbsColor;
-  G4Color   fFrontEndcapActiveColor;
-
-  // MUD Magnetic filed
+  
+  //____Switch Front Layer to active_________________________________________
+  G4bool   fIsFrontActive;
+  
+  //____MUD Magnetic filed___________________________________________________
   G4double  fBarrelBField;
   G4double  fCornerBField;
   G4double  fEndcapBField;
   G4double  fReturnBField;
   
-  // MUD
+  //____MUD_________________________________________________________________
+  G4int     fNLayers;
+  G4int     fNTraps;
   G4double  fMUDHeight;
   G4double  fTrapDeltaPhi;
   G4double  fDeltaPhi;
-  G4int     fNTraps;
   G4double  fTolerance;
+  G4double  fPhiTolerance;
+  G4double  fActiveThick;
+  G4double* fAbsThick;
+  G4double  fFrontActiveThick;
 
-  // MUD and Block
+  //____MUD and Block________________________________________________________
   G4double fMUDHalfL;
   G4double fMUDInnerR;
   G4double fMUDOuterR;
@@ -242,9 +228,8 @@ public:
   G4double fBlockFrontEndcapFrontZ;
   G4double fBlockFrontEndcapOuterR;
   
-  // Barrel
+  //____Barrel_______________________________________________________________
   G4double  fBarrelInnerR;
-  //G4double  fBarrelOuterR;
   G4double  fBarrelHalfL;
   G4double  fBarrelFrontHalfL;
   G4double  fBarrelThick;
@@ -254,7 +239,7 @@ public:
   G4int     fBarrelNAbsLayers;
   G4int     fBarrelNActiveLayers;
 
-  // Endcap
+  //____Endcap_______________________________________________________________
   G4double  fEndcapInnerR;
   G4double  fEndcapFrontZ;
   G4double  fEndcapThick;
@@ -264,7 +249,7 @@ public:
   G4int     fEndcapNAbsLayers;
   G4int     fEndcapNActiveLayers;
 
-  // FrontEndcap
+  //____FrontEndcap__________________________________________________________
   G4double  fFrontEndcapFrontZ;
   G4double  fFrontEndcapOuterR;
   G4double  fFrontEndcapThick;
@@ -274,94 +259,36 @@ public:
   G4int     fFrontEndcapNAbsLayers;
   G4int     fFrontEndcapNActiveLayers;
 
+  //____material_____________________________________________________________
+  G4String fMUDMaterial;
+  G4String fBlockMaterial;
+  G4String fBarrelAbsMaterial;
+  G4String fBarrelActiveMaterial;
+  G4String fEndcapAbsMaterial;
+  G4String fEndcapActiveMaterial;
+  G4String fFrontEndcapAbsMaterial;
+  G4String fFrontEndcapActiveMaterial;
+
+  //____VisAttributes_________________________________________________________
+  G4bool    fMUDVisAtt;
+  G4bool    fBlockVisAtt;
+  G4bool    fBarrelAbsVisAtt;
+  G4bool    fBarrelActiveVisAtt;
+  G4bool    fEndcapAbsVisAtt;
+  G4bool    fEndcapActiveVisAtt;
+  G4bool    fFrontEndcapAbsVisAtt;
+  G4bool    fFrontEndcapActiveVisAtt;
+
+  //____Color_________________________________________________________________
+  G4Color   fMUDColor;
+  G4Color   fBlockColor;
+  G4Color   fBarrelAbsColor;
+  G4Color   fBarrelActiveColor;
+  G4Color   fEndcapAbsColor;
+  G4Color   fEndcapActiveColor;
+  G4Color   fFrontEndcapAbsColor;
+  G4Color   fFrontEndcapActiveColor;
+  
 };
-
-//=========================================================
-//* inline functions
-G4double J4MUDParameterList::GetBarrelAbsFront( G4int layerID ) const
-{
-  return GetBarrelInnerR() + layerID*(GetBarrelAbsThick()+GetBarrelActiveThick());
-}
-
-G4double J4MUDParameterList::GetEndcapAbsFront( G4int layerID ) const
-{
-  return GetEndcapFrontZ() + layerID*(GetEndcapAbsThick()+GetEndcapActiveThick()) ; 
-}
-
-G4double J4MUDParameterList::GetBarrelActiveFront( G4int layerID ) const
-{
-  return GetBarrelAbsFront( layerID ) + GetBarrelAbsThick();
-}
-
-G4double J4MUDParameterList::GetEndcapActiveFront( G4int layerID ) const
-{
-  return GetEndcapAbsFront( layerID ) + GetEndcapAbsThick();
-}
-
-G4double J4MUDParameterList::GetEndcapAbsZ( G4int layerID ) const
-{
-  return GetEndcapAbsFront(layerID) + 0.5*GetEndcapAbsThick();
-}
-
-G4double J4MUDParameterList::GetEndcapActiveZ( G4int layerID ) const
-{
-  return GetEndcapActiveFront(layerID) + 0.5*GetEndcapActiveThick();
-}
-
-G4double J4MUDParameterList::GetBarrelAbsHalfL( G4int layerID ) const
-{
-  return GetEndcapFrontZ()+(layerID+2)*GetEndcapAbsThick()+(layerID+1)*GetEndcapActiveThick();
-}
-
-G4double J4MUDParameterList::GetBarrelActiveHalfL( G4int layerID ) const
-{
-  return GetBarrelAbsHalfL( layerID ) + GetEndcapActiveThick();
-}
-
-G4double J4MUDParameterList::GetEndcapAbsHeight( G4int layerID ) const
-{
-  if ( layerID < 2 )
-    return GetBarrelAbsFront( 0 );
-  else
-    return GetBarrelAbsFront( layerID -1 );
-}
-
-G4double J4MUDParameterList::GetEndcapActiveHeight( G4int layerID ) const
-{
-  if ( layerID == 0 )
-    return GetBarrelAbsFront( 0 );
-  else
-    return GetBarrelAbsFront( layerID-1 )+GetBarrelAbsThick();
-}
-
-G4double J4MUDParameterList::GetFrontEndcapAbsHeight( G4int /*layerID*/ ) const
-{
-  return GetFrontEndcapOuterR() * std::cos( 0.5*GetTrapDeltaPhi() );
-}
-
-G4double J4MUDParameterList::GetFrontEndcapActiveHeight( G4int /*layerID*/ ) const
-{
-  return GetFrontEndcapOuterR() * std::cos( 0.5*GetTrapDeltaPhi() );
-}
-
-G4double J4MUDParameterList::GetFrontEndcapAbsFront( G4int layerID ) const
-{
-  return GetFrontEndcapFrontZ() + layerID*(GetFrontEndcapAbsThick()+GetFrontEndcapActiveThick());
-}
-
-G4double J4MUDParameterList::GetFrontEndcapActiveFront( G4int layerID ) const
-{
-  return GetFrontEndcapAbsFront( layerID ) + GetFrontEndcapAbsThick();
-}
-
-G4double J4MUDParameterList::GetFrontEndcapAbsZ( G4int layerID )  const
-{
-  return GetFrontEndcapAbsFront( layerID ) + 0.5*GetFrontEndcapAbsThick();
-}
-
-G4double J4MUDParameterList::GetFrontEndcapActiveZ( G4int layerID ) const
-{
-  return GetFrontEndcapActiveFront( layerID ) + 0.5*GetFrontEndcapActiveThick();
-}
 
 #endif

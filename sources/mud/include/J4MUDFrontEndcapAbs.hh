@@ -41,8 +41,8 @@ public:
   virtual G4double GetFront     ( G4int i );
   virtual G4double GetHeight    ( G4int i );
   virtual G4double GetEndcapZ   ( G4int i );
+  virtual G4double GetThick     ( G4int i );  
   virtual G4int    GetNLayers   ();
-  virtual G4double GetThick     ();
   virtual G4String GetMaterial  ();
   virtual G4bool   GetVisAtt    ();
   virtual G4Color  GetColor     ();
@@ -82,14 +82,14 @@ inline G4double J4MUDFrontEndcapAbs::GetEndcapZ( G4int layerID )
     return OpenParameterList()->GetFrontEndcapAbsZ( layerID - OpenParameterList()->GetFrontEndcapNAbsLayers() );
 }
 
+inline G4double J4MUDFrontEndcapAbs::GetThick( G4int /*layerID*/ )
+{
+  return OpenParameterList()->GetFrontEndcapAbsThick();
+}
+
 inline G4int J4MUDFrontEndcapAbs::GetNLayers() 
 {
   return OpenParameterList()->GetFrontEndcapNAbsLayers();
-}
-
-inline G4double J4MUDFrontEndcapAbs::GetThick()
-{
-  return OpenParameterList()->GetFrontEndcapAbsThick();
 }
 
 inline G4String J4MUDFrontEndcapAbs::GetMaterial()

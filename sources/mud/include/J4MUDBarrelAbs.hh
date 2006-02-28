@@ -41,7 +41,7 @@ public:
   virtual G4String GetFirstName () const { return fFirstName; }
   virtual G4double GetFront     ( G4int i );
   virtual G4double GetHalfL     ( G4int i );
-  virtual G4double GetThick     (); 
+  virtual G4double GetThick     ( G4int i ); 
   virtual G4String GetMaterial  ();
   virtual G4bool   GetVisAtt    ();
   virtual G4Color  GetColor     ();
@@ -54,7 +54,7 @@ private:
   static G4String fFirstName;
 };
 
-//=====================================================================               
+//=====================================================================
 //* Inline Implementation of Pure Virtuals of Base Class --------------
 inline G4double J4MUDBarrelAbs::GetFront( G4int layerID ) {
   return OpenParameterList()->GetBarrelAbsFront( layerID );
@@ -64,8 +64,8 @@ inline G4double J4MUDBarrelAbs::GetHalfL( G4int layerID ) {
   return OpenParameterList()->GetBarrelAbsHalfL( layerID );
 }
 
-inline G4double J4MUDBarrelAbs::GetThick() {
-  return OpenParameterList()->GetBarrelAbsThick();
+inline G4double J4MUDBarrelAbs::GetThick( G4int layerID ) {
+  return OpenParameterList()->GetBarrelAbsThick( layerID );
 }
 
 inline G4String J4MUDBarrelAbs::GetMaterial(){

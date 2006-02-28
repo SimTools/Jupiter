@@ -41,8 +41,8 @@ public:
   virtual G4double GetFront     ( G4int i );
   virtual G4double GetHeight    ( G4int i );
   virtual G4double GetEndcapZ   ( G4int i );
+  virtual G4double GetThick     ( G4int i );  
   virtual G4int    GetNLayers   ();
-  virtual G4double GetThick     ();
   virtual G4String GetMaterial  ();
   virtual G4bool   GetVisAtt    ();
   virtual G4Color  GetColor     ();
@@ -82,14 +82,17 @@ inline G4double J4MUDEndcapAbs::GetEndcapZ( G4int layerID )
     return OpenParameterList()->GetEndcapAbsZ( layerID - OpenParameterList()->GetEndcapNAbsLayers() );
 }
 
+inline G4double J4MUDEndcapAbs::GetThick( G4int layerID )
+{
+  if ( layerID < OpenParameterList()->GetEndcapNAbsLayers() )
+    return OpenParameterList()->GetEndcapAbsThick( layerID );
+  else
+    return OpenParameterList()->GetEndcapAbsThick( layerID - OpenParameterList()->GetEndcapNAbsLayers() );
+}
+
 inline G4int J4MUDEndcapAbs::GetNLayers() 
 {
   return OpenParameterList()->GetEndcapNAbsLayers();
-}
-
-inline G4double J4MUDEndcapAbs::GetThick()
-{
-  return OpenParameterList()->GetEndcapAbsThick();
 }
 
 inline G4String J4MUDEndcapAbs::GetMaterial()

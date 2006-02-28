@@ -27,10 +27,10 @@ class J4MUDFrontEndcapActive : public J4VMUDEndcapTrap {
 
 public:
   J4MUDFrontEndcapActive( J4VDetectorComponent* parent    = 0,
-                     G4int                 nclones   = 1,
-  	             G4int                 nbrothers = 1, 
-  	             G4int                 me        = 0,
-                     G4int                 copyno    = -1 );
+                          G4int                 nclones   = 1,
+                          G4int                 nbrothers = 1, 
+  	                  G4int                 me        = 0,
+                          G4int                 copyno    = -1 );
   	     
   virtual ~J4MUDFrontEndcapActive();
 
@@ -45,8 +45,8 @@ public:
   virtual G4double GetFront     ( G4int i );
   virtual G4double GetHeight    ( G4int i );
   virtual G4double GetEndcapZ   ( G4int i );
+  virtual G4double GetThick     ( G4int i );
   virtual G4int    GetNLayers   ();
-  virtual G4double GetThick     ();
   virtual G4String GetMaterial  ();
   virtual G4bool   GetVisAtt    ();
   virtual G4Color  GetColor     ();
@@ -85,15 +85,16 @@ inline G4double J4MUDFrontEndcapActive::GetEndcapZ( G4int layerID )
     return OpenParameterList()->GetFrontEndcapActiveZ( layerID - OpenParameterList()->GetFrontEndcapNActiveLayers() );
 }
 
+inline G4double J4MUDFrontEndcapActive::GetThick( G4int /*layerID*/ ) 
+{
+  return OpenParameterList()->GetFrontEndcapActiveThick();
+}
+
 inline G4int J4MUDFrontEndcapActive::GetNLayers() 
 {
   return OpenParameterList()->GetFrontEndcapNActiveLayers();
 }
 
-inline G4double J4MUDFrontEndcapActive::GetThick() 
-{
-  return OpenParameterList()->GetFrontEndcapActiveThick();
-}
 
 inline G4String J4MUDFrontEndcapActive::GetMaterial()
 {

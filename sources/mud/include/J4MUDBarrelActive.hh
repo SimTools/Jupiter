@@ -44,7 +44,7 @@ public:
   virtual G4String GetFirstName () const { return fFirstName; }
   virtual G4double GetFront     ( G4int i );
   virtual G4double GetHalfL     ( G4int i );
-  virtual G4double GetThick     ();
+  virtual G4double GetThick     ( G4int i );
   virtual G4String GetMaterial  ();
   virtual G4bool   GetVisAtt    ();
   virtual G4Color  GetColor     ();
@@ -67,7 +67,7 @@ inline G4double J4MUDBarrelActive::GetHalfL( G4int layerID ) {
   return OpenParameterList()->GetBarrelActiveHalfL( layerID );
 }
 
-inline G4double J4MUDBarrelActive::GetThick() {
+inline G4double J4MUDBarrelActive::GetThick( G4int /*layerID*/ ) {
   return OpenParameterList()->GetBarrelActiveThick();
 }
 
