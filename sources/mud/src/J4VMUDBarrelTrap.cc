@@ -38,13 +38,14 @@ void J4VMUDBarrelTrap::Assemble()
 
     J4MUDParameterList* ptrList = OpenParameterList();
 
-     G4int    myid   = GetMyID();
-     G4double len    = GetHalfL(myid);
-     G4double thick  = GetThick();
-     G4double front  = GetFront(myid);
+     G4int    myID   = GetMyID();
+     G4double len    = GetHalfL(myID);
+     G4double thick  = GetThick(myID);
+     G4double front  = GetFront(myID);
 
      // Make Trapezoid -----//
-     G4double dphi   = ptrList->GetTrapDeltaPhi();
+     G4double phitol = ptrList->GetPhiTolerance();
+     G4double dphi   = ptrList->GetTrapDeltaPhi() - 2*phitol;
      G4double py     = 0.5*thick;
      G4double plx    = (front + thick)*std::tan(0.5*dphi);
      G4double px     = front*std::tan(0.5*dphi);
@@ -54,10 +55,10 @@ void J4VMUDBarrelTrap::Assemble()
      //   in Barrel:                                                             //
      //                                                                          //
      //         \                   /   OM == rmin                               //
-     //          \                 /    OA == OB == OM/std::cos( 0.5*arg(AOB) )       //
-     //           C ---== N ==--- D     AM == BM == OM * std::tan( 0.5*arg(AOB) )     //
+     //          \                 /    OA == OB == OM/std::cos( 0.5*arg(AOB) )  //
+     //           C ---== N ==--- D     AM == BM == OM * std::tan( 0.5*arg(AOB) )//
      //            \  /   |   \  /    * MN == barrel_rmin - endcap_rmin          //
-     //             \/    |    \/       CN == DN == ON * std::tan( 0.5*arg(AOB) )     //
+     //             \/    |    \/       CN == DN == ON * std::tan( 0.5*arg(AOB) )//
      //              \    |    /                                                 //
      //               A -_M_- B                                                  //
      //                \/ | \/          endcapInitialDy  == 0.5 * MN             //
@@ -93,18 +94,17 @@ void J4VMUDBarrelTrap::InstallIn( J4VComponent*        /* mother */,
   
   G4int    myID     = GetMyID();
   G4int    motherID = GetMother()->GetMyID();
-  G4double height   = GetFront( myID )+0.5*GetThick();
+  G4double height   = GetFront( myID )+0.5*GetThick( myID );
   G4double phi      = ptrList->GetTrapDeltaPhi();
   G4double px       = height*std::cos(phi*motherID);
   G4double py       = height*std::sin(phi*motherID);
   G4double pz       = 0.0;
   G4ThreeVector position( px, py, pz );
-  
+
   G4RotationMatrix* rotation = new G4RotationMatrix();
   G4double angle = 0.5*M_PI - phi*motherID;
   rotation->rotateZ( angle );
-  
-  SetPVPlacement( rotation , position );
+  SetPVPlacement( rotation, position );
   
   Cabling();
 }

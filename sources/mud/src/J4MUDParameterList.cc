@@ -47,150 +47,177 @@ J4MUDParameterList::~J4MUDParameterList()
 //* SetMaterials ------------------------------------------------------
 void J4MUDParameterList::SetMaterials()
 {
-  fMUDMaterial   = J4ParameterTable::GetValue("J4MUD.Material","Air");
-  fBlockMaterial = J4ParameterTable::GetValue("J4MUD.BlockMaterial","Air");
-//  fBarrelActiveMaterial       = "Scintillator";
-//  fEndcapActiveMaterial       = "Scintillator";
-//  fFrontEndcapActiveMaterial  = "Scintillator";
-  fBarrelActiveMaterial       = J4ParameterTable::GetValue("J4MUD.Barrel.ActiveMaterial","Air");  // Gas chamber reserved
-  fEndcapActiveMaterial       = J4ParameterTable::GetValue("J4MUD.Endcap.ActiveMaterial","Air");  // Gas chamber reserved
-  fFrontEndcapActiveMaterial  = J4ParameterTable::GetValue("J4MUD.FrontEndcap.ActiveMaterial","Air");  // Gas chamber reserved
-  fBarrelAbsMaterial          = J4ParameterTable::GetValue("J4MUD.Barrel.AbsMaterial","Iron");
-  fEndcapAbsMaterial          = J4ParameterTable::GetValue("J4MUD.Endcap.AbsMaterial","Iron");
-  fFrontEndcapAbsMaterial     = J4ParameterTable::GetValue("J4MUD.FrontEndcap.AbsMaterial","Iron");
+  fMUDMaterial               = J4ParameterTable::GetValue("J4MUD.Material","Air");
+  fBlockMaterial             = J4ParameterTable::GetValue("J4MUD.BlockMaterial","Air");
+  fBarrelActiveMaterial      = J4ParameterTable::GetValue("J4MUD.Barrel.ActiveMaterial","Scintillator");
+  fEndcapActiveMaterial      = J4ParameterTable::GetValue("J4MUD.Endcap.ActiveMaterial","Scintillator");
+  fFrontEndcapActiveMaterial = J4ParameterTable::GetValue("J4MUD.FrontEndcap.ActiveMaterial","Scintillator");
+  fBarrelAbsMaterial         = J4ParameterTable::GetValue("J4MUD.Barrel.AbsMaterial","Iron");
+  fEndcapAbsMaterial         = J4ParameterTable::GetValue("J4MUD.Endcap.AbsMaterial","Iron");
+  fFrontEndcapAbsMaterial    = J4ParameterTable::GetValue("J4MUD.FrontEndcap.AbsMaterial","Iron");
 }
 
 //=====================================================================
 //* SetParameters -----------------------------------------------------
 void J4MUDParameterList::SetParameters()
 {
-  // Magnetic field magnitude
-  fBarrelBField    = J4ParameterTable::GetValue("J4MUD.BarrelBFiled",2.0 )*tesla;
-  fCornerBField    = J4ParameterTable::GetValue("J4MUD.CornerBFiled",1.5 )*tesla;
-  fEndcapBField    = J4ParameterTable::GetValue("J4MUD.EndcapBFiled",2.5 )*tesla;
-  fReturnBField    = J4ParameterTable::GetValue("J4MUD.ReturnBFiled",3.0 )*tesla;
+  //* Switch front layer to active or absorber ------------------------
+  fIsFrontActive    = J4ParameterTable::GetValue("J4MUD.IsFrontActive", true );
   
-  // Detector outer size = 700.0*cm
-  fMUDHeight = J4ParameterTable::GetValue("J4MUD.Height",700.0)*cm;
-  fDeltaPhi                 = 360.*deg;                           
-  // Octagonal shape of MUD
-  fNTraps   = J4ParameterTable::GetValue("J4MUD.NTraps",8);
-  // Angle of each trapezoid (45*deg)
-  fTrapDeltaPhi             = fDeltaPhi / fNTraps;        
-  // Tolerance for MUD and Block size difference
-  fTolerance = J4ParameterTable::GetValue("J4MUD.Tolerance",0.01)*cm;
+  //* Magnetic field magnitude ----------------------------------------
+  fBarrelBField     = J4ParameterTable::GetValue("J4MUD.BarrelBFiled",2.0 )*tesla;
+  fCornerBField     = J4ParameterTable::GetValue("J4MUD.CornerBFiled",1.5 )*tesla;
+  fEndcapBField     = J4ParameterTable::GetValue("J4MUD.EndcapBFiled",2.5 )*tesla;
+  fReturnBField     = J4ParameterTable::GetValue("J4MUD.ReturnBFiled",3.0 )*tesla;
   
-  // Endcap ----------------------------------------------------------//
+  //* Detector outer size = 700.0*cm ----------------------------------
+  fMUDHeight        = J4ParameterTable::GetValue("J4MUD.Height",765.0)*cm;
+
+  //* Total phi of MUD ------------------------------------------------
+  fDeltaPhi         = 360.*deg;
+
+  //* MUD polygon shape parameter -------------------------------------
+  fNTraps           = J4ParameterTable::GetValue("J4MUD.NTraps",12);
+
+  //* Number of Layers in MUD -----------------------------------------
+  fNLayers          = J4ParameterTable::GetValue("J4MUD.NLayers", 9);
+
+  //* Angle of each trapezoid (default : 12.25*deg for octagonal shape) --
+  fTrapDeltaPhi     = fDeltaPhi/fNTraps;
+
+  //* Tolerance for MUD and Block size difference ---------------------
+  fTolerance        = J4ParameterTable::GetValue("J4MUD.Tolerance",0.001)*mm;
+
+  //* Phi Tolerance between each block or trap ------------------------
+  fPhiTolerance     = J4ParameterTable::GetValue("J4MUD.PhiTolerance",0.0001)*mrad;
+
+  //* Active Layer thickness ------------------------------------------
+  fActiveThick      = J4ParameterTable::GetValue("J4MUD.ActiveThickness",5.0)*cm;
+
+  //* Front Active Layer ----------------------------------------------
+  fFrontActiveThick = J4ParameterTable::GetValue("J4MUD.FrontActiveThickness",5.0)*cm;
+  
+  //* Absorber thickness ----------------------------------------------
+  std::vector<double> absVector;
+  fAbsThick = new G4double [fNLayers];
+  absVector = J4ParameterTable::GetDValue("J4MUD.AbsThickness", "25.0 25.0 25.0 25.0 25.0 25.0 25.0 50.0 50.0", fNLayers );
+  for ( G4int i = 0; i < fNLayers; i++ ) { fAbsThick[i] = absVector[i]*cm; }
+  
+  //**** Barrel Parameters *******************************************
+  //* Barrel inner radius --------------------------------------------
+  fBarrelInnerR          = J4ParameterTable::GetValue("J4MUD.Barrel.InnerRadius",450.0)*cm;
+  
+  //* Barrel thickness -----------------------------------------------
+  fBarrelThick           = fMUDHeight - fBarrelInnerR;
+  
+  //* Number of Barrel Active Layer ----------------------------------
+  fBarrelNActiveLayers   = ( fIsFrontActive ) ? fNLayers : fNLayers -1;
+  
+  //* Number of Barrel Absorber Layer --------------------------------
+  fBarrelNAbsLayers      = fNLayers;
+  
+  //* Barrel Active Layer thickness ----------------------------------
+  fBarrelActiveThick     = fActiveThick;
+  
+  //**** Endcap Parametes ********************************************
 #ifdef __GLD_V1__
-  // Endcap front z-axis position
-  fEndcapFrontZ = J4ParameterTable::GetValue("J4MUD.Endcap.FrontZ",535.0)*cm; 
-  // Endcap thickness
-  fEndcapThick  = J4ParameterTable::GetValue("J4MUD.Endcap.Thickness",310.0)*cm; 
-#else								   
-  fEndcapFrontZ             = 430.0*cm;				   // Endcap fornt z-axis position
-  fEndcapThick              = 415.0*cm;                            // Endcap thickness
-#endif								   
-								   
-  // Endcap inner radius
-  fEndcapInnerR = J4ParameterTable::GetValue("J4MUD.Endcap.InnerRadius",45.0)*cm;
+  //* Endcap front z-axis position -----------------------------------
+  fEndcapFrontZ          = J4ParameterTable::GetValue("J4MUD.Endcap.FrontZ",485.0)*cm;
+  //* Endcap thickness -----------------------------------------------
+  fEndcapThick           = J4ParameterTable::GetValue("J4MUD.Endcap.Thickness",315.0)*cm;
+#else
+  //* Endcap front z-axis position -----------------------------------
+  fEndcapFrontZ          = 430.0*cm;
+  //* Endcap thickness -----------------------------------------------
+  fEndcapThick           = 415.0*cm;
+#endif
 
-  // Number of Endcap SuperLayer
-  fEndcapNSuperLayers  = J4ParameterTable::GetValue("J4MUD.Endcap.NSuperLayers",5);
-  // Number of Endcap Active Layer
-  fEndcapNAbsLayers         = fEndcapNSuperLayers + 1;            
-  // Number of Endcap Active Layer
-  fEndcapNActiveLayers      = fEndcapNSuperLayers;               
-  // Endcap Active Layer thickness
-  fEndcapActiveThick = J4ParameterTable::GetValue("J4MUD.Endcap.ActiveThickness",10.0)*cm;
-  // Endcap Absorber thickness
-  fEndcapAbsThick    = (fEndcapThick - fEndcapNActiveLayers*fEndcapActiveThick ) / fEndcapNAbsLayers; 
+  //* Half length of Barrel front layer ------------------------------
+  fBarrelFrontHalfL      = fEndcapFrontZ;
   
-  // frontEndcap -----------------------------------------------------//
-  // Number of FrontEndcap SuperLayer
-  fFrontEndcapNSuperLayers  = J4ParameterTable::GetValue("J4MUD.FrontEndcap.NSuperLayers",2);                                   
-  // Number of FrontEndcap Abs Layer
-  fFrontEndcapNAbsLayers    = fFrontEndcapNSuperLayers;            
-  // Number of FrontEndcap Active Layer
-  fFrontEndcapNActiveLayers = fFrontEndcapNSuperLayers;           
-  // FrontEndcap front z-axis position
-  fFrontEndcapFrontZ        = J4ParameterTable::GetValue("J4MUD.FrontEndcap.FrontZ",430.0)*cm;
-  // FrontEndcap Outer radius
-  fFrontEndcapOuterR        = J4ParameterTable::GetValue("J4MUD.FrontEndcap.OuterRadius",360.0)*cm;
-  // FrontEndcap Thickness
-  fFrontEndcapThick         = fEndcapFrontZ - fFrontEndcapFrontZ;  
-  // FrontEndcap Active Layer Thickness
-  fFrontEndcapActiveThick   = J4ParameterTable::GetValue("J4MUD.FrontEndcap.ActiveThickness",10.0)*cm;
-  // FrontEndcap Absorber thickness
-  fFrontEndcapAbsThick      = ( fFrontEndcapThick - fFrontEndcapNActiveLayers*fFrontEndcapActiveThick ) / fFrontEndcapNAbsLayers; 
+  //* Endcap inner radius --------------------------------------------
+  fEndcapInnerR          = J4ParameterTable::GetValue("J4MUD.Endcap.InnerRadius",45.0)*cm;
+
+  //* Number of Endcap Active Layers  --------------------------------
+  fEndcapNActiveLayers   = ( fIsFrontActive ) ? fNLayers : fNLayers -1;
   
-  // Barrel -----------------------------------------------------------//
-  //fBarrelInnerR             = 455.0*cm;                            // Barrel inner radius
-  // Barrel inner radius
-  fBarrelInnerR  = J4ParameterTable::GetValue("J4MUD.Barrel.InnerRadius",460.0)*cm;
-  // Barrel thickness : 250cm 
-  fBarrelThick              = fMUDHeight - fBarrelInnerR;         
-  // Half length of Barrel front layer
-  fBarrelFrontHalfL         = fEndcapFrontZ;                     
-  // Number of Barrel SuperLayer
-  fBarrelNSuperLayers  = J4ParameterTable::GetValue("J4MUD.Barrel.NSuperLayers",4);
-  // Number of Barrel Active Layer
-  fBarrelNAbsLayers         = fBarrelNSuperLayers + 1;            
-  // Number of Barrel Active Layer
-  fBarrelNActiveLayers      = fBarrelNSuperLayers;               
-  // Barrel Active Layer thickness
-  fBarrelActiveThick   = J4ParameterTable::GetValue("J4MUD.Barrel.ActiveThickness",10.0)*cm;
-  // Barrel Absorber thickness
-  fBarrelAbsThick           = (fBarrelThick - fBarrelNActiveLayers*fBarrelActiveThick ) / fBarrelNAbsLayers; 
+  //* NUmber of Endcap Absorber Layers -------------------------------
+  fEndcapNAbsLayers      = fNLayers;
 
-  // MUD and Block, MUD is fTolerance size larger than Block ---------------------//
-  fMUDInnerR                = fBarrelInnerR - fTolerance;
-  //fMUDOuterR                = fMUDHeight / std::cos( 0.5* fTrapDeltaPhi ) + fTolerance;
-  // fMUDOuterR = fMUDHeight / std::cos(22.5*deg) + fTolerance
-  fMUDOuterR                = J4ParameterTable::GetValue("J4MUD.OuterRadius",780.0)*cm;       
-  fMUDEndcapFrontZ          = fEndcapFrontZ - fTolerance;
-  fMUDEndcapInnerR          = fEndcapInnerR - fTolerance;
-  fMUDEndcapThick           = fEndcapThick + 2*fTolerance;
-  fMUDFrontEndcapThick      = fFrontEndcapThick;
-  fMUDFrontEndcapFrontZ     = fFrontEndcapFrontZ - fTolerance;
-  fMUDFrontEndcapOuterR     = fFrontEndcapOuterR + fTolerance;
+  //* Endcap Active Layer thickness ----------------------------------
+  fEndcapActiveThick     = fActiveThick;
+  
+  //**** frontEndcap Parameters **************************************
+  //* FrontEndcap front z-axis position ------------------------------
+  fFrontEndcapFrontZ        = J4ParameterTable::GetValue("J4MUD.FrontEndcap.FrontZ",425.1)*cm;
+  
+  //* FrontEndcap Outer radius ---------------------------------------
+  fFrontEndcapOuterR        = J4ParameterTable::GetValue("J4MUD.FrontEndcap.OuterRadius",260.0)*cm;
+  
+  //* Number of FrontEndcap SuperLayer -------------------------------
+  fFrontEndcapNSuperLayers  = J4ParameterTable::GetValue("J4MUD.FrontEndcap.NSuperLayers",2);
+  
+  //* Number of FrontEndcap Abs Layer --------------------------------
+  fFrontEndcapNAbsLayers    = fFrontEndcapNSuperLayers;
 
-  // Half length of MUD : 845cm
-  fMUDHalfL                 = fMUDEndcapFrontZ + fMUDEndcapThick; 
+  //* Number of FrontEndcap Active Layer -----------------------------
+  fFrontEndcapNActiveLayers = ( fIsFrontActive ) ? fFrontEndcapNSuperLayers-1 : fFrontEndcapNSuperLayers;
+  
+  //* FrontEndcap Active Layer Thickness -----------------------------
+  fFrontEndcapActiveThick   = fActiveThick;
 
-  fBlockInnerR              = fBarrelInnerR;
-  fBlockOuterR              = fMUDHeight / std::cos( 0.5*fTrapDeltaPhi );  
-  fBlockEndcapFrontZ        = fEndcapFrontZ;
+  //* FrontEndcap Thickness ------------------------------------------
+  fFrontEndcapThick         = fEndcapFrontZ - fFrontEndcapFrontZ;
+  
+  //**** Block parameters ********************************************
+  //* Block is fTolerance size smaller than MUD ----------------------
+  //******************************************************************
+  if ( fIsFrontActive ) {
+    fBlockInnerR            = fBarrelInnerR - fFrontActiveThick;
+    fBlockEndcapFrontZ      = fEndcapFrontZ - fFrontActiveThick;
+    fBlockEndcapThick       = fEndcapThick + fFrontActiveThick;
+    fBlockFrontEndcapThick  = fFrontEndcapThick - fFrontActiveThick;
+  } else {
+    fBlockInnerR            = fBarrelInnerR;
+    fBlockEndcapFrontZ      = fEndcapFrontZ;
+    fBlockEndcapThick       = fEndcapThick;
+    fBlockFrontEndcapThick  = fFrontEndcapThick;
+  }
+  
+  //* FrontEndcap Absorber thickness ---------------------------------
+  fFrontEndcapAbsThick      = ( fBlockFrontEndcapThick - fFrontEndcapNActiveLayers*fFrontEndcapActiveThick ) / fFrontEndcapNAbsLayers ;
+
+  //****************************************************************
+  fBlockOuterR              = fMUDHeight/std::cos( 0.5*fTrapDeltaPhi );
   fBlockEndcapInnerR        = fEndcapInnerR;
-  fBlockEndcapThick         = fEndcapThick;
-  fBlockFrontEndcapThick    = fFrontEndcapThick;
-  fBlockFrontEndcapFrontZ   = fFrontEndcapFrontZ;
   fBlockFrontEndcapOuterR   = fFrontEndcapOuterR;
-
-  // Block Half length of MUD : 845cm
-  fBlockHalfL               = fBlockEndcapFrontZ + fBlockEndcapThick; 
+  fBlockFrontEndcapFrontZ   = fFrontEndcapFrontZ;
+  fBlockHalfL               = fBlockEndcapFrontZ + fBlockEndcapThick;
+  
+  //**** MUD Paramters ********************************************
+  fMUDOuterR                = fMUDHeight/std::cos( 0.5*fTrapDeltaPhi ) + fTolerance;
+  fMUDInnerR                = GetBlockInnerR() - fTolerance;
+  fMUDEndcapFrontZ          = fBlockEndcapFrontZ - fTolerance;
+  fMUDEndcapInnerR          = fEndcapInnerR - fTolerance;
+  fMUDEndcapThick           = GetBlockEndcapThick() + 2*fTolerance;
+  fMUDFrontEndcapThick      = fBlockFrontEndcapThick;
+  fMUDFrontEndcapFrontZ     = fBlockFrontEndcapFrontZ - fTolerance;
+  fMUDFrontEndcapOuterR     = fFrontEndcapOuterR + fTolerance;
+  fMUDHalfL                 = fMUDEndcapFrontZ + fMUDEndcapThick;
 }
 
 //=====================================================================
 //* SetVisAttributes --------------------------------------------------
 void J4MUDParameterList::SetVisAttributes()
 {
-   //fMUDVisAtt               = false;
-   //fBlockVisAtt             = false;
-   fMUDVisAtt       = J4ParameterTable::GetValue("J4MUD.VisAtt",false);
-   fBlockVisAtt     = J4ParameterTable::GetValue("J4MUD.VisAtt.Block",false);
-   //fBarrelActiveVisAtt      = true;
-   //fBarrelAbsVisAtt         = true;
-   //fEndcapActiveVisAtt      = true;
-   //fEndcapAbsVisAtt         = true;
-   //fFrontEndcapActiveVisAtt = true;
-   //fFrontEndcapAbsVisAtt    = true;
-   fBarrelActiveVisAtt      = J4ParameterTable::GetValue("J4MUD.VisAtt.BarrelActive",false);
+   fMUDVisAtt               = J4ParameterTable::GetValue("J4MUD.VisAtt",false);
+   fBlockVisAtt             = J4ParameterTable::GetValue("J4MUD.VisAtt.Block",false);
+   fBarrelActiveVisAtt      = J4ParameterTable::GetValue("J4MUD.VisAtt.BarrelActive",true);
    fBarrelAbsVisAtt         = J4ParameterTable::GetValue("J4MUD.VisAtt.BarrelAbs",true);
-   fEndcapActiveVisAtt      = J4ParameterTable::GetValue("J4MUD.VisAtt.EndcapActive",false);
+   fEndcapActiveVisAtt      = J4ParameterTable::GetValue("J4MUD.VisAtt.EndcapActive",true);
    fEndcapAbsVisAtt         = J4ParameterTable::GetValue("J4MUD.VisAtt.EndcapAbs",true);
-   fFrontEndcapActiveVisAtt = J4ParameterTable::GetValue("J4MUD.VisAtt.FrontEndcapActive",false);
+   fFrontEndcapActiveVisAtt = J4ParameterTable::GetValue("J4MUD.VisAtt.FrontEndcapActive",true);
    fFrontEndcapAbsVisAtt    = J4ParameterTable::GetValue("J4MUD.VisAtt.FrontEndcapAbs",true);
-
 }
 
 //=====================================================================
@@ -214,4 +241,133 @@ void J4MUDParameterList::SetColors()
   SetFrontEndcapActiveColor( G4Color( col[0], col[1], col[2], col[3] ) );
   col=J4ParameterTable::GetDValue("J4MUD.Color.FrontEndcapAbs","0.3 0.3 1.0 1.0",4);
   SetFrontEndcapAbsColor( G4Color( col[0], col[1], col[2], col[3] ) );
+}
+
+//=========================================================
+//* Getter for Geometrical parameters
+
+//* Accumulate thickness of absorber ----------------------
+G4double J4MUDParameterList::GetTotalAbsThick( G4int layerID ) const
+{
+  G4double absThick = 0;
+  if ( layerID != 0 ) {
+    for ( G4int i = 0; i < layerID; i++ ) {
+      absThick += GetAbsThick( i );
+    }
+  }
+  return absThick;
+}
+
+//* Front Position of Barrel Active Layer ---------------
+G4double J4MUDParameterList::GetBarrelActiveFront( G4int layerID ) const
+{
+  return ( fIsFrontActive )
+    ? GetBarrelInnerR() + GetTotalAbsThick( layerID ) + (layerID-1)*GetBarrelActiveThick()
+    : GetBarrelAbsFront( layerID ) + GetBarrelAbsThick( layerID );
+}
+
+//* Front Position of Barrrel Abs layer -----------------
+G4double J4MUDParameterList::GetBarrelAbsFront( G4int layerID ) const
+{
+  return ( fIsFrontActive )
+    ? GetBarrelActiveFront( layerID ) + GetBarrelActiveThick()
+    : GetBarrelInnerR() + GetTotalAbsThick( layerID ) + layerID*GetBarrelActiveThick();
+}
+
+//* Front Position of Endcap Active Layer ---------------
+G4double J4MUDParameterList::GetEndcapActiveFront( G4int layerID ) const
+{
+  return ( fIsFrontActive )
+    ? GetEndcapFrontZ() + GetTotalAbsThick( layerID ) + (layerID-1)*GetEndcapActiveThick()
+    : GetEndcapAbsFront( layerID ) + GetEndcapAbsThick( layerID );
+}
+
+//* Front Position of Endcap Absorber -------------------
+G4double J4MUDParameterList::GetEndcapAbsFront( G4int layerID ) const
+{
+  return ( fIsFrontActive )
+    ? GetEndcapActiveFront( layerID ) + GetEndcapActiveThick()
+    : GetEndcapFrontZ() + GetTotalAbsThick( layerID ) + layerID*GetEndcapActiveThick();
+}
+
+//* Front Position of Front Endcap Active Layer ---------
+G4double J4MUDParameterList::GetFrontEndcapActiveFront( G4int layerID ) const
+{
+  return GetFrontEndcapAbsFront( layerID ) + GetFrontEndcapAbsThick();
+  //return ( fIsFrontActive )
+  //  ? GetBlockFrontEndcapFrontZ() + layerID*(GetFrontEndcapAbsThick()+GetFrontEndcapActiveThick())
+  //  : GetFrontEndcapAbsFront( layerID ) + GetFrontEndcapAbsThick();
+}
+
+//* Front Position of Front Endcap Absorber -------------
+G4double J4MUDParameterList::GetFrontEndcapAbsFront( G4int layerID ) const
+{
+  return GetFrontEndcapFrontZ() + layerID*(GetFrontEndcapAbsThick()+GetFrontEndcapActiveThick());
+  //return ( fIsFrontActive )
+  //  ? GetFrontEndcapActiveFront( layerID ) + GetFrontEndcapActiveThick()
+  //  : GetFrontEndcapFrontZ() + layerID*(GetFrontEndcapAbsThick()+GetFrontEndcapActiveThick());
+}
+
+//* Height of Endcap Active Layer -------------------------
+G4double J4MUDParameterList::GetEndcapActiveHeight( G4int layerID ) const
+{
+  return ( fIsFrontActive )
+    ? GetBarrelAbsFront( layerID )
+    : GetBarrelAbsFront( layerID+1 );
+}
+
+//* Height of Endcap Abs Layer ----------------------------
+G4double J4MUDParameterList::GetEndcapAbsHeight( G4int layerID ) const
+{
+  return ( fIsFrontActive )  
+    ? GetBarrelActiveFront( layerID+1 )
+    : GetBarrelActiveFront( layerID );
+}
+
+//* Half Length of Barrel Active Layer -------------------
+G4double J4MUDParameterList::GetBarrelActiveHalfL( G4int layerID ) const
+{
+  return GetEndcapActiveFront( layerID );
+}
+
+//* Half Length of Barrel Absorber ------------------------
+G4double J4MUDParameterList::GetBarrelAbsHalfL( G4int layerID ) const
+{
+  return GetEndcapAbsFront( layerID );
+}
+
+//* Z Position of Endcap Abs Layer ------------------------
+G4double J4MUDParameterList::GetEndcapAbsZ( G4int layerID ) const
+{
+  return GetEndcapAbsFront( layerID ) + 0.5*GetEndcapAbsThick( layerID );
+}
+
+//* Z Position of Endcap Active Layer ---------------------
+G4double J4MUDParameterList::GetEndcapActiveZ( G4int layerID ) const
+{
+  return GetEndcapActiveFront(layerID) + 0.5*GetEndcapActiveThick();
+}
+
+//* Height of Front Endcap Abs Layer ----------------------
+G4double J4MUDParameterList::GetFrontEndcapAbsHeight( G4int /*layerID*/ ) const
+{
+  return GetFrontEndcapOuterR() * std::cos( 0.5*GetTrapDeltaPhi() );
+}
+
+//* Height of Front Endcap Active Layer -------------------
+G4double J4MUDParameterList::GetFrontEndcapActiveHeight( G4int /*layerID*/ ) const
+{
+  return GetFrontEndcapOuterR() * std::cos( 0.5*GetTrapDeltaPhi() );
+}
+
+//* Z Position of Front Endcap Abs Layer ------------------
+G4double J4MUDParameterList::GetFrontEndcapAbsZ( G4int layerID )  const
+{
+  return GetFrontEndcapAbsFront( layerID ) + 0.5*GetFrontEndcapAbsThick();
+}
+
+//* Z Position of Front Endcap Active Layer ---------------
+G4double J4MUDParameterList::GetFrontEndcapActiveZ( G4int layerID ) const
+{
+  return GetFrontEndcapActiveFront( layerID ) + 0.5*GetFrontEndcapActiveThick();
 }

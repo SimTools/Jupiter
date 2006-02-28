@@ -94,8 +94,9 @@ void J4MUDBlock::Assemble()
 
 #ifdef __GLD_V1__
     G4int    myID               = GetMyID();
-    G4double dphi               = ptrList->GetTrapDeltaPhi();
-    G4double sphi               = dphi*myID - 0.5*dphi;
+    G4double phitolerance       = ptrList->GetPhiTolerance();
+    G4double dphi               = ptrList->GetTrapDeltaPhi() - phitolerance;
+    G4double sphi               = ptrList->GetTrapDeltaPhi()*(myID - 0.5) + phitolerance;
 
     G4double halfLength         = ptrList->GetBlockHalfL() - ptrList->GetBlockEndcapThick();
     G4double endcapfront        = ptrList->GetBlockEndcapFrontZ();
