@@ -207,54 +207,82 @@ J4CAL.VisAtt:                 true
 #
 # ----- MUD
 #
-J4MUD.Barrel.AbsMaterial:     Iron
-J4MUD.Barrel.ActiveMaterial:  Air
-J4MUD.Barrel.ActiveThickness: 10.000000
-J4MUD.Barrel.InnerRadius:     460.000000
-J4MUD.Barrel.NSuperLayers:    4
-J4MUD.BarrelBFiled:           2.000000
-J4MUD.BlockMaterial:          Air
-J4MUD.Color.BarrelAbs:        0.3 0.3 1.0 1.0
-J4MUD.Color.BarrelActive:     0.5 1.0 0.5 1.0
-J4MUD.Color.Block:            0.0 1.0 0.0 1.0
-J4MUD.Color.EndcapAbs:        0.3 0.3 1.0 1.0
-J4MUD.Color.EndcapActive:     0.5 1.0 0.5 1.0
-J4MUD.Color.FrontEndcapAbs:   0.3 0.3 1.0 1.0
-J4MUD.Color.FrontEndcapActive:0.5 1.0 0.5 1.0
-J4MUD.Color:                  1.0 0.0 0.0 1.0
-J4MUD.CornerBFiled:           1.500000
-J4MUD.Endcap.AbsMaterial:     Iron
-J4MUD.Endcap.ActiveMaterial:  Air
-J4MUD.Endcap.ActiveThickness: 10.000000
-J4MUD.Endcap.FrontZ:          535.000000
-J4MUD.Endcap.InnerRadius:     45.000000
-J4MUD.Endcap.NSuperLayers:    5
-J4MUD.Endcap.Thickness:       310.000000
-J4MUD.EndcapBFiled:           2.500000
-J4MUD.FrontEndcap.AbsMaterial:Iron
-J4MUD.FrontEndcap.ActiveMaterial:Air
-J4MUD.FrontEndcap.ActiveThickness:10.000000
-J4MUD.FrontEndcap.FrontZ:     430.000000
-J4MUD.FrontEndcap.NSuperLayers:2
-J4MUD.FrontEndcap.OuterRadius:360.000000
-J4MUD.Height:                 700.000000
 J4MUD.Material:               Air
+J4MUD.BlockMaterial:          Air
+J4MUD.Barrel.AbsMaterial:     Iron
+J4MUD.Endcap.AbsMaterial:     Iron
+J4MUD.FrontEndcap.AbsMaterial:Iron
+J4MUD.Barrel.ActiveMaterial:  Scintillator
+J4MUD.Endcap.ActiveMaterial:  Scintillator
+J4MUD.FrontEndcap.ActiveMaterial:Scintillator
+J4MUD.IsFrontActive:          false
 J4MUD.NTraps:                 8
-J4MUD.OuterRadius:            780.000000
-J4MUD.ReturnBFiled:           3.000000
+J4MUD.NLayers:                5
+J4MUD.FrontActiveThickness:   10.0
+J4MUD.ActiveThickness:        10.0
+J4MUD.AbsThickness:           50.0 50.0 50.0 50.0 50.0
 J4MUD.Tolerance:              0.010000
-J4MUD.VisAtt.BarrelAbs:       false
-J4MUD.VisAtt.BarrelActive:    false
-J4MUD.VisAtt.Block:           false
-J4MUD.VisAtt.EndcapAbs:       false
-J4MUD.VisAtt.EndcapActive:    false
-J4MUD.VisAtt.FrontEndcapAbs:  false
-J4MUD.VisAtt.FrontEndcapActive:false
-J4MUD.VisAtt:                 true
+J4MUD.PhiTolerance:           0.000100
+J4MUD.Height:                 700.000000
+J4MUD.Barrel.InnerRadius:     460.000000
+J4MUD.Endcap.InnerRadius:     45.000000
+J4MUD.FrontEndcap.FrontZ:     430.000000
+J4MUD.Endcap.FrontZ:          535.000000
+J4MUD.Endcap.Thickness:       310.000000
+J4MUD.FrontEndcap.OuterRadius:260.000000
+J4MUD.FrontEndcap.NSuperLayers:2
+J4MUD.BarrelBFiled:           2.000000
+J4MUD.CornerBFiled:           1.500000
+J4MUD.EndcapBFiled:           2.500000
+J4MUD.ReturnBFiled:           3.000000
+# J4MUD.Barrel.AbsMaterial:     Iron
+# J4MUD.Barrel.ActiveMaterial:  Air
+# J4MUD.Barrel.ActiveThickness: 10.000000
+# J4MUD.Barrel.InnerRadius:     460.000000
+# J4MUD.Barrel.NSuperLayers:    4
+# J4MUD.BarrelBFiled:           2.000000
+# J4MUD.BlockMaterial:          Air
+# J4MUD.Color.BarrelAbs:        0.3 0.3 1.0 1.0
+# J4MUD.Color.BarrelActive:     0.5 1.0 0.5 1.0
+# J4MUD.Color.Block:            0.0 1.0 0.0 1.0
+# J4MUD.Color.EndcapAbs:        0.3 0.3 1.0 1.0
+# J4MUD.Color.EndcapActive:     0.5 1.0 0.5 1.0
+# J4MUD.Color.FrontEndcapAbs:   0.3 0.3 1.0 1.0
+# J4MUD.Color.FrontEndcapActive:0.5 1.0 0.5 1.0
+# J4MUD.Color:                  1.0 0.0 0.0 1.0
+# J4MUD.CornerBFiled:           1.500000
+# J4MUD.Endcap.AbsMaterial:     Iron
+# J4MUD.Endcap.ActiveMaterial:  Air
+# J4MUD.Endcap.ActiveThickness: 10.000000
+# J4MUD.Endcap.FrontZ:          535.000000
+# J4MUD.Endcap.InnerRadius:     45.000000
+# J4MUD.Endcap.NSuperLayers:    5
+# J4MUD.Endcap.Thickness:       310.000000
+# J4MUD.EndcapBFiled:           2.500000
+# J4MUD.FrontEndcap.AbsMaterial:Iron
+# J4MUD.FrontEndcap.ActiveMaterial:Air
+# J4MUD.FrontEndcap.ActiveThickness:10.000000
+# J4MUD.FrontEndcap.FrontZ:     430.000000
+# J4MUD.FrontEndcap.NSuperLayers:2
+# J4MUD.FrontEndcap.OuterRadius:360.000000
+# J4MUD.Height:                 700.000000
+# J4MUD.Material:               Air
+# J4MUD.NTraps:                 8
+# J4MUD.OuterRadius:            780.000000
+# J4MUD.ReturnBFiled:           3.000000
+# J4MUD.Tolerance:              0.010000
+# J4MUD.VisAtt.BarrelAbs:       false
+# J4MUD.VisAtt.BarrelActive:    false
+# J4MUD.VisAtt.Block:           false
+# J4MUD.VisAtt.EndcapAbs:       false
+# J4MUD.VisAtt.EndcapActive:    false
+# J4MUD.VisAtt.FrontEndcapAbs:  false
+# J4MUD.VisAtt.FrontEndcapActive:false
+# J4MUD.VisAtt:                 true
 #
 # SOL
 #
-J4SOL.BField:                 3.000000
+J4SOL.BField:                 3.00000
 J4SOL.Color:                  0.7 0.5 0.5 1.0
 J4SOL.FieldR:                 157.000000
 J4SOL.Material:               Air
