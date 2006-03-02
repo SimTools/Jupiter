@@ -24,7 +24,7 @@ J4BreakPoint::J4BreakPoint(const G4Track *tp)
 	      fGlobalTime(tp->GetGlobalTime()),
 	      fPosition(tp->GetPosition()),
 	      fFourMomentum(tp->GetMomentum(),tp->GetTotalEnergy()),
-	      fKineticEnergy(GetKineticEnergy())
+	      fKineticEnergy(tp->GetKineticEnergy())
 {
   fgBreakPointMap.insert(std::pair<G4int, J4BreakPoint*>(fTrackID, this));
 }
