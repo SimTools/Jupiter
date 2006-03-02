@@ -217,7 +217,7 @@ J4MUD.NTraps:                 8
 J4MUD.NLayers:                5
 J4MUD.FrontActiveThickness:   10.0
 J4MUD.ActiveThickness:        10.0
-J4MUD.AbsThickness:           50.0 50.0 50.0 50.0 50.0
+J4MUD.AbsThickness:           40.0 40.0 40.0 40.0 40.0
 J4MUD.Tolerance:              0.010000
 J4MUD.PhiTolerance:           0.000100
 J4MUD.Height:                 700.000000
@@ -226,7 +226,7 @@ J4MUD.Endcap.InnerRadius:     45.000000
 J4MUD.FrontEndcap.FrontZ:     430.000000
 J4MUD.Endcap.FrontZ:          535.000000
 J4MUD.Endcap.Thickness:       310.000000
-J4MUD.FrontEndcap.OuterRadius:260.000000
+J4MUD.FrontEndcap.OuterRadius:360.000000
 J4MUD.FrontEndcap.NSuperLayers:2
 J4MUD.BarrelBFiled:           2.000000
 J4MUD.CornerBFiled:           1.500000
