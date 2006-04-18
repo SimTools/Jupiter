@@ -34,7 +34,10 @@ J4CAINEvtInterface::J4CAINEvtInterface(G4String file)
                    :fFileName(""),  fNread(0),
                     fGamma(0), fElectron(0), fPositron(0),
                     fGenGamma(true), fGenElectron(true), fGenPositron(true),
-                    fVerboseLevel(0), fMessenger(0)
+                    fVerboseLevel(0), fTracksPerEvent(1000), 
+		    fCrossingAngle(0.0), 
+		    fFirstRecord(1), fLastRecord(1999999999), fReadRecord(0),
+                    fMessenger(0)
 {
 
   if ( file != "" ) OpenCainFile(file); 
@@ -75,6 +78,8 @@ void J4CAINEvtInterface::OpenCainFile(G4String evfile)
   } else {
      std::cout << "CAIN input file : " << fFileName << " is opened." << std::endl;
   }
+
+  fReadRecord=0;
 
   // reset abortion level...
   G4StateManager::GetStateManager()->SetSuppressAbortion(abortlevel_keep);
@@ -118,76 +123,86 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 
   char input[512];
 
-  G4int id, kgen;
-  G4double weight, ct,cx,cy,cs,ce,cpx,cpy,cps,csx,csy,css;
-  char genname[4];
-  while(1) { 
+  //  G4int id, kgen;
+  //  G4double weight, ct,cx,cy,cs,ce,cpx,cpy,cps,csx,csy,css;
+  //  char genname[4];
+  struct cainin {
+    G4int id, kgen;
+    G4double weight, ct,cx,cy,cs,ce,cpx,cpy,cps,csx,csy,css;
+    char genname[4];    
+  } tb;
+  G4int maxread=fTracksPerEvent;
+  G4int nread=0;  
+
+  //  std::cerr << " fTracksPerEvent is " << fTracksPerEvent << std::endl;
+  //  std::cerr << " Crossing Angle is " << fCrossingAngle/rad << std::endl;
+
+  while(nread < maxread ) { 
     fInputStream.getline(input,512);
     if( fInputStream.eof() ) {
       J4PrimaryGeneratorAction::GetPrimaryGeneratorAction()->SetAbortRun(true);
-//      G4Exception("End-Of-File while reading CAIN file, "+fFileName);
-//    G4Exception calls abort(), and not used any more
       std::cerr << "End of File while reading CAIN file, " ;
       std::cerr << fFileName << std::endl;
-      return;
+      std::cerr << "nread =" << nread << " maxread=" << maxread << std::endl;
+      break;
     }
-    if( input[0] != '!' ) {
-      for(G4int i=0;i<512;i++){
-         if( input[i] == 'D' ) {
-            input[i]='E'; 
-         }
-         if( input[i] == '\00' ) break;
+    if( input[0] == '!' ) continue;  // 1st column ! is comment
+    for(G4int i=0;i<512;i++){  // Convert D to E
+      if( input[i] == 'D' ) {
+	input[i]='E'; 
       }
-
-      std::istringstream sinput(input);
-      sinput >>  id >> kgen >> genname >> weight >> ct >> cx >> cy >> cs >> 
-	   ce >> cpx >> cpy >> cps >> csx >> csy >> css ;
-
-      
-      G4bool samedir= (fGenDirection*cps >= 0.0 ? true : false );
-
-      if( samedir ) {
-         if ( id == 1 && fGenGamma ) break ;
-         if ( id == 2 && fGenElectron ) break ;
-         if ( id == 3 && fGenPositron ) break ;
-      }
+      if( input[i] == '\00' ) break;
     }
-  }
+    //    std::cerr << " nread=" << nread << std::endl;
+    std::istringstream sinput(input);
+    sinput >>  tb.id >> tb.kgen >> tb.genname >> tb.weight >> tb.ct >> 
+      tb.cx >> tb.cy >> tb.cs >> tb.ce >> tb.cpx >> tb.cpy >> 
+      tb.cps >> tb.csx >> tb.csy >> tb.css ;
+    
+    G4bool samedir= (fGenDirection*tb.cps >= 0.0 ? true : false );
+    if( samedir ) {
+      if( !( tb.id == 1 && fGenGamma ) || 
+	  !( tb.id == 2 && fGenElectron ) ||
+	  !( tb.id == 3 && fGenPositron ) ) continue;
+    }
+    fReadRecord++;
+    if( fReadRecord < fFirstRecord ) continue;
+    if( fReadRecord > fLastRecord ) {
+      J4PrimaryGeneratorAction::GetPrimaryGeneratorAction()->SetAbortRun(true);
+      std::cerr << "Read " << fReadRecord << " record, which exceeds " << fLastRecord ;
+      std::cerr << std::endl;
+      std::cerr << "J4CAINEvtInterface requested to terminate job." << std::endl;
+      break;
+    }
+    nread++;
+    
+    // Found tracks to be used for simulation.  Put it in the buffer
+    // after crossing angle corrections.
+    tb.ct *= m;  tb.cx *= m; tb.cy*=m ; tb.cs*= m ; 
+    tb.ce*= eV ; tb.cpx *= eV ; tb.cpy *= eV ; tb.cps *= eV;
 
-  ct *= m;  cx *= m; cy*=m ; cs*= m ; 
-  ce*= eV ; cpx *= eV ; cpy *= eV ; cps *= eV;
+    if ( std::abs(fCrossingAngle) > 0.01*mrad ) {
+      G4double p=std::sqrt(tb.cpx*tb.cpx+tb.cpy*tb.cpy+tb.cps*tb.cps);
+      G4double betaf=p*std::sin(-0.5*fCrossingAngle/rad)/tb.ce;
+      G4double gammaf=1.0/std::sqrt( (1+betaf)*(1-betaf) );
 
-// Apply Lorentz transfer according to the crossing angle 
+      G4double te=gammaf*(tb.ce + betaf*tb.cpx);
+      G4double tpx=gammaf*(betaf*tb.ce + tb.cpx);
+      tb.ce=te;
+      tb.cpx=tpx;
+    }
 
-   std::cerr << " Crossing Angle is " << fCrossingAngle/rad << std::endl;
+    if( fVerboseLevel > 0 ) {
+      std::cout << "CAIN event generated: id=" << tb.id;
+      std::cout << "(cx,cy,cs)=(" << tb.cx/mm << "," ;
+      std::cout << tb.cy/mm << "," << tb.cs/mm << ") (mm) " ;
+      std::cout << "(px,py,pz)=(" << tb.cpx/GeV << "," ;
+      std::cout << tb.cpy/GeV << "," << tb.cps/GeV << ") (GeV) " << std::endl ;
+    }
 
-  if ( std::abs(fCrossingAngle) > 0.01*mrad ) {
-    G4double p=std::sqrt(cpx*cpx+cpy*cpy+cps*cps);
-    G4double betaf=p*std::sin(-0.5*fCrossingAngle/rad)/ce;
-    G4double gammaf=1.0/std::sqrt( (1+betaf)*(1-betaf) );
-
-    G4double te=gammaf*(ce + betaf*cpx);
-    G4double tpx=gammaf*(betaf*ce + cpx);
-    ce=te;
-    cpx=tpx;
-  }
-
-  if( fVerboseLevel > 0 ) {
-    std::cout << "CAIN event generated: id=" << id;
-    std::cout << "(cx,cy,cs)=(" << cx/mm << "," ;
-    std::cout << cy/mm << "," << cs/mm << ") (mm) " ;
-    std::cout << "(px,py,pz)=(" << cpx/GeV << "," ;
-    std::cout << cpy/GeV << "," << cps/GeV << ") (GeV) " << std::endl ;
-  }
-
-  // create a new vertex
-
-  G4PrimaryVertex *vertex=
-    new G4PrimaryVertex(G4ThreeVector(cx, cy, cs), ct);
-
-  // create new primaries and set them to the vertex
-  G4ParticleDefinition *particle_definition;
-  switch(id) {
+    // create new primaries and set them to the vertex
+    G4ParticleDefinition *particle_definition;
+    switch(tb.id) {
     case 1: 
       particle_definition=fGamma;
       break;
@@ -197,34 +212,27 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
     case 3:
       particle_definition=fPositron;
       break;
-  default:
-#ifdef  __USEISOCXX__
-    std::stringstream sout;
-#else
-    char tmpstr[1024];
-    std::ostringstream sout(tmpstr, 1024);
-#endif
-    sout << "Error: Undefined particle id " << id << " is obtained" << std::ends;
-#ifdef __USEISOCXX__
-    G4Exception(sout.str());
-#else
-    G4Exception(tmpstr);
-#endif
-    return;
-  }
+    default:
+      std::stringstream sout;
+      sout << "Error: Undefined particle id " << tb.id << " is obtained" << std::ends;
+      G4Exception(sout.str());
+      return;
+    }
 
-  G4double mass=particle_definition->GetPDGMass();
-  G4PrimaryParticle *particle=
-    new G4PrimaryParticle(particle_definition, cpx, cpy, cps);
-  particle->SetMass( mass );
-  particle->SetCharge( particle_definition->GetPDGCharge() );
-  particle->SetPolarization( csx, csy, css );
-  particle->SetWeight( weight );
+    G4double mass=particle_definition->GetPDGMass();
+    G4PrimaryParticle *particle=
+      new G4PrimaryParticle(particle_definition, tb.cpx, tb.cpy, tb.cps);
+    particle->SetMass( mass );
+    particle->SetCharge( particle_definition->GetPDGCharge() );
+    particle->SetPolarization( tb.csx, tb.csy, tb.css );
+    particle->SetWeight( tb.weight );
 
-  vertex->SetPrimary( particle );
-
-  evt->AddPrimaryVertex( vertex );
-
+    G4PrimaryVertex *vertex=  
+    new G4PrimaryVertex(G4ThreeVector(tb.cx, tb.cy, tb.cs), tb.ct); 
+    vertex->SetPrimary( particle );
+    evt->AddPrimaryVertex( vertex );
+  
+  } // End of loop to get maxread particles
 
 }
 

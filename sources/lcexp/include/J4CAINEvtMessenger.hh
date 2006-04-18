@@ -53,6 +53,10 @@ class J4CAINEvtMessenger: public G4UImessenger
     G4UIcmdWithADouble         *fGenDirectionCmd;
     G4UIcmdWithAnInteger       *fVerboseCmd;
     G4UIcmdWithADouble         *fCrossingAngleCmd;
+    G4UIcmdWithAnInteger       *fTracksPerEventCmd;
+
+    G4UIcmdWithAnInteger       *fFirstRecordCmd;
+    G4UIcmdWithAnInteger       *fLastRecordCmd;
  
   private: // 
 };
