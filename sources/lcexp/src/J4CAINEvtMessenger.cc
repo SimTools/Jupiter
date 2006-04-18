@@ -69,8 +69,8 @@ J4CAINEvtMessenger::J4CAINEvtMessenger(J4CAINEvtInterface * cainevt)
   fTracksPerEventCmd = new G4UIcmdWithAnInteger("/jupiter/cain/tracks_per_event",this);
   fTracksPerEventCmd->SetGuidance("Tracks per event");
   fTracksPerEventCmd->SetParameterName("TracksPerEvent",true);
-  fTracksPerEventCmd->SetDefaultValue(1000);
-  fCAINEvt->SetTracksPerEvent(1000);
+  fTracksPerEventCmd->SetDefaultValue(500);
+  fCAINEvt->SetTracksPerEvent(500);
 
   fFirstRecordCmd = new G4UIcmdWithAnInteger("/jupiter/cain/first_record",this);
   fFirstRecordCmd->SetGuidance("First record to simulate event");

@@ -34,7 +34,7 @@ J4CAINEvtInterface::J4CAINEvtInterface(G4String file)
                    :fFileName(""),  fNread(0),
                     fGamma(0), fElectron(0), fPositron(0),
                     fGenGamma(true), fGenElectron(true), fGenPositron(true),
-                    fVerboseLevel(0), fTracksPerEvent(1000), 
+                    fVerboseLevel(0), fTracksPerEvent(500), 
 		    fCrossingAngle(0.0), 
 		    fFirstRecord(1), fLastRecord(1999999999), fReadRecord(0),
                     fMessenger(0)

@@ -115,6 +115,9 @@ void J4PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
          break;
 
    }
+
+   std::cerr << "End of PrimaryGenerator Action" <<std::endl;
+
 }
 
 
