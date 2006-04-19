@@ -64,13 +64,14 @@ void J4VMUDActiveSD::Initialize( G4HCofThisEvent* HCTE )
 //* ProcessHits -------------------------------------------------------
 G4bool J4VMUDActiveSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ )
 {
-
   //In order to use Get function, you must call SetNewStep() at first.
   SetNewStep(aStep);
+
+  //* Skip no energy deposit events
+  if ( GetEnergyDeposit() <= 0 ) return false;
    
   //Only when a charged particle has just come into a sensitive detector,
   //create a new hit
-  
   //if ( GetCharge() == 0. ) return false;
 
   //Get perticle information
