@@ -46,6 +46,7 @@ public:
 
 private:
   J4Timer          *fEventTimer;
+  static G4int      fEventID;
   
 #ifdef __THEBE__
   std::ofstream   fErrorOfs;
