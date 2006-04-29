@@ -111,6 +111,8 @@ void J4PhysicsList::ConstructEM()
       pmanager->AddDiscreteProcess(new G4ComptonScattering());      
       pmanager->AddDiscreteProcess(new G4PhotoElectricEffect());
 
+      pmanager->SetProcessOrdering(theUserCuts,     idxPostStep,1);
+
     } else if (particleName == "e-") {
     //electron
       // Construct processes for electron
@@ -125,10 +127,10 @@ void J4PhysicsList::ConstructEM()
       pmanager->SetProcessOrdering(theeminusMultipleScattering, idxAlongStep,  1);
       pmanager->SetProcessOrdering(theeminusIonisation, idxAlongStep,  2);
       // set ordering for PostStepDoIt
-      pmanager->SetProcessOrdering(theeminusMultipleScattering, idxPostStep, 1);
-      pmanager->SetProcessOrdering(theeminusIonisation, idxPostStep, 2);
-      pmanager->SetProcessOrdering(theeminusBremsstrahlung, idxPostStep, 3);
-      pmanager->SetProcessOrdering(theUserCuts,     idxPostStep,4);
+      pmanager->SetProcessOrdering(theeminusMultipleScattering, idxPostStep, 2);
+      pmanager->SetProcessOrdering(theeminusIonisation, idxPostStep, 3);
+      pmanager->SetProcessOrdering(theeminusBremsstrahlung, idxPostStep, 4);
+      pmanager->SetProcessOrdering(theUserCuts,     idxPostStep,1);
 
 
     } else if (particleName == "e+") {
@@ -149,11 +151,11 @@ void J4PhysicsList::ConstructEM()
       pmanager->SetProcessOrdering(theeplusMultipleScattering, idxAlongStep,  1);
       pmanager->SetProcessOrdering(theeplusIonisation, idxAlongStep,  2);
       // set ordering for PostStepDoIt
-      pmanager->SetProcessOrdering(theeplusMultipleScattering, idxPostStep, 1);
-      pmanager->SetProcessOrdering(theeplusIonisation, idxPostStep, 2);
-      pmanager->SetProcessOrdering(theeplusBremsstrahlung, idxPostStep, 3);
-      pmanager->SetProcessOrdering(theeplusAnnihilation, idxPostStep, 4);
-      pmanager->SetProcessOrdering(theUserCuts,     idxPostStep,5);
+      pmanager->SetProcessOrdering(theeplusMultipleScattering, idxPostStep, 2);
+      pmanager->SetProcessOrdering(theeplusIonisation, idxPostStep, 3);
+      pmanager->SetProcessOrdering(theeplusBremsstrahlung, idxPostStep, 4);
+      pmanager->SetProcessOrdering(theeplusAnnihilation, idxPostStep, 5);
+      pmanager->SetProcessOrdering(theUserCuts,     idxPostStep,1);
   
     } else if( particleName == "mu+" || 
                particleName == "mu-"    ) {
@@ -172,11 +174,11 @@ void J4PhysicsList::ConstructEM()
      pmanager->SetProcessOrdering(aMultipleScattering, idxAlongStep,  1);
      pmanager->SetProcessOrdering(anIonisation, idxAlongStep,  2);
      // set ordering for PostStepDoIt
-     pmanager->SetProcessOrdering(aMultipleScattering, idxPostStep, 1);
-     pmanager->SetProcessOrdering(anIonisation, idxPostStep, 2);
-     pmanager->SetProcessOrdering(aBremsstrahlung, idxPostStep, 3);
-     pmanager->SetProcessOrdering(aPairProduction, idxPostStep, 4);
-     pmanager->SetProcessOrdering(theUserCuts,     idxPostStep,5);
+     pmanager->SetProcessOrdering(aMultipleScattering, idxPostStep, 2);
+     pmanager->SetProcessOrdering(anIonisation, idxPostStep, 3);
+     pmanager->SetProcessOrdering(aBremsstrahlung, idxPostStep, 4);
+     pmanager->SetProcessOrdering(aPairProduction, idxPostStep, 5);
+     pmanager->SetProcessOrdering(theUserCuts,     idxPostStep,1);
      
     } else if( particleName == "GenericIon" ) {
      G4VProcess* aionIonization = new G4hIonisation;
@@ -204,10 +206,13 @@ void J4PhysicsList::ConstructEM()
      pmanager->SetProcessOrdering(aMultipleScattering, idxAlongStep,  1);
      pmanager->SetProcessOrdering(anIonisation, idxAlongStep,  2);
      // set ordering for PostStepDoIt
-     pmanager->SetProcessOrdering(aMultipleScattering, idxPostStep, 1);
-     pmanager->SetProcessOrdering(anIonisation, idxPostStep, 2);
-     pmanager->SetProcessOrdering(theUserCuts,     idxPostStep,3);
+     pmanager->SetProcessOrdering(aMultipleScattering, idxPostStep, 2);
+     pmanager->SetProcessOrdering(anIonisation, idxPostStep, 3);
+     pmanager->SetProcessOrdering(theUserCuts,     idxPostStep, 1);
     }
+
+    //      pmanager->AddProcess(new G4UserSpecialCuts(), -1, -1, 1);
+
   }
   SetApplyCuts(TRUE, "gamma");
   SetApplyCuts(TRUE, "e-");
@@ -635,7 +640,32 @@ void J4PhysicsList::ConstructHad()
          theInelasticProcess->RegisterMe(theHEInelasticModel);
          pmanager->AddDiscreteProcess(theInelasticProcess);
       }
+      pmanager->AddProcess(new G4UserSpecialCuts(), -1, -1, 1);
+
    }
+
+   /*
+   G4ProcessManager *nmanager=G4Neutron::Neutron()->GetProcessManager();
+   nmanager->AddProcess(new G4UserSpecialCuts(), -1, -1, 1);
+   G4ProcessManager *anmanager=G4AntiNeutron::AntiNeutron()->GetProcessManager();
+   anmanager->AddProcess(new G4UserSpecialCuts(), -1, -1, 1);
+
+   
+   G4ProcessManager *enumanager=G4NeutrinoE::NeutrinoE()->GetProcessManager();
+   enumanager->AddProcess(new G4UserSpecialCuts(), -1, -1, 1);
+   G4ProcessManager *mumanager=G4NeutrinoMu::NeutrinoMu()->GetProcessManager();
+   mumanager->AddProcess(new G4UserSpecialCuts(), -1, -1, 1);
+   G4ProcessManager *taumanager=G4NeutrinoTau::NeutrinoTau()->GetProcessManager();
+   taumanager->AddProcess(new G4UserSpecialCuts(), -1, -1, 1);
+
+   G4ProcessManager *aenumanager=G4AntiNeutrinoE::AntiNeutrinoE()->GetProcessManager();
+   aenumanager->AddProcess(new G4UserSpecialCuts(), -1, -1, 1);
+   G4ProcessManager *amumanager=G4AntiNeutrinoMu::AntiNeutrinoMu()->GetProcessManager();
+   amumanager->AddProcess(new G4UserSpecialCuts(), -1, -1, 1);
+   G4ProcessManager *ataumanager=G4AntiNeutrinoTau::AntiNeutrinoTau()->GetProcessManager();
+   ataumanager->AddProcess(new G4UserSpecialCuts(), -1, -1, 1);
+   */
+
 }
 
 

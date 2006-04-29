@@ -56,6 +56,7 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 
   // Create trajectory only for charged particles
 
+  fCurrentTrack   = aTrack;
   fCurrentTrackID = aTrack->GetTrackID();
   if (fCurrentTrackID > fTrackCounts) fTrackCounts = fCurrentTrackID;
 
