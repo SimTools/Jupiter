@@ -18,6 +18,7 @@
 #include "G4Tubs.hh"
 #include "G4Cons.hh"
 #include "G4VSolid.hh"
+#include "G4UserLimits.hh"
 
 #include <cmath>
 #include <vector>
@@ -109,6 +110,7 @@ void J4IRFCALSensor::Assemble()
     G4int id=0;
     G4String key=G4String("J4IR.FCAL.")+ft[fid]
       +G4String(".")+geoinfo[id].name+G4String(".Material");
+
     G4String material=
       J4ParameterTable::GetValue(key.data(),geoinfo[id].material.data());
     MakeLVWith(OpenMaterialStore()->Order(material));
@@ -170,6 +172,10 @@ void J4IRFCALSensor::InstallIn(J4VComponent      *, // mother
   				// 
   //  G4UserLimits* myLimits = new G4UserLimits;
   //  GetLV()->SetUserLimits(myLimits);
+  G4UserLimits *userLimits = new G4UserLimits();
+  G4double umaxtime= J4ParameterTable::GetValue("J4IR.UserMaxTime",1000.0)*nanosecond;
+  userLimits->SetUserMaxTime(umaxtime);
+  GetLV()->SetUserLimits(userLimits);
 
   // Placement function into mother object...
   G4RotationMatrix* rotation = new G4RotationMatrix;

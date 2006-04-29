@@ -86,35 +86,37 @@ void J4IR::Assemble()
     G4String bpname=GetName()+".Center";
     G4VSolid *lastsolid=new G4Tubs(bpname, 0, pl->GetIRREdges(0), pl->GetIRZEdges(0), 0, 2*M_PI);
 
-    std::ostringstream sname;
     G4VSolid *tmpsolid=0;
     G4String blank;
 
     for(int i=1;i<nsolids;i++) {
       for(int j=0;j<2;j++) {
         G4double hzlen=(pl->GetIRZEdges(i) - pl->GetIRZEdges(i-1))*0.5;
-	sname.str(GetName());
-        sname << ".SolidTemp" << i << "-" << j << std::ends;
+        std::ostringstream sname; 
+        sname << GetName() << ".SolidTemp" << i << "-" << j << std::ends;
         if( pl->GetIRShapes(i) == 0 ) {
           tmpsolid = new G4Tubs(sname.str(), 0, pl->GetIRREdges(i-1), hzlen, 0, 2*M_PI);
-        }
+         }
         else {
           if( j == 0 ) {
   	    tmpsolid=new G4Cons(sname.str(), 0, pl->GetIRREdges(i-1),
 			0, pl->GetIRREdges(i), hzlen, 0, 2*M_PI);
           }
-	  else {
+	    else {
   	    tmpsolid=new G4Cons(sname.str(), 0, pl->GetIRREdges(i),
 			0, pl->GetIRREdges(i-1), hzlen, 0, 2*M_PI);
-	  }
-        }
+	    }
+        
+      }
         G4double  zpos = pl->GetIRZEdges(i-1) + hzlen ;
 	if ( j == 1 ) zpos *= -1 ;
         G4ThreeVector tmptrans(0, 0, zpos);
-	sname.str(GetName());
-        sname << ".SolidJoin" << i << "-" << j << std::ends;
-        if( i == nsolids-1 && j == 1 ) { sname << GetName() << std::ends ; }
-        G4VSolid *irjoin = new J4UnionSolid(sname.str(), lastsolid, tmpsolid, 0, tmptrans);
+        std::ostringstream sname2;
+        sname2 << GetName() ;
+        if( !( i == nsolids-1 && j == 1 ) ) { 
+          sname2 << ".SolidJoin" << i << "-" << j << std::ends;
+          }
+        G4VSolid *irjoin = new J4UnionSolid(sname2.str(), lastsolid, tmpsolid, 0, tmptrans);
         lastsolid = irjoin;
       }
     }
@@ -127,7 +129,8 @@ void J4IR::Assemble()
 
     // MakeLogicalVolume -------------
     G4String material = J4ParameterTable::GetValue("J4IR.Material","vacuum");
-    MakeLVWith(OpenMaterialStore()->Order(material));
+    G4double maxTime = J4ParameterTable::GetValue("J4IR.UserMaxTime",1000.0)*nanosecond;
+    MakeLVWith(OpenMaterialStore()->Order(material), new G4UserLimits(DBL_MAX,DBL_MAX,maxTime));
     
     // SetVisAttribute ---------------
     G4bool visatt = J4ParameterTable::GetValue("J4IR.VisAtt",true);
@@ -153,17 +156,17 @@ void J4IR::Assemble()
     G4double ebeam=J4ParameterTable::GetValue("J4IR.Q.BeamEnergy",250.0)*GeV;
     for(int i=0;i<nq;i++) {
         std::vector<double> qpara;  // rmin, rmax, zlen, zpos, sign
-	sname.str(blank);
-	sname << "J4IR.Q" << i << ".Geometry" << std::ends;
-	qpara=J4ParameterTable::GetDValue((sname.str()).c_str(),
+   std::ostringstream sname3;
+	sname3 << "J4IR.Q" << i << ".Geometry" << std::ends;
+	qpara=J4ParameterTable::GetDValue((sname3.str()).c_str(),
 			"3.0 8.0 300.0 450.0 1.0 -65.0", 6);
         for(G4int j=0;j<4;j++) { qpara[j] *= cm; }
         G4bool isDownStream=FALSE;
         if( qpara[4] < 0.0 ) isDownStream = TRUE;
-	sname.str(blank);
-	sname << "J4IR_Q" << i << std::ends;
+   std::ostringstream sname4;
+	sname4 << "J4IR_Q" << i << std::ends;
 	G4double bgrad = -65.0*tesla/meter;
-	Assemble_Qx((sname.str()).c_str(), 
+	Assemble_Qx((sname4.str()).c_str(), 
 		qpara[0], qpara[1], qpara[2], qpara[3], isDownStream,
 		ebeam, bgrad);
     }
@@ -264,34 +267,36 @@ void J4IR::Assemble_BeamPipeMiddle()
     G4Color icolor(col[0], col[1], col[2], col[3]);  // cyan
 
  
-   std::ostringstream sname;
-
+   string nstr0(GetName()+"/BPMiddle");
+   string nstr1;
    for(int j=0;j<2;j++){
-     sname.str(fName+"/BPMiddle");
+     std::ostringstream sname;
      sname << j << std::ends;
+     nstr1=nstr0+sname.str();
      G4bool flag=false;
      if( j == 1 ) flag=true;
      G4double hzlen=(zpos[1]-zpos[0])*0.5;
      G4double zcnt =(zpos[1]+zpos[0])*0.5;
-     J4IRCons *cons1 = new J4IRCons(sname.str(), rmax[0]-bethick, rmax[0], 
+     J4IRCons *cons1 = new J4IRCons(nstr1, rmax[0]-bethick, rmax[0], 
 			rmax[1]-althick, rmax[1], hzlen, zcnt, this, 1, 2, j, -1, flag);
      cons1->SetAttribute(material, visatt, icolor);
      fComponents.push_back(cons1);
 
      for(G4int i=2;i<nsolids;i++) {
-	sname.str(fName+"/BPMiddle");
-        sname << ".v" << i << std::ends;	
+        std::ostringstream sname;
+        sname << GetName() << j << ".v" << i << std::ends;	
+        nstr1=nstr0+sname.str();
         hzlen=(zpos[i]-zpos[i-1])*0.5;
         zcnt =(zpos[i]+zpos[i-1])*0.5;
         if( ishape[i] == 0 ) {
- 	  J4IRTubs *tmps = new J4IRTubs(sname.str(), rmax[i]-althick, rmax[i], hzlen, zcnt,
+ 	  J4IRTubs *tmps = new J4IRTubs(nstr1, rmax[i]-althick, rmax[i], hzlen, zcnt,
 		material, visatt, icolor, this, 1, 2, j, -1, flag);
 	  fComponents.push_back(tmps);
         }
         else {
           G4double thick=althick;
           if( i==2 ) thick=bethick;
-          cons1 = new J4IRCons(sname.str(), rmax[i-1]-thick, rmax[i-1], 
+          cons1 = new J4IRCons(nstr1, rmax[i-1]-thick, rmax[i-1], 
 			rmax[i]-althick, rmax[i], hzlen, zcnt, this, 1, 2, j, -1, flag);
           cons1->SetAttribute(material, visatt, icolor);
           fComponents.push_back(cons1);

@@ -204,10 +204,10 @@ void J4IRBPMiddle::InstallIn(J4VComponent      *, // mother
   //myLimits->SetMaxAllowedStep(1000.*micrometer);
   //myLimits->SetMaxAllowedStep(1.*mm);
   //myLimits->SetMaxAllowedStep(1.*cm);
+  G4double umaxtime= J4ParameterTable::GetValue("J4IR.UserMaxTime",1000.0)*nanosecond;
+  myLimits->SetUserMaxTime(umaxtime);
   GetLV()->SetUserLimits(myLimits);
   
-  std::cerr << " myLimits=" << myLimits << std::endl;
-
   // Placement function into mother object...
   G4ThreeVector position = tlate;
   G4RotationMatrix* rotation = prot;

@@ -13,6 +13,7 @@
 
 #include "J4VIRAcceleratorComponent.hh"
 #include "G4UserLimits.hh"
+#include "J4ParameterTable.hh"
 
 J4IRMaterialStore* J4VIRAcceleratorComponent::fMaterialStore = 0;
 
@@ -86,6 +87,8 @@ void J4VIRAcceleratorComponent::InstallIn(J4VComponent      *, // mother
   //myLimits->SetMaxAllowedStep(1000.*micrometer);
   //myLimits->SetMaxAllowedStep(1.*mm);
   //myLimits->SetMaxAllowedStep(1.*cm);
+  G4double umaxtime= J4ParameterTable::GetValue("J4IR.UserMaxTime",1000.0)*nanosecond;
+  myLimits->SetUserMaxTime(umaxtime);
   GetLV()->SetUserLimits(myLimits);
 
   // Placement function into mother object...
