@@ -56,8 +56,10 @@ public:
   { 
      return fgInstance ? fgInstance : (fgInstance = new J4TrackingAction());
   }
+  inline const G4Track *GetTrack(){ return fCurrentTrack; }
 
 private:
+  const G4Track                       *fCurrentTrack; 
   G4int                                fCurrentTrackID;     // 1 : charged particle only 
   G4int                                fStoredTrajectoryID; // 1 : charged particle only 
                                                             // 2 : all particles
