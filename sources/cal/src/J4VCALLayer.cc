@@ -18,6 +18,7 @@
 #include "J4VCALSubLayer.hh"
 #include "J4CALParameterList.hh"
 #include "G4Sphere.hh"
+#include "J4ParameterTable.hh"
 
 // ====================================================================
 //--------------------------------
@@ -81,7 +82,7 @@ void J4VCALLayer::Assemble()
      SetSolid( layer );
 
      // MakeLogicalVolume --//  
-     MakeLVWith( OpenMaterialStore()->Order(GetMaterial()) );
+     MakeLVWith( OpenMaterialStore()->Order(GetMaterial()));
    
      // SetVisAttribute ----//
      PaintLV( GetVisAtt(), GetColor() );
@@ -115,6 +116,11 @@ void J4VCALLayer::InstallIn(J4VComponent*         /* mother */,
                             const G4ThreeVector& /* tlate  */) 
 { 
    Assemble();			// You MUST call Assemble(); at first.
+
+   G4UserLimits *myLimits = new G4UserLimits();
+   G4double umaxtime= J4ParameterTable::GetValue("J4CAL.UserMaxTime",1000.0)*nanosecond;
+   myLimits->SetUserMaxTime(umaxtime);
+   GetLV()->SetUserLimits(myLimits);
 
    // Placement function into mother object...
    SetPVPlacement();

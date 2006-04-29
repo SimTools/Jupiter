@@ -77,9 +77,7 @@ void J4VCALSubLayer::Assemble()
       
    // MakeLogicalVolume --//  
    G4double ullen= J4ParameterTable::GetValue("J4CAL.UserLimits",0.1)*cm;
-   G4UserLimits *userlimits = new G4UserLimits(ullen);
-
-   MakeLVWith( OpenMaterialStore()->Order( GetMaterial()), userlimits );
+   MakeLVWith( OpenMaterialStore()->Order( GetMaterial()));
      
    // SetVisAttribute ----//
    PaintLV( GetVisAtt(), GetColor() );
@@ -109,6 +107,11 @@ void J4VCALSubLayer::InstallIn( J4VComponent*        /* mother */ ,
 { 
    Assemble();			// You MUST call Assemble(); at first.
   
+   G4UserLimits *myLimits = new G4UserLimits();
+   G4double umaxtime= J4ParameterTable::GetValue("J4CAL.UserMaxTime",1000.0)*nanosecond;
+   myLimits->SetUserMaxTime(umaxtime);
+   GetLV()->SetUserLimits(myLimits);
+
    // Placement function into mother object...
    SetPVPlacement();
 

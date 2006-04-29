@@ -16,6 +16,7 @@
 #include "J4CALHDLayer.hh"
 #include "J4CALParameterList.hh"
 #include "G4Sphere.hh"
+#include "G4UserLimits.hh"
 
 // ====================================================================
 //--------------------------------
@@ -119,6 +120,10 @@ void J4VCALMiniTower::InstallIn( J4VComponent*        /* mother */,
    // Caution!!
    // If you use SetPVReplica(), then SD has some trouble !!
    //===================================================================
+   G4UserLimits *myLimits = new G4UserLimits();
+   G4double umaxtime= J4ParameterTable::GetValue("J4CAL.UserMaxTime",1000.0)*nanosecond;
+   myLimits->SetUserMaxTime(umaxtime);
+   GetLV()->SetUserLimits(myLimits);
 
 #ifdef __REPLICA__
    if (GetNclones() > 1) {
