@@ -18,6 +18,7 @@
 #include "J4CALEMMiniCone.hh"
 #include "J4CALHDMiniCone.hh"
 #include "G4UserLimits.hh"
+#include "J4ParameterTable.hh"
 
 //=====================================================================
 //---------------------

@@ -17,6 +17,7 @@
 #include "J4CALParameterList.hh"
 #include "G4Sphere.hh"
 #include "G4UserLimits.hh"
+#include "J4ParameterTable.hh"
 
 // ====================================================================
 //--------------------------------

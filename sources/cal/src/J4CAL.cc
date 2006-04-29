@@ -13,6 +13,7 @@
 #include "J4CALSD.hh"
 #include "J4CALCone.hh"
 #include "J4Timer.hh"
+#include "J4ParameterTable.hh"
 
 // ====================================================================
 //--------------------------------
