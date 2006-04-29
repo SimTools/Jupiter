@@ -66,7 +66,11 @@ G4bool J4TPCLayerSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   if (J4ParameterTable::GetValue("J4TPC.UseThinLayer",true)) {
     if (GetCharge() == 0.) return FALSE;
   } else {
+#if 0
     if (edep <= 0) return FALSE;
+#else
+    if (edep <= 0 && GetCharge() == 0.) return FALSE;
+#endif
   }
   J4VComponent*          location      = GetComponent();
   G4int                  myID          = location->GetMyID();
