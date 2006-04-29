@@ -44,7 +44,6 @@ public:
   virtual void BeginOfEventAction(const G4Event* anEvent);
   virtual void EndOfEventAction(const G4Event* anEvent);
 
-  static G4int fEventID;
   static G4int GetEventID(){ return fEventID; }
 
 private:
