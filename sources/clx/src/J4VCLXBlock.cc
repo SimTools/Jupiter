@@ -23,9 +23,7 @@ J4VCLXBlock::J4VCLXBlock( const G4String& name,
 			  J4VDetectorComponent* parent,
 			  G4int  nclones,
 			  G4int  nbrothers,
-			  G4int  me,
-			  G4int  copyno )
-  : J4VCLXDetectorComponent( name, parent, nclones, nbrothers, me, copyno  )
+			  G4int  me, G4int  copyno ) : J4VCLXDetectorComponent( name, parent, nclones, nbrothers, me, copyno  )
 { }
 
 //=====================================================================
@@ -74,26 +72,11 @@ void J4VCLXBlock::Assemble()
     G4int nLayers = GetNLayers();
     J4VCLXLayer* layer = 0;
 
-    //J4CLXParameterList* ptrList = OpenParameterList();
-    //G4double layerThick  = ( IsEM() ) ? ptrList->GetEMLayerThickness() 
-    //                                  : ptrList->GetHDLayerThickness();
-
-    //G4double dphi = ptrList->GetTrapDeltaPhi();
-
     if ( IsBarrel() ) {  // Barrel part created by placement
       for ( G4int i = 0; i < nLayers; i++ ) {
 	layer = Create( this, 1, nLayers, i ) ;
 	fLayers.push_back( layer );
 	Register( layer );
-
-	//G4double px = 0 ;
-	//G4double py = GetYmin() + ( i + 0.5 )*layerThick;
-	//G4double pz = 0.;
-        //G4RotationMatrix* rotation = new G4RotationMatrix();
-        //rotation->rotateZ( dphi * myID );
-	//G4ThreeVector position( px, py, pz );
-	//layer->InstallIn( this, rotation, position );
-	
 	layer->InstallIn( this );
 	SetDaughter( layer );
       }
@@ -147,13 +130,6 @@ void J4VCLXBlock::InstallIn( J4VComponent*        /* mother */,
   G4RotationMatrix* rotation = new G4RotationMatrix();
   rotation->rotateZ( dphi * myID );
 
-  if ( IsEndcap() == -1 ) {
-    G4ThreeVector xv( -1, 0., 0 );
-    G4ThreeVector yv( 0., 1., 0 );
-    G4ThreeVector zv( 0., 0., -1);
-    rotation->rotateAxes(xv, yv, zv);
-  }
-  
   SetPVPlacement( rotation, position );
   
   //Cabling();

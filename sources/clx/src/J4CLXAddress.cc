@@ -175,6 +175,8 @@ G4int J4CLXAddress::GetCellID( G4int cellID, G4bool isEM )
                   : (blockID-nEMTotal)/nHDLayers/nHDStrips ;
 }
 
+//* GetCellPosition
+//  Return front surface of cell center position
 G4ThreeVector J4CLXAddress::GetCellPosition( G4int globalID, G4bool isEM )
 {
   J4CLXParameterList* ptrList = J4CLXParameterList::GetInstance();
@@ -192,6 +194,8 @@ G4ThreeVector J4CLXAddress::GetCellPosition( G4int globalID, G4bool isEM )
                                 : ptrList->GetHDActiveLayerThickness();
   G4double absThick    = (isEM) ? ptrList->GetEMAbsLayerThickness()
                                 : ptrList->GetHDAbsLayerThickness();
+//  G4double flexThick   = (isEM) ? ptrList->GetEMFlexLayerThickness()
+//                                : ptrList->GetHDFlexLayerThickness();
   G4double halfl       = (isEM) ? ptrList->GetEMHalfZ()
                                 : ptrList->GetHDHalfZ();
 

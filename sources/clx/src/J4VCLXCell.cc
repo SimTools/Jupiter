@@ -47,7 +47,7 @@ J4VCLXCell::~J4VCLXCell()
 void J4VCLXCell::Assemble()
 {
   if ( !GetLV() ) {
-    
+
     G4double halfX = ((G4Box*)GetMother()->GetSolid())->GetXHalfLength();
     G4double halfY = ((G4Box*)GetMother()->GetSolid())->GetYHalfLength();
     G4double halfZ = ((G4Box*)GetMother()->GetSolid())->GetZHalfLength();

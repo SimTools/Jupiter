@@ -73,8 +73,6 @@ G4bool J4VCLXActiveSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist
   //* Skip no energy deposit event-------------------------------------
   if ( GetEnergyDeposit() <= 0 ) return FALSE;
 
-  //* Open Parameter List
-  //  J4CLXParameterList* ptrList = J4CLXParameterList::GetInstance();
   
   //-------------------------------------------------------------------
   // Calorimeter Sub-Structure
@@ -118,6 +116,18 @@ G4bool J4VCLXActiveSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist
   //* Get global cell ID from each ID
   G4int globalID = J4CLXAddress::GetGlobalCellID( isEM, isBarrel, blockID, layerID, stripID, cellID );
   const G4ThreeVector  &Xcell = J4CLXAddress::GetCellPosition( globalID, isEM );
+  //const G4ThreeVector  &Xcell = GetPrePosition();
+
+#if 0
+  const G4ThreeVector  &pos   = GetPrePosition(); 
+  //* Open Parameter List
+  J4CLXParameterList* ptrList = J4CLXParameterList::GetInstance();
+  if ( ( Xcell - pos ).mag() > ptrList->GetCellSize() ) {
+    std::cerr << "**** Cell position generator error "
+              << "cellPos=" << J4CLXAddress::GetCellPosition( globalID, isEM ) << " "
+              << "prepos=" << GetPrePosition() << std::endl;
+  }
+#endif
 
   if ( cellID != J4CLXAddress::GetCellID( globalID, isEM ) ) { 
    std::cerr << "cellID=" << cellID << " not equal " 

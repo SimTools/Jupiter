@@ -58,26 +58,19 @@ void J4VCLXLayer::Assemble()
 
     J4CLXParameterList* ptrList = OpenParameterList();
     
+    G4Trap* mother = (G4Trap*)(GetMother()->GetSolid());
+
     G4int    myID = GetMyID();
+
     G4double layerThick = ( IsEM() ) ? ptrList->GetEMLayerThickness()
                                      : ptrList->GetHDLayerThickness();
 
-    //G4double px   = GetHalfX( myID );
-    //G4double plx  = GetHalfXL( myID );
     G4double px   = GetHalfX( myID ) -0.5*layertol;
     G4double plx  = GetHalfXL( myID ) -0.5*layertol;
-    //G4double py   = ( IsBarrel() ) ? 0.5*layerThick
-    //                               : ((G4Trap*)(GetMother()->GetSolid()))->GetYHalfLength1();
     G4double py   = ( IsBarrel() ) ? 0.5*layerThick - 0.5*layertol
-                                   : ((G4Trap*)(GetMother()->GetSolid()))->GetYHalfLength1();
-                                   //: 0.5*( GetYmax() - GetYmin() );
-    G4double pz   = GetHalfZ( myID ) - 0.5*layertol;
-    
-//    G4double px   = ((G4Trap*)GetMohter())->GetXHalfLength1() + myID*layerThickness*std::tan( 0.5*GetDphi() );;
-//    G4double plx  = px + layerThickness*std::tan( 0.5*GetDphi() );;
-//    G4double py   = 0.5*( GetYmax( myID ) - GetYmin( myID ) -layertol );    
-//    G4double py   = 0.5*( GetYmax( myID ) - GetYmin( myID ) );
-//    G4double pz   = GetHalfZ( myID );
+                                   : mother->GetYHalfLength1();
+    G4double pz   = ( IsBarrel() ) ? mother->GetZHalfLength()
+                                   : 0.5*layerThick - 0.5*layertol;
     G4double phi  = GetSphi( myID );
     
     G4Trap* ptrTrap = new G4Trap( GetName(), pz, 0., phi, py, px, plx, 0., py, px, plx, 0. );
@@ -113,22 +106,6 @@ void J4VCLXLayer::Assemble()
     Register( subLayer );
     subLayer->InstallIn( this );
     SetDaughter( subLayer );
-    
-    //fAbsLayer = CreateAbs( this );
-    //Register( fAbsLayer );
-    //fAbsLayer -> InstallIn( this );
-    //SetDaughter( fAbsLayer );
-    //
-    //fActiveLayer = CreateActive( this );
-    //Register( fActiveLayer );
-    //fActiveLayer -> InstallIn( this );
-    //SetDaughter( fActiveLayer );
-    //
-    //fFlexLayer = CreateFlex( this );
-    //Register( fFlexLayer );
-    //fFlexLayer -> InstallIn( this );
-    //SetDaughter( fFlexLayer );
-
   }
 }
 
@@ -158,13 +135,11 @@ void J4VCLXLayer::InstallIn( J4VComponent*        /* mother*/ ,
 
   G4double layerThick  = ( IsEM() ) ? ptrList->GetEMLayerThickness() 
                                     : ptrList->GetHDLayerThickness();
-  G4double motherThick = 2*((G4Trap*)(GetMother()->GetSolid()))->GetYHalfLength1();
-  //  G4double nLayers     = ( IsEM() ) ? ptrList->GetEMNLayers() 
-  //                                    : ptrList->GetHDNLayers();  
-  //  G4double motherThick = layerThick * nLayers;
+
+  G4double motherHalfThick = ((G4Trap*)(GetMother()->GetSolid()))->GetYHalfLength1();
   
   G4double px = 0.;
-  G4double py = ((G4double)myID+0.5)*layerThick - 0.5*motherThick;
+  G4double py = ((G4double)myID+0.5)*layerThick - motherHalfThick;
   G4double pz = 0.;
   
   //* If motherID > nTraps, Set position to -Z
@@ -174,7 +149,6 @@ void J4VCLXLayer::InstallIn( J4VComponent*        /* mother*/ ,
 
   if ( IsBarrel() ) { // Barrel placed by placement
     SetPVPlacement( 0, position );
-    //SetPVPlacement( prot, tlate );
   } else { // Endcap placed by replica
     SetPVReplica( kZAxis, layerThick );
   }

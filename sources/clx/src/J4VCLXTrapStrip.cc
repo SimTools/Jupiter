@@ -54,18 +54,28 @@ void J4VCLXTrapStrip::Assemble()
     G4int    myID     = GetMyID();
     G4Trap*  mother   = (G4Trap*)( GetMother()->GetSolid() );
     G4double cellSize = ptrList->GetCellSize();
+    G4double tolerance = ptrList->GetLayerTolerance();
+
+    G4double motherHalfY = mother->GetYHalfLength1();
+    G4double motherHalfZ = mother->GetZHalfLength();
+
+    G4int    nYStrips = 2*(G4int)( motherHalfY / cellSize ); 
+    G4int    nZStrips = 2*(G4int)( motherHalfZ / cellSize ); 
 
     G4double px   = mother->GetXHalfLength1();
     G4double plx  = mother->GetXHalfLength2();
-    G4double py   = ( IsBarrel() ) ? mother->GetYHalfLength1() : 0.5*cellSize;
-    G4double pz   = ( IsBarrel() ) ? 0.5*cellSize : mother->GetZHalfLength();
+    G4double py   = ( IsBarrel() ) ? motherHalfY
+                                   : motherHalfY/nYStrips -tolerance;
+    G4double pz   = ( IsBarrel() ) ? motherHalfZ/nZStrips
+                                   : motherHalfZ;
     G4double phi  = 0;
-
+    G4double step = motherHalfY/nYStrips;
+    
     //* Endcap part
     if ( !IsBarrel() ) {
-      px  += myID*cellSize*std::tan( 0.5*((J4VCLXSubLayer*)GetMother())->GetDphi() );
-      plx  = px + cellSize*std::tan( 0.5*((J4VCLXSubLayer*)GetMother())->GetDphi() );
-    } 
+      px  += myID*step*std::tan( 0.5*ptrList->GetTrapDeltaPhi() );
+      plx  = px + step*std::tan( 0.5*ptrList->GetTrapDeltaPhi() );
+    }
 
     G4Trap* ptrTrap = new G4Trap( GetName(), pz, 0., phi, py, px, plx, 0., py, px, plx, 0. );
     Register( ptrTrap );
@@ -108,18 +118,24 @@ void J4VCLXTrapStrip::InstallIn( J4VComponent*        /*mother*/,
 
   G4int    myID         = GetMyID();
   G4double motherHalfY  = ((G4Trap*)GetMother()->GetSolid())->GetYHalfLength1();
-  G4double width        = OpenParameterList()->GetCellSize();
+  G4double motherHalfZ  = ((G4Trap*)GetMother()->GetSolid())->GetZHalfLength();
+  G4double cellSize     = OpenParameterList()->GetCellSize();
+  G4int    nYStrips     = 2*(G4int)(motherHalfY/cellSize); 
+  G4int    nZStrips     = 2*(G4int)(motherHalfZ/cellSize); 
+  G4double ystep        = 2*motherHalfY/nYStrips;
+  G4double zstep        = 2*motherHalfZ/nZStrips;
 
   G4double px = 0;
-  G4double py = -motherHalfY + (myID+0.5)*width;
+  G4double py = -motherHalfY + (myID+0.5)*ystep;
   G4double pz = 0;
 
   G4ThreeVector position( px, py, pz );
 
-  if ( IsBarrel() )
-    SetPVReplica( kZAxis, width );
-  else
+  if ( IsBarrel() ) {
+    SetPVReplica( kZAxis, zstep );
+  } else {
     SetPVPlacement( 0, position );
+  }
 }
 
 //====================================================================

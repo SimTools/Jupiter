@@ -55,14 +55,15 @@ void J4VCLXSubLayer::Assemble()
 
     //* tolerance for each layer
     G4double layertol = OpenParameterList()->GetLayerTolerance();
+    G4Trap* mother = (G4Trap*)(GetMother()->GetSolid());
 
     G4int    myID = GetMyID();
     G4double px   = GetHalfX( myID ) -0.5*layertol;
     G4double plx  = GetHalfXL( myID ) -0.5*layertol;
-    //G4double py   = 0.5*( GetYmax( myID ) - GetYmin( myID ) );
-    //G4double pz   = GetHalfZ( myID );
-    G4double py   = 0.5*( GetYmax( myID ) - GetYmin( myID ) -layertol );
-    G4double pz   = GetHalfZ( myID ) - 0.5*layertol;
+    G4double py   = ( IsBarrel() ) ? 0.5*( GetYmax( myID ) - GetYmin( myID )  -layertol )
+                                   : mother->GetYHalfLength1();
+    G4double pz   = ( IsBarrel() ) ? mother->GetZHalfLength()
+                                   : GetHalfZ( myID )-layertol;
     G4double phi  = GetSphi( myID );
     
     G4Trap* ptrTrap = new G4Trap( GetName(), pz, 0., phi, py, px, plx, 0., py, px, plx, 0. );
@@ -76,11 +77,9 @@ void J4VCLXSubLayer::Assemble()
     PaintLV( GetVisAtt(), GetColor() );
 
     //* Install Daughter volume
-
     G4double cellSize  = OpenParameterList()->GetCellSize();
-    G4int    nTrapStrips   = ( IsBarrel() )
-                          ? 2*(G4int)( pz / cellSize )
-                          : 2*(G4int)( py / cellSize );
+    G4int    nTrapStrips = ( IsBarrel() ) ? 2*(G4int)( pz / cellSize )
+                                          : 2*(G4int)( py / cellSize );
 
     J4VCLXTrapStrip* trap = 0;
     
@@ -142,16 +141,6 @@ void J4VCLXSubLayer::InstallIn( J4VComponent*        /*mother*/,
   G4double motherThick = ( IsEM() ) ? ptrList->GetEMLayerThickness()       
                                     : ptrList->GetHDLayerThickness();
 
-/*
-  G4double activeThick = ( IsEM() ) ? ptrList->GetEMActiveLayerThickness() 
-                                    : ptrList->GetHDActiveLayerThickness();
-  G4double absThick    = ( IsEM() ) ? ptrList->GetEMAbsLayerThickness()    
-                                    : ptrList->GetHDAbsLayerThickness();
-  G4double flexThick   = ( IsEM() ) ? ptrList->GetEMFlexLayerThickness()
-                                    : ptrList->GetHDFlexLayerThickness();
-*/
-  
-  
   G4int    myID = GetMyID();
   G4double px   = 0.;
   G4double py   = -0.5*motherThick;
@@ -166,13 +155,6 @@ void J4VCLXSubLayer::InstallIn( J4VComponent*        /*mother*/,
       pz += layerThick[i];
     }
   }
-
-#if 0
-  G4double py = ( IsActive() ) ? 0.5*activeThick + absThick - 0.5*motherThick
-                               : 0.5*absThick -0.5*motherThick;
-  G4double pz = ( IsActive() ) ? 0.5*activeThick + absThick - 0.5*motherThick
-                               : 0.5*absThick -0.5*motherThick;
-#endif
 
   py *= ( IsBarrel() ) ? 1 : 0; // Endcap py = 0
   pz *= ( IsBarrel() ) ? 0 : 1; // Barrel pz = 0
