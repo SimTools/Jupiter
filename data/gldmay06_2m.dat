@@ -98,9 +98,9 @@ J4IR.WMask3.InnerRadius:      22.000000
 J4IR.WMask3.Material:         Tungsten
 J4IR.WMask3.OuterRadius:      35.000000
 #
-J4IR.FCAL.Front.NLayer:  30
-J4IR.FCAL.Tail.NLayer:   30
-J4IR.FCAL.AbsorberThickness:  0.3
+J4IR.FCAL.Front.NLayer:  55
+J4IR.FCAL.Tail.NLayer:   45
+J4IR.FCAL.AbsorberThickness:  0.35
 J4IR.FCAL.SensorThickness:  0.03
 #
 J4IR.FCAL.Front.Absorber.Material: Tungsten
@@ -111,8 +111,8 @@ J4IR.FCAL.Tail.Sensor.Material: Silicon
 J4IR.FCAL.Tail.Gap.Material: Air
 #
 #
-J4IR.BCAL.NLayer:  30
-J4IR.BCAL.AbsorberThickness:  0.3
+J4IR.BCAL.NLayer:  33
+J4IR.BCAL.AbsorberThickness:  0.35
 J4IR.BCAL.SensorThickness:  0.03
 J4IR.BCAL.Sensor.Material:  Silicon
 J4IR.BCAL.Absorber.Material:  Tungsten
@@ -130,17 +130,17 @@ J4IR.WMask4.ZPosition:        450.0
 #
 #  IT Parameters
 #
-J4IT.Barrel.HalfZ:            18.58  38.20  57.81  77.43
-J4IT.Barrel.InnerRadius:      9.0  18.5  28.0  37.5
+J4IT.Barrel.HalfZ:            18.5  33.0  47.5  62.0
+J4IT.Barrel.InnerRadius:      9.0  16.0   23.0  30.0
 #
 # V1 configuration
 #J4IT.Endcap.Rmax:             14.0 17.0 25.0 32.0 32.0 32.0 32.0
 #J4IT.Endcap.Rmin:             3.0 5.5 8.0 8.0 8.0 8.0 8.0
 #J4IT.Endcap.Zpos:             20.0 35.0 50.0 65.0 90.0 115.0 140.0
-# V2 Configuration
-J4IT.Endcap.Rmax:             7.0   14.0 21.0  28.0  36.0  38.0  38.0
-J4IT.Endcap.Rmin:             2.5   4.5   7.0   8.0  10.0  12.0  14.0
-J4IT.Endcap.Zpos:             14.5  29    43.5 58.0 72.5  87.0  101.5 
+# GLD V1.2 Configuration
+J4IT.Endcap.Rmax:             7.6   14.0 21.0  28.0  38.0  38.0  38.0
+J4IT.Endcap.Rmin:             2.4   3.2   3.7   4.7   5.7   6.6   7.6
+J4IT.Endcap.Zpos:             15.5  29    43.5 58.0 72.5  87.0  101.5 
 #
 J4IT.Layer.Material:          Silicon
 J4IT.Layer.Thickness:         0.056160
