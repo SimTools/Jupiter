@@ -50,7 +50,6 @@ J4.IR.BoxEndZ:               1700.000000
 # J4IR.BeamPipeMiddle.ZEdges:   7.0 80.0 370.0 410.0
 # J4IR.BeamPipeMiddle.Shapes:   0 1 0 1
 #
-J4.PhysicsList:     0
 # Beampipe for 2mrad Nominal 
 J4.IR.NumSolides:             7
 J4.IR.REdges:       1.525  3.2  3.2   8.2   38.0   39.8   39.8
@@ -209,7 +208,6 @@ J4.EXPHall.HalfZ:             1500.000000
 # J4.EXPHall.HalfZ:             1000.000000
 J4.EXPHall.Material:          Air
 J4.EXPHall.VisAtt:            false
-J4.PhysicsList:               1
 # J4.SOL.HalfZ:                 530.000000
 # J4.SOL.OuterRadius:           450.000000
 J4.SOL.HalfZ:                 475.000000

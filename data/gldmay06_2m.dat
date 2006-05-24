@@ -147,8 +147,6 @@ J4IT.Layer.Thickness:         0.056160
 J4IT.Material:                Air
 J4IT.NBarrel:                 4
 J4IT.NEndcap:                 7
-J4IT.VisAtt.Layer:            true
-J4IT.VisAtt:                  false
 #
 J4.IT.ZCoverage:              0.900000
 J4.VTX.OuterRadius:           7.900000
@@ -202,13 +200,11 @@ J4.CAL.InnerHalfZ:            265.000000
 J4.CAL.InnerRadius:           206.000000
 J4.CAL.OuterHalfZ:            425.000000
 J4.CAL.OuterRadius:           370.000000
-J4.EXPHall.Color:             1.0 0.0 1.0 1.0
 J4.EXPHall.HalfX:             1000.000000
 J4.EXPHall.HalfY:             1000.000000
 J4.EXPHall.HalfZ:             1500.000000
 # J4.EXPHall.HalfZ:             1000.000000
 J4.EXPHall.Material:          Air
-J4.EXPHall.VisAtt:            false
 J4.PhysicsList:               1
 # J4.SOL.HalfZ:                 530.000000
 # J4.SOL.OuterRadius:           450.000000
