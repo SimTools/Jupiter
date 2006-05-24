@@ -20,6 +20,7 @@
 #include "J4CLX.hh"
 #include "J4CLXParameterList.hh"
 #include "J4TrackingAction.hh"
+#include "J4HistoryKeeper.hh"
 #include <cmath>
  
 //=====================================================================
@@ -33,6 +34,10 @@ J4CLXSD::J4CLXSD( J4VDetectorComponent* detector )
  :J4VSD<J4CLXPreHit>( detector )
 {
   J4TrackingAction::GetInstance()->Add(J4CLXPreHitKeeper::GetInstance());
+#if 1
+  J4TrackingAction::GetInstance()->Add(J4HistoryKeeper::GetInstance());
+  J4HistoryKeeper::GetInstance()->SetPHitKeeperPtr(J4CLXPreHitKeeper::GetInstance());
+#endif
   J4TrackingAction::GetInstance()->Add(J4CLXPostHitKeeper::GetInstance());
 }
 
