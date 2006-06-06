@@ -16,6 +16,7 @@
 #include "J4VCLXDetectorComponent.hh"
 #include "J4CLXParameterList.hh"
 #include "J4VCLXStrip.hh"
+#include "J4VCLXCell.hh"
 
 //=====================================================================
 //---------------------
@@ -65,8 +66,23 @@ protected:
 			       G4int  nbrothers = 1,
 			       G4int  me        = 0,
 			       G4int  copyno    = -1 ) = 0;
- 
-  J4VCLXStrip* fStrip;
+
+  virtual J4VCLXStrip *CreateBound( J4VDetectorComponent *parent = 0,
+				    G4int  nclones   = 1,
+				    G4int  nbrothers = 1,
+				    G4int  me        = 0,
+				    G4int  copyno    = -1 ) = 0;  
+
+  /*
+  virtual J4VCLXCell *CreateBound( J4VDetectorComponent *parent = 0,
+				   G4int  nclones   = 1,
+				   G4int  nbrothers = 1,
+				   G4int  me        = 0,
+				   G4int  copyno    = -1 ) = 0;
+  */
+  
+  std::vector<J4VCLXStrip*> fStrips;
+  //std::vector<J4VCLXCell*> fCells;
 
 private:
   //  G4int fIsEndcap;

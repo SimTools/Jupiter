@@ -44,6 +44,12 @@ protected:
 			       G4int  me        = 0,
 			       G4int  copyno    = 0 );
 
+  virtual J4VCLXStrip *CreateBound( J4VDetectorComponent *parent = 0,
+				    G4int  nclones   = 1,
+				    G4int  nbrothers = 1,
+				    G4int  me        = 0,
+				    G4int  copyno    = 0 );
+  
 private:
   static const G4String fgFirstName;
 

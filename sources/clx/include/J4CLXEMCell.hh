@@ -24,7 +24,8 @@ class J4CLXEMCell : public J4VCLXCell {
 
 public:
   
-  J4CLXEMCell( G4bool  isBarrel,
+  J4CLXEMCell( G4bool isBarrel,
+	       G4bool isBoundary,
 	       J4VDetectorComponent *parent = 0,
 	       G4int  nclones   = 1,
 	       G4int  nbrothers = 1,

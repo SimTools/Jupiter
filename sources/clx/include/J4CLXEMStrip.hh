@@ -34,13 +34,10 @@ public:
   
   virtual ~J4CLXEMStrip();
 
+  virtual G4bool   IsBoundary   () const;
   virtual G4bool   IsEM         () const;
   virtual G4String GetFirstName () const  { return fgFirstName ; }
   
-//  virtual G4double GetHalfX     ( G4int i = 0 ) ;
-//  virtual G4double GetHalfY     ( G4int i = 0 ) ;
-//  virtual G4double GetHalfZ     ( G4int i = 0 ) ;
-
 protected:
   virtual J4VCLXCell *Create( J4VDetectorComponent *parent    = 0,
 		              G4int  nclones   = 1,
@@ -55,6 +52,11 @@ private:
 
 //=====================================================================
 //* Inline Implementation of Pure Virtuals of Base Class --------------
+
+inline G4bool J4CLXEMStrip::IsBoundary() const
+{
+  return false;
+}
 
 inline G4bool J4CLXEMStrip::IsEM() const
 {

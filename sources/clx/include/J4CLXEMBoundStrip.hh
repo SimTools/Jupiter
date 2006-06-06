@@ -1,9 +1,9 @@
 // $Id$
-#ifndef __J4CLXHDSTRIP__
-#define __J4CLXHDSTRIP__
+#ifndef __J4CLXEMBOUNDSTRIP__
+#define __J4CLXEMBOUNDSTRIP__
 //*************************************************************************
 //* --------------------
-//* J4CLXHDStrip
+//* J4CLXEMBoundStrip
 //* --------------------
 //* (Description)
 //* 	Derivation class for CLX.
@@ -21,45 +21,45 @@
 // class definition
 //---------------------
 
-class J4CLXHDStrip : public J4VCLXStrip {
+class J4CLXEMBoundStrip : public J4VCLXStrip {
 
 public:
   
-  J4CLXHDStrip( G4bool isBarrel,
-                J4VDetectorComponent *parent = 0,
-                G4int  nclones   = 1,
-	        G4int  nbrothers = 1,
-	        G4int  me        = 0,
-	        G4int  copyno    = -1 );
+  J4CLXEMBoundStrip( G4bool  isBarrel,
+		     J4VDetectorComponent *parent = 0,
+		     G4int  nclones   = 1,
+		     G4int  nbrothers = 1,
+		     G4int  me        = 0,
+		     G4int  copyno    = -1 );
   
-  virtual ~J4CLXHDStrip();
-
+  virtual ~J4CLXEMBoundStrip();
+  
   virtual G4bool   IsBoundary   () const;
   virtual G4bool   IsEM         () const;
   virtual G4String GetFirstName () const  { return fgFirstName ; }
-  
-protected:
-  virtual J4VCLXCell *Create( J4VDetectorComponent *parent    = 0,
-		              G4int  nclones   = 1,
+
+  virtual J4VCLXCell *Create( J4VDetectorComponent *parent = 0,
+			      G4int  nclones   = 1,
 			      G4int  nbrothers = 1,
 			      G4int  me        = 0,
 			      G4int  copyno    = 0 );
 
 private:
   static const G4String fgFirstName;
+
 };
 
 //=====================================================================
 //* Inline Implementation of Pure Virtuals of Base Class --------------
 
-inline G4bool J4CLXHDStrip::IsBoundary() const
+inline G4bool J4CLXEMBoundStrip::IsBoundary() const
 {
-  return false;
+  return true;
 }
 
-inline G4bool J4CLXHDStrip::IsEM() const
+inline G4bool J4CLXEMBoundStrip::IsEM() const
 {
-  return false; 
+  return true;
 }
 
 #endif

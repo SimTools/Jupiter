@@ -47,9 +47,11 @@ public:
   G4bool   IsBarrel() const { return fIsBarrel ; }
   
   //* Virtual Functions Deliverd from J4VCLXTrap
+  virtual G4bool   IsBoundary   () const   = 0;
   virtual G4bool   IsEM         () const   = 0;
   virtual G4String GetFirstName () const   = 0;
 
+//  G4bool   IsXPlus     () const;
   G4String GetMaterial ();
   G4bool   GetVisAtt   ();
   G4Color  GetColor    ();
@@ -64,13 +66,12 @@ protected:
 			      G4int  nbrothers = 1,
 			      G4int  me        = 0,
 			      G4int  copyno    = -1 ) = 0;
- 
+
   J4VCLXCell *fCell;
   
 private:
   //  G4int fIsEndcap;
   G4bool fIsBarrel;
-  
 };
 
 inline G4String J4VCLXStrip::GetMaterial()

@@ -63,7 +63,8 @@ public:
   
   //*Barrel ------------------------------------------------------------
   inline G4double GetBarrelOuterR()      const ;
-  inline G4double GetBarrelInnerR()      const ;
+  //inline G4double GetBarrelInnerR()      const ;
+  inline G4double GetBarrelInnerR()      const { return fBarrelInnerR    ; }
   inline G4double GetBarrelThickness()   const ;
   inline G4double GetBarrelHalfZ()       const { return fBarrelHalfZ     ; }
   inline G4double GetBarrelDeltaPhi()    const { return fBarrelDeltaPhi  ; }
@@ -78,6 +79,7 @@ public:
   inline G4double GetEndcapThickness()   const ;
   
   //*EM ----------------------------------------------------------------
+  inline G4int    GetEMNStrips()         const { return fEMNStrips       ; }  
   inline G4int    GetEMNSubLayers()      const { return fEMNSubLayers    ; }  
   inline G4int    GetEMNLayers()         const { return fEMNLayers       ; }
   inline G4double GetEMYmax()            const ;
@@ -91,6 +93,7 @@ public:
   inline G4double GetEMFlexLayerThickness()   const { return fEMFlexLayerThickness   ; }
   
   //*HD ---------------------------------------------------------------
+  inline G4int    GetHDNStrips()         const { return fHDNStrips       ; }  
   inline G4int    GetHDNSubLayers()      const { return fHDNSubLayers    ; }  
   inline G4int    GetHDNLayers()         const { return fHDNLayers       ; }
   inline G4double GetHDYmax()            const ;
@@ -108,8 +111,8 @@ public:
   //*Maximum number of cells, strips ----------------------------------
   inline G4int    GetEMNCells()          const { return fEMNCells        ; }
   inline G4int    GetHDNCells()          const { return fHDNCells        ; }
-  inline G4int    GetEMNStrips()         const { return fEMNStrips       ; }
-  inline G4int    GetHDNStrips()         const { return fHDNStrips       ; }
+  inline G4int    GetEMNTrapStrips()     const { return fEMNTrapStrips   ; }
+  inline G4int    GetHDNTrapStrips()     const { return fHDNTrapStrips   ; }
   inline G4int    GetMaxNStrips()        const { return fMaxNStrips      ; }
   inline G4int    GetMaxNCells()         const { return fMaxNCells       ; }
 
@@ -186,6 +189,7 @@ private:
   G4double fBarrelEndcapGap;
   
   //* Barrel
+  G4double fBarrelInnerR;
   G4double fBarrelHalfZ;
   G4double fBarrelDeltaPhi;
   G4double fBarrelPhiOffset;
@@ -200,6 +204,10 @@ private:
   G4double fEMThickness;
   G4int    fEMNLayers;
   G4int    fEMNSubLayers;
+  G4int    fEMNTrapStrips;
+  G4int    fEMNStrips;
+  G4int    fEMNCells;
+
   G4double fEMAbsLayerThickness;
   G4double fEMActiveLayerThickness;
   G4double fEMFlexLayerThickness;
@@ -208,6 +216,9 @@ private:
   G4double fHDThickness;
   G4int    fHDNLayers;
   G4int    fHDNSubLayers;
+  G4int    fHDNTrapStrips;
+  G4int    fHDNStrips;
+  G4int    fHDNCells;
   G4double fHDAbsLayerThickness;
   G4double fHDActiveLayerThickness;
   G4double fHDFlexLayerThickness;
@@ -216,10 +227,6 @@ private:
   G4double fCellSize;
 
   //* Maximum nubmer of cells, strips
-  G4int    fEMNCells;
-  G4int    fHDNCells;
-  G4int    fEMNStrips;
-  G4int    fHDNStrips;
   G4int    fMaxNCells;
   G4int    fMaxNStrips;
 
@@ -269,7 +276,11 @@ private:
 
 inline G4double J4CLXParameterList::GetCLXInnerR() const
 {
+#if 0
   return J4ParameterList::GetInstance()->GetCALInnerR();
+#else
+  return GetBarrelInnerR();
+#endif
 }
 
 inline G4double J4CLXParameterList::GetCLXOuterR() const
@@ -279,7 +290,8 @@ inline G4double J4CLXParameterList::GetCLXOuterR() const
 
 inline G4double J4CLXParameterList::GetCLXInnerHalfZ() const
 {
-  return J4ParameterList::GetInstance()->GetCALInnerHalfZ();
+  //return J4ParameterList::GetInstance()->GetCALInnerHalfZ();
+  return GetBarrelHalfZ();
 }
 
 inline G4double J4CLXParameterList::GetCLXOuterHalfZ() const
@@ -287,10 +299,12 @@ inline G4double J4CLXParameterList::GetCLXOuterHalfZ() const
   return J4ParameterList::GetInstance()->GetCALOuterHalfZ();
 }
 
+#if 0
 inline G4double J4CLXParameterList::GetBarrelInnerR() const
 {
   return GetCLXInnerR();
 }
+#endif
 
 inline G4double J4CLXParameterList::GetBarrelOuterR() const
 {
@@ -324,12 +338,12 @@ inline G4double J4CLXParameterList::GetHDThickness() const
 
 inline G4double J4CLXParameterList::GetEMHalfZ() const
 {
-  return GetBarrelHalfZ();
+  return GetBarrelHalfZ() - GetBarrelEndcapGap();
 }
 
 inline G4double J4CLXParameterList::GetHDHalfZ() const
 {
-  return GetBarrelHalfZ() + GetEMThickness();
+  return GetBarrelHalfZ() + GetEMThickness() -GetBarrelEndcapGap();
 }
 
 inline G4double J4CLXParameterList::GetEMEndcapFrontZ() const

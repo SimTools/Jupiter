@@ -76,7 +76,7 @@ inline G4bool J4CLXEMActiveLayer::IsEM() const
 inline G4double J4CLXEMActiveLayer::GetHalfX( G4int )
 {
   G4double absThick = OpenParameterList()->GetEMAbsLayerThickness();
-   return ( IsBarrel() )
+  return ( IsBarrel() )
      ? ((G4Trap*)(GetMother()->GetSolid()))->GetXHalfLength1()+absThick*std::tan( 0.5*GetDphi() )
      : ((G4Trap*)(GetMother()->GetSolid()))->GetXHalfLength1();
 }
