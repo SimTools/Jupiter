@@ -1,7 +1,7 @@
 // $Id$
 //*************************************************************************
 //* --------------------
-//* J4CLXEMCell
+//* J4CLXEMBoundStrip
 //* --------------------
 //* (Description)
 //* 	Class for describing his/her detector compornents.
@@ -10,17 +10,18 @@
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
 
-#include "G4Box.hh"
 #include "J4VCLXCell.hh"
 #include "J4CLXEMCell.hh"
+#include "J4CLXEMBoundStrip.hh"
 #include "J4CLXEMActiveSD.hh"
+#include "J4ParameterTable.hh"
 
 // ====================================================================
 //--------------------------------
 // constants (detector parameters)
 //--------------------------------
 
-const G4String J4CLXEMCell::fgFirstName= "EMCell" ;
+const G4String J4CLXEMBoundStrip::fgFirstName= "EMBoundStrip" ;
 
 //=====================================================================
 //---------------------
@@ -29,30 +30,29 @@ const G4String J4CLXEMCell::fgFirstName= "EMCell" ;
 
 //=====================================================================
 //* constructor -------------------------------------------------------
-J4CLXEMCell::J4CLXEMCell( G4bool isBarrel,
-                          G4bool isBoundary,
-                          J4VDetectorComponent *parent,
-                          G4int  nclones,
-                          G4int  nbrothers,
-                          G4int  me,
-                          G4int  copyno )
-  : J4VCLXCell( isBarrel, isBoundary, fgFirstName, parent, nclones, nbrothers, me, copyno )
+J4CLXEMBoundStrip::J4CLXEMBoundStrip( G4bool isBarrel,
+				      J4VDetectorComponent *parent,
+				      G4int  nclones,
+				      G4int  nbrothers,
+				      G4int  me,
+				      G4int  copyno )
+  : J4VCLXStrip( isBarrel, fgFirstName, parent, nclones, nbrothers, me, copyno )
 {
 }
 
 //=====================================================================
 //* destructor --------------------------------------------------------
-J4CLXEMCell::~J4CLXEMCell()
+J4CLXEMBoundStrip::~J4CLXEMBoundStrip()
 {
 }
 
 //=====================================================================
-//* cabling -----------------------------------------------------------
-void J4CLXEMCell::Cabling()
+//* Create ------------------------------------------------------------
+J4VCLXCell *J4CLXEMBoundStrip::Create( J4VDetectorComponent *parent,
+				       G4int nclones,
+				       G4int nbrothers,
+				       G4int me,
+				       G4int copyno )
 {
-  if ( !GetSD() ) {
-    J4CLXEMActiveSD* sd = new J4CLXEMActiveSD( this );
-    Register( sd );
-    SetSD( sd );
-  }
+  return new J4CLXEMCell( IsBarrel(), IsBoundary(), parent, nclones, nbrothers, me, copyno );
 }

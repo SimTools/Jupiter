@@ -56,13 +56,18 @@ void J4VCLXSubLayer::Assemble()
     //* tolerance for each layer
     G4double layertol = OpenParameterList()->GetLayerTolerance();
     G4Trap* mother = (G4Trap*)(GetMother()->GetSolid());
+    G4double cellSize  = OpenParameterList()->GetCellSize();
 
+    G4int nTrapStrips = (IsBarrel()) ? 2*(G4int)( mother->GetZHalfLength()/cellSize )
+                                     : 2*(G4int)( mother->GetYHalfLength1()/cellSize );
+
+    //* Install Daughter volume
     G4int    myID = GetMyID();
     G4double px   = GetHalfX( myID ) -0.5*layertol;
     G4double plx  = GetHalfXL( myID ) -0.5*layertol;
-    G4double py   = ( IsBarrel() ) ? 0.5*( GetYmax( myID ) - GetYmin( myID )  -layertol )
+    G4double py   = ( IsBarrel() ) ? 0.5*( GetYmax( myID ) - GetYmin( myID ) ) -layertol
                                    : mother->GetYHalfLength1();
-    G4double pz   = ( IsBarrel() ) ? mother->GetZHalfLength()
+    G4double pz   = ( IsBarrel() ) ? 0.5*cellSize*nTrapStrips
                                    : GetHalfZ( myID )-layertol;
     G4double phi  = GetSphi( myID );
     
@@ -75,11 +80,6 @@ void J4VCLXSubLayer::Assemble()
     
     // SetVisAttribute ----//
     PaintLV( GetVisAtt(), GetColor() );
-
-    //* Install Daughter volume
-    G4double cellSize  = OpenParameterList()->GetCellSize();
-    G4int    nTrapStrips = ( IsBarrel() ) ? 2*(G4int)( pz / cellSize )
-                                          : 2*(G4int)( py / cellSize );
 
     J4VCLXTrapStrip* trap = 0;
     
@@ -156,8 +156,8 @@ void J4VCLXSubLayer::InstallIn( J4VComponent*        /*mother*/,
     }
   }
 
-  py *= ( IsBarrel() ) ? 1 : 0; // Endcap py = 0
-  pz *= ( IsBarrel() ) ? 0 : 1; // Barrel pz = 0
+  py *= ( IsBarrel() ) ? 1. : 0.; // Endcap py = 0
+  pz *= ( IsBarrel() ) ? 0. : 1.; // Barrel pz = 0
 
   G4ThreeVector position( px, py, pz ) ;
   SetPVPlacement( 0, position );

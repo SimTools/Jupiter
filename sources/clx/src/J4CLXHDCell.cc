@@ -31,12 +31,13 @@ const G4String J4CLXHDCell::fgFirstName= "HDCell" ;
 //=====================================================================
 //* constructor -------------------------------------------------------
 J4CLXHDCell::J4CLXHDCell( G4bool isBarrel,
+	                  G4bool isBoundary,
                           J4VDetectorComponent *parent,
                           G4int  nclones,
                           G4int  nbrothers,
                           G4int  me,
                           G4int  copyno )
-  : J4VCLXCell( isBarrel, fgFirstName, parent, nclones, nbrothers, me, copyno )
+  : J4VCLXCell( isBarrel, isBoundary, fgFirstName, parent, nclones, nbrothers, me, copyno )
 {
 }
 

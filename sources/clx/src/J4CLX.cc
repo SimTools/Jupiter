@@ -79,11 +79,12 @@ void J4CLX::Assemble()
 
     J4CLXParameterList *ptrList = OpenParameterList(); 
 
-    G4double rmin        = ptrList->GetCLXInnerR();
+    G4double tol = ptrList->GetLayerTolerance();
+    G4double rmin        = ptrList->GetCLXInnerR() -tol;
     G4double rmax        = ptrList->GetCLXOuterR();
     G4double len         = ptrList->GetCLXOuterHalfZ();
     G4double dphi        = ptrList->GetCLXDeltaPhi();
-    G4double endcaprmin  = ptrList->GetEndcapInnerR();
+    G4double endcaprmin  = ptrList->GetEndcapInnerR() - tol;
     G4double endcaphalfz = 0.5 * ( len - ptrList->GetCLXInnerHalfZ() );
 
     // MakeSolid ----------//

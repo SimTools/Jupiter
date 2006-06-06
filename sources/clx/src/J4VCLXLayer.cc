@@ -64,13 +64,12 @@ void J4VCLXLayer::Assemble()
 
     G4double layerThick = ( IsEM() ) ? ptrList->GetEMLayerThickness()
                                      : ptrList->GetHDLayerThickness();
-
     G4double px   = GetHalfX( myID ) -0.5*layertol;
     G4double plx  = GetHalfXL( myID ) -0.5*layertol;
-    G4double py   = ( IsBarrel() ) ? 0.5*layerThick - 0.5*layertol
+    G4double py   = ( IsBarrel() ) ? 0.5*layerThick - layertol
                                    : mother->GetYHalfLength1();
     G4double pz   = ( IsBarrel() ) ? mother->GetZHalfLength()
-                                   : 0.5*layerThick - 0.5*layertol;
+                                   : 0.5*layerThick - layertol;
     G4double phi  = GetSphi( myID );
     
     G4Trap* ptrTrap = new G4Trap( GetName(), pz, 0., phi, py, px, plx, 0., py, px, plx, 0. );
@@ -88,24 +87,19 @@ void J4VCLXLayer::Assemble()
     J4VCLXSubLayer* subLayer = 0;
     G4int nSubLayers = ( IsEM() ) ? OpenParameterList()->GetEMNSubLayers()
                                   : OpenParameterList()->GetHDNSubLayers();
-    
-    subLayer = CreateAbs( this, 1, nSubLayers, 0 );
-    fSubLayers.push_back( subLayer );
-    Register( subLayer );
-    subLayer->InstallIn( this );
-    SetDaughter( subLayer );
-    
-    subLayer = CreateActive( this, 1, nSubLayers, 1 );
-    fSubLayers.push_back( subLayer );
-    Register( subLayer );
-    subLayer->InstallIn( this );
-    SetDaughter( subLayer );
-    
-    subLayer = CreateFlex( this, 1, nSubLayers, 2 );
-    fSubLayers.push_back( subLayer );
-    Register( subLayer );
-    subLayer->InstallIn( this );
-    SetDaughter( subLayer );
+
+    for ( G4int i = 0; i < nSubLayers; i++ ) {
+
+      if ( i == 0 ) subLayer = CreateAbs( this, 1, nSubLayers, i );
+      if ( i == 1 ) subLayer = CreateActive( this, 1, nSubLayers, i );
+      if ( i == 2 ) subLayer = CreateFlex( this, 1, nSubLayers, i );
+      
+      fSubLayers.push_back( subLayer );
+      Register( subLayer );
+      subLayer->InstallIn( this );
+      SetDaughter( subLayer );
+    }
+
   }
 }
 
@@ -139,11 +133,11 @@ void J4VCLXLayer::InstallIn( J4VComponent*        /* mother*/ ,
   G4double motherHalfThick = ((G4Trap*)(GetMother()->GetSolid()))->GetYHalfLength1();
   
   G4double px = 0.;
-  G4double py = ((G4double)myID+0.5)*layerThick - motherHalfThick;
+  G4double py = ((G4double)myID+0.5)*layerThick -motherHalfThick;
   G4double pz = 0.;
   
   //* If motherID > nTraps, Set position to -Z
-  py *= ( IsBarrel() ) ? 1 : 0; // Endcap py = 0
+  py *= ( IsBarrel() ) ? 1. : 0.; // Endcap py = 0
   
   G4ThreeVector position( px, py, pz ) ;
 

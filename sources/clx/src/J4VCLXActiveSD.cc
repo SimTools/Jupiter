@@ -72,36 +72,36 @@ G4bool J4VCLXActiveSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist
 
   //* Skip no energy deposit event-------------------------------------
   if ( GetEnergyDeposit() <= 0 ) return FALSE;
-
   
   //-------------------------------------------------------------------
   // Calorimeter Sub-Structure
   // cell -> strip -> trapStrip -> SubLayer -> Layer -> Block -> CLX
   //-------------------------------------------------------------------
-  G4int cellDepth     = 0;
-  //  G4int stripDepth    = 1;
-  G4int ptrStripDepth = 2;
+  G4int cellDepth      = 0;
+  G4int stripDepth     = 1;
+  G4int trapStripDepth = 2;
   //  G4int subLayerDepth = 3;
-  G4int layerDepth    = 4;
-  G4int blockDepth    = 5;
+  G4int layerDepth     = 4;
+  G4int blockDepth     = 5;
 
   //* Get Component
   J4VCLXCell*      ptrCell      = (J4VCLXCell*)GetComponent( cellDepth );
-  //  J4VCLXStrip*     ptrStrip     = (J4VCLXStrip*)GetComponent( stripDepth );
-  J4VCLXTrapStrip* ptrTrapStrip = (J4VCLXTrapStrip*)GetComponent( ptrStripDepth );  
+  J4VCLXStrip*     ptrStrip     = (J4VCLXStrip*)GetComponent( stripDepth );
+  J4VCLXTrapStrip* ptrTrapStrip = (J4VCLXTrapStrip*)GetComponent( trapStripDepth );
   //  J4VCLXSubLayer*  ptrSubLayer  = (J4VCLXSubLayer*)GetComponent( subLayerDepth );
   J4VCLXLayer*     ptrLayer     = (J4VCLXLayer*)GetComponent( layerDepth );
   J4VCLXBlock*     ptrBlock     = (J4VCLXBlock*)GetComponent( blockDepth );
-
+ 
   G4bool  isEM        = ptrCell->IsEM();
-  //G4int   isEndcap    = ptrBlock->IsEndcap();
+  G4bool  isBoundary  = ptrCell->IsBoundary();
+  G4int   isEndcap    = ptrBlock->IsEndcap();
   G4bool  isBarrel    = ptrCell->IsBarrel();
-  
-  G4int   cellID      = GetCloneID( ptrCell );
-  G4int   stripID     = ( isBarrel ) ? GetCloneID( ptrTrapStrip ) : ptrTrapStrip->GetMyID();
+  G4int   cellID      = ( isBoundary ) ? ptrStrip->GetMyID() : GetCloneID( ptrCell );
+  G4int   stripID     = ptrStrip->GetMyID();
+  G4int   trapStripID = ( isBarrel ) ? GetCloneID( ptrTrapStrip ) : ptrTrapStrip->GetMyID();
   G4int   layerID     = ( isBarrel ) ? ptrLayer->GetMyID() : GetCloneID( ptrLayer );
-  G4int   blockID     = ( isBarrel ) ? ptrBlock->GetMyID() : ptrBlock->GetCopyNo();
-  
+  G4int   blockID     = ( isEndcap == -1 ) ? ptrBlock->GetCopyNo() : ptrBlock->GetMyID();
+
   //* Particle information
   G4int    trackID        =  GetTrackID();
   G4int    motherTrackID  =  GetMotherTrackID();
@@ -114,43 +114,88 @@ G4bool J4VCLXActiveSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist
   //G4int    pdg      = particle->GetPDGEncoding();
 
   //* Get global cell ID from each ID
-  G4int globalID = J4CLXAddress::GetGlobalCellID( isEM, isBarrel, blockID, layerID, stripID, cellID );
-  const G4ThreeVector  &Xcell = J4CLXAddress::GetCellPosition( globalID, isEM );
-  //const G4ThreeVector  &Xcell = GetPrePosition();
+  G4int globalID = J4CLXAddress::GetGlobalCellID( isEM, blockID, layerID, trapStripID, stripID, cellID );
 
-#if 0
+  //* Center of cell position
+  const G4ThreeVector  &Xcell = J4CLXAddress::GetCellPosition( globalID, isEM, isBarrel );
+
+#if 1
   const G4ThreeVector  &pos   = GetPrePosition(); 
   //* Open Parameter List
   J4CLXParameterList* ptrList = J4CLXParameterList::GetInstance();
-  if ( ( Xcell - pos ).mag() > ptrList->GetCellSize() ) {
-    std::cerr << "**** Cell position generator error "
-              << "cellPos=" << J4CLXAddress::GetCellPosition( globalID, isEM ) << " "
-              << "prepos=" << GetPrePosition() << std::endl;
+
+  G4double activeThick = (isEM) ? ptrList->GetEMActiveLayerThickness() : ptrList->GetHDActiveLayerThickness();
+  G4double cellSize = ptrList->GetCellSize();
+
+  G4double size = std::sqrt( (0.5*cellSize)*(0.5*cellSize)+ (0.5*cellSize)*(0.5*cellSize) + (0.5*activeThick)*(0.5*activeThick));
+  
+  if ( (Xcell-pos).mag() > 1.1*size ) {
+    std::cerr << "**** Cell position error! "
+              << "IsEM=" << isEM << " "
+              << "IsBarrel=" << isBarrel << " "
+              << "IsEndcap=" << ptrBlock->IsEndcap() << " "
+              << "IsBoundary=" << isBoundary << " "
+              << "cellPos=" << J4CLXAddress::GetCellPosition( globalID, isEM, isBarrel ) << " "
+              << "prepos=" << GetPrePosition() << " "
+              << "Diff=" << (Xcell-pos).mag() << " "
+              <<  std::endl;
   }
 #endif
 
+  if ( isEM != ptrBlock->IsEM() ) {
+    std::cout << "**** Error! isEM not equal ptrBlock->IsEM()" << " "
+              << "isEM=" << isEM << " "
+              << "IsEM()=" << ptrBlock->IsEM() << std::endl;
+  }
+
+
   if ( cellID != J4CLXAddress::GetCellID( globalID, isEM ) ) { 
-   std::cerr << "cellID=" << cellID << " not equal " 
-             << J4CLXAddress::GetCellID( globalID, isEM )
-             << std::endl;
+    std::cerr << "*** cellID conversion error! "
+	      << "RealID=" << cellID << " "
+	      << "ConvertedID=" << J4CLXAddress::GetCellID( globalID, isEM )
+	      << std::endl;
   }
 
   if ( stripID != J4CLXAddress::GetStripID( globalID, isEM ) )  {
-   std::cerr << "stripID=" << stripID << " not equal " 
-             << J4CLXAddress::GetStripID( globalID, isEM )
-             << std::endl;
+    std::cerr << "*** stripID conversion error! "
+	      << "RealID=" << stripID << " "
+	      << "ConvertedID="  << J4CLXAddress::GetStripID( globalID, isEM )
+	      << std::endl;
   }
 
+  if ( trapStripID != J4CLXAddress::GetTrapStripID( globalID, isEM ) )  {
+   std::cerr << "*** trapStripID conversion error! "
+	     << "RealID=" << trapStripID << " "
+             << "ConvertedID=" << J4CLXAddress::GetTrapStripID( globalID, isEM )
+             << std::endl;
+  }
+  
   if ( layerID != J4CLXAddress::GetLayerID( globalID, isEM ) )  {
-   std::cerr << "layerID=" << layerID << " not equal " 
-             << J4CLXAddress::GetLayerID( globalID, isEM )
+   std::cerr << "*** layerID conversion error! "
+             << "RealID=" << layerID << " "
+             << "ConvertedID=" << J4CLXAddress::GetLayerID( globalID, isEM )
              << std::endl;
   }
 
   if ( blockID != J4CLXAddress::GetBlockID( globalID ) )  {
-   std::cerr << "blockID=" << blockID << " not equal " 
-             << J4CLXAddress::GetBlockID( globalID )
+   std::cerr << "*** blockID conversion error! "
+	     << "RealID=" << blockID << " "
+             << "ConvertedID=" << J4CLXAddress::GetBlockID( globalID )
              << std::endl;
+  }
+
+  if ( isBoundary != J4CLXAddress::IsBoundary( globalID, isEM ) ) { 
+    std::cerr << "*** IsEndcap conversion error! "
+	      << "RealID=" << isBoundary << " "
+	      << "ConvertedID=" << J4CLXAddress::IsBoundary( globalID, isEM )
+	      << std::endl;
+  }
+
+  if ( ptrBlock->IsEndcap() != J4CLXAddress::IsEndcap( globalID, isBarrel ) ) { 
+    std::cerr << "*** IsEndcap conversion error! "
+	      << "RealID=" << ptrBlock->IsEndcap() << " "
+	      << "ConvertedID=" << J4CLXAddress::IsEndcap( globalID, isBarrel )
+	      << std::endl;
   }
 
   //* Check cell has already hit or not --------------------------------

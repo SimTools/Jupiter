@@ -13,6 +13,7 @@
 
 #include "J4CLXEMTrapStrip.hh"
 #include "J4CLXEMStrip.hh"
+#include "J4CLXEMBoundStrip.hh"
 
 // ====================================================================
 //--------------------------------
@@ -55,4 +56,15 @@ J4VCLXStrip *J4CLXEMTrapStrip::Create( J4VDetectorComponent *parent,
                                        G4int copyno )
 {
   return new J4CLXEMStrip( IsBarrel(), parent, nclones, nbrothers, me, copyno );
+}
+
+//=====================================================================
+//* Create ------------------------------------------------------------
+J4VCLXStrip *J4CLXEMTrapStrip::CreateBound( J4VDetectorComponent *parent,
+					    G4int nclones,
+					    G4int nbrothers,
+					    G4int me,
+					    G4int copyno )
+{
+  return new J4CLXEMBoundStrip( IsBarrel(), parent, nclones, nbrothers, me, copyno );
 }

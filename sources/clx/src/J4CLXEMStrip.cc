@@ -57,5 +57,5 @@ J4VCLXCell *J4CLXEMStrip::Create( J4VDetectorComponent *parent,
 				  G4int me,
 				  G4int copyno )
 {
-  return new J4CLXEMCell( IsBarrel(), parent, nclones, nbrothers, me, copyno );
+  return new J4CLXEMCell( IsBarrel(), IsBoundary(), parent, nclones, nbrothers, me, copyno );
 }

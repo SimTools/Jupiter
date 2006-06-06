@@ -25,14 +25,15 @@
 //====================================================================
 //* constructor ------------------------------------------------------
 J4VCLXCell::J4VCLXCell( G4bool isBarrel, 
+		        G4bool isBoundary,
 			const G4String &name,
 			J4VDetectorComponent *parent,
 			G4int nclones,
 			G4int nbrothers,
 			G4int me,
 			G4int copyno )
-  : J4VCLXDetectorComponent( name, parent, nclones, nbrothers, me, copyno )
-  ,fIsBarrel( isBarrel )
+  : J4VCLXDetectorComponent( name, parent, nclones, nbrothers, me, copyno ),
+    fIsBarrel( isBarrel ), fIsBoundary( isBoundary )
 {
 }
 
@@ -51,7 +52,8 @@ void J4VCLXCell::Assemble()
     G4double halfX = ((G4Box*)GetMother()->GetSolid())->GetXHalfLength();
     G4double halfY = ((G4Box*)GetMother()->GetSolid())->GetYHalfLength();
     G4double halfZ = ((G4Box*)GetMother()->GetSolid())->GetZHalfLength();
-    halfX /= GetNclones();
+
+    if ( !IsBoundary() ) halfX /= GetNclones();
     
     G4Box* ptrBox = new G4Box( GetName(), halfX, halfY, halfZ );
     Register( ptrBox );
@@ -62,7 +64,6 @@ void J4VCLXCell::Assemble()
     
     // SetVisAttribute ----//
     PaintLV( GetVisAtt(), GetColor() );
-
   }
 }
 
@@ -93,12 +94,13 @@ void J4VCLXCell::InstallIn( J4VComponent*        /*mother*/,
   myLimits->SetUserMaxTime( umaxtime );
   GetLV()->SetUserLimits( myLimits );
   
-  G4double halfX    = ((G4Box*)GetMother()->GetSolid())->GetXHalfLength();
-  G4double cellSize = 2*halfX / GetNclones();
-  //G4double cellSize = OpenParameterList()->GetCellSize();
-  //G4double offset = 0.5*(1-GetNclones())*cellSize ;
+  G4double cellSize = OpenParameterList()->GetCellSize();
 
-  SetPVReplica( kXAxis, cellSize );
+  if ( IsBoundary() ) {
+    SetPVPlacement();
+  } else {
+    SetPVReplica( kXAxis, cellSize );
+  }
 
   Cabling();
 }

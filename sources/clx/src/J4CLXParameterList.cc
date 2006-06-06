@@ -1,4 +1,4 @@
- // $Id$
+// $Id$
 //*************************************************************************
 //* --------------------
 //* J4CLXParameterList
@@ -95,13 +95,16 @@ void J4CLXParameterList::SetParameters()
   fBarrelEndcapGap = J4ParameterTable::GetValue("J4CXL.BarrelEndcapGap",10.0)*cm;
   
   // Barrel--------------------------------------------------------------------------
-  fBarrelHalfZ     = J4ParameterTable::GetValue("J4CLX.Barrel.HalfZ",270.0)*cm;
+  fBarrelInnerR    = J4ParameterTable::GetValue("J4CLX.Barrel.InnerRadius",210.0)*cm;
+  //fBarrelHalfZ     = J4ParameterTable::GetValue("J4CLX.Barrel.HalfZ",270.0)*cm;
+  fBarrelHalfZ     = J4ParameterTable::GetValue("J4CLX.Barrel.HalfZ",280.0)*cm;
   fBarrelDeltaPhi  = 360.*deg;
   fBarrelPhiOffset =   0.*deg;
    
   // Endcap--------------------------------------------------------------------------
 #if defined(__GLD_V1__)
-  fEndcapInnerR    =  J4ParameterTable::GetValue("J4CLX.Endcap.InnerRadius",39.9)*cm;
+  //fEndcapInnerR    =  J4ParameterTable::GetValue("J4CLX.Endcap.InnerRadius",39.9)*cm;
+  fEndcapInnerR    =  J4ParameterTable::GetValue("J4CLX.Endcap.InnerRadius",40.0)*cm;
 #else
   fEndcapInnerR    =  45.*cm;
 #endif
@@ -109,28 +112,26 @@ void J4CLXParameterList::SetParameters()
   fEndcapPhiOffset =   0.*deg;
   
   //* Endcap frontZ position : BarrelHalfZ + Gap
-  fEndcapFrontZ    = fBarrelHalfZ + fBarrelEndcapGap;
+  //fEndcapFrontZ    = fBarrelHalfZ + fBarrelEndcapGap;
+  fEndcapFrontZ    = fBarrelHalfZ;
   
   // EM------------------------------------------------------------------------------
   //* EMThickness = (0.3cm + 0.2cm + 0.1cm) x 33 = 18cm
   fEMAbsLayerThickness    = J4ParameterTable::GetValue("J4CLX.EM.AbsLayerThickness",0.3)*cm;
   fEMActiveLayerThickness = J4ParameterTable::GetValue("J4CLX.EM.ActiveLayerThickness",0.2)*cm;
   fEMFlexLayerThickness   = J4ParameterTable::GetValue("J4CLX.EM.FlexLayerThickness",0.1)*cm;
-  //fEMNLayers              = J4ParameterTable::GetValue("J4CLX.EM.NLayers",33);
-  fEMNLayers              = J4ParameterTable::GetValue("J4CLX.EM.NLayers",30);
+  fEMNLayers              = J4ParameterTable::GetValue("J4CLX.EM.NLayers",33);
   fEMNSubLayers           = J4ParameterTable::GetValue("J4CLX.EM.NSubLayers",3);
+  fEMNStrips              = J4ParameterTable::GetValue("J4CLX.EM.NStrips",3);
     
   // HD-----------------------------------------------------------------------------
   //* HDThickness = (2.0cm + 0.4cm + 0.1cm ) x 48 = 120cm
   fHDAbsLayerThickness    = J4ParameterTable::GetValue("J4CLX.HD.AbsLayerThickness",2.0)*cm;
-  fHDActiveLayerThickness = J4ParameterTable::GetValue("J4CLX.HD.ActiveLayerThickness",0.4)*cm;
+  fHDActiveLayerThickness = J4ParameterTable::GetValue("J4CLX.HD.ActiveLayerThickness",0.5)*cm;
   fHDFlexLayerThickness   = J4ParameterTable::GetValue("J4CLX.HD.FlexLayerThickness",0.1)*cm;
-  fHDNLayers              = J4ParameterTable::GetValue("J4CLX.HD.NLayers",48);
+  fHDNLayers              = J4ParameterTable::GetValue("J4CLX.HD.NLayers",46);
   fHDNSubLayers           = J4ParameterTable::GetValue("J4CLX.HD.NSubLayers",3);
-  //* Old configuration
-  //fHDAbsLayerThickness    = J4ParameterTable::GetValue("J4CLX.HD.AbsLayerThickness",2.0)*cm;
-  //fHDActiveLayerThickness = J4ParameterTable::GetValue("J4CLX.HD.ActiveLayerThickness",0.5)*cm;   
-  //fHDNLayers              = J4ParameterTable::GetValue("J4CLX.HD.NLayers",50);
+  fHDNStrips              = J4ParameterTable::GetValue("J4CLX.HD.NStrips",3);
   
   // Cell----------------------------------------------------------------------------
   fCellSize = J4ParameterTable::GetValue("J4CLX.Cell.Size",1.0)*cm;
@@ -142,8 +143,8 @@ void J4CLXParameterList::SetParameters()
   fNIsBarrel  = J4ParameterTable::GetValue("J4CLX.NumberOfBarrelTypes",2);
   
   //* Maximum number of Strips-----------------------------------------------
-  fEMNStrips  = (G4int)( 2*GetEMHalfZ() / fCellSize );
-  fHDNStrips  = (G4int)( 2*GetHDHalfZ() / fCellSize );
+  fEMNTrapStrips = (G4int)( 2*GetEMHalfZ()/fCellSize );
+  fHDNTrapStrips = (G4int)( 2*GetHDHalfZ()/fCellSize );
   fMaxNStrips = fHDNCells;
   //
   // Maximum number of strips defined as

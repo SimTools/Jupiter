@@ -23,7 +23,8 @@ J4VCLXBlock::J4VCLXBlock( const G4String& name,
 			  J4VDetectorComponent* parent,
 			  G4int  nclones,
 			  G4int  nbrothers,
-			  G4int  me, G4int  copyno ) : J4VCLXDetectorComponent( name, parent, nclones, nbrothers, me, copyno  )
+			  G4int  me, G4int  copyno ) 
+  : J4VCLXDetectorComponent( name, parent, nclones, nbrothers, me, copyno  )
 { }
 
 //=====================================================================
@@ -52,8 +53,8 @@ void J4VCLXBlock::Assemble()
     G4double tol    = OpenParameterList()->GetLayerTolerance();
 
     G4int    myID = GetMyID();
-    G4double px   = GetHalfX( myID ) - tol;
-    G4double plx  = GetHalfXL( myID ) - tol;
+    G4double px   = GetHalfX( myID ) -0.5*tol;
+    G4double plx  = GetHalfXL( myID ) -0.5*tol;
     G4double py   = 0.5*( GetYmax( myID ) - GetYmin( myID ) );
     G4double pz   = GetHalfZ( myID );
     G4double phi  = GetSphi( myID );
@@ -116,19 +117,26 @@ void J4VCLXBlock::InstallIn( J4VComponent*        /* mother */,
 
   G4int    myID = GetMyID();  
   G4double dphi = ptrList->GetTrapDeltaPhi();
-  G4double pr   = GetYmin() + 0.5*( GetYmax() - GetYmin() );
-  G4double px   = pr * std::sin( dphi * myID );
-  G4double py   = pr * std::cos( dphi * myID );
+  G4double pr = GetYmin() + 0.5*( GetYmax() - GetYmin() );
+  G4double px = 0.;
+  G4double py = pr;
   G4double pz   = (IsEM()) ? ptrList->GetEMEndcapFrontZ() + GetHalfZ()
                            : ptrList->GetHDEndcapFrontZ() + GetHalfZ();
 
   //* IsEndcap() = Barrel = 0, Endcap+Z = 1, Endcap-Z = -1
-  pz *= IsEndcap();
-  
+  pz *= (G4double)IsEndcap();
+
   G4ThreeVector position( px, py, pz );
-  
+  position.rotateZ( -dphi*(G4double)myID );
   G4RotationMatrix* rotation = new G4RotationMatrix();
-  rotation->rotateZ( dphi * myID );
+  rotation->rotateZ( dphi * (G4double)myID );
+
+  if ( IsEndcap() == -1 ) {
+    G4ThreeVector xv(-1., 0., 0.);
+    G4ThreeVector yv( 0., 1., 0.);
+    G4ThreeVector zv( 0., 0.,-1.);
+    rotation->rotateAxes(xv, yv, zv); 
+  }
 
   SetPVPlacement( rotation, position );
   
