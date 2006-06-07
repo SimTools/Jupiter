@@ -7,25 +7,13 @@
 //* 	Class for describing his/her sensitive detector.
 //*     
 //* (Update Record)
-//*	2006/01/27 A.Miyamoto  Original version
+//*	2006/06/05 A.Miyamoto  Original version
 //*************************************************************************
-//#include "J4TPCPostHit.hh"
-//#include "J4TPCPostHitKeeper.hh"
 #include "J4IRBCAL.hh"
 #include "J4IRBCALSD.hh"
 #include "J4IRBCALLayer.hh"
 #include "G4Tubs.hh"
 #include "J4ParameterTable.hh"
-//#include "J4CALPreHit.hh"
-//#include "J4CALPreHitKeeper.hh"
-//#include "J4CALPostHit.hh"
-//#include "J4CALPostHitKeeper.hh"
-//#include "J4CAL.hh"
-//#include "J4CALCone.hh"
-//#include "J4VCALMiniTower.hh"
-//#include "J4CALEM.hh"
-//#include "J4CALParameterList.hh"
-//#include "J4TrackingAction.hh"
 #include <cmath>
 #include <utility>
 
@@ -45,11 +33,9 @@ J4IRBCALSD::J4IRBCALSD( J4IRBCALSensor* detector )
   //  BCAL Geometry
   //  BCAL.Front/Tail -> BCALLayer ---> BCALSensor
   //                                +-> BCALSubLayer
-  //  std::cerr << " J4IRBCALSD .. constructed. " << std::endl;
+
   DefineCells(detector);
 
-  //  J4TrackingAction::GetInstance()->Add(J4CALPreHitKeeper::GetInstance());
-  //  J4TrackingAction::GetInstance()->Add(J4CALPostHitKeeper::GetInstance());
 }
 
 //=============================================================================
@@ -57,8 +43,6 @@ void J4IRBCALSD::DefineCells(J4IRBCALSensor *detector)
 {
 // Define cell for this sensor
   G4Tubs *solid=(G4Tubs*)detector->GetSolid();
-  //  G4double rmin=solid->GetInnerRadiusMinusZ();
-  //  G4double rmax=solid->GetOuterRadiusMinusZ();
   G4double zhlf=solid->GetZHalfLength();
 
   fLayer=(J4IRBCALLayer*)detector->GetMother();
@@ -66,7 +50,6 @@ void J4IRBCALSD::DefineCells(J4IRBCALSensor *detector)
   G4Tubs *sbmo=(G4Tubs*)fBCAL->GetSolid();
   G4double rminmo=sbmo->GetInnerRadius();
   G4double rmaxmo=sbmo->GetOuterRadius();
-  //  G4double hzmo  =sbmo->GetZHalfLength();
 
   G4double zmo=fBCAL->GetZpos();
   //  std::cerr << "BCAL " <<  detector->GetMyID() << " zblock=" << zmo << std::endl;
@@ -84,12 +67,11 @@ void J4IRBCALSD::DefineCells(J4IRBCALSensor *detector)
 //  define the cell to get signal.
 //  Here "Front" means the one closer to the IP  
 // Default parameters  
-// Radial division of Front BCAL: 8.2 cm -> 13.0cm : NDIVR=5; (DeltaR=0.96cm)
-//                    Tail  BCAL: 9.2435 cm -> 17.696cm : NDIVPhi=9; (DeltaR=0.939cm) 
+// Radial division of Front BCAL: 2.2 cm -> 20.0cm : NDIVR=18; (DeltaR=0.988cm)
   fNDivR = J4ParameterTable::GetValue(
 				 "J4IR.BCAL.NDIVR",5);
-  fNDivPhi = J4ParameterTable::GetIValue(
-	"J4IR.BCAL.NDIVPhi","10 10 10 10 10",fNDivR);
+  fNDivPhi = J4ParameterTable::GetIValue("J4IR.BCAL.NDIVPhi",
+	 "18 24 30 36 43 49 55 62 68 74 80 87 93 99 106 112 118 124",fNDivR);
 
   G4double rstepmo=(rmaxmo-rminmo)/(G4double)fNDivR;
   //  std::cerr << " fNDivR=" << fNDivR << std::endl;
@@ -182,11 +164,8 @@ G4bool J4IRBCALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ 
 
 
   //Get perticle information
-  //G4int                 preHitID = 0;
-  //  G4int                 postHitID = J4TPCPostHitKeeper::GetInstance()->GetCurPostHitID();
   const G4ThreeVector&  pre       = GetPrePosition();
-  const G4ThreeVector&  post      = GetPostPosition();
-  //  const G4ThreeVector&  momentum  = GetMomentum();
+  G4ThreeVector xcm(pre.x()*edep, pre.y()*edep, pre.z()*edep);
 
 //  std::cerr << " Mother Solid=" << ptrBCAL->GetMyID() ;
 //  std::cerr << " Layer=" << ptrLayer->GetMyID() << std::endl ;
@@ -197,10 +176,9 @@ G4bool J4IRBCALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ 
 
   G4int cellID=ptrBCAL->GetMyID()*10000000+100000*ptrLayer->GetMyID()+ir*1000+iphi;
 //  std::cerr << " cellid=" << cellID << " ir=" << ir ;
-//	std::cerr << " iphi=" << iphi << std::endl;
+//  std::cerr << " iphi=" << iphi << std::endl;
 
   G4int preHitID = 0 ;
-  //  G4double              energy    = GetKineticEnergy();
   G4double              tof       = GetTof();
   G4int                 trackID   = GetTrackID();
   G4int                 motherTrackID = GetMotherTrackID();
@@ -213,7 +191,7 @@ G4bool J4IRBCALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ 
     // This is new hit. Create a save into buffer
   
     J4IRBCALHit *aHit=new J4IRBCALHit(ptrSensor, preHitID, cellID, edep, tof, 
-				   particle, pre, post,
+				   particle, xcm, pre,
 				   trackID, motherTrackID);
     fgBCALHits.insert( std::make_pair( cellID, aHit) );
     ((J4IRBCALHitBuf*)GetHitBuf())->insert(aHit);
@@ -227,7 +205,7 @@ G4bool J4IRBCALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ 
       G4int aPreHitID = aHit->GetPreHitID();
       if( aPreHitID == preHitID) {
 	aHit->AddEdep(edep);
-	// aHit->AddXcm(Xcm);
+	aHit->AddXcm(xcm);
 	if( tof < aHit->GetTof() ) {
 	  aHit->SetTof(tof);
 	  aHit->SetParticle(GetParticle());
@@ -240,7 +218,7 @@ G4bool J4IRBCALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ 
     }
     if( makeNewHit ) {
       J4IRBCALHit *aHit=new J4IRBCALHit(ptrSensor, preHitID, cellID, edep, tof, 
-					particle, pre, post,
+					particle, xcm, pre,
 					trackID, motherTrackID);
       fgBCALHits.insert( std::make_pair( cellID, aHit) );
       ((J4IRBCALHitBuf*)GetHitBuf())->insert(aHit);
@@ -253,12 +231,6 @@ G4bool J4IRBCALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ 
 //* EndOfEvent --------------------------------------------------------
 void J4IRBCALSD::EndOfEvent( G4HCofThisEvent* /* PreHCTE */ )
 {	
-
-//  std::cerr << "J4IRBCALSD::EndOfEvent was called " << std::endl;
-//  G4int nHit= ( (J4IRBCALHitBuf*)GetHitBuf() ) -> entries();
-//  if( nHit <= 0 ) return ;  
-
-
 }
 
 //=====================================================================
@@ -278,20 +250,3 @@ void J4IRBCALSD::PrintAll()
   ( (J4IRBCALHitBuf*)GetHitBuf() ) -> PrintAllHits();
 }
 
-//======================================================================
-//* Is Exiting ---------------------------------------------------------
-/*
-
-G4bool J4IRBCALSD::IsExiting( const G4ThreeVector &pos, const G4ThreeVector &p  ) const
-{
-  J4CALParameterList* ptrList = J4CALParameterList::GetInstance();
-  static G4double tol = 10.;
-    
-  if ( std::abs( pos.perp() - ptrList->GetCALOuterR() ) <= tol*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0.) 
-    return true;
-
-  if ( std::abs( std::abs( pos.z() ) - ptrList->GetCALOuterHalfZ() ) <= tol*kCarTolerance && p.z() * pos.z() > 0.)
-     return true;
-  return false;
-}
-  */

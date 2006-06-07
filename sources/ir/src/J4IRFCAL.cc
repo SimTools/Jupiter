@@ -12,6 +12,7 @@
 
 #include "J4IRFCAL.hh"
 #include "J4ParameterTable.hh"
+#include "J4IRFCALPreHitSD.hh"
 
 #include "G4Tubs.hh"
 #include "G4Cons.hh"
@@ -131,6 +132,9 @@ void J4IRFCAL::Assemble()
     } 
 
   }     
+
+  if( !GetSD() ) { Cabling(); }
+
 }
 
 
@@ -139,6 +143,12 @@ void J4IRFCAL::Assemble()
 
 void J4IRFCAL::Cabling()
 {
+  if( !GetSD() ) {
+    J4IRFCALPreHitSD *sd=new J4IRFCALPreHitSD(this);
+    Register( sd );
+    SetSD( sd );
+  }
+
 }
 //=====================================================================
 //* GetRotation  --------------------------------------------------------

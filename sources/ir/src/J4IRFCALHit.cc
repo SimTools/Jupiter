@@ -23,7 +23,7 @@ J4Output*         J4IRFCALHit::fgOutput = 0;
 //=========================================================================
 //* constructor -----------------------------------------------------------
 J4IRFCALHit::J4IRFCALHit()
-  : J4VHit(0), fCellID(0), fXcm(0), fXcell(0)
+  : J4VHit(0), fCellID(0), fXcm(0), fXhit(0)
 { }
 
 J4IRFCALHit::J4IRFCALHit( J4VComponent* ptrDetector,    // He is in "location" now
@@ -33,12 +33,12 @@ J4IRFCALHit::J4IRFCALHit( J4VComponent* ptrDetector,    // He is in "location" n
                     G4double      tof,            // TOF
 		    G4ParticleDefinition* particle, // Particle data
 		    const G4ThreeVector& Xcm,     // Edep*position vector
-		    const G4ThreeVector& Xcell,   // cell center position    
+		    const G4ThreeVector& Xhit,    // hit position (first hitin the cell)
 		    G4int         trackID,        // TrackID of inside particle
 		    G4int         motherTrackID ) // mother track's ID
   // detector, trackID, motherTrackID, particle, tof, edep, totalE
   : J4VHit(ptrDetector, trackID, motherTrackID, particle, tof, edep),
-    fPreHitID(preHitID), fCellID(cellID), fXcm(Xcm), fXcell(Xcell)
+    fPreHitID(preHitID), fCellID(cellID), fXcm(Xcm), fXhit(Xhit)
 { }
 
 //=========================================================================
@@ -70,9 +70,9 @@ void J4IRFCALHit::Output( G4HCofThisEvent* /* HCTE */ )
 	<< std::setw(12) << fXcm.x()  << " "
 	<< std::setw(12) << fXcm.y()  << " "
 	<< std::setw(12) << fXcm.z()  << " "
-	<< std::setw(12) << fXcell.x() << " "
-	<< std::setw(12) << fXcell.y() << " "
-	<< std::setw(12) << fXcell.z() << " "
+	<< std::setw(12) << fXhit.x() << " "
+	<< std::setw(12) << fXhit.y() << " "
+	<< std::setw(12) << fXhit.z() << " "
         << std::setw(5)  << GetTrackID() << " "
         << std::setw(5)  << GetMotherTrackID() << " "
 	<< std::endl;
@@ -100,9 +100,9 @@ void J4IRFCALHit::Print()
 	    << std::setw(12) << "Xcm=(" << fXcm.x()  << ", "
 	    << std::setw(12) << fXcm.y()  << ", "
 	    << std::setw(12) << fXcm.z()  << ") "
-	    << std::setw(12) << "Xcell=(" << fXcell.x() << ", "
-	    << std::setw(12) << fXcell.y() << ", "
-	    << std::setw(12) << fXcell.z() << ") "
+	    << std::setw(12) << "1stHit=(" << fXhit.x() << ", "
+	    << std::setw(12) << fXhit.y() << ", "
+	    << std::setw(12) << fXhit.z() << ") "
 	    << std::setw(5)  << GetTrackID() << " "
 	    << std::setw(5)  << GetMotherTrackID() << " "
 	    << std::endl;

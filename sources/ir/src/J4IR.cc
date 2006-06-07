@@ -36,6 +36,7 @@
 #include "J4IRCons.hh"
 #include "J4IRSlantTubs.hh"
 
+#include "J4OptDet.hh"
 
 // ====================================================================
 //--------------------------------
@@ -214,6 +215,14 @@ void J4IR::Assemble()
 	zcnt, material, 
 	visatt, icol2, this, 1, 2, 1, -1, TRUE));
 
+// --------------------------------------------------
+
+    int ndet=J4ParameterTable::GetValue("J4IR.OptDet.N",0);
+    for(G4int idet=0;idet<ndet;idet++){
+      fComponents.push_back(new J4OptDet(this, G4String("J4IR.OptDet"), ndet, idet));
+    }
+
+
 // ----------------------------------------------------------------
 // Register solids set mother/daughter relation.
     std::vector<J4VComponent*>::iterator iv;
@@ -223,18 +232,6 @@ void J4IR::Assemble()
       SetDaughter(*iv);
     }
 
-#if 0
-    if (  list->IsCompact() ){
-      fPMNR = new J4IRPairMonitorCompactSP(this,1,2,0,-1);
-      fPMNL = new J4IRPairMonitorCompactSP(this,1,2,1,-1,true);
-      Register(fPMNR);
-      Register(fPMNL);
-      fPMNR->InstallIn(this);
-      fPMNL->InstallIn(this);
-      SetDaughter(fPMNR);
-      SetDaughter(fPMNL);
-    }
-#endif
 
   }     
 }

@@ -42,7 +42,7 @@ public:
             G4double      tof,
 	    G4ParticleDefinition *particle,
 	    const G4ThreeVector& xcm,
-	    const G4ThreeVector& xcell,
+	    const G4ThreeVector& xhit,
 	    G4int         trackID=-9999,
 	    G4int         motherTrackID=-9999 );
   
@@ -59,14 +59,14 @@ public:
          
   inline G4int         GetPreHitID()   const { return fPreHitID;   }   
   inline G4int         GetCellID()   const { return fCellID;   }   
-  inline G4ThreeVector GetXcell()    const { return fXcell;    }
+  inline G4ThreeVector GetXhit()    const { return fXhit;    }
   inline G4ThreeVector GetXcm()      const { return fXcm;      }
  // note: this returns energy * position vector
 
   inline void SetPrehitID(G4int id)      { fPreHitID = id; }
   inline void SetCellID( G4int id )      { fCellID   = id;}
   inline void SetXcm( G4ThreeVector v )  { fXcm      = v; }
-  inline void SetXcell( G4ThreeVector v ){ fXcell    = v; }
+  inline void SetXhit( G4ThreeVector v ){ fXhit    = v; }
   inline void AddXcm( G4ThreeVector v )  { fXcm += v;  } 
 
   static void SetOutput( J4Output* output )    { fgOutput = output; } 
@@ -78,7 +78,7 @@ private:
   G4int           fPreHitID;
   G4int           fCellID;
   G4ThreeVector   fXcm;
-  G4ThreeVector   fXcell;
+  G4ThreeVector   fXhit;
 };
 
 //----------------------------------------

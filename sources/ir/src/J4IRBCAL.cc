@@ -12,6 +12,8 @@
 
 #include "J4IRBCAL.hh"
 #include "J4IRBCALLayer.hh"
+#include "J4IRBCALPreHitSD.hh"
+
 #include "J4ParameterTable.hh"
 #include "J4SubtractionSolid.hh"
 
@@ -140,6 +142,9 @@ void J4IRBCAL::Assemble()
       } 
     }  		  
   }     
+
+  if( !GetSD() ) { Cabling(); }
+
 }
 
 
@@ -148,6 +153,11 @@ void J4IRBCAL::Assemble()
 
 void J4IRBCAL::Cabling()
 {
+  if( !GetSD() ) {
+    J4IRBCALPreHitSD *sd=new J4IRBCALPreHitSD(this);
+    Register( sd );
+    SetSD( sd );
+  }
 }
 //=====================================================================
 //* GetRotation  --------------------------------------------------------
