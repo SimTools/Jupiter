@@ -12,6 +12,9 @@
 //*************************************************************************
 
 #include "J4VTX.hh"
+#include "J4OptDet.hh"
+#include "J4ParameterTable.hh"
+
 #include "G4Cons.hh"
 #include "G4Tubs.hh"
 #include "G4Box.hh"
@@ -146,6 +149,15 @@ void J4VTX::Assemble()
     Print();
 
   }
+
+  int ndet=J4ParameterTable::GetValue("J4VTX.OptDet.N",0);
+  for(G4int idet=0;idet<ndet;idet++){
+    J4OptDet *opt=new J4OptDet(this, G4String("J4VTX.OptDet"), ndet, idet);
+    Register(opt);
+    opt->InstallIn(this);
+    SetDaughter(opt);
+  }
+
 }
 
 //=====================================================================
