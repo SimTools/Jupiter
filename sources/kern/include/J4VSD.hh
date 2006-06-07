@@ -21,6 +21,7 @@
 
 #include "J4VSensitiveDetector.hh"
 #include "J4VDetectorComponent.hh"
+#include "J4VAcceleratorComponent.hh"
 #include "J4VHit.hh"
 #include "G4HCofThisEvent.hh"
 #include "G4THitsCollection.hh"
@@ -38,6 +39,11 @@ class J4VSD : public J4VSensitiveDetector
 
  public:
   J4VSD(J4VDetectorComponent* detector)
+			: J4VSensitiveDetector(detector)
+  {  
+  }
+
+  J4VSD(J4VAcceleratorComponent* detector)
 			: J4VSensitiveDetector(detector)
   {  
   }
