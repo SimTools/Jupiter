@@ -1,0 +1,33 @@
+Example to create a generator file of the HEPEvt format 
+to use for Jupiter.
+
+Following files exist in this directory
+
+pythia_main.F : 
+  sample fortran program to write a generator file 
+  of HEPEvt format.
+  This uses PYTHIA 6.205 for e+e- -> qqbar event at 
+  500 GeV.  Generator data is written in a file, 
+  qqbar.dat
+
+Makefile :
+  A sample Makefile to create a binary. 
+  Path to the CERN library must be defined properly 
+  depending on your environment.
+
+run.g4mac :
+  Geant4 macro file to read the file, qqbar.dat
+
+
+
+
+How to create data and run Jupiter
+
+$ make
+  -->pythia.exe is created
+
+$ pythia.exe 
+  --> qqbar.dat is created
+
+$ Jupiter -f $JUPITERROOT/data/glddec05_2m.dat run.g4mac
+
