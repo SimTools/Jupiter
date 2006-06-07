@@ -17,6 +17,7 @@
 #include "J4ITParameterList.hh"
 #include "J4ParameterTable.hh"
 #include "J4UnionSolid.hh"
+#include "J4OptDet.hh"
 
 #include "G4Cons.hh"
 #include "G4Tubs.hh"
@@ -223,7 +224,19 @@ void J4IT::Assemble()
       }
     }
 
+  int ndet=J4ParameterTable::GetValue("J4IT.OptDet.N",0);
+  std::cerr << " J4IT.OptDet.N" << ndet << std::endl;
+  for(G4int idet=0;idet<ndet;idet++){
+    std::cerr << " Going to create J4IT.OptDet .. idet=" << idet << std::endl;
+    J4OptDet *opt=new J4OptDet(this, G4String("J4IT.OptDet"), ndet, idet);
+    Register(opt);
+    opt->InstallIn(this);
+    SetDaughter(opt);
   }
+
+  }
+
+
 
 }
 
