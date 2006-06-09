@@ -85,7 +85,7 @@ void J4CLX::Assemble()
     G4double len         = ptrList->GetCLXOuterHalfZ();
     G4double dphi        = ptrList->GetCLXDeltaPhi();
     G4double endcaprmin  = ptrList->GetEndcapInnerR() - tol;
-    G4double endcaphalfz = 0.5 * ( len - ptrList->GetCLXInnerHalfZ() );
+    G4double endcaphalfz = 0.5 * ( len - ptrList->GetCLXInnerHalfZ() ) +tol;
 
     // MakeSolid ----------//
     OrderNewTubs( rmin, rmax, len, dphi, endcaphalfz, endcaprmin );

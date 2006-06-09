@@ -113,8 +113,7 @@ void J4CLXParameterList::SetParameters()
   
   //* Endcap frontZ position : BarrelHalfZ + Gap
   //fEndcapFrontZ    = fBarrelHalfZ + fBarrelEndcapGap;
-  //   fEndcapFrontZ    = fBarrelHalfZ;
-  fEndcapFrontZ    = fBarrelHalfZ + fLayerTolerance ;
+  fEndcapFrontZ    = fBarrelHalfZ;
   
   // EM------------------------------------------------------------------------------
   //* EMThickness = (0.3cm + 0.2cm + 0.1cm) x 33 = 18cm

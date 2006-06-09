@@ -162,7 +162,7 @@ void J4VCLXSubLayer::InstallIn( J4VComponent*        /*mother*/,
   G4ThreeVector position( px, py, pz ) ;
   SetPVPlacement( 0, position );
 
-  Cabling();
+  //Cabling();
 }
 
 //====================================================================
