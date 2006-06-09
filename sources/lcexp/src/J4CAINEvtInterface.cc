@@ -159,7 +159,7 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
       tb.cx >> tb.cy >> tb.cs >> tb.ce >> tb.cpx >> tb.cpy >> 
       tb.cps >> tb.csx >> tb.csy >> tb.css ;
     
-    G4bool samedir= (fGenDirection*tb.cps >= 0.0 ? true : false );
+    G4bool samedir= (fGenDirection*tb.cps > 0.0 ? true : false );
     if( samedir ) {
       if( !( tb.id == 1 && fGenGamma ) || 
 	  !( tb.id == 2 && fGenElectron ) ||
