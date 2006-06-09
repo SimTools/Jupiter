@@ -16,6 +16,7 @@
 #include "J4IRFCAL.hh"
 #include "J4TrackingAction.hh"
 #include "J4HistoryKeeper.hh"
+#include "J4ParameterTable.hh"
 #include <cmath>
  
 //=====================================================================
@@ -30,8 +31,10 @@ J4IRFCALPreHitSD::J4IRFCALPreHitSD( J4IRFCAL* detector )
 {
   J4TrackingAction::GetInstance()->Add(J4IRFCALPreHitKeeper::GetInstance());
 #if 1
-  J4TrackingAction::GetInstance()->Add(J4HistoryKeeper::GetInstance());
-  J4HistoryKeeper::GetInstance()->SetPHitKeeperPtr(J4IRFCALPreHitKeeper::GetInstance());
+  if( JSFParameterTable::GetValue("J4IR.FCAL.KeepHistory",true) ) {
+    J4TrackingAction::GetInstance()->Add(J4HistoryKeeper::GetInstance());
+    J4HistoryKeeper::GetInstance()->SetPHitKeeperPtr(J4IRFCALPreHitKeeper::GetInstance());
+  }
 #endif
   //  J4TrackingAction::GetInstance()->Add(J4IRFCALPostHitKeeper::GetInstance());
 }

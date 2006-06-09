@@ -30,8 +30,10 @@ J4IRBCALPreHitSD::J4IRBCALPreHitSD( J4IRBCAL* detector )
 {
   J4TrackingAction::GetInstance()->Add(J4IRBCALPreHitKeeper::GetInstance());
 #if 1
-  J4TrackingAction::GetInstance()->Add(J4HistoryKeeper::GetInstance());
-  J4HistoryKeeper::GetInstance()->SetPHitKeeperPtr(J4IRBCALPreHitKeeper::GetInstance());
+  if( JSFParameterTable::GetValue("J4IR.BCAL.KeepHistory",true) ) {
+    J4TrackingAction::GetInstance()->Add(J4HistoryKeeper::GetInstance());
+    J4HistoryKeeper::GetInstance()->SetPHitKeeperPtr(J4IRBCALPreHitKeeper::GetInstance());
+  }
 #endif
   //  J4TrackingAction::GetInstance()->Add(J4IRBCALPostHitKeeper::GetInstance());
 }
