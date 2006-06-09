@@ -31,7 +31,7 @@ J4IRFCALPreHitSD::J4IRFCALPreHitSD( J4IRFCAL* detector )
 {
   J4TrackingAction::GetInstance()->Add(J4IRFCALPreHitKeeper::GetInstance());
 #if 1
-  if( JSFParameterTable::GetValue("J4IR.FCAL.KeepHistory",true) ) {
+  if( J4ParameterTable::GetValue("J4IR.FCAL.KeepHistory",true) ) {
     J4TrackingAction::GetInstance()->Add(J4HistoryKeeper::GetInstance());
     J4HistoryKeeper::GetInstance()->SetPHitKeeperPtr(J4IRFCALPreHitKeeper::GetInstance());
   }
