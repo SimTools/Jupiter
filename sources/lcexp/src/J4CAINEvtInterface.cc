@@ -139,7 +139,7 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 
   while(nread < maxread ) { 
     fInputStream.getline(input,512);
-    if( fInputStream.eof() ) {
+    if( fInputStream.eof()==1 ) {
       J4PrimaryGeneratorAction::GetPrimaryGeneratorAction()->SetAbortRun(true);
       std::cerr << "End of File while reading CAIN file, " ;
       std::cerr << fFileName << std::endl;
@@ -151,20 +151,20 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
       if( input[i] == 'D' ) {
 	input[i]='E'; 
       }
+
       if( input[i] == '\00' ) break;
     }
-    //    std::cerr << " nread=" << nread << std::endl;
+ 
     std::istringstream sinput(input);
     sinput >>  tb.id >> tb.kgen >> tb.genname >> tb.weight >> tb.ct >> 
       tb.cx >> tb.cy >> tb.cs >> tb.ce >> tb.cpx >> tb.cpy >> 
       tb.cps >> tb.csx >> tb.csy >> tb.css ;
-    
-    G4bool samedir= (fGenDirection*tb.cps > 0.0 ? true : false );
-    if( samedir ) {
-      if( !( tb.id == 1 && fGenGamma ) || 
-	  !( tb.id == 2 && fGenElectron ) ||
-	  !( tb.id == 3 && fGenPositron ) ) continue;
-    }
+
+    G4bool samedir= (fGenDirection*tb.cps >= 0.0 ? true : false );
+    if( !samedir ) continue;
+    if( !( ( tb.id == 1 && fGenGamma ) || 
+	    ( tb.id == 2 && fGenElectron ) ||
+	    ( tb.id == 3 && fGenPositron )    ) ) continue;
     fReadRecord++;
     if( fReadRecord < fFirstRecord ) continue;
     if( fReadRecord > fLastRecord ) {
@@ -175,7 +175,6 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
       break;
     }
     nread++;
-    
     // Found tracks to be used for simulation.  Put it in the buffer
     // after crossing angle corrections.
     tb.ct *= m;  tb.cx *= m; tb.cy*=m ; tb.cs*= m ; 
