@@ -50,13 +50,13 @@ G4int J4EventAction::fEventID=0;
 J4EventAction::J4EventAction()
 ////////////////////////////////////
 {
-   std::cerr << "J4EventAction::constructor called" << std::endl;
+  //   std::cerr << "J4EventAction::constructor called" << std::endl;
    G4int timerid = -1;
    G4String classname("J4EventAction");
    G4String timername("EventTimer");
-   std::cerr << "J4EventAction::constructor timer new" << std::endl;
+   //   std::cerr << "J4EventAction::constructor timer new" << std::endl;
    fEventTimer = new J4Timer(timerid, classname, timername);
-   std::cerr << "J4EventAction::constructor timer created" << std::endl;
+   //   std::cerr << "J4EventAction::constructor timer created" << std::endl;
 }
 
 ////////////////////////////////////
@@ -76,7 +76,8 @@ void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
 /////////////////////////////////////////////////////////////////
 {
   // printout primary information
-  std::cerr << "Start of BeginOfEventAction..." << std::endl;
+  std::cerr << "Start of BeginOfEventAction..." 
+	    << " of event " << anEvent->GetEventID() << std::endl;
 #ifdef __THEBE__
    if ( J4Global::GetErrorOutputUnit() == "Event" ) {
       if ( !fErrorOfs.is_open() ) {
@@ -112,14 +113,14 @@ void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
    
 
    fEventID=anEvent->GetEventID();
-   std::cerr << " End  of BeginOfEventAction of event ID" << fEventID<< std::endl;
+   //   std::cerr << " End  of BeginOfEventAction of event ID " << fEventID<< std::endl;
 }
 
 ///////////////////////////////////////////////////////////////
 void J4EventAction::EndOfEventAction(const G4Event* anEvent)
 ///////////////////////////////////////////////////////////////
 {
-   std::cerr << " Start EndOfEventAction ......" << std::endl;
+  //   std::cerr << " Start EndOfEventAction ......" << std::endl;
   const G4RunManager* runManager= G4RunManager::GetRunManager();
   const G4UserRunAction* usrRunAction= runManager-> GetUserRunAction();
 
@@ -131,6 +132,8 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
      std::cerr << "**********************************************" << std::endl;
      std::cerr << "*******_event_number_" << event << "_*******" <<std::endl;
      std::cerr << "**********************************************" << std::endl;
+
+     //    system("top b n 1 | grep Jupiter");
      
   // ====================================================================  
   // output "J4BreakPointMap"
@@ -146,7 +149,7 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
   
   if(! HCTE) return;  // no hits in this events. nothing to do!
   
-  std::cerr << "EventAction :: HCTE = "<< HCTE->GetNumberOfCollections()<<std::endl;
+  //  std::cerr << "EventAction :: HCTE = "<< HCTE->GetNumberOfCollections()<<std::endl;
   
   std::ofstream& ofs= ((J4RunAction*)usrRunAction)-> GetOutputFileStream();
   if(! ofs.good()) {
@@ -166,11 +169,11 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
      
    ofs << event << std::endl;
   
-   std::cerr << "EventAction::EndOfEvent is called " << std::endl;
+   //   std::cerr << "EventAction::EndOfEvent is called " << std::endl;
      
    J4DetectorConstruction::GetEXPHall()->OutputAll(HCTE, ofs);
      
-   std::cerr << "EventAction::OutputAll finished " << std::endl;
+   //   std::cerr << "EventAction::OutputAll finished " << std::endl;
   
    ofs << "*******_End_of_event_" << event << "_*******" <<std::endl;
 
