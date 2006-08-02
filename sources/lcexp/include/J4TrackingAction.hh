@@ -49,7 +49,7 @@ public:
   inline void     SetStoredDebugPrintID(G4int id);
   inline G4int    GetStoredDebugPrintID()         const { return fStoredDebugPrintID; }
 #endif
-  inline void     Add(J4VSubTrackingAction *stap)       { fRegs.push_back(stap);      }
+  void     Add(J4VSubTrackingAction *stap);
   inline void     ResetTrackCounter(G4int n = INT_MIN)  { fTrackCounts = n;           }
 
   static J4TrackingAction *GetInstance() 
@@ -73,6 +73,7 @@ private:
   G4int          fStoredDebugPrintID;    // -2 : no output
                                          // -1 : output last track
                                          // N  : output Nth track 
+
 #endif
 };
 
