@@ -83,7 +83,7 @@ G4bool J4VTXLayerSD::ProcessHits(G4Step*              aStep,
 //  std::cerr << " edep=" << edep ;
 //  std::cerr << std::endl;
 
-//  if( layerID != fLastMyID || trackID != fLastTrackID ) {
+  if( layerID != fLastMyID || trackID != fLastTrackID ) {
     fLastHit = new J4VTXLayerHit( 
                                GetComponent(),
                                trackID, mothertrackID, particle,
@@ -92,13 +92,13 @@ G4bool J4VTXLayerSD::ProcessHits(G4Step*              aStep,
                                inPos,outPos);
      G4int SColNo;
      SColNo = ((J4VTXLayerHitBuf*)GetHitBuf())-> insert(fLastHit);
-//     fLastMyID = layerID;
-//     fLastTrackID = trackID;
-//  }
-//  else {
-//    edep += fLastHit->GetEnergyDeposit();
-//    fLastHit->SetEnergyDeposit(edep);
-//  }
+     fLastMyID = layerID;
+     fLastTrackID = trackID;
+  }
+  else {
+    edep += fLastHit->GetEnergyDeposit();
+    fLastHit->SetEnergyDeposit(edep);
+  }
 
   return TRUE;
 }
