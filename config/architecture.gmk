@@ -7,3 +7,9 @@ ifeq ($(GCCVER),4)
    CPPFLAGS  += -D__USEISOCXX__
 endif
 endif
+
+UNAME_MACHINE := $(shell uname -m)
+ifeq ($(UNAME_MACHINE),x86_64)
+   X11LIBS   := -L/usr/X11R6/lib64  -lXmu -lXt -lXext -lX11 -lSM -lICE
+   CXXFLAGS  += -fPIC
+endif
