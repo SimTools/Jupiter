@@ -34,6 +34,7 @@
 // Visualization
 #include "G4UImanager.hh"
 #include "G4VVisManager.hh"
+#include <stdlib.h>
   
 //#define __VERBOSE__
 
@@ -107,7 +108,8 @@ void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
    J4DetectorConstruction::GetEXPHall()->UnlockOutput();
    fEventTimer->Start();
    J4TrackingAction::GetInstance()->ResetTrackCounter();
-   J4HistoryKeeper::GetInstance()->Clear();   
+   J4TrackingAction::GetInstance()->Clear();   
+   
 
    fEventID=anEvent->GetEventID();
    std::cerr << " End  of BeginOfEventAction of event ID" << fEventID<< std::endl;
@@ -129,7 +131,7 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
      std::cerr << "**********************************************" << std::endl;
      std::cerr << "*******_event_number_" << event << "_*******" <<std::endl;
      std::cerr << "**********************************************" << std::endl;
-
+     
   // ====================================================================  
   // output "J4BreakPointMap"
 #ifdef __DEBUG__
@@ -192,7 +194,7 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
    HepRandom::saveEngineStatus(tmpstr.str().data());
 #else
    char tmpchar[1024];
-   std::strstream tmpstr(tmpchar, 1024);
+   std::sstream tmpstr(tmpchar, 1024);
    tmpstr << "seeds/seed.evt." << std::setw(5) << std::setfill('0')
           << event << std::ends;
    HepRandom::saveEngineStatus(tmpchar);

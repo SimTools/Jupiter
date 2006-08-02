@@ -200,7 +200,7 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
     }
 
     // create new primaries and set them to the vertex
-    G4ParticleDefinition *particle_definition;
+    G4ParticleDefinition *particle_definition=0;
     switch(tb.id) {
     case 1: 
       particle_definition=fGamma;

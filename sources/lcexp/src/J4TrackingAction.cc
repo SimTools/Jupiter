@@ -16,8 +16,10 @@
 #include "G4Track.hh"
 #include "J4Global.hh"
 #include "J4BreakPoint.hh"
+#include <vector>
 
 J4TrackingAction                   *J4TrackingAction::fgInstance = 0;
+//G4int                              J4TrackingAction::fgLastTrackID=-99999;
 //=====================================================================
 //* Constructor -------------------------------------------------------
 J4TrackingAction::J4TrackingAction()
@@ -56,6 +58,8 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 
   // Create trajectory only for charged particles
 
+  //  if ( aTrack->GetTrackID() == fgLastTrackID ) return;
+  //  fgLastTrackID   = aTrack->GetTrackID();
   fCurrentTrack   = aTrack;
   fCurrentTrackID = aTrack->GetTrackID();
   if (fCurrentTrackID > fTrackCounts) fTrackCounts = fCurrentTrackID;
@@ -154,9 +158,22 @@ void J4TrackingAction::PostUserTrackingAction(const G4Track* /* aTrack */)
 //* Clear -------------------------------------------------------------
 void J4TrackingAction::Clear()
 {
+  //  fgLastTrackID = -99999;
   using namespace std;
   vector<J4VSubTrackingAction *>::iterator iter;
   for (iter = fRegs.begin(); iter != fRegs.end(); iter++) {
     (*iter)->Clear();
   }
+}
+
+//=====================================================================
+//* Clear -------------------------------------------------------------
+void J4TrackingAction::Add(J4VSubTrackingAction *stap)
+{
+  std::vector<J4VSubTrackingAction *>::iterator iter;
+  
+  for(iter=fRegs.begin();iter!=fRegs.end();iter++) {
+    if( *iter == stap ) { return; }
+  } 
+  fRegs.push_back(stap);    
 }

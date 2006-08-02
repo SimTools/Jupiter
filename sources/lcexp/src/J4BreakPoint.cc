@@ -66,6 +66,7 @@ void J4BreakPoint::Clear()
     delete iter->second;
   }
   fgBreakPointMap.clear();
+
 }
 
 //=====================================================================
@@ -81,7 +82,7 @@ void J4BreakPoint::Output()
 
 void J4BreakPoint::DebugPrint(const char*)
 {
-  G4cerr <<"DebugPrint Called" <<G4endl;
+  G4cerr <<"J4BreakPoint::DebugPrint Called" <<G4endl;
   std::map<G4int, J4BreakPoint*>::iterator iter;
   for (iter  = fgBreakPointMap.begin(); 
        iter != fgBreakPointMap.end(); iter++) {
