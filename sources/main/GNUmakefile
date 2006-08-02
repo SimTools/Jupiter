@@ -70,6 +70,10 @@ endif
 
 G4TMPDIR  = $(G4TMP)/$(G4SYSTEM)/$(G4TARGET)
 
+ifeq ($(UNAME_MACHINE),x86_64)
+   LDFLAGS += -L/usr/X11R6/lib64
+endif
+
 include $(G4INSTALL)/config/binmake.gmk
 
 CXXFLAGS_WITHOUT_O := $(filter-out -O%, $(CXXFLAGS))
