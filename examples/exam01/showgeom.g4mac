@@ -17,7 +17,7 @@
 #/vis/sceneHandler/attach
 
 /vis/viewer/reset
-/vis/viewer/viewpointThetaPhi 0. 90.
+# /vis/viewer/viewpointThetaPhi 0. 90.
 /vis/viewer/zoom 2.0
 
 #  
