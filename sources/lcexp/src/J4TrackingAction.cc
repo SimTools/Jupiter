@@ -58,8 +58,6 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 
   // Create trajectory only for charged particles
 
-  //  if ( aTrack->GetTrackID() == fgLastTrackID ) return;
-  //  fgLastTrackID   = aTrack->GetTrackID();
   fCurrentTrack   = aTrack;
   fCurrentTrackID = aTrack->GetTrackID();
   if (fCurrentTrackID > fTrackCounts) fTrackCounts = fCurrentTrackID;
@@ -158,7 +156,6 @@ void J4TrackingAction::PostUserTrackingAction(const G4Track* /* aTrack */)
 //* Clear -------------------------------------------------------------
 void J4TrackingAction::Clear()
 {
-  //  fgLastTrackID = -99999;
   using namespace std;
   vector<J4VSubTrackingAction *>::iterator iter;
   for (iter = fRegs.begin(); iter != fRegs.end(); iter++) {
@@ -173,7 +170,9 @@ void J4TrackingAction::Add(J4VSubTrackingAction *stap)
   std::vector<J4VSubTrackingAction *>::iterator iter;
   
   for(iter=fRegs.begin();iter!=fRegs.end();iter++) {
-    if( *iter == stap ) { return; }
+    if( *iter == stap ) { 
+      fRegs.erase(iter);
+    }
   } 
   fRegs.push_back(stap);    
 }
