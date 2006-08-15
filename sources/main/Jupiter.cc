@@ -22,8 +22,8 @@
 #define __INSTALLTPC__
 #endif
 // Either __INSTALLCAL__ or __INSTALLCLX__ should be defined.
-#define __INSTALLCAL__  
-// #define __INSTALLCLX__
+// #define __INSTALLCAL__  
+#define __INSTALLCLX__
 #ifdef __INSTALLCLX__
 #  undef __INSTALLCAL__
 #endif
