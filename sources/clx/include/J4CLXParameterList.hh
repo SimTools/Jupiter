@@ -343,7 +343,7 @@ inline G4double J4CLXParameterList::GetEMHalfZ() const
 
 inline G4double J4CLXParameterList::GetHDHalfZ() const
 {
-  return GetBarrelHalfZ() + GetEMThickness() -GetBarrelEndcapGap();
+  return GetBarrelHalfZ() -GetBarrelEndcapGap();
 }
 
 inline G4double J4CLXParameterList::GetEMEndcapFrontZ() const
@@ -363,7 +363,7 @@ inline G4double J4CLXParameterList::GetEMYmax() const
 
 inline G4double J4CLXParameterList::GetEMEndcapYmax() const 
 {
-  return GetCLXInnerR() + GetEMThickness() - GetBarrelEndcapGap();
+  return GetEMYmax() + GetHDThickness();
 }
 
 inline G4double J4CLXParameterList::GetHDYmax() const 
