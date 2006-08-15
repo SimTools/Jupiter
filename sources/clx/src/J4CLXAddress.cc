@@ -238,9 +238,11 @@ G4int J4CLXAddress::GetNTrapStrips( G4bool isEM, G4bool isBarrel )
                                : fgCLXHDAbsThick+fgCLXHDActiveThick+fgCLXHDFlexThick;
   G4double EMThick  = layerThick*fgCLXEMNLayers;
   G4double HDThick  = layerThick*fgCLXHDNLayers;
-  G4double ymax     = (isEM) ? fgCLXBarrelInnerR+EMThick : fgCLXBarrelInnerR+EMThick+HDThick;
-  G4double halfZ    = (isEM) ? fgCLXBarrelHalfZ-fgCLXGap : fgCLXBarrelHalfZ+EMThick-fgCLXGap;
-  G4double height   = (isEM) ? ymax-fgCLXEndcapInnerR-fgCLXGap : ymax-fgCLXEndcapInnerR;
+  G4double HDYMax   = fgCLXBarrelInnerR+EMThick+HDThick;
+  //G4double halfZ    = (isEM) ? fgCLXBarrelHalfZ-fgCLXGap : fgCLXBarrelHalfZ+EMThick-fgCLXGap;
+  G4double halfZ    = (isEM) ? fgCLXBarrelHalfZ-fgCLXGap : fgCLXBarrelHalfZ-fgCLXGap;
+  //G4double height   = (isEM) ? ymax-fgCLXEndcapInnerR-fgCLXGap : ymax-fgCLXEndcapInnerR;
+  G4double height   = HDYMax-fgCLXEndcapInnerR;
 
   return (isBarrel) ? (G4int)(2*halfZ/fgCLXCellSize) : (G4int)(height/fgCLXCellSize);
 }
@@ -321,7 +323,8 @@ G4ThreeVector J4CLXAddress::GetCellPosition( G4int globalID, G4bool isEM, G4bool
   //G4double HDThick     = HDLayerThick*fgCLXHDNLayers;
 
   //* HalfLength of barrel/endcap and fixed length with cell size
-  G4double barrelHalfL = (isEM) ? fgCLXBarrelHalfZ-fgCLXGap : fgCLXBarrelHalfZ+EMThick-fgCLXGap;
+  //G4double barrelHalfL = (isEM) ? fgCLXBarrelHalfZ-fgCLXGap : fgCLXBarrelHalfZ+EMThick-fgCLXGap;
+  G4double barrelHalfL = (isEM) ? fgCLXBarrelHalfZ-fgCLXGap : fgCLXBarrelHalfZ-fgCLXGap;
   G4double endcapHalfL = (isEM) ? fgCLXBarrelHalfZ : fgCLXBarrelHalfZ+EMThick;
   G4double barrelFixedHalfL = fgCLXCellSize*(G4int)( barrelHalfL/fgCLXCellSize );
   
