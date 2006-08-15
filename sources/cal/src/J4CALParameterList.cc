@@ -13,7 +13,7 @@
 #include "J4CALParameterList.hh"
 #include <algorithm>
 #include <vector>
-#include <fstream.h>
+#include <fstream>
 #include <iostream>
 #include "TVNewton.hh"
 #include "geomdefs.hh"
@@ -600,7 +600,8 @@ void J4CALParameterList::DrawTowerParameters()
   G4String FILE = "towergeom.dat";
   G4String ftowergeom;
   ftowergeom = J4ParameterTable::GetValue("J4CAL.TowerGeometryData",FILE);
-  ofstream out_file(ftowergeom);
+  //  ofstream out_file(ftowergeom);
+  std::ofstream out_file(ftowergeom);
   G4cerr << "J4CALParameterList::DrawTowerParameters() make file " << ftowergeom <<  G4endl;
    for (G4int i=0; i < GetNcones(); i++) {
      G4double radius = GetTowerParam(i)->GetR() / 10; 
