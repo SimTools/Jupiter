@@ -264,8 +264,8 @@ void J4IR::Assemble_BeamPipeMiddle()
     G4Color icolor(col[0], col[1], col[2], col[3]);  // cyan
 
  
-   string nstr0(GetName()+"/BPMiddle");
-   string nstr1;
+   std::string nstr0(GetName()+"/BPMiddle");
+   std::string nstr1;
    for(int j=0;j<2;j++){
      std::ostringstream sname;
      sname << j << std::ends;
