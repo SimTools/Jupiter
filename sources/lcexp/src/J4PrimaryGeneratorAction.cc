@@ -18,7 +18,7 @@
 #include "J4PrimaryGeneratorMessenger.hh"
 #include "J4HEPEvtInterface.hh"
 #include "J4CAINEvtInterface.hh"
-
+#include "Randomize.hh"
 
 J4PrimaryGeneratorAction* J4PrimaryGeneratorAction::fPrimaryGeneratorAction = 0;
 
@@ -35,7 +35,7 @@ J4PrimaryGeneratorAction::J4PrimaryGeneratorAction()
                           fParticleBeam(0),
                           fMessenger(0), fHEPEvtFileName(""), 
                           fEprimarygentype(kHEPEvt), 
-                          fIsInitialized(false),fAbortRun(false)
+                          fIsInitialized(false),fAbortRun(false), fInitialSeed(0)
 {
    if (fPrimaryGeneratorAction) {
       G4Exception("J4PrimaryGeneratorAction constructed twice."); 
@@ -83,6 +83,16 @@ void J4PrimaryGeneratorAction::Initialize()
 
    fIsInitialized = TRUE;
    std::cerr << "J4PrimaryGeneratorAction::Initialize done" << std::endl;
+}
+
+//=====================================================================
+//* Set Initial Seed
+void J4PrimaryGeneratorAction::SetInitialSeed(G4int seed)
+{
+  fInitialSeed=seed;
+  if ( fInitialSeed != 0 ) {
+    HepRandom::setTheSeed(fInitialSeed);
+  }
 }
 
 //=====================================================================

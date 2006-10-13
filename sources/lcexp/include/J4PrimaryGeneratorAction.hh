@@ -58,6 +58,9 @@ public:
 
    static J4PrimaryGeneratorAction *GetPrimaryGeneratorAction() 
                                          { return fPrimaryGeneratorAction; }
+  inline G4int   GetInitialSeed(){ return fInitialSeed; }
+  void    SetInitialSeed(G4int i);
+
 
 private:
    void Initialize();
@@ -72,6 +75,7 @@ private:
    EPrimaryGeneratorType        fEprimarygentype;
    G4bool                       fIsInitialized; 
    G4bool                       fAbortRun;
+   G4int                        fInitialSeed;
 
    // this class is singleton.
    static J4PrimaryGeneratorAction *fPrimaryGeneratorAction;

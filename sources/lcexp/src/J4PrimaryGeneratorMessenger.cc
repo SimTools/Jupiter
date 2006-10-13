@@ -4,6 +4,7 @@
 #include "J4PrimaryGeneratorAction.hh"
 #include "G4UIdirectory.hh"
 #include "G4UIcmdWithAString.hh"
+#include "G4UIcmdWithAnInteger.hh"
 #include "G4ios.hh"
 
 J4PrimaryGeneratorMessenger::J4PrimaryGeneratorMessenger(J4PrimaryGeneratorAction *mpga)
@@ -18,6 +19,13 @@ J4PrimaryGeneratorMessenger::J4PrimaryGeneratorMessenger(J4PrimaryGeneratorActio
    fGenCmd->SetParameterName("generator",true);
    fGenCmd->SetDefaultValue("ParticleGun");
    fGenCmd->SetCandidates("HEPEvt CAINEvt ParticleGun ParticleBeam");
+
+   fInitialSeedCmd = new G4UIcmdWithAnInteger("/jupiter/generator/initialSeed", this);
+   fInitialSeedCmd->SetGuidance("Set Initial Seed of generator");
+   fInitialSeedCmd->SetGuidance("  = 0, use default otherwise it is used as an initial seed");
+   fInitialSeedCmd->SetParameterName("InitialSeed",true,true);
+   fInitialSeedCmd->SetDefaultValue(0);
+
 }
 
 J4PrimaryGeneratorMessenger::~J4PrimaryGeneratorMessenger()
@@ -38,6 +46,9 @@ void J4PrimaryGeneratorMessenger::SetNewValue(G4UIcommand *command, G4String new
       } else {
          fAction->SetPrimaryGenerator(kParticleBeam);
       }
+   }
+   else if ( command == fInitialSeedCmd ) {
+     fAction->SetInitialSeed(fInitialSeedCmd->GetNewIntValue(newValue));
    }
 }
 
@@ -65,8 +76,11 @@ G4String J4PrimaryGeneratorMessenger::GetCurrentValue(G4UIcommand * command)
             std::cerr << " J4PrimaryGeneratorMessenger::GetCurrrentValue:Generator is not "
                  << "prepared. break." << std::endl;  
             break;
-     }
-  }
+      }
+   }
+   else if ( command == fInitialSeedCmd ) {
+     cv = fInitialSeedCmd->ConvertToString(fAction->GetInitialSeed()); 
+   }
   
   return cv;
 }

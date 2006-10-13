@@ -6,6 +6,7 @@
 class J4PrimaryGeneratorAction;
 class G4UIdirectory;
 class G4UIcmdWithAString;
+class G4UIcmdWithAnInteger;
 
 #include "G4UImessenger.hh"
 #include "globals.hh"
@@ -26,7 +27,7 @@ class J4PrimaryGeneratorMessenger: public G4UImessenger
   private: //commands
     G4UIdirectory              *fDirectory;
     G4UIcmdWithAString         *fGenCmd;
-    
+    G4UIcmdWithAnInteger       *fInitialSeedCmd;
 };
 
 #endif
