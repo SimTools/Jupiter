@@ -89,6 +89,9 @@ void J4PrimaryGeneratorAction::Initialize()
 //* Set Initial Seed
 void J4PrimaryGeneratorAction::SetInitialSeed(G4int seed)
 {
+#if __CLHEPVERSION__ >= 2
+  using namespace CLHEP;
+#endif
   fInitialSeed=seed;
   if ( fInitialSeed != 0 ) {
     HepRandom::setTheSeed(fInitialSeed);
