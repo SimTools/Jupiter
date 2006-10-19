@@ -168,11 +168,19 @@ void J4TrackingAction::Clear()
 void J4TrackingAction::Add(J4VSubTrackingAction *stap)
 {
   std::vector<J4VSubTrackingAction *>::iterator iter;
-  
+  /*  
   for(iter=fRegs.begin();iter!=fRegs.end();iter++) {
     if( *iter == stap ) { 
       fRegs.erase(iter);
     }
   } 
   fRegs.push_back(stap);    
+  */
+
+  for(iter=fRegs.begin();iter!=fRegs.end();iter++) {
+    if( *iter == stap ) { return ; }
+  } 
+  fRegs.push_back(stap);    
+
+
 }
