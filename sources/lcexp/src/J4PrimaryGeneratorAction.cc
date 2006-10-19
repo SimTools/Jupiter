@@ -94,6 +94,8 @@ void J4PrimaryGeneratorAction::SetInitialSeed(G4int seed)
 #endif
   fInitialSeed=seed;
   if ( fInitialSeed != 0 ) {
+    std::cerr << "J4PrimaryGeneratorAction ... Initial seed will be set to " 
+	<< fInitialSeed << std::endl;
     HepRandom::setTheSeed(fInitialSeed);
   }
 }

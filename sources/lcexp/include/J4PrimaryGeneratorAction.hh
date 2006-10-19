@@ -75,7 +75,7 @@ private:
    EPrimaryGeneratorType        fEprimarygentype;
    G4bool                       fIsInitialized; 
    G4bool                       fAbortRun;
-   G4int                        fInitialSeed;
+   G4long                       fInitialSeed;
 
    // this class is singleton.
    static J4PrimaryGeneratorAction *fPrimaryGeneratorAction;
