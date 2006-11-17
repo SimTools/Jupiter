@@ -29,7 +29,7 @@ J4SOLParameterList::J4SOLParameterList( G4double /*ri*/, G4double /*ro*/, G4doub
    
    fBFieldType = J4ParameterTable::GetValue("J4SOL.BFieldType",0);
    fBFieldMapFileName = J4ParameterTable::GetValue("J4SOL.BFieldMapFileName","map.file");
-
+   fDIDFieldFactor = J4ParameterTable::GetValue("J4SOL.DIDFieldFactor",1.0);
    
    // Coil
    fSOLCoilInnerR   = J4ParameterTable::GetValue("J4SOL.Coil.InnerR",397.5)*cm;
