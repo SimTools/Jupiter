@@ -43,6 +43,7 @@ class J4SOLParameterList : public J4VParameterList
    inline G4Color  GetSOLColor   () const { return fSOLColor;    }
 //   inline G4double GetFieldR     () const { return fFieldR;      }
    inline G4double GetBField     () const { return fBField;      }
+   inline G4double GetDIDFieldFactor() const { return fDIDFieldFactor; }
 
    // Get Coil parameters
    inline G4double GetSOLCoilInnerR  () const { return fSOLCoilInnerR;   }
@@ -85,6 +86,7 @@ class J4SOLParameterList : public J4VParameterList
 
    G4int       fBFieldType;  // (0=uniform, 1=DID map)
    G4String    fBFieldMapFileName; 
+   G4double  fDIDFieldFactor;
 
    //Coil
    G4double  fSOLCoilInnerR;

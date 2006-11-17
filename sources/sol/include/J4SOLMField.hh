@@ -14,6 +14,7 @@
 //*************************************************************************
 
 #include "J4VMField.hh"
+#include "J4ParameterTable.hh"
 #include "J4SOLParameterList.hh"
 #include <vector>
 
@@ -24,7 +25,7 @@
 
 class J4SOLMField : public J4VMField {	
 
-typedef std::vector<G4ThreeVector*> J4SOLBField;  // (z, Bz, Bx)
+typedef std::vector<G4ThreeVector*> J4SOLBField;
 
 public:
 
@@ -40,7 +41,8 @@ public:
 
 private:  
 
-  J4SOLBField fBData;  
+  J4SOLBField fBData;
+  J4SOLBField fBDataPosition;
   G4double    fBDataZMax;
   G4int       fBDataSize;
 
