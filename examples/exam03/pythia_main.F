@@ -4,12 +4,32 @@
 
       nev=10
       msel=1
+
+#if 0
+C ... For Z --> uds only at Z pole.
+      iz = pycomp(23)
+      mdcy(iz,1) = 1
+      do 100 idc = mdcy(iz,2), mdcy(iz,2)+mdcy(iz,3)-1
+         mdme(idc,1)=0
+ 100  continue
+      mdme(174,1) = 1
+      mdme(175,1) = 1
+      mdme(176,1) = 1
+
+C Suppress ISR
+      call pygive('mstp(11)=0')
+#endif
+
+C Suppress decay of relatively long lived particles
+      call pygive('mstj(22)=2')
        
       call pyinit('cms','e-','e+',91.180d0)
       open(10,file="qqbar.dat",form="formatted",status="unknown")
        
-      do 100 i=1, nev
+      do 200 i=1, nev
          call pyevnt
+
+C pyedit(11), (12), (15) are to remove history records.
          call pyedit(11)
          call pyedit(12)
          call pyedit(15)
@@ -17,7 +37,7 @@
          call pyhepc(1)
 c         call pylist(1)
          call writehepevt(10)
-100   continue
+200   continue
       close(10)
       stop
       end
