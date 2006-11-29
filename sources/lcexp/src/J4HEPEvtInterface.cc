@@ -89,9 +89,13 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 #endif
 
   static G4int eventID = -1;
+  //         G4int nSkips = fNskipEvents 
+  //                      ? fNskipEvents
+  //                      : (eventID < 0 ? evt->GetEventID() : 0);
+
          G4int nSkips = fNskipEvents 
-                        ? fNskipEvents
-                        : (eventID < 0 ? evt->GetEventID() : 0);
+	              ? (eventID < 0 ? fNskipEvents : 0 ) : 0 ;
+
   if (nSkips) {
      G4cerr << ">>>>>> J4HEPEvtInterface::GeneratePrimaryVertex >>>>>>> " << G4endl
             << " Going to skip " << nSkips << "events!"                   << G4endl
