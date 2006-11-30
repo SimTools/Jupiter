@@ -89,12 +89,12 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 #endif
 
   static G4int eventID = -1;
+  G4int nSkips = eventID < 0 ? 
+    ( fNskipEvents ? fNskipEvents : evt->GetEventID() ) : 0 ;
+
   //         G4int nSkips = fNskipEvents 
   //                      ? fNskipEvents
   //                      : (eventID < 0 ? evt->GetEventID() : 0);
-
-         G4int nSkips = fNskipEvents 
-	              ? (eventID < 0 ? fNskipEvents : 0 ) : 0 ;
 
   if (nSkips) {
      G4cerr << ">>>>>> J4HEPEvtInterface::GeneratePrimaryVertex >>>>>>> " << G4endl
@@ -182,9 +182,18 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 #endif
      
     // create G4PrimaryParticle object
+    G4double phep1gev=PHEP1*GeV;
+    G4double phep2gev=PHEP2*GeV;
+    G4double phep3gev=PHEP3*GeV;
+    G4double phep5gev=PHEP5*GeV;
+
+
+
     G4PrimaryParticle* particle 
-      = new G4PrimaryParticle( IDHEP, PHEP1*GeV, PHEP2*GeV, PHEP3*GeV );
-    particle->SetMass( PHEP5*GeV );
+      = new G4PrimaryParticle( IDHEP, phep1gev, phep2gev, phep3gev);
+//      = new G4PrimaryParticle( IDHEP, PHEP1*GeV, PHEP2*GeV, PHEP3*GeV );
+//    particle->SetMass( PHEP5*GeV );
+    particle->SetMass( phep5gev );
     G4ParticleDefinition *particleDefinition=particleTable->FindParticle(IDHEP);
     if ( particleDefinition ) particle->SetCharge( particleDefinition->GetPDGCharge() );
 
