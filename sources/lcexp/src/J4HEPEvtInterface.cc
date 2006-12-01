@@ -53,7 +53,7 @@ void J4HEPEvtInterface::OpenHEPEvtFile(G4String file)
   G4int abortlevel_keep = G4StateManager::GetStateManager()->GetSuppressAbortion();
   G4StateManager::GetStateManager()->SetSuppressAbortion(2);
 
-  fInputStream.open(fFileName, ios::in);
+  fInputStream.open(fFileName, std::ios::in);
   if (!fInputStream) {
      G4Exception("J4HEPEvtInterface:: check filename and retry. cannot open file " +fFileName );
   } else {
