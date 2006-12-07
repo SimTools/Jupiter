@@ -29,8 +29,14 @@ bool J4ParameterTable::fCollectDefaults=false;
 //------------------------------------------------------
 J4ParameterTable::J4ParameterTable()
 {
-  fParameters.push_back((new J4AParameter("sample","4.5")));
+
+  fParameters.push_back((new J4AParameter("sample","14.5")));
   fParameters.push_back((new J4AParameter("sample2","Hello World")));
+  fParameters.push_back((new J4AParameter("J4.Version","2.01")));
+  fParameters.push_back((new J4AParameter("J4.VersionDateTime","$Date$")));
+  fParameters.push_back((new J4AParameter("J4.BuildHost","host")));
+  fParameters.push_back((new J4AParameter("J4.BuildDateTime","20061207.000000")));
+  fParameters.push_back((new J4AParameter("J4.BuildAccount","dummy")));
 
 }
 
