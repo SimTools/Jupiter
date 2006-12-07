@@ -20,6 +20,7 @@ using namespace std;
 #include "J4AParameter.hh"
 #include "J4ParameterTable.hh"
 #include "G4ExceptionHandler.hh"
+#include "J4VersionInfo.hh"
 
 
 vector<J4AParameter*> J4ParameterTable::fParameters;
@@ -32,11 +33,11 @@ J4ParameterTable::J4ParameterTable()
 
   fParameters.push_back((new J4AParameter("sample","14.5")));
   fParameters.push_back((new J4AParameter("sample2","Hello World")));
-  fParameters.push_back((new J4AParameter("J4.Version","2.01")));
-  fParameters.push_back((new J4AParameter("J4.VersionDateTime","$Date$")));
-  fParameters.push_back((new J4AParameter("J4.BuildHost","host")));
-  fParameters.push_back((new J4AParameter("J4.BuildDateTime","20061207.000000")));
-  fParameters.push_back((new J4AParameter("J4.BuildAccount","dummy")));
+  fParameters.push_back((new J4AParameter("J4.Version",__J4VERSION_INFO_VERSION__)));
+  fParameters.push_back((new J4AParameter("J4.VersionDateTime",__J4VERSION_INFO_VERSION_DATETIME__)));
+  fParameters.push_back((new J4AParameter("J4.BuildHost",__J4VERSION_INFO_BUILD_HOST__)));
+  fParameters.push_back((new J4AParameter("J4.BuildDateTime",__J4VERSION_INFO_BUILD_DATETIME__)));
+  fParameters.push_back((new J4AParameter("J4.BuildAccount",__J4VERSION_INFO_BUILD_ACCOUNT__)));
 
 }
 
