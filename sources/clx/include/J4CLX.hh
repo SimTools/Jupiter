@@ -51,7 +51,6 @@ private:
   J4CLXBarrelHD**        fBarrelHD;
   J4CLXEndcapEM**        fEndcapEM;  
   J4CLXEndcapHD**        fEndcapHD;
-  
 };
 
 #endif

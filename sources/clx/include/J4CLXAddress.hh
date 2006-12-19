@@ -49,13 +49,14 @@ public:
   //* Boolean checker
   static G4bool IsBoundary     ( G4int cellID, G4bool isEM ) ;
   static G4bool IsXNegative    ( G4int cellID, G4bool isEM ) ;  
-  static G4int  IsEndcap       ( G4int cellID, G4bool isBarrel ) ;
+  static G4int  IsEndcap       ( G4int cellID, G4bool isBarrel = true ) ;
+  static G4bool IsBarrel       ( G4int cellID ) ;  
 
   //* Gettter for any informations
   static G4int  GetNTrapStrips ( G4bool isEM, G4bool isBarrel );
   static G4int  GetNCells      ( G4bool isEM, G4bool isBarrel, G4int id );
   
-  static G4ThreeVector GetCellPosition( G4int globalID, G4bool isEM, G4bool isBarrel );
+  static G4ThreeVector GetCellPosition( G4int globalID, G4bool isEM, G4bool isBarrel = true );
   
 private:
 

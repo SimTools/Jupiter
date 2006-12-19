@@ -72,7 +72,8 @@ inline G4int J4CLXEndcapEM::IsEndcap()
 {
   //* Placement case
   //  return ( GetMyID() < OpenParameterList()->GetNTraps() ) ? 1 : -1;
-  return ( GetCopyNo() < OpenParameterList()->GetNTraps() ) ? 1 : -1;  
+  //return ( GetCopyNo() < OpenParameterList()->GetNTraps() ) ? 1 : -1;  
+  return ( GetCopyNo() >= 2*OpenParameterList()->GetNTraps() ) ? -1 : 1;
 }
 
 inline G4double J4CLXEndcapEM::GetYmin( G4int )
