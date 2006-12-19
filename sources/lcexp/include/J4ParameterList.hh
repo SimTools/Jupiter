@@ -87,6 +87,8 @@ class J4ParameterList : public J4VParameterList
    inline G4double GetIRZEdges(int i)    const { return fIRZEdges[i];     }
    inline G4int    GetIRShapes(int i)    const { return fIRShapes[i];     }
 
+   inline G4double GetJupiterVersion  () const { return fJupiterVersion ; }
+
    // Setters
 
    inline void     SetEXPHallMaterial(G4String s) { fEXPHallMaterial  = s; }
@@ -127,6 +129,8 @@ class J4ParameterList : public J4VParameterList
    inline void     SetSOLInnerR      (G4double x) { fSOLInnerR        = x; }
    inline void     SetSOLOuterR      (G4double x) { fSOLOuterR        = x; }
    inline void     SetSOLHalfZ       (G4double x) { fSOLHalfZ         = x; }
+
+   inline void     SetJupiterVersion (G4double x) { fJupiterVersion   = x; }
    
    virtual void    SetParameters();
    virtual void    PrintParameterList(){}
@@ -179,6 +183,8 @@ class J4ParameterList : public J4VParameterList
    G4double  *fIRREdges;        // Radius of IR and VTX/IT boundary
    G4double  *fIRZEdges;        // Z poistion of IR and VTX/IT boundary corner position
    G4int     *fIRShapes;        // Shape of boundary (0=tubs, 1=cons)    
+
+   G4double  fJupiterVersion;   // Jupiter version information for old/new data compatibility   
 
 };
 
