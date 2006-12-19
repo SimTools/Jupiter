@@ -42,7 +42,7 @@ J4CLXEndcapEM::J4CLXEndcapEM( J4VDetectorComponent *parent,
 
 //=====================================================================
 //* Copy constructor --------------------------------------------------
-J4CLXEndcapEM::J4CLXEndcapEM( const J4CLXEndcapEM& orig, G4int  copyno )
+J4CLXEndcapEM::J4CLXEndcapEM( const J4CLXEndcapEM& orig, G4int copyno )
   : J4VCLXBlock( orig, copyno )
 {
 }

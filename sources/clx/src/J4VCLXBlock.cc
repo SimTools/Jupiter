@@ -62,7 +62,7 @@ void J4VCLXBlock::Assemble()
     G4Trap* ptrTrap = new G4Trap( GetName(), pz, 0., phi, py, px, plx, 0., py, px, plx, 0. );
     Register( ptrTrap );
     SetSolid( ptrTrap );
-    
+
     // MakeLogicalVolume --//
     MakeLVWith( OpenMaterialStore()->Order( GetMaterial() ) );
     
@@ -106,6 +106,15 @@ void J4VCLXBlock::InstallIn( J4VComponent*        /* mother */,
   // You MUST call Assemble(); at first.
   Assemble();			
 
+#ifdef __DEBUG__
+  std::cerr << "*** Block myID=" << GetMyID() << " " 
+            << "copyNo=" << GetCopyNo() << " "
+            << "isEndcap=" <<  IsEndcap() << " "
+            << "isBarrel=" <<  IsBarrel() << " "
+            << "isEM=" <<  IsEM() << " "
+            << std::endl;
+#endif
+
   //* User defined limits for time cut, step cut
   G4UserLimits *myLimits = new G4UserLimits();
   G4double umaxtime = J4ParameterTable::GetValue("J4CLX.UserMaxTime",1000.0)*nanosecond;
@@ -115,7 +124,7 @@ void J4VCLXBlock::InstallIn( J4VComponent*        /* mother */,
   //* Placement function into mother object
   J4CLXParameterList* ptrList = OpenParameterList();
 
-  G4int    myID = GetMyID();  
+  G4int    myID = GetMyID();
   G4double dphi = ptrList->GetTrapDeltaPhi();
   G4double pr = GetYmin() + 0.5*( GetYmax() - GetYmin() );
   G4double px = 0.;

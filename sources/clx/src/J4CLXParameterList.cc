@@ -92,7 +92,8 @@ void J4CLXParameterList::SetParameters()
   fPhiTolerance    = 0.0001*mrad;
 
   //* Barrel/Endcap gap space
-  fBarrelEndcapGap = J4ParameterTable::GetValue("J4CXL.BarrelEndcapGap",10.0)*cm;
+  //*BugFix:  fBarrelEndcapGap = J4ParameterTable::GetValue("J4CXL.BarrelEndcapGap",10.0)*cm;
+  fBarrelEndcapGap = J4ParameterTable::GetValue("J4CLX.BarrelEndcapGap",10.0)*cm;
   
   // Barrel--------------------------------------------------------------------------
   fBarrelInnerR    = J4ParameterTable::GetValue("J4CLX.Barrel.InnerRadius",210.0)*cm;
@@ -162,7 +163,8 @@ void J4CLXParameterList::SetParameters()
   //         EM/HD HalfZ
 
   //* Maximum number of cells-----------------------------------------------
-  fEMNCells   = (G4int)( 2*GetEMYmax()*std::tan( 0.5*fTrapDeltaPhi ) / fCellSize );
+  //*BugFix:  fEMNCells   = (G4int)( 2*GetEMYmax()*std::tan( 0.5*fTrapDeltaPhi ) / fCellSize );    
+  fEMNCells   = (G4int)( 2*GetHDYmax()*std::tan( 0.5*fTrapDeltaPhi ) / fCellSize );
   fHDNCells   = (G4int)( 2*GetHDYmax()*std::tan( 0.5*fTrapDeltaPhi ) / fCellSize );
   fMaxNCells  = fHDNCells;
   //

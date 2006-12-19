@@ -100,7 +100,11 @@ G4bool J4VCLXActiveSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist
   G4int   stripID     = ptrStrip->GetMyID();
   G4int   trapStripID = ( isBarrel ) ? GetCloneID( ptrTrapStrip ) : ptrTrapStrip->GetMyID();
   G4int   layerID     = ( isBarrel ) ? ptrLayer->GetMyID() : GetCloneID( ptrLayer );
-  G4int   blockID     = ( isEndcap == -1 ) ? ptrBlock->GetCopyNo() : ptrBlock->GetMyID();
+  G4int   blockID     = -1;
+  //G4int   blockID     = ( isEndcap == -1 ) ? ptrBlock->GetCopyNo() : ptrBlock->GetMyID();
+  if ( isEndcap ==  0 ) blockID = ptrBlock->GetMyID();   // Barrel
+  if ( isEndcap ==  1 ) blockID = ptrBlock->GetMyID();   // +Z Endcap
+  if ( isEndcap == -1 ) blockID = ptrBlock->GetCopyNo(); // -Z Endcap
 
   //* Particle information
   G4int    trackID        =  GetTrackID();
@@ -119,8 +123,11 @@ G4bool J4VCLXActiveSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist
   //* Center of cell position
   const G4ThreeVector  &Xcell = J4CLXAddress::GetCellPosition( globalID, isEM, isBarrel );
 
-#if 1
-  const G4ThreeVector  &pos   = GetPrePosition(); 
+  //--------------------------------------------------------------------  
+  //* Check GetCellPosition function
+  //
+  const G4ThreeVector  &pos   = GetPrePosition();
+  
   //* Open Parameter List
   J4CLXParameterList* ptrList = J4CLXParameterList::GetInstance();
 
@@ -140,14 +147,16 @@ G4bool J4VCLXActiveSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist
               << "Diff=" << (Xcell-pos).mag() << " "
               <<  std::endl;
   }
-#endif
+  //--------------------------------------------------------------------  
 
+  //--------------------------------------------------------------------
+  //* Check J4CLXAddress function IDs
+  //
   if ( isEM != ptrBlock->IsEM() ) {
     std::cout << "**** Error! isEM not equal ptrBlock->IsEM()" << " "
               << "isEM=" << isEM << " "
               << "IsEM()=" << ptrBlock->IsEM() << std::endl;
   }
-
 
   if ( cellID != J4CLXAddress::GetCellID( globalID, isEM ) ) { 
     std::cerr << "*** cellID conversion error! "
@@ -191,12 +200,13 @@ G4bool J4VCLXActiveSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist
 	      << std::endl;
   }
 
-  if ( ptrBlock->IsEndcap() != J4CLXAddress::IsEndcap( globalID, isBarrel ) ) { 
+  if ( ptrBlock->IsEndcap() != J4CLXAddress::IsEndcap( globalID ) ) { 
     std::cerr << "*** IsEndcap conversion error! "
 	      << "RealID=" << ptrBlock->IsEndcap() << " "
-	      << "ConvertedID=" << J4CLXAddress::IsEndcap( globalID, isBarrel )
+	      << "ConvertedID=" << J4CLXAddress::IsEndcap( globalID )
 	      << std::endl;
   }
+  //--------------------------------------------------------------------
 
   //* Check cell has already hit or not --------------------------------
   typedef std::multimap< G4int, J4CLXHit* >::iterator cellHitItr;
@@ -205,7 +215,7 @@ G4bool J4VCLXActiveSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist
 
   if ( cellHitRange.first == fgClxHits.end() ) {
     //* Does not find this key globalID in fgClxHits,
-    //  Cell is not yet hit, create new hit and insert to the hit buffer.
+    //  Cell does not yet hit, create new hit and insert to the hit buffer.
     J4CLXHit* cellHit = new J4CLXHit( ptrCell, preHitID, globalID, isEM, isBarrel, edep, tof, particle, Xcm, Xcell, trackID, motherTrackID ) ;
     fgClxHits.insert( std::make_pair( globalID, cellHit ) );
     ((J4CLXHitBuf*)GetHitBuf())->insert( cellHit );

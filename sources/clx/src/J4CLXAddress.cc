@@ -8,6 +8,7 @@
 //*     
 //* (Update Record)
 //*	2006/05/01  H.Ono Original version.
+//*     2006/12/13  H.Ono BlockID change to be separated Barrel/Endcap+/-Z
 //*************************************************************************//
 #include "J4CLXAddress.hh"
 #include "J4CLXParameterList.hh"
@@ -66,8 +67,9 @@ G4int J4CLXAddress::GetGlobalCellID( G4bool isEM, G4int blockID,
   G4int nEMTrapStrips = ptrList->GetEMNTrapStrips();
   G4int nHDTrapStrips = ptrList->GetHDNTrapStrips();
   G4int nEMLayers     = ptrList->GetEMNLayers();
-  G4int nHDLayers     = ptrList->GetHDNLayers();  
-  G4int nBlocks       = 2*ptrList->GetNTraps();
+  G4int nHDLayers     = ptrList->GetHDNLayers();
+  G4int nBlocks       = 3*ptrList->GetNTraps(); // 3 for Barrel and Endcap+/-Z 
+  
   G4int nEMTotal      = nEMCells*nEMStrips*nEMTrapStrips*nEMLayers;
   
 #if 0
@@ -101,7 +103,7 @@ G4int J4CLXAddress::GetGlobalCellID( G4bool isEM, G4int blockID,
 G4int J4CLXAddress::GetBlockID( G4int cellID )
 {
   J4CLXParameterList* ptrList = J4CLXParameterList::GetInstance();
-  G4int nBlocks = 2*ptrList->GetNTraps(); // 2 for +-Z position
+  G4int nBlocks = 3*ptrList->GetNTraps(); // 3 for Barrel and Endcap +/-Z position
 
   return cellID%nBlocks;
 }
@@ -111,7 +113,8 @@ G4int J4CLXAddress::GetBlockID( G4int cellID )
 G4int J4CLXAddress::GetLayerID( G4int cellID, G4bool isEM )
 {
   J4CLXParameterList* ptrList = J4CLXParameterList::GetInstance();
-  G4int nBlocks   = 2*ptrList->GetNTraps();
+  G4int nBlocks   = 3*ptrList->GetNTraps(); // 3 for Barrel and Endcap+/-Z 
+
   G4int nEMLayers = ptrList->GetEMNLayers();
   G4int nHDLayers = ptrList->GetHDNLayers();
   G4int nEMCells  = ptrList->GetEMNCells();
@@ -130,7 +133,7 @@ G4int J4CLXAddress::GetTrapStripID( G4int cellID, G4bool isEM )
 {
   J4CLXParameterList* ptrList = J4CLXParameterList::GetInstance();
 
-  G4int nBlocks   = 2*ptrList->GetNTraps();
+  G4int nBlocks   = 3*ptrList->GetNTraps(); // 3 for Barrel and Endcap+/-Z
   G4int nEMLayers = ptrList->GetEMNLayers();
   G4int nHDLayers = ptrList->GetHDNLayers();
   G4int nEMTrapStrips = ptrList->GetEMNTrapStrips();
@@ -150,7 +153,7 @@ G4int J4CLXAddress::GetStripID( G4int cellID, G4bool isEM )
 {
   J4CLXParameterList* ptrList = J4CLXParameterList::GetInstance();
 
-  G4int nBlocks   = 2*ptrList->GetNTraps();
+  G4int nBlocks   = 3*ptrList->GetNTraps(); // 3 for Barrel/Endcap+/-Z
   G4int nEMLayers = ptrList->GetEMNLayers();
   G4int nHDLayers = ptrList->GetHDNLayers();
   G4int nEMTrapStrips = ptrList->GetEMNTrapStrips();
@@ -171,7 +174,7 @@ G4int J4CLXAddress::GetCellID( G4int cellID, G4bool isEM )
 {
   J4CLXParameterList* ptrList = J4CLXParameterList::GetInstance();
 
-  G4int nBlocks   = 2*ptrList->GetNTraps();
+  G4int nBlocks   = 3*ptrList->GetNTraps();  // 3 for Barrel/Endcap+/-Z
   G4int nEMLayers = ptrList->GetEMNLayers();
   G4int nHDLayers = ptrList->GetHDNLayers();
   G4int nEMTrapStrips = ptrList->GetEMNTrapStrips();
@@ -204,14 +207,27 @@ G4bool J4CLXAddress::IsXNegative( G4int globalID, G4bool isEM )
 }
 
 //=====================================================================
+//* GetIsBarrel -------------------------------------------------------
+G4bool J4CLXAddress::IsBarrel( G4int cellID )
+{
+  return ( IsEndcap( cellID ) ) ? false : true;
+}
+
+//=====================================================================
 //* GetIsEndcap -------------------------------------------------------
-G4int J4CLXAddress::IsEndcap( G4int cellID, G4bool isBarrel )
+G4int J4CLXAddress::IsEndcap( G4int cellID, G4bool /*isBarrel*/ )
 {
   J4CLXParameterList* ptrList = J4CLXParameterList::GetInstance();
   G4int nTraps  = ptrList->GetNTraps();
   G4int blockID = GetBlockID( cellID );
-  return ( isBarrel ) ? 0
-                      : ( blockID < nTraps ) ? 1 : -1;
+  
+  G4int isEndcap = 0;
+
+  if ( blockID < nTraps )                          isEndcap =  0; // Barrel
+  if ( blockID >=   nTraps && blockID < 2*nTraps ) isEndcap =  1; // Endcap+Z
+  if ( blockID >= 2*nTraps && blockID < 3*nTraps ) isEndcap = -1; // Endcap-Z
+
+  return isEndcap;
 }
 
 //=====================================================================
@@ -284,7 +300,7 @@ G4int J4CLXAddress::GetNCells( G4bool isEM, G4bool isBarrel, G4int id )
 //=====================================================================
 //* GetCellPosition ---------------------------------------------------
 //  Return front surface of cell center position
-G4ThreeVector J4CLXAddress::GetCellPosition( G4int globalID, G4bool isEM, G4bool isBarrel )
+G4ThreeVector J4CLXAddress::GetCellPosition( G4int globalID, G4bool isEM, G4bool /*isBarrel*/ )
 {
   J4CLXParameterList *ptrList = J4CLXParameterList::GetInstance();
   
@@ -302,16 +318,18 @@ G4ThreeVector J4CLXAddress::GetCellPosition( G4int globalID, G4bool isEM, G4bool
   G4double fgCLXEMFlexThick   = ptrList->GetEMFlexLayerThickness();
   G4double fgCLXHDFlexThick   = ptrList->GetHDFlexLayerThickness();
   G4double fgCLXCellSize      = ptrList->GetCellSize();
-  
+
   G4int cellID       = GetCellID( globalID, isEM );
   //G4int stripID      = GetStripID( globalID, isEM );
   G4int trapStripID  = GetTrapStripID( globalID, isEM );  
   G4int layerID      = GetLayerID( globalID, isEM );
   G4int blockID      = GetBlockID( globalID );
 
+  G4bool isBarrel    = IsBarrel( globalID );
   G4bool isBoundary  = IsBoundary( globalID, isEM );
   G4bool isXNegative = IsXNegative( globalID, isEM );
-  G4int  isEndcap    = IsEndcap( globalID, isBarrel );
+  //G4int  isEndcap    = IsEndcap( globalID, isBarrel );
+  G4int  isEndcap    = IsEndcap( globalID );
 
   G4double EMLayerThick = fgCLXEMAbsThick+fgCLXEMActiveThick+fgCLXEMFlexThick;
   G4double HDLayerThick = fgCLXHDAbsThick+fgCLXHDActiveThick+fgCLXHDFlexThick;

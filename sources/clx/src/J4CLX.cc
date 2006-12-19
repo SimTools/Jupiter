@@ -50,7 +50,7 @@ J4CLX::J4CLX( J4VDetectorComponent *parent,
 J4CLX::~J4CLX()
 {
   G4int nTraps = OpenParameterList()->GetNTraps();
-
+  
   //* Barrel
   for ( G4int i = 0; i < nTraps; i++ ) {
     if ( fBarrelEM[i] ) delete fBarrelEM[i];
@@ -67,7 +67,6 @@ J4CLX::~J4CLX()
   if ( fBarrelHD ) delete [] fBarrelHD;
   if ( fEndcapEM ) delete [] fEndcapEM;
   if ( fEndcapHD ) delete [] fEndcapHD;
-
 }
 
 //=====================================================================
@@ -98,12 +97,13 @@ void J4CLX::Assemble()
     
     // Install daughter PV //
     const G4int nTraps = ptrList->GetNTraps();
-
+    
     //* Placement case
     //*Barrel-------------------------------------------------
     fBarrelEM = new J4CLXBarrelEM* [nTraps];
     fBarrelHD = new J4CLXBarrelHD* [nTraps];
 
+    //* Barrel BlockID : 0-12
     for ( G4int i = 0; i < nTraps; i++ ) {
       fBarrelEM[i] = new J4CLXBarrelEM( this, 1, nTraps, i );
       fBarrelHD[i] = new J4CLXBarrelHD( this, 1, nTraps, i );
@@ -112,7 +112,7 @@ void J4CLX::Assemble()
       fBarrelEM[i]->InstallIn( this );
       fBarrelHD[i]->InstallIn( this );
       SetDaughter( fBarrelEM[i] );
-      SetDaughter( fBarrelHD[i] );      
+      SetDaughter( fBarrelHD[i] );
     }
 
     //*Endcap install +/-Z position ------------------------
@@ -125,16 +125,14 @@ void J4CLX::Assemble()
 
       //* -Z position created by copy of +Z objcet
       if ( i < nTraps ) {
-	//* Create Endcap +Z part first
-	fEndcapEM[i] = new J4CLXEndcapEM( this, 1, nTraps, i );
-	fEndcapHD[i] = new J4CLXEndcapHD( this, 1, nTraps, i );
+	//* Create Endcap +Z part first, Endcap+Z BlockID : 12-23
+	fEndcapEM[i] = new J4CLXEndcapEM( this, 1, nTraps, i+nTraps );
+	fEndcapHD[i] = new J4CLXEndcapHD( this, 1, nTraps, i+nTraps );
       } else {
-	//* Endcap -Z part created by copy of +Z object
-	fEndcapEM[i] = new J4CLXEndcapEM( *fEndcapEM[i-nTraps], i );
-	fEndcapHD[i] = new J4CLXEndcapHD( *fEndcapHD[i-nTraps], i );
+	//* Endcap -Z part created by copy of +Z object, Endcap-Z BlockID : 24-35 (CopyNo)
+	fEndcapEM[i] = new J4CLXEndcapEM( *fEndcapEM[i-nTraps], i+nTraps );
+	fEndcapHD[i] = new J4CLXEndcapHD( *fEndcapHD[i-nTraps], i+nTraps );
       }
-      //      fEndcapEM[i] = new J4CLXEndcapEM( this, 1, 2*nTraps, i );
-      //      fEndcapHD[i] = new J4CLXEndcapHD( this, 1, 2*nTraps, i );
 
       Register( fEndcapEM[i] );
       Register( fEndcapHD[i] );
