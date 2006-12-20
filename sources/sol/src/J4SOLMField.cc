@@ -137,8 +137,6 @@ void J4SOLMField::GetLocalFieldValue(G4ThreeVector &position,
                      // br_x(y) has R dependence.
               bx_serpentine = b0->z();
               if( position.z() < 0.0 ) {
-                 br_x *= -1.0;
-                 br_y *= -1.0;
                  bx_serpentine *= -1.0;
               }
               bx = br_x + bx_serpentine;
@@ -158,8 +156,6 @@ void J4SOLMField::GetLocalFieldValue(G4ThreeVector &position,
                  bx_serpentine = (b1->z()-b0->z())/(p1->z()-p0->z())*(absz-p0->z()) + b0->z();
               }
               if( position.z() < 0.0 ) {
-                 br_x *= -1.0;
-                 br_y *= -1.0;
                  bx_serpentine *= -1.0;
               }
               bx = br_x + bx_serpentine;
