@@ -184,8 +184,6 @@ class J4ParameterList : public J4VParameterList
    G4double  *fIRZEdges;        // Z poistion of IR and VTX/IT boundary corner position
    G4int     *fIRShapes;        // Shape of boundary (0=tubs, 1=cons)    
 
-   G4double  fJupiterVersion;   // Jupiter version information for old/new data compatibility   
-
 };
 
 //=========================================================

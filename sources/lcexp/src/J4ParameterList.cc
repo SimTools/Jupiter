@@ -110,8 +110,6 @@ void J4ParameterList::SetParameters()
    fEXPHallHalfY    = J4ParameterTable::GetValue("J4.EXPHall.HalfY",1000.0)*cm;
    fEXPHallHalfZ    = J4ParameterTable::GetValue("J4.EXPHall.HalfZ",1000.0)*cm;
 
-   fJupiterVersion  = J4ParameterTable::GetValue("J4.JupiterVersion",-1.0); // Jupiter version information for old/new data compatibility
-
 }
 
 
