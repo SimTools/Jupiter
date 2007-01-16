@@ -22,7 +22,6 @@ using namespace std;
 #include "G4ExceptionHandler.hh"
 #include "J4VersionInfo.hh"
 
-
 vector<J4AParameter*> J4ParameterTable::fParameters;
 vector<J4AParameter*> J4ParameterTable::fDefaults;
 bool J4ParameterTable::fCollectDefaults=false;
@@ -30,15 +29,7 @@ bool J4ParameterTable::fCollectDefaults=false;
 //------------------------------------------------------
 J4ParameterTable::J4ParameterTable()
 {
-
-  fParameters.push_back((new J4AParameter("sample","14.5")));
-  fParameters.push_back((new J4AParameter("sample2","Hello World")));
-  fParameters.push_back((new J4AParameter("J4.Version",__J4VERSION_INFO_VERSION__)));
-  fParameters.push_back((new J4AParameter("J4.VersionDateTime",__J4VERSION_INFO_VERSION_DATETIME__)));
-  fParameters.push_back((new J4AParameter("J4.BuildHost",__J4VERSION_INFO_BUILD_HOST__)));
-  fParameters.push_back((new J4AParameter("J4.BuildDateTime",__J4VERSION_INFO_BUILD_DATETIME__)));
-  fParameters.push_back((new J4AParameter("J4.BuildAccount",__J4VERSION_INFO_BUILD_ACCOUNT__)));
-
+  SetVersionInfo();
 }
 
 //------------------------------------------------------
@@ -50,8 +41,6 @@ void J4ParameterTable::Print()
     J4AParameter *p=*ip;
     cout << p->GetName() << ":" << p->GetInput() << endl;
   }
-
-
 }
 
 //------------------------------------------------------
@@ -78,6 +67,19 @@ void J4ParameterTable::PrintDefaults(const char *fname)
   }
   fout.close();
 
+}
+
+
+//------------------------------------------------------
+void J4ParameterTable::SetVersionInfo()
+{
+  fParameters.push_back((new J4AParameter("sample","14.5")));
+  fParameters.push_back((new J4AParameter("sample2","Hello World")));
+  fParameters.push_back((new J4AParameter("J4.Version",__J4VERSION_INFO_VERSION__)));
+  fParameters.push_back((new J4AParameter("J4.VersionDateTime",__J4VERSION_INFO_VERSION_DATETIME__)));
+  fParameters.push_back((new J4AParameter("J4.BuildHost",__J4VERSION_INFO_BUILD_HOST__)));
+  fParameters.push_back((new J4AParameter("J4.BuildDateTime",__J4VERSION_INFO_BUILD_DATETIME__)));
+  fParameters.push_back((new J4AParameter("J4.BuildAccount",__J4VERSION_INFO_BUILD_ACCOUNT__)));
 }
 
 //------------------------------------------------------
@@ -112,6 +114,8 @@ void J4ParameterTable::LoadFile(const char* fname)
      pinput=instr.substr(ip1);
      fParameters.push_back((new J4AParameter(pname, pinput)));
   }
+
+  SetVersionInfo();
   fin.close();
 
 }
