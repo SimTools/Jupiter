@@ -12,6 +12,7 @@
 #include "J4TPCLayerSD.hh"
 #include "J4ParameterTable.hh"
 #include <cmath>
+#define __MERGETPCHIT__
  
 //=====================================================================
 //---------------------
@@ -106,17 +107,26 @@ G4bool J4TPCLayerSD::ProcessHits(G4Step *aStep, G4TouchableHistory *)
   std::cerr << std::endl;
 #endif
 
-//  if ( trackID != fLastTrackID || myID != fLastMyID )  { 
+#ifdef __MERGETPCHIT__
+  if ( trackID != fLastTrackID || myID != fLastMyID )  { 
+#endif
     fLastHit = new J4TPCLayerHit( location, trackID, mothertrackID, particle,
+#if 1
     			        tof, edep, etot, p, pre, pos);
+#else
+    			        tof, edep, etot, p, pos, pos);
+#endif
     ((J4TPCLayerHitBuf*)GetHitBuf())->insert(fLastHit);
-//    fLastTrackID=trackID;
-//    fLastMyID=myID;
-//  }
-//  else {
-//    edep += fLastHit->GetEnergyDeposit();    
-//    fLastHit->SetEnergyDeposit(edep);
-//  }
+#ifdef __MERGETPCHIT__
+    fLastTrackID=trackID;
+    fLastMyID=myID;
+  }
+  else {
+    edep += fLastHit->GetEnergyDeposit();    
+    fLastHit->SetEnergyDeposit(edep);
+    fLastHit->SetPostPosition(pos);
+  }
+#endif
 
 
 

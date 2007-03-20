@@ -29,7 +29,7 @@
 //* constructor -------------------------------------------------------
 
 J4TPCDriftRegionSD::J4TPCDriftRegionSD(J4VDetectorComponent* detector)
-		   :J4VSD<J4TPCLayerHit>(detector)
+		   :J4VSD<J4TPCPostHit>(detector)
 {  
   J4TrackingAction::GetInstance()->Add(J4TPCPostHitKeeper::GetInstance());
 }

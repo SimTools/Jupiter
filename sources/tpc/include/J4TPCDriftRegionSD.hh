@@ -14,7 +14,7 @@
 //*************************************************************************
  
 #include "J4VSD.hh"
-#include "J4TPCLayerHit.hh"
+#include "J4TPCPostHit.hh"
 #include "J4TrackingAction.hh"
 
 //=====================================================================
@@ -23,7 +23,7 @@
 //---------------------
 
 
-class J4TPCDriftRegionSD : public J4VSD<J4TPCLayerHit>{
+class J4TPCDriftRegionSD : public J4VSD<J4TPCPostHit>{
   
 public:
 
@@ -40,7 +40,7 @@ public:
   virtual void   OutputAll(G4HCofThisEvent* HCTE)
   {
      if(GetHitBuf()) {
-       J4VSD<J4TPCLayerHit>::OutputAll(HCTE);
+       J4VSD<J4TPCPostHit>::OutputAll(HCTE);
      }
      else {
        G4cerr << "J4TPCDriftRegionSD::OutputAll: No HitBuf! " << G4endl;
@@ -48,9 +48,9 @@ public:
   }
 
   inline 
-  virtual const J4TPCDriftRegionSD & operator=(const J4VSD<J4TPCLayerHit> &right)
+  virtual const J4TPCDriftRegionSD & operator=(const J4VSD<J4TPCPostHit> &right)
   {
-     J4VSD<J4TPCLayerHit>::operator=(right);
+     J4VSD<J4TPCPostHit>::operator=(right);
      return *this;
   }
 

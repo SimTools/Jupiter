@@ -50,8 +50,10 @@ public:
   
   const J4TPCPostHit& 
           operator=(const J4TPCPostHit& right);    
+#if 0
   void* operator new    (size_t    );
   void  operator delete (void* aHit);
+#endif
 
   virtual void Output(G4HCofThisEvent* HCTE);
   static  void SetCurPostHitPtr(J4TPCPostHit *hitp = 0) { fgCurPostHitPtr = hitp; }
@@ -93,7 +95,8 @@ inline const J4TPCPostHit&
   J4VTrackerHit::operator=(right);
   return *this;
 }
-  
+ 
+#if 0
 //----------------------------------------
 // Allocator
 
@@ -109,7 +112,6 @@ inline void J4TPCPostHit::operator delete(void* aHit)
 {
   fgHitAllocator.FreeSingle((J4TPCPostHit*) aHit);
 }
-
-
+#endif
 #endif
 

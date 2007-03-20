@@ -15,6 +15,10 @@
 
 #include "G4Material.hh"
 #include "G4Color.hh"
+#if 0
+#else
+#include "geomdefs.hh"
+#endif
 #include "J4ParameterList.hh"
 #include "J4ParameterTable.hh"
 
@@ -377,7 +381,13 @@ G4double J4TPCParameterList::GetLayerOuterR(G4int ilayer) const
 {
    return J4ParameterTable::GetValue("J4TPC.UseThinLayer",true)
           ? GetLayerInnerR(ilayer) + fLayerThick
+#if 0
           : GetLayerInnerR(ilayer + 1);
+#else
+          : (ilayer + 1 < fNlayers
+	     ? GetLayerInnerR(ilayer + 1)
+	     : GetLayerInnerR(ilayer + 1) - 10*kCarTolerance);
+#endif
 } 
 
 G4double J4TPCParameterList::GetLayerThick() const

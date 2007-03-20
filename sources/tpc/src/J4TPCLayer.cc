@@ -59,7 +59,11 @@ void J4TPCLayer::Assemble()
 
     G4double rmin = list->GetLayerInnerR(GetMyID());
     G4double rmax = list->GetLayerOuterR(GetMyID());
+#if 0
     G4double len  = list->GetDriftRegionHalfZ();
+#else
+    G4double len  = list->GetDriftRegionHalfZ() - 10*kCarTolerance;
+#endif
     G4double dphi = list->GetLayerDeltaPhi();
       
     // MakeSolid ----------//
