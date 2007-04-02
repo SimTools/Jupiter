@@ -79,7 +79,7 @@ void J4IRBCALSD::DefineCells(J4IRBCALSensor *detector)
   for(G4int ir=0; ir<=fNDivR;ir++) {
 	  G4double r=(rminmo+rstepmo*(G4double)ir)/zmo*zsensor;
 	  fRbound.push_back(r);
-	  if( ir != fNDivR ) { fPhiStep.push_back(pi2/(G4double)fNDivPhi[ir]) ;
+	  if( ir != fNDivR ) { fPhiStep.push_back(twopi/(G4double)fNDivPhi[ir]) ;
 	  //		  std::cerr << " PhiStep=" << fPhiStep[ir] << std::endl;
       }
    }   	
@@ -95,7 +95,7 @@ void J4IRBCALSD::GetRPhiBin(const G4ThreeVector x, G4int &ir, G4int &iphi)
 
   G4double r=x.perp();
   G4double phi=x.phi();
-  if( phi < 0.0 ) { phi += pi2; }
+  if( phi < 0.0 ) { phi += twopi; }
 
   iphi = 0;
   ir   =fNDivR+2;
