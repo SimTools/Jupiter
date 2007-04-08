@@ -161,9 +161,9 @@ G4bool J4IRFCALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ 
 //  std::cerr << "J4IRFCALSD::ProcessHit was called." << std::endl;
 //  std::cerr << " Energy  Deposit = " << GetEnergyDeposit() << std::endl;
 
-  J4VComponent* ptrFCAL = GetComponent(0);
+  J4VComponent* ptrFCAL = GetComponent(2);
   J4VComponent* ptrLayer = GetComponent(1);
-  J4VComponent* ptrSensor = GetComponent(2);
+  J4VComponent* ptrSensor = GetComponent(0);
 
 
   //Get perticle information
