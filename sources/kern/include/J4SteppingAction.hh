@@ -22,6 +22,16 @@ class J4SteppingAction : public G4UserSteppingAction
    ~J4SteppingAction();
 
     void UserSteppingAction(const G4Step*);
+
+private:
+  static G4int fLoop;
+  static G4int fLastTID;
+  static G4double fEcutSum;
+
+public:
+  static void ResetECutSum(){ fEcutSum=0;}
+  static G4double GetECutSum(){ return fEcutSum; }
+
 };
 
 #endif
