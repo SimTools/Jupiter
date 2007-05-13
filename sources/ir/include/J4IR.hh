@@ -39,7 +39,7 @@ public:
 private:
   void 	Assemble();    
   void  Cabling ();
-  void  Assemble_Qx(G4String name, G4double rmin, G4double rmax, 
+  void  Assemble_Qx(const char *name, G4double rmin, G4double rmax, 
 	G4double zlen, G4double zpos, G4double isDownStream,
 	G4double ebeam, G4double bgrad);
 

@@ -170,14 +170,14 @@ void J4IR::Assemble()
     G4double ebeam=J4ParameterTable::GetValue("J4IR.Q.BeamEnergy",250.0)*GeV;
     for(int i=0;i<nq;i++) {
         std::vector<double> qpara;  // rmin, rmax, zlen, zpos, sign
-   std::ostringstream sname3;
+        std::ostringstream sname3;
 	sname3 << "J4IR.Q" << i << ".Geometry" << std::ends;
 	qpara=J4ParameterTable::GetDValue((sname3.str()).c_str(),
 			"3.0 8.0 300.0 450.0 1.0 -65.0", 6);
         for(G4int j=0;j<4;j++) { qpara[j] *= cm; }
         G4bool isDownStream=FALSE;
         if( qpara[4] < 0.0 ) isDownStream = TRUE;
-   std::ostringstream sname4;
+        std::ostringstream sname4;
 	sname4 << "J4IR_Q" << i << std::ends;
 	G4double bgrad = -65.0*tesla/meter;
 	Assemble_Qx((sname4.str()).c_str(), 
@@ -234,7 +234,6 @@ void J4IR::Assemble()
     for(G4int idet=0;idet<ndet;idet++){
       fComponents.push_back(new J4OptDet(this, G4String("J4IR.OptDet"), ndet, idet));
     }
-
 
 // ----------------------------------------------------------------
 // Register solids set mother/daughter relation.
@@ -366,7 +365,7 @@ void J4IR::Assemble_BeamPipeMiddle()
 //=====================================================================
 //* QC1/Wmask4(Arround QC1)
 // ----------------------------------------------------------
-void J4IR::Assemble_Qx(G4String name, G4double rmin, G4double rmax, 
+void J4IR::Assemble_Qx(const char *name, G4double rmin, G4double rmax, 
 	G4double zlen, G4double zpos, G4double isDownStream, 
 	G4double ebeam, G4double bgrad) 
 //  ebeam : beam energy in unit of GeV.
@@ -403,43 +402,47 @@ void J4IR::Assemble_Qx(G4String name, G4double rmin, G4double rmax,
 // Small angle case.  QD axis is along Z-axis
 
     if( std::abs(qcangle) < 0.001 ) {
-	 J4IRTubs *v=new J4IRTubs(name+G4String("IronP"), rmin+thickbp, rmax, zlen*0.5,
+         G4String n1=G4String(name)+G4String("IronP");
+	 J4IRTubs *v=new J4IRTubs(n1, rmin+thickbp, rmax, zlen*0.5,
 	    zcnt, material, visatt, icolqc, this, 1, 2, 0, -1, FALSE);
-	 fComponents.push_back(v); 	 v->SetMField(qc1fielde);
+	 fComponents.push_back(v); v->SetMField(qc1fielde);
 	 
-	 v=new J4IRTubs(name+G4String("BeamPipeP"), rmin, rmin+thickbp, zlen*0.5,
+	 G4String n2=G4String(name)+G4String("BeamPipeP");
+	 v=new J4IRTubs(n2, rmin, rmin+thickbp, zlen*0.5,
 			zcnt, material, visbp, colbp, this, 1,2,0,-1, FALSE);
-	 fComponents.push_back(v); 	 v->SetMField(qc1fielde);
+	 fComponents.push_back(v); 	// v2->SetMField(qc1fielde);
 
-	 v=new J4IRTubs(name+G4String("VacuumP"), 0.0, rmin, zlen*0.5,
+	 v=new J4IRTubs(G4String(name)+G4String("VacuumP"), 0.0, rmin, zlen*0.5,
 			zcnt, "vacuum", false, colvc, this, 1,2,0,-1, FALSE);
-	 fComponents.push_back(v); 	 v->SetMField(qc1fielde);
+	 fComponents.push_back(v); //	 v->SetMField(qc1fielde);
 
-         v=new J4IRTubs("IronM", rmin+thickbp, rmax, zlen*0.5,
+
+	 G4String n4=G4String(name)+G4String("IronM");
+         v=new J4IRTubs(n4, rmin+thickbp, rmax, zlen*0.5,
 	    zcnt, material, visatt, icolqc, this, 1, 2, 1, -1, TRUE);
 	 fComponents.push_back(v);    v->SetMField(qc1fieldp);
 
-	 v=new J4IRTubs(name+G4String("BeamPipeM"), rmin, rmin+thickbp, zlen*0.5,
-			zcnt, material, visbp, colbp, this, 1,2,1,-1, FALSE);
-	 fComponents.push_back(v); 	 v->SetMField(qc1fielde);
+	 v=new J4IRTubs(G4String(name)+G4String("BeamPipeM"), rmin, rmin+thickbp, zlen*0.5,
+			zcnt, material, visbp, colbp, this, 1,2,1,-1, TRUE);
+	 fComponents.push_back(v); //	 v->SetMField(qc1fielde);
 
-	 v=new J4IRTubs(name+G4String("VacuumM"), 0.0, rmin, zlen*0.5,
-			zcnt, "vacuum", false, colvc, this, 1,2,1,-1, FALSE);
-	 fComponents.push_back(v); 	 v->SetMField(qc1fielde);
+	 v=new J4IRTubs(G4String(name)+G4String("VacuumM"), 0.0, rmin, zlen*0.5,
+			zcnt, "vacuum", false, colvc, this, 1,2,1,-1, TRUE);
+	 fComponents.push_back(v); //	 v->SetMField(qc1fielde);
 
     }
 
 // Large angle case.  QC axis is along beam line	
     else {
       if( isDownStream ) { qcangle *= -1.0 ; }
-      G4String tname=name+".plus";
+      G4String tname=G4String(name)+G4String(".plus");
       J4IRSlantTubs *qcp=new J4IRSlantTubs(tname, rmin, rmax, 0.5*zlen,
   	  zcnt, qcangle, this, 1, 2, 0, -1, FALSE);
       qcp->SetAttribute(material, visatt, icolqc);
       fComponents.push_back(qcp);
       qcp->SetMField(qc1fielde);
 
-      tname=name+".minus";
+      tname=G4String(name)+G4String(".minus");
       J4IRSlantTubs *qcm=new J4IRSlantTubs(tname, rmin, rmax, 0.5*zlen,
 	 zcnt, qcangle, this, 1, 2, 1, -1, TRUE);
       qcm->SetAttribute(material, visatt, icolqc);
