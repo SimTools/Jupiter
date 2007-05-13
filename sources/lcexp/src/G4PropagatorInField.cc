@@ -380,7 +380,7 @@ G4PropagatorInField::ComputeStep(
   // In order to correct this efficiently, we identify these cases
   // and only take corrective action when they occur.
   // 
-  if( TruePathLength < 2*mykCarTolerance ) 
+  if( TruePathLength < 10*mykCarTolerance ) 
     fNoZeroStep++;
   else
     fNoZeroStep = 0;
