@@ -29,6 +29,7 @@
 // ====================================================================
 
 class G4Run;
+class J4Timer;
 
 class J4RunAction : public G4UserRunAction {
 public:
@@ -46,6 +47,7 @@ public:
   virtual void EndOfRunAction(const G4Run* aRun);
 
 private:
+  J4Timer          *fRunTimer;
   G4String        fHitFileName;
   std::ofstream fOfs;
   J4RunActionMessenger  *fMessenger;

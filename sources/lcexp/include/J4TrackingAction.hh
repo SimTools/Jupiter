@@ -27,6 +27,7 @@
 #include "J4VSubTrackingAction.hh"
 
 class J4TrackingActionMessenger;
+class J4Timer;
 
 class J4TrackingAction : public G4UserTrackingAction 
 {
@@ -59,6 +60,12 @@ public:
   inline const G4Track *GetTrack(){ return fCurrentTrack; }
 
 private:
+  J4Timer          *fTrackingTimer;
+  J4Timer          *fTimerTracker;
+  J4Timer          *fTimerCal;
+  J4Timer          *fTimerIRBD;
+  G4int            fTimerType;
+
   const G4Track                       *fCurrentTrack; 
   G4int                                fCurrentTrackID;     // 1 : charged particle only 
   G4int                                fStoredTrajectoryID; // 1 : charged particle only 
