@@ -12,6 +12,8 @@
 
 #include "globals.hh"
 #include "J4SOL.hh"
+#include "J4SOLMessenger.hh"
+
 #include "G4FieldManager.hh"
 #include "J4MFieldMapStore.hh"
 #include "G4TransportationManager.hh"
@@ -42,6 +44,14 @@ J4SOL::J4SOL(J4VDetectorComponent *parent,
                                nbrothers, me, copyno),
        J4AttMFieldMap()
 {   
+  SetMaxEps(0.5);
+  SetMinEps(1.E-5);
+  SetDeltaOneStep(0.0025*mm);
+  SetDeltaIntersection(0.001*mm);
+//  SetDeltaChord(3.0*mm);
+  SetDeltaChord(0.1*mm);
+
+  fMessenger=new J4SOLMessenger(this);
 }
 
 //=====================================================================
@@ -129,10 +139,13 @@ void J4SOL::SetMagField()
        mfManager->NameList();
        Register(mfManager);
        fieldManager->SetDetectorField(mfManager);
+       fieldManager->SetDeltaOneStep(GetDeltaOneStep());
+       fieldManager->SetDeltaIntersection(GetDeltaIntersection());
+
+       fieldManager->SetMinimumEpsilonStep(GetMinEps());
+       fieldManager->SetMaximumEpsilonStep(GetMaxEps());
        fieldManager->CreateChordFinder(mfManager);
-       fieldManager->GetChordFinder()-> SetDeltaChord(3.*mm); // if you need
-       fieldManager->SetDeltaOneStep(0.0025*mm);
-       fieldManager->SetDeltaIntersection(0.001*mm);
+       fieldManager->GetChordFinder()-> SetDeltaChord(GetDeltaChord()); // if you need
        InstallMField(this);
    }
 }

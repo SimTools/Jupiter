@@ -22,6 +22,8 @@
 // class definition
 //---------------------
 
+class J4SOLMessenger;
+
 class J4SOL : public J4VSOLDetectorComponent, public J4AttMFieldMap  {	
 
 public:
@@ -47,6 +49,27 @@ private:
 private:  
   static G4String	fFirstName;
   J4SOLCoil*            fCoil;
+
+  J4SOLMessenger       *fMessenger;
+  G4double  fMaxEps;
+  G4double  fMinEps;
+  G4double  fDeltaOneStep;
+  G4double  fDeltaIntersection;
+  G4double  fDeltaChord;
+
+public:
+  inline void SetMaxEps(G4double val){ fMaxEps=val;}
+  inline void SetMinEps(G4double val){ fMinEps=val;}
+  inline void SetDeltaOneStep(G4double val){ fDeltaOneStep=val; }
+  inline void SetDeltaIntersection(G4double val){ fDeltaIntersection=val; }
+  inline void SetDeltaChord(G4double val){ fDeltaChord=val;}
+
+  inline G4double GetMaxEps(){ return fMaxEps;}
+  inline G4double GetMinEps(){ return fMinEps;}
+  inline G4double GetDeltaOneStep(){ return fDeltaOneStep;}
+  inline G4double GetDeltaIntersection(){ return fDeltaIntersection;}
+  inline G4double GetDeltaChord(){ return fDeltaChord;}
+
 };
 
 #endif
