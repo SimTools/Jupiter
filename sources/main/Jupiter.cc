@@ -395,7 +395,9 @@ int main(int argc, char** argv)
   delete visManager;
 #endif
 
-  delete runManager;  std::cout << std::endl;
+// delettion of runManager is supressed to avoid segmentation violation
+// though we have warning message
+//  delete runManager;  std::cout << std::endl;
   return 0;
 
 }

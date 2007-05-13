@@ -14,8 +14,19 @@ ifndef G4WORKDIR
   G4WORKDIR := .
 endif
 
+# Folowing lines are included to use object dependantly with version number
+G4Version = $(shell grep define $(G4INSTALL)/include/G4Version.hh |grep G4VERSION_NUMBER | sed -e 's/  / /g'  | cut -d" " -f3 )
+
+USEG4PropagatorInField=$(shell test $(G4Version) -gt 820 && echo yes)
+
+ifeq ($(USEG4PropagatorInField),yes)
+EXTRAOBJS += ../../tmp/Linux-g++/J4lcexp/G4Navigator.o \
+	 ../../tmp/Linux-g++/J4lcexp/G4PropagatorInField.o 
+endif
+
+
 .PHONY: all
-all:: bin
+all:: bin 
 
 includes:
 
@@ -90,13 +101,4 @@ $(G4TMPDIR)/J4DetectorConstruction.o: src/J4DetectorConstruction.cc
 	  src/J4DetectorConstruction.cc
 endif
 
-
-# Folowing lines are included to use object dependantly with version number
-G4Version = $(shell grep define $(G4INSTALL)/include/G4Version.hh |grep G4VERSION_NUMBER | sed -e 's/  / /g'  | cut -d" " -f3 )
-
-USEG4PropagatorInField=$(shell test $(G4Version) -gt 820 && echo yes)
-
-ifeq ($(USEG4PropagatorInField),yes)
-EXTRAOBJS += ../../tmp/Linux-g++/J4lcexp/G4PropagatorInField.o  
-endif
 
