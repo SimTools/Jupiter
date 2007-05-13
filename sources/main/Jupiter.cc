@@ -88,16 +88,24 @@
 #include "J4CALPostHitKeeper.hh"
 #include "J4CALPreHit.hh"
 #include "J4CALPreHitKeeper.hh"
+#
 #endif
 #endif
 
 #include "J4CommandArguments.hh"
 #include "J4ParameterTable.hh"
+#include "J4Timer.hh"
 
 TBookKeeper* TBookKeeper::fgBookKeeper = new TBookKeeper(); 
 
 int main(int argc, char** argv) 
 {
+
+   G4int timerid=-1;
+   G4String timerclass("JupiterMain");
+   G4String timername("MainTimer");
+   J4Timer *maintimer=new J4Timer(timerid, timerclass, timername);
+   maintimer->Start();				 
 
   if( ! J4CommandArguments::ParseArguments(argc, argv) ) {
 	exit(-1);
@@ -279,9 +287,11 @@ int main(int argc, char** argv)
   //* default value is set as "recursive".
  
 
+#ifdef __INSTALLIR__
 #ifdef __INSTALLFCAL__
   irptr->J4VComponent::SwitchOn();
 #endif 
+#endif
 
   //* vtx 
 #ifdef __INSTALLVTX__
@@ -373,6 +383,7 @@ int main(int argc, char** argv)
   //-----------------------
   // terminating...
   //-----------------------
+  maintimer->Stop();
   J4Timer::PrintAllAccumulatedTimes();
 
   if ( J4ParameterTable::CollectDefaults() ) {
