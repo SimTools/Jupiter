@@ -687,11 +687,38 @@ void J4PhysicsList::ConstructGeneral()
   }
 }
 
+#include "G4Region.hh"
+#include "G4ProductionCuts.hh"
+#include "G4RegionStore.hh"
+
 void J4PhysicsList::SetCuts()
 {
   //  " G4VUserPhysicsList::SetCutsWithDefault" method sets 
   //   the default cut value for all particle types 
   SetCutsWithDefault();   
+  //
+  // Make region dependant cuts
+  // 
+  G4Region *region;
+  G4String  regname;
+  G4ProductionCuts *cuts;
+
+  regname="BPandMask";
+  region=G4RegionStore::GetInstance()->GetRegion(regname);
+  cuts  = new G4ProductionCuts;
+  cuts->SetProductionCut(5.0*mm,G4ProductionCuts::GetIndex("e+"));
+  cuts->SetProductionCut(5.0*mm,G4ProductionCuts::GetIndex("e-"));
+  cuts->SetProductionCut(5.0*mm,G4ProductionCuts::GetIndex("gamma"));
+  region->SetProductionCuts(cuts);
+
+  region=G4RegionStore::GetInstance()->GetRegion("IRRegion");
+  cuts  = new G4ProductionCuts;
+  cuts->SetProductionCut(1.0*cm,G4ProductionCuts::GetIndex("e+"));
+  cuts->SetProductionCut(1.0*cm,G4ProductionCuts::GetIndex("e-"));
+  cuts->SetProductionCut(1.0*cm,G4ProductionCuts::GetIndex("gamma"));
+  region->SetProductionCuts(cuts);
+  
+
   if (verboseLevel > 0) DumpCutValuesTable();
 }
 

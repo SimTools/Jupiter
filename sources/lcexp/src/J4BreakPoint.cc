@@ -27,6 +27,14 @@ J4BreakPoint::J4BreakPoint(const G4Track *tp)
 	      fKineticEnergy(tp->GetKineticEnergy())
 {
   fgBreakPointMap.insert(std::pair<G4int, J4BreakPoint*>(fTrackID, this));
+  G4int nbp=fgBreakPointMap.size();
+  if( nbp > 10000 ) {
+    if( nbp%10000 == 0 ) {
+      std::cerr << "Warning in J4BreakPoint .. Number of break points "
+		<< " of this events exceeds " << nbp 
+		<< std::endl;
+    }
+  }
 }
 
 //=====================================================================
@@ -66,7 +74,6 @@ void J4BreakPoint::Clear()
     delete iter->second;
   }
   fgBreakPointMap.clear();
-
 }
 
 //=====================================================================

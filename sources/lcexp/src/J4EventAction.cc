@@ -28,6 +28,7 @@
 
 #include "J4HistoryKeeper.hh"
 #include "J4BreakPoint.hh"
+#include "J4SteppingAction.hh"
 
 // SD of each detector componet
 
@@ -76,8 +77,13 @@ void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
 /////////////////////////////////////////////////////////////////
 {
   // printout primary information
-  std::cerr << "Start of BeginOfEventAction..." 
-	    << " of event " << anEvent->GetEventID() << std::endl;
+  std::cerr << "**********************************************" << std::endl;
+  std::cerr << "**** Begin of _event_number_" 
+	<< anEvent->GetEventID() << "_*******" <<std::endl;
+  std::cerr << "**********************************************" << std::endl;
+#if 0
+  system("echo -n \"beginevent \"  &&  top b n 1 | grep Jupiter");
+#endif
 #ifdef __THEBE__
    if ( J4Global::GetErrorOutputUnit() == "Event" ) {
       if ( !fErrorOfs.is_open() ) {
@@ -112,8 +118,12 @@ void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
    J4TrackingAction::GetInstance()->Clear();   
    
 
+   J4SteppingAction::ResetECutSum();
+
    fEventID=anEvent->GetEventID();
-   //   std::cerr << " End  of BeginOfEventAction of event ID " << fEventID<< std::endl;
+#if 0
+   std::cerr << " End  of BeginOfEventAction of event ID " << fEventID<< std::endl;
+#endif
 }
 
 ///////////////////////////////////////////////////////////////
@@ -129,11 +139,13 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
 
      G4int event = anEvent->GetEventID();
 
-     std::cerr << "**********************************************" << std::endl;
-     std::cerr << "*******_event_number_" << event << "_*******" <<std::endl;
-     std::cerr << "**********************************************" << std::endl;
-
-     //    system("top b n 1 | grep Jupiter");
+//     std::cerr << "**********************************************" << std::endl;
+//      std::cerr << "*******_event_number_" << event << "_*******" <<std::endl;
+//     std::cerr << "**********************************************" << std::endl;
+     std::cerr << "Start EndOfEventAction of event " << event << "   " << std::endl;
+#if 0
+     system("echo -n \"endevent \"  &&  top b n 1 | grep Jupiter");
+#endif
      
   // ====================================================================  
   // output "J4BreakPointMap"
@@ -148,8 +160,6 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
   G4HCofThisEvent* HCTE= anEvent-> GetHCofThisEvent();
   
   if(! HCTE) return;  // no hits in this events. nothing to do!
-  
-  //  std::cerr << "EventAction :: HCTE = "<< HCTE->GetNumberOfCollections()<<std::endl;
   
   std::ofstream& ofs= ((J4RunAction*)usrRunAction)-> GetOutputFileStream();
   if(! ofs.good()) {
@@ -176,6 +186,13 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
    //   std::cerr << "EventAction::OutputAll finished " << std::endl;
   
    ofs << "*******_End_of_event_" << event << "_*******" <<std::endl;
+
+#if 0
+   system("echo -n \"endevent after output \"  &&  top b n 1 | grep Jupiter");
+
+   G4cerr << "Total Energy cut by J4SteppingAction was "
+	<< J4SteppingAction::GetECutSum()/MeV << "(MeV)" << G4endl;
+#endif
 
    fEventTimer->Stop();
 //   std::cerr << "**********************************************" << std::endl;

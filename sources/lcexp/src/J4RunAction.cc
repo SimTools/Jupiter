@@ -10,6 +10,9 @@
 
 #include "J4RunAction.hh"
 #include "J4RunActionMessenger.hh"
+#include "J4Timer.hh"
+
+#include "J4SteppingAction.hh"
 
 // ====================================================================
 //
@@ -23,6 +26,11 @@ J4RunAction::J4RunAction(const G4String& fname)
 ///////////////////////////////////////////////////////////////
 {
    fMessenger=new J4RunActionMessenger(this);
+
+   G4int timerid = -1;
+   G4String classname("J4RunAction");
+   G4String timername("RunTimer");
+   fRunTimer = new J4Timer(timerid, classname, timername);
 }
 
 
@@ -30,6 +38,8 @@ J4RunAction::J4RunAction(const G4String& fname)
 void J4RunAction::BeginOfRunAction(const G4Run* /* aRun */)
 ////////////////////////////////////////////////////////
 {
+  fRunTimer->Start();
+
   fOfs.open(fHitFileName.c_str(), std::ios::out);
   if (! fOfs.good()) {
     G4String errorMessage=
@@ -63,5 +73,8 @@ void J4RunAction::EndOfRunAction(const G4Run* aRun)
     
   fOfs.close();
   std::cout << "#events generated= " << aRun-> GetNumberOfEvent() << std::endl;
+
+  fRunTimer->Stop();
+
 }
 

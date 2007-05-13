@@ -22,13 +22,14 @@ J4TrackingActionMessenger::J4TrackingActionMessenger(J4TrackingAction * tracking
 
   fChooseStoredTrajectoryCmd = new G4UIcmdWithAnInteger("/jupiter/tracking/ChooseStoredTrajectory",this);
   fChooseStoredTrajectoryCmd->SetGuidance("Choose stored trajectory");
-  fChooseStoredTrajectoryCmd->SetGuidance("  1 : charged only. Default.");
+  fChooseStoredTrajectoryCmd->SetGuidance("  0 : Not save trajectory Default");
+  fChooseStoredTrajectoryCmd->SetGuidance("  1 : charged only.");
   fChooseStoredTrajectoryCmd->SetGuidance("  2 : all ");
   fChooseStoredTrajectoryCmd->SetParameterName("N",true,true);
-  fChooseStoredTrajectoryCmd->SetRange("N>0");
+  fChooseStoredTrajectoryCmd->SetRange("N>-1");
 
   // set initial value to J4TrackingAction
-  fTrackingAction->SetStoredTrajectoryID(1);
+  fTrackingAction->SetStoredTrajectoryID(0);
 
 #ifdef __THEBE__
   
