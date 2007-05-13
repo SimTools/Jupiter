@@ -164,8 +164,8 @@ void J4CLX::InstallIn( J4VComponent*         /* mother */,
                        const G4ThreeVector&  /* tlate  */  )
 { 
   static G4int timerID = -1;
-  J4Timer timer( timerID, "J4CLX", "InstallIn()" );
-  timer.Start(); 
+  J4Timer *timer=new J4Timer( timerID, "J4CLX", "InstallIn()" );
+  timer->Start(); 
 
   Assemble();			// You MUST call Assemble(); at first.
 
@@ -181,7 +181,7 @@ void J4CLX::InstallIn( J4VComponent*         /* mother */,
   // Cabling function to install SD
   Cabling();
 
-  timer.Stop();
+  timer->Stop();
 }
 
 //* Draw  --------------------------------------------------------
