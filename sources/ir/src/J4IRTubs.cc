@@ -87,7 +87,7 @@ void J4IRTubs::Cabling()
 //* GetRotation  --------------------------------------------------------
 G4RotationMatrix* J4IRTubs::GetRotation(){
   G4RotationMatrix* rotM = new G4RotationMatrix();
-  rotM->rotateY(fRotation);
+  if( std::abs(fRotation) > 1.E-6 ) { rotM->rotateY(fRotation); }
   return rotM;
 }
 //=====================================================================

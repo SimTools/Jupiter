@@ -117,6 +117,7 @@ void J4IRBCAL::Assemble()
                                         
     // MakeLogicalVolume -------------
     G4String material= J4ParameterTable::GetValue("J4IR.BCAL.Material","Tungsten");
+    // G4String material= "Air";
     MakeLVWith(OpenMaterialStore()->Order(material));
     
     // SetVisAttribute ---------------

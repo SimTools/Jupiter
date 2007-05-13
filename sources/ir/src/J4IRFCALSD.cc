@@ -227,6 +227,8 @@ G4bool J4IRFCALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ 
       ((J4IRFCALHitBuf*)GetHitBuf())->insert(aHit);
     }
   }
+
+//  std::cerr << "#of FCAIHits is " << fgFCALHits.size() << std::endl;
   return TRUE;
 }
 

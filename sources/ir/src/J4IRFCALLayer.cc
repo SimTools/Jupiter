@@ -77,27 +77,26 @@ void J4IRFCALLayer::Assemble()
     G4double rmax2p=solid->GetOuterRadiusPlusZ();
     G4double hzp   =solid->GetZHalfLength();
 
+    G4double tolerance=1.E-5*mm;
     G4double nb   =(G4double)GetNbrothers();
-    G4double rmin1=rmin1p + (rmin2p-rmin1p)/nb*(G4double)GetMyID();
-    G4double rmax1=rmax1p + (rmax2p-rmax1p)/nb*(G4double)GetMyID();
-    G4double rmin2=rmin1p + (rmin2p-rmin1p)/nb*(G4double)(GetMyID()+1);
-    G4double rmax2=rmax1p + (rmax2p-rmax1p)/nb*(G4double)(GetMyID()+1);
+    G4double rmin1=rmin1p + (rmin2p-rmin1p)/nb*(G4double)GetMyID()+tolerance;
+    G4double rmax1=rmax1p + (rmax2p-rmax1p)/nb*(G4double)GetMyID()-tolerance;
+    G4double rmin2=rmin1p + (rmin2p-rmin1p)/nb*(G4double)(GetMyID()+1)+tolerance;
+    G4double rmax2=rmax1p + (rmax2p-rmax1p)/nb*(G4double)(GetMyID()+1)-tolerance;
 
     // MakeSolid ---------------
     std::ostringstream sname;
     sname.str(GetName());
     sname << GetMyID() << std::ends;
 
-    G4double hzl=hzp/nb;
-    G4double margin = 0.00001*mm;
-	 hzl -= margin;
+    G4double hzl=hzp/nb-tolerance;
     G4VSolid *fcal = new G4Cons(sname.str(), rmin1, rmax1, rmin2, rmax2,
 				hzl, 0, 2*M_PI);
     Register(fcal);
     SetSolid(fcal);	// Don't forgat call it!
                                        
     // MakeLogicalVolume -------------
-    G4String material= "vacuum";
+    G4String material= "Air";
     MakeLVWith(OpenMaterialStore()->Order(material));
     
     // SetVisAttribute ---------------

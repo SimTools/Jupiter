@@ -77,8 +77,9 @@ void J4IRBCALLayer::Assemble()
 
     G4Tubs *solid=(G4Tubs*)parent->GetSolid(); 
 
-    G4double rmin=solid->GetInnerRadius();
-    G4double rmax=solid->GetOuterRadius();
+    G4double tolerance=1.E-5*mm;
+    G4double rmin=solid->GetInnerRadius()+tolerance;
+    G4double rmax=solid->GetOuterRadius()-tolerance;
     G4double hzp =solid->GetZHalfLength();
 
     G4double nb   =(G4double)GetNbrothers();
@@ -88,15 +89,13 @@ void J4IRBCALLayer::Assemble()
     sname.str(GetName());
     sname << GetMyID() << std::ends;
 
-    G4double hzl=hzp/nb;
-    G4double margin = 0.00001*mm;
-    hzl -= margin;
+    G4double hzl=hzp/nb-tolerance;
     G4VSolid *bcal = new G4Tubs(sname.str(), rmin, rmax, hzl, 0, 2*M_PI);
     Register(bcal);
     SetSolid(bcal);	// Don't forgat call it!
                                        
     // MakeLogicalVolume -------------
-    G4String material= "vacuum";
+    G4String material= "Air";
     MakeLVWith(OpenMaterialStore()->Order(material));
     
     // SetVisAttribute ---------------

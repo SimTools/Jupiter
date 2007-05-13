@@ -223,6 +223,7 @@ G4bool J4IRBCALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ 
       ((J4IRBCALHitBuf*)GetHitBuf())->insert(aHit);
     }
   }
+//  std::cerr << " #of BCAL hits is " << fgBCALHits.size() << std::endl;
   return TRUE;
 }
 

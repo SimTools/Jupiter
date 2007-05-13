@@ -97,6 +97,7 @@ G4bool J4IRFCALPreHitSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhi
      ( (J4IRFCALPreHitBuf *)GetHitBuf() ) -> insert( preHitPtr );
   }
 
+
 #if 0
   // Create new postHit! -------------------------------------
   J4CALPostHitKeeper* postKeeper = J4CALPostHitKeeper::GetInstance();

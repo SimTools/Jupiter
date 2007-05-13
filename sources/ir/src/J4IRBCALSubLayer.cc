@@ -39,10 +39,11 @@ G4String J4IRBCALSubLayer::fName("IRBCALSubLayer");
 J4IRBCALSubLayer::J4IRBCALSubLayer(J4VAcceleratorComponent *parent,
 			                  G4int  me) :
             J4VIRAcceleratorComponent( fName, parent, 1,
-                                    1, me, -1 ) 
+                                    2, me, -1 ) 
 {   
   // me=0: Absorber
   //   =1: Gap
+  // nbrother = 2 fixed
 }
 
 //=====================================================================
@@ -63,8 +64,9 @@ void J4IRBCALSubLayer::Assemble()
     G4Tubs *solid=(G4Tubs*)parent->GetSolid(); 
     G4int ind=2*GetMyID();
 
-    G4double rmin=solid->GetInnerRadius();
-    G4double rmax=solid->GetOuterRadius();
+    G4double tolerance=1.E-5*mm;
+    G4double rmin=solid->GetInnerRadius()+tolerance;
+    G4double rmax=solid->GetOuterRadius()-tolerance;
     G4double hzp =solid->GetZHalfLength();
 
     fZpos[0]=0;
@@ -77,9 +79,14 @@ void J4IRBCALSubLayer::Assemble()
 
     // MakeSolid ---------------
     std::ostringstream sname;
-    sname.str(GetName());
-    sname << GetMyID() << std::ends;
+    //     sname.str(GetName());
+    sname << fName << GetMyID() << std::ends;
 
+    //    std::cerr << " IRBCALSubLayer .. GetName=" << GetName() 
+    //	      << "MyID=" << GetMyID() 
+    //	      << " ind=" << ind
+    //	      << " sname=" << sname.str()
+    //	      << std::endl;
 //    G4double margin = 0.00001*mm;
 //    hz -= margin;
 

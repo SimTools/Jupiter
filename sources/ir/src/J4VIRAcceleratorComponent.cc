@@ -86,7 +86,7 @@ void J4VIRAcceleratorComponent::InstallIn(J4VComponent      *, // mother
   //myLimits->SetMaxAllowedStep(100.*micrometer);
   //myLimits->SetMaxAllowedStep(1000.*micrometer);
   //myLimits->SetMaxAllowedStep(1.*mm);
-  //myLimits->SetMaxAllowedStep(1.*cm);
+  myLimits->SetMaxAllowedStep(10.*cm);
   G4double umaxtime= J4ParameterTable::GetValue("J4IR.UserMaxTime",1000.0)*nanosecond;
   myLimits->SetUserMaxTime(umaxtime);
   GetLV()->SetUserLimits(myLimits);

@@ -39,7 +39,7 @@ G4String J4IRFCALSubLayer::fName("IRFCALSubLayer");
 J4IRFCALSubLayer::J4IRFCALSubLayer(J4VAcceleratorComponent *parent,
 			                  G4int  me) :
             J4VIRAcceleratorComponent( fName, parent, 1,
-                                    1, me, -1 ) 
+                                    2, me, -1 ) 
 {   
   // me=0: Absorber
   //   =1: Gap
@@ -75,16 +75,18 @@ void J4IRFCALSubLayer::Assemble()
       J4ParameterTable::GetValue("J4IR.FCAL.SensorThickness",0.03)*cm;
     fZpos[3]=2*hzp;
     
-    G4double rmin1=rmin1p+(rmin2p-rmin1p)*fZpos[ind]/fZpos[3];
-    G4double rmax1=rmax1p+(rmax2p-rmax1p)*fZpos[ind]/fZpos[3];
-    G4double rmin2=rmin1p+(rmin2p-rmin1p)*fZpos[ind+1]/fZpos[3];
-    G4double rmax2=rmax1p+(rmax2p-rmax1p)*fZpos[ind+1]/fZpos[3];
+    G4double tolerance=1.E-5*mm;
+    G4double rmin1=rmin1p+(rmin2p-rmin1p)*fZpos[ind]/fZpos[3]+tolerance;
+    G4double rmax1=rmax1p+(rmax2p-rmax1p)*fZpos[ind]/fZpos[3]-tolerance;
+    G4double rmin2=rmin1p+(rmin2p-rmin1p)*fZpos[ind+1]/fZpos[3]+tolerance;
+    G4double rmax2=rmax1p+(rmax2p-rmax1p)*fZpos[ind+1]/fZpos[3]-tolerance;
     G4double hz=(fZpos[ind+1]-fZpos[ind])*0.5;
+
 
     // MakeSolid ---------------
     std::ostringstream sname;
-    sname.str(GetName());
-    sname << GetMyID() << std::ends;
+    //    sname.str(GetName());
+    sname << fName << GetMyID() << std::ends;
 
 //    G4double margin = 0.00001*mm;
 //    hz -= margin;
