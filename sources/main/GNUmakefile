@@ -20,8 +20,8 @@ G4Version = $(shell grep define $(G4INSTALL)/include/G4Version.hh |grep G4VERSIO
 USEG4PropagatorInField=$(shell test $(G4Version) -gt 820 && echo yes)
 
 ifeq ($(USEG4PropagatorInField),yes)
-EXTRAOBJS += ../../tmp/Linux-g++/J4lcexp/G4Navigator.o \
-	 ../../tmp/Linux-g++/J4lcexp/G4PropagatorInField.o 
+EXTRAOBJS += ../../tmp/$(G4SYSTEM)/J4lcexp/G4Navigator.o \
+	 ../../tmp/$(G4SYSTEM)/J4lcexp/G4PropagatorInField.o 
 endif
 
 
