@@ -10,14 +10,11 @@
 #  
 # // create a scene handler for a specific graphics system
 # // edit the next line(s) to choose another graphic system
-/vis/sceneHandler/create DAWNFILE
-# 
-# // create a viewer
-/vis/viewer/create
-#/vis/sceneHandler/attach
+/vis/open DAWNFILE
+#/vis/open VRML2FILE
 
 /vis/viewer/reset
-# /vis/viewer/viewpointThetaPhi 0. 90.
+/vis/viewer/set/viewpointThetaPhi 0. 90. deg
 /vis/viewer/zoom 2.0
 
 #  
@@ -25,6 +22,6 @@
 #/tracking/storeTrajectory 1
 /vis/scene/add/trajectories
 
-/vis/scene/notifyHandlers
-/vis/viewer/update
+/vis/drawVolume
+/vis/viewer/refresh
 
