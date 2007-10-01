@@ -1,0 +1,10 @@
+#!/bin/sh
+cd $JUPITERROOT/sources
+for i in `ls | grep -v Makefile | grep -v CVS`; do
+   eval "(cd $i; $JUPITERROOT/scripts/mkg49.pl include; mv tmp/* include/; rmdir tmp)"
+   eval "(cd $i; $JUPITERROOT/scripts/mkg49.pl src; mv tmp/* src/; rmdir tmp)"
+done
+cd lcexp/src
+mkdir keep
+mv G4* keep
+exit 0
