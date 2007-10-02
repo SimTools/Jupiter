@@ -1,5 +1,5 @@
 #include "G4Version.hh"
-#if G4VERSION_NUMBER > 820
+#if G4VERSION_NUMBER > 820 && G4VERSION_NUMBER < 900
 //
 // ********************************************************************
 // * License and Disclaimer                                           *

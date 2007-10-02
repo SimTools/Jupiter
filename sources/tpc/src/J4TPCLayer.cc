@@ -9,6 +9,11 @@
 //*	2004/08/06  A.Yamaguchi	Original version.
 //*************************************************************************
 
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include "J4TPCLayer.hh"
 #include "J4TPCLayerSD.hh"
 #include "J4TPCParameterList.hh"
@@ -62,7 +67,11 @@ void J4TPCLayer::Assemble()
 #if 0
     G4double len  = list->GetDriftRegionHalfZ();
 #else
+#if G4VERSION_NUMBER < 900
     G4double len  = list->GetDriftRegionHalfZ() - 10*kCarTolerance;
+#else
+    G4double len  = list->GetDriftRegionHalfZ() - 10*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance();
+#endif
 #endif
     G4double dphi = list->GetLayerDeltaPhi();
       

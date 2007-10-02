@@ -10,6 +10,11 @@
 //*	2006/05/01  H.Ono Original version.
 //*************************************************************************
 //#include "J4CLXEM.hh"
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include "J4TPCPostHit.hh"
 #include "J4TPCPostHitKeeper.hh"
 #include "J4CLXSD.hh"
@@ -144,10 +149,18 @@ G4bool J4CLXSD::IsExiting( const G4ThreeVector &pos, const G4ThreeVector &p  ) c
   J4CLXParameterList* ptrList = J4CLXParameterList::GetInstance();
   static G4double tol = 10.;
     
+#if G4VERSION_NUMBER < 900
   if ( std::abs( pos.perp() - ptrList->GetCLXOuterR() ) <= tol*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0.) 
+#else
+  if ( std::abs( pos.perp() - ptrList->GetCLXOuterR() ) <= tol*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.x() * pos.x() + p.y() * pos.y() > 0.) 
+#endif
     return true;
 
+#if G4VERSION_NUMBER < 900
   if ( std::abs( std::abs( pos.z() ) - ptrList->GetCLXOuterHalfZ() ) <= tol*kCarTolerance && p.z() * pos.z() > 0.)
+#else
+  if ( std::abs( std::abs( pos.z() ) - ptrList->GetCLXOuterHalfZ() ) <= tol*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.z() * pos.z() > 0.)
+#endif
      return true;
 
   return false;

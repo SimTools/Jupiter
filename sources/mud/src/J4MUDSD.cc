@@ -9,6 +9,11 @@
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include "J4CALPreHit.hh"
 #include "J4CALPreHitKeeper.hh"
 #include "J4CALPostHit.hh"
@@ -129,9 +134,17 @@ G4bool J4MUDSD::IsFront( const G4ThreeVector& pos, const G4ThreeVector& p ) cons
   J4MUDParameterList* ptrList = J4MUDParameterList::GetInstance();
   static G4double tolerance = 5.;
    
+#if G4VERSION_NUMBER < 900
   if ( std::abs( pos.perp() - ptrList->GetMUDInnerR() ) <= tolerance*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
+#else
+  if ( std::abs( pos.perp() - ptrList->GetMUDInnerR() ) <= tolerance*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
+#endif
     return true;
+#if G4VERSION_NUMBER < 900
   if ( std::abs( std::abs(pos.z()) - ptrList->GetMUDFrontEndcapFrontZ() ) <= tolerance*kCarTolerance && p.z() * pos.z() > 0. ) 
+#else
+  if ( std::abs( std::abs(pos.z()) - ptrList->GetMUDFrontEndcapFrontZ() ) <= tolerance*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.z() * pos.z() > 0. ) 
+#endif
     return true;
   
   return false;

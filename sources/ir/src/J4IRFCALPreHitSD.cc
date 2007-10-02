@@ -10,6 +10,11 @@
 //*	2000/12/08  K.Hoshina	Original version.
 //*     2006/06/03  A.Miyamoto For FCALPreHit
 //*************************************************************************
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include "J4IRFCALPreHitSD.hh"
 #include "J4IRFCALPreHitKeeper.hh"
 #include "J4IRFCALPreHit.hh"
@@ -145,10 +150,18 @@ G4bool J4IRFCALPreHitSD::IsExiting( const G4ThreeVector &pos, const G4ThreeVecto
   J4CALParameterList* ptrList = J4CALParameterList::GetInstance();
   static G4double tol = 10.;
     
+#if G4VERSION_NUMBER < 900
   if ( std::abs( pos.perp() - ptrList->GetCALOuterR() ) <= tol*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0.) 
+#else
+  if ( std::abs( pos.perp() - ptrList->GetCALOuterR() ) <= tol*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.x() * pos.x() + p.y() * pos.y() > 0.) 
+#endif
     return true;
 
+#if G4VERSION_NUMBER < 900
   if ( std::abs( std::abs( pos.z() ) - ptrList->GetCALOuterHalfZ() ) <= tol*kCarTolerance && p.z() * pos.z() > 0.)
+#else
+  if ( std::abs( std::abs( pos.z() ) - ptrList->GetCALOuterHalfZ() ) <= tol*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.z() * pos.z() > 0.)
+#endif
      return true;
   return false;
 }

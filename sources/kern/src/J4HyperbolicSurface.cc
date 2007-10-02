@@ -10,6 +10,11 @@
 //#define __SOLIDDEBUG__
 //#define __SOLIDDEBUGAREACODE__
 
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include "J4HyperbolicSurface.hh"
 #include "J4TwistedTubs.hh"
 
@@ -103,7 +108,11 @@ G4ThreeVector J4HyperbolicSurface::GetNormal(const G4ThreeVector &tmpxx,
    G4ThreeVector xx;
    if (isGlobal) {
       xx = ComputeLocalPoint(tmpxx);
+#if G4VERSION_NUMBER < 900
       if ((xx - fCurrentNormal.p).mag() < 0.5 * kCarTolerance) {
+#else
+      if ((xx - fCurrentNormal.p).mag() < 0.5 * G4GeometryTolerance::GetInstance()->GetSurfaceTolerance()) {
+#endif
          return ComputeGlobalDirection(fCurrentNormal.normal);
       }
    } else {
@@ -132,7 +141,11 @@ G4ThreeVector J4HyperbolicSurface::GetNormal(const G4ThreeVector &tmpxx,
 EInside J4HyperbolicSurface::Inside(const G4ThreeVector &gp) 
 {
    // Inside returns 
+#if G4VERSION_NUMBER < 900
    static const G4double halftol = 0.5 * kRadTolerance;
+#else
+   static const G4double halftol = 0.5 * G4GeometryTolerance::GetInstance()->GetRadialTolerance();
+#endif
 
    if (fInside.gp == gp) {
       return fInside.inside;
@@ -588,7 +601,11 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
     // We arranged G4Hype::ApproxDistOutside and G4Hype::ApproxDistInside
     // for this function. See these discriptions.
     
+#if G4VERSION_NUMBER < 900
    static const G4double halftol    = 0.5 * kRadTolerance;
+#else
+   static const G4double halftol    = 0.5 * G4GeometryTolerance::GetInstance()->GetRadialTolerance();
+#endif
 
    fCurStat.ResetfDone(kDontValidate, &gp);
 
@@ -842,7 +859,11 @@ G4int J4HyperbolicSurface::DistanceToSurface(const G4ThreeVector &gp,
 G4int J4HyperbolicSurface::GetAreaCode(const G4ThreeVector &xx, 
                                              G4bool         withTol)
 {
+#if G4VERSION_NUMBER < 900
    static const G4double ctol = 0.5 * kCarTolerance;
+#else
+   static const G4double ctol = 0.5 * G4GeometryTolerance::GetInstance()->GetSurfaceTolerance();
+#endif
    G4int areacode = kInside;
 
    if ((fAxis[0] == kPhi && fAxis[1] == kZAxis))  {

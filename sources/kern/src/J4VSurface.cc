@@ -6,6 +6,11 @@
  *  Copyright (c) 2001 __MyCompanyName__. All rights reserved.
  *
  */
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include <iomanip>
 #include "J4VSurface.hh"
 
@@ -118,8 +123,16 @@ G4int J4VSurface::AmIOnLeftSide(const G4ThreeVector &me,
    // If me is on boundary of vec, return 0.
 
    static G4RotationMatrix unitrot;  // unit matrix
+#if G4VERSION_NUMBER < 900
    static const G4RotationMatrix rottol    = unitrot.rotateZ(0.5*kAngTolerance);
+#else
+   static const G4RotationMatrix rottol    = unitrot.rotateZ(0.5*G4GeometryTolerance::GetInstance()->GetAngularTolerance());
+#endif
+#if G4VERSION_NUMBER < 900
    static const G4RotationMatrix invrottol = unitrot.rotateZ(-1.*kAngTolerance);
+#else
+   static const G4RotationMatrix invrottol = unitrot.rotateZ(-1.*G4GeometryTolerance::GetInstance()->GetAngularTolerance());
+#endif
 
    if (fAmIOnLeftSide.me == me 
        && fAmIOnLeftSide.vec == vec
@@ -514,7 +527,11 @@ G4bool J4VSurface::IsSameBoundary(J4VSurface *surface1, G4int areacode1,
       G4ThreeVector corner2 = 
            surface2->ComputeGlobalPoint(surface2->GetCorner(areacode2));
 
+#if G4VERSION_NUMBER < 900
       if ((corner1 - corner2).mag() < kCarTolerance) {
+#else
+      if ((corner1 - corner2).mag() < G4GeometryTolerance::GetInstance()->GetSurfaceTolerance()) {
+#endif
          return TRUE;
       } else {
          return FALSE;
@@ -534,8 +551,16 @@ G4bool J4VSurface::IsSameBoundary(J4VSurface *surface1, G4int areacode1,
       d1  = surface1->ComputeGlobalDirection(ld1);
       d2  = surface2->ComputeGlobalDirection(ld2);
 
+#if G4VERSION_NUMBER < 900
       if ((x01 - x02).mag() < kCarTolerance &&
+#else
+      if ((x01 - x02).mag() < G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() &&
+#endif
+#if G4VERSION_NUMBER < 900
           (d1 - d2).mag() < kCarTolerance) {
+#else
+          (d1 - d2).mag() < G4GeometryTolerance::GetInstance()->GetSurfaceTolerance()) {
+#endif
         return TRUE;
       } else {
         return FALSE;

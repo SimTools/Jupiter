@@ -9,6 +9,11 @@
 //* (Update Record)
 //*	2000/12/08  K.Hoshina	Original version.
 //*************************************************************************
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include <iomanip>
 #include "J4VSD.hh"
 #include "J4MUDHit.hh"
@@ -156,13 +161,25 @@ G4bool J4VMUDActiveSD::IsSDFront( const G4ThreeVector& pos, const G4ThreeVector&
     G4double frontX           = 0;
     frontX = frontR * std::tan( 0.5*ptrList->GetTrapDeltaPhi() ); 
     if (  frontX - std::abs( pos.x() )  >= 0
+#if G4VERSION_NUMBER < 900
       &&  frontR - std::abs( pos.y() )  <= tolerance*kCarTolerance 
+#else
+      &&  frontR - std::abs( pos.y() )  <= tolerance*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() 
+#endif
       &&  frontZ - std::abs( pos.z() )  >= 0 )
       return true;
 #else
+#if G4VERSION_NUMBER < 900
     if ( std::abs( pos.perp() - frontR ) <= tolerance*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
+#else
+    if ( std::abs( pos.perp() - frontR ) <= tolerance*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
+#endif
       return true;
+#if G4VERSION_NUMBER < 900
     if ( std::abs( std::abs(pos.z()) - frontZ ) <= tolerance*kCarTolerance && p.z() * pos.z() > 0. ) 
+#else
+    if ( std::abs( std::abs(pos.z()) - frontZ ) <= tolerance*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.z() * pos.z() > 0. ) 
+#endif
       return true;
 #endif
   }
@@ -170,18 +187,34 @@ G4bool J4VMUDActiveSD::IsSDFront( const G4ThreeVector& pos, const G4ThreeVector&
   if ( !fIsBarrel && fIsFront ) { 
     frontR = ptrList->GetEndcapInnerR();
     frontZ = ((J4MUDFrontEndcapActive*)location)->J4MUDFrontEndcapActive::GetFront(myID);
+#if G4VERSION_NUMBER < 900
     if ( std::abs( pos.perp() - frontR ) <= tolerance*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
+#else
+    if ( std::abs( pos.perp() - frontR ) <= tolerance*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
+#endif
       return true;
+#if G4VERSION_NUMBER < 900
     if ( std::abs( std::abs(pos.z()) - frontZ ) <= tolerance*kCarTolerance && p.z() * pos.z() > 0. ) 
+#else
+    if ( std::abs( std::abs(pos.z()) - frontZ ) <= tolerance*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.z() * pos.z() > 0. ) 
+#endif
       return true;
   }
   // Endcap
   if ( !fIsBarrel && !fIsFront ) {
     frontR = ptrList -> GetEndcapInnerR(); 
     frontZ = ((J4MUDEndcapActive*)location)->J4MUDEndcapActive::GetFront(myID);
+#if G4VERSION_NUMBER < 900
     if ( std::abs( pos.perp() - frontR ) <= tolerance*kCarTolerance && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
+#else
+    if ( std::abs( pos.perp() - frontR ) <= tolerance*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.x() * pos.x() + p.y() * pos.y() > 0. ) 
+#endif
       return true;
+#if G4VERSION_NUMBER < 900
     if ( std::abs( std::abs(pos.z()) - frontZ ) <= tolerance*kCarTolerance && p.z() * pos.z() > 0. ) 
+#else
+    if ( std::abs( std::abs(pos.z()) - frontZ ) <= tolerance*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.z() * pos.z() > 0. ) 
+#endif
       return true;
   }
    

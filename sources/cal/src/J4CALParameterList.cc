@@ -10,6 +10,11 @@
 //*	2003/03/18  K.Hoshina	Original version.
 //*************************************************************************
 
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include "J4CALParameterList.hh"
 #include <algorithm>
 #include <vector>
@@ -267,7 +272,11 @@ void J4CALParameterList::SetTowerParameters( G4double startlambda,
 
    } else { 
 
+#if G4VERSION_NUMBER < 900
       lambda       = startlambda + kAngTolerance * 1.e3; 
+#else
+      lambda       = startlambda + G4GeometryTolerance::GetInstance()->GetAngularTolerance() * 1.e3; 
+#endif
       tanlambda    = std::tan(lambda);
 
    }
@@ -338,7 +347,11 @@ void J4CALParameterList::SetTowerParameters( G4double startlambda,
 
 
    } else { 
+#if G4VERSION_NUMBER < 900
       lambda = startlambda + kAngTolerance * 1.e3; 
+#else
+      lambda = startlambda + G4GeometryTolerance::GetInstance()->GetAngularTolerance() * 1.e3; 
+#endif
       r      = startr;
    }
 
@@ -380,7 +393,11 @@ void J4CALParameterList::SetTowerParameters( G4double startlambda,
          ntowers--;
 
          lambda  = lastlambda;
+#if G4VERSION_NUMBER < 900
          dlambda = endlambda - lambda - kAngTolerance * 1.e3; 
+#else
+         dlambda = endlambda - lambda - G4GeometryTolerance::GetInstance()->GetAngularTolerance() * 1.e3; 
+#endif
 
          std::cerr << "  marged formar tower. " << std::endl;
          std::cerr << ( isbarrel ? " Barrel" : "Endcap" )  << std::endl;

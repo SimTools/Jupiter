@@ -10,6 +10,11 @@
 //*	2002/07/26  K.Hoshina	Original version.
 //*************************************************************************
 
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include "J4TwistedTubs.hh"
 #include "J4VComponent.hh"
 
@@ -439,7 +444,11 @@ void J4TwistedTubs::AddPolyToExtent( const G4ThreeVector &v0,
 EInside J4TwistedTubs::Inside(const G4ThreeVector& p) const
 {
 
+#if G4VERSION_NUMBER < 900
    static const G4double halftol = 0.5 * kRadTolerance;
+#else
+   static const G4double halftol = 0.5 * G4GeometryTolerance::GetInstance()->GetRadialTolerance();
+#endif
    static G4int timerid = -1;
    J4Timer timer(timerid, "J4TwistedTubs", "Inside");
    timer.Start();

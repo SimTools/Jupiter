@@ -7,6 +7,11 @@
  *
  */
 
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include "J4TwistedSurface.hh"
 #include "J4TwistedTubs.hh"
 
@@ -81,7 +86,11 @@ G4ThreeVector J4TwistedSurface::GetNormal(const G4ThreeVector &tmpxx,
    G4ThreeVector xx;
    if (isGlobal) {
       xx = ComputeLocalPoint(tmpxx);
+#if G4VERSION_NUMBER < 900
       if ((xx - fCurrentNormal.p).mag() < 0.5 * kCarTolerance) {
+#else
+      if ((xx - fCurrentNormal.p).mag() < 0.5 * G4GeometryTolerance::GetInstance()->GetSurfaceTolerance()) {
+#endif
          return ComputeGlobalDirection(fCurrentNormal.normal);
       }
    } else {
@@ -481,7 +490,11 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
 #if 0
                if (GetSolid()->Inside(gxx[k])) {
 #else
+#if G4VERSION_NUMBER < 900
                if (deltaY <= 0.5*kCarTolerance) {
+#else
+               if (deltaY <= 0.5*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance()) {
+#endif
 #endif
                   J4cerr << " gxx & distance replaced : gxx, distance " << gxx[k] << " " << distance[k] << J4endl; 
                   break;
@@ -549,7 +562,11 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
       }
    }
    
+#if G4VERSION_NUMBER < 900
    static const G4double halftol = 0.5 * kCarTolerance; 
+#else
+   static const G4double halftol = 0.5 * G4GeometryTolerance::GetInstance()->GetSurfaceTolerance(); 
+#endif
 
    G4ThreeVector  p       = ComputeLocalPoint(gp);
    G4ThreeVector  xx;
@@ -926,7 +943,11 @@ G4double J4TwistedSurface::DistanceToPlane(const G4ThreeVector &p,
                                                  G4ThreeVector &xx,
                                                  G4ThreeVector &n)
 {
+#if G4VERSION_NUMBER < 900
    static const G4double halftol = 0.5 * kCarTolerance;
+#else
+   static const G4double halftol = 0.5 * G4GeometryTolerance::GetInstance()->GetSurfaceTolerance();
+#endif
    
    G4ThreeVector M = 0.5*(A + B);
    G4ThreeVector N = 0.5*(C + D);
@@ -987,7 +1008,11 @@ G4int J4TwistedSurface::GetAreaCode(const G4ThreeVector &xx,
    // We must use the function in local coordinate system.
    // See the description of DistanceToSurface(p,v).
    
+#if G4VERSION_NUMBER < 900
    static const G4double ctol = 0.5 * kCarTolerance;
+#else
+   static const G4double ctol = 0.5 * G4GeometryTolerance::GetInstance()->GetSurfaceTolerance();
+#endif
    G4int areacode = kInside;
    
    if (fAxis[0] == kXAxis && fAxis[1] == kZAxis) {

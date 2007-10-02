@@ -88,7 +88,7 @@ sub xx_hh {
       if (!$n && /^#include /) {
          print OUTFILE "#include \"G4Version.hh\"\n";
          print OUTFILE "#if G4VERSION_NUMBER >= 900\n";
-         print OUTFILE "#include \"G4GeometryTolerance.hh\"\n\n";
+         print OUTFILE "#include \"G4GeometryTolerance.hh\"\n";
          print OUTFILE "#endif\n\n";
          print OUTFILE $_;
          $n++;

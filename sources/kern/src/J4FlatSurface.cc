@@ -6,6 +6,11 @@
  *
  */
 
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include "J4FlatSurface.hh"
 #include "J4TwistedTubs.hh"
 
@@ -278,7 +283,11 @@ G4int J4FlatSurface::DistanceToSurface(const G4ThreeVector &gp,
 
    // The plane is placed on origin with making its normal 
    // parallel to z-axis. 
+#if G4VERSION_NUMBER < 900
    if (std::fabs(p.z()) <= 0.5 * kCarTolerance) {   // if p is on the plane, return 1
+#else
+   if (std::fabs(p.z()) <= 0.5 * G4GeometryTolerance::GetInstance()->GetSurfaceTolerance()) {   // if p is on the plane, return 1
+#endif
       distance[0] = 0;
       xx = p;
    } else {
@@ -315,7 +324,11 @@ G4int J4FlatSurface::GetAreaCode(const G4ThreeVector &xx,
                                        G4bool withTol)
 {
 
+#if G4VERSION_NUMBER < 900
    static const G4double rtol = 0.5*kRadTolerance;
+#else
+   static const G4double rtol = 0.5*G4GeometryTolerance::GetInstance()->GetRadialTolerance();
+#endif
    
    G4int areacode = kInside;
 

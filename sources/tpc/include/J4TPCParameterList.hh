@@ -13,6 +13,11 @@
 //*	2004/08/06  A.Yamaguchi	Original version.
 //********************************************************************
 
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include "G4Material.hh"
 #include "G4Color.hh"
 #if 0
@@ -386,7 +391,11 @@ G4double J4TPCParameterList::GetLayerOuterR(G4int ilayer) const
 #else
           : (ilayer + 1 < fNlayers
 	     ? GetLayerInnerR(ilayer + 1)
+#if G4VERSION_NUMBER < 900
 	     : GetLayerInnerR(ilayer + 1) - 10*kCarTolerance);
+#else
+	     : GetLayerInnerR(ilayer + 1) - 10*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance());
+#endif
 #endif
 } 
 

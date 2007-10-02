@@ -9,6 +9,11 @@
 //*	2004/08/06  A.Yamaguchi	Original version.
 //*************************************************************************
 
+#include "G4Version.hh"
+#if G4VERSION_NUMBER >= 900
+#include "G4GeometryTolerance.hh"
+#endif
+
 #include "J4TPCDriftRegionSD.hh"
 #include "J4TPCPostHit.hh"
 #include "J4TPCPostHitKeeper.hh"
@@ -157,12 +162,20 @@ G4bool J4TPCDriftRegionSD::IsExiting(const G4ThreeVector &pos,
   J4TPCParameterList *list = J4TPCParameterList::GetInstance();
   static G4double tol = 10.;
     
+#if G4VERSION_NUMBER < 900
   if (std::abs(pos.perp() - list->GetOuterSupportTubInnerR()) <= tol*kCarTolerance &&
+#else
+  if (std::abs(pos.perp() - list->GetOuterSupportTubInnerR()) <= tol*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() &&
+#endif
       p.x() * pos.x() + p.y() * pos.y() > 0.) {
      return TRUE;
   }
   static G4double zend = list->GetPadPlaneFrontZ() + 0.5*list->GetTPCHalfZ();
+#if G4VERSION_NUMBER < 900
   if (std::abs(std::abs(pos.z()) - zend) <= tol*kCarTolerance && p.z() * pos.z() > 0.) {
+#else
+  if (std::abs(std::abs(pos.z()) - zend) <= tol*G4GeometryTolerance::GetInstance()->GetSurfaceTolerance() && p.z() * pos.z() > 0.) {
+#endif
      return TRUE;
   }
   return FALSE;
