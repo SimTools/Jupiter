@@ -14,7 +14,16 @@
 # 
 # // create a viewer
 /vis/viewer/create
-/vis/drawVolume world
+#/vis/sceneHandler/attach
 
-/vis/viewer/flush
+/vis/viewer/reset
+/vis/viewer/zoom 2.0
+
+#  
+# // for drawing the tracks 
+#/tracking/storeTrajectory 1
+/vis/scene/add/trajectories
+
+/vis/scene/notifyHandlers
+/vis/viewer/update
 
