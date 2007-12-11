@@ -707,9 +707,9 @@ void J4PhysicsList::SetCuts()
   region=G4RegionStore::GetInstance()->GetRegion(regname);
   if( region ){
     cuts  = new G4ProductionCuts;
-    cuts->SetProductionCut(5.0*mm,G4ProductionCuts::GetIndex("e+"));
-    cuts->SetProductionCut(5.0*mm,G4ProductionCuts::GetIndex("e-"));
-    cuts->SetProductionCut(5.0*mm,G4ProductionCuts::GetIndex("gamma"));
+    cuts->SetProductionCut(1.0*mm,G4ProductionCuts::GetIndex("e+"));
+    cuts->SetProductionCut(1.0*mm,G4ProductionCuts::GetIndex("e-"));
+    cuts->SetProductionCut(1.0*mm,G4ProductionCuts::GetIndex("gamma"));
     region->SetProductionCuts(cuts);
   }
 
@@ -717,9 +717,9 @@ void J4PhysicsList::SetCuts()
   region=G4RegionStore::GetInstance()->GetRegion("IRRegion");
   if( region ) {
     cuts  = new G4ProductionCuts;
-    cuts->SetProductionCut(1.0*cm,G4ProductionCuts::GetIndex("e+"));
-    cuts->SetProductionCut(1.0*cm,G4ProductionCuts::GetIndex("e-"));
-    cuts->SetProductionCut(1.0*cm,G4ProductionCuts::GetIndex("gamma"));
+    cuts->SetProductionCut(1.0*mm,G4ProductionCuts::GetIndex("e+"));
+    cuts->SetProductionCut(1.0*mm,G4ProductionCuts::GetIndex("e-"));
+    cuts->SetProductionCut(1.0*mm,G4ProductionCuts::GetIndex("gamma"));
     region->SetProductionCuts(cuts);
   }
 

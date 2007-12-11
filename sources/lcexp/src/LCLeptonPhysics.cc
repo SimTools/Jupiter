@@ -43,7 +43,7 @@
 
 
 LCLeptonPhysics::LCLeptonPhysics(const G4String& name)
-  :  G4VPhysicsConstructor(name)
+               :  G4VPhysicsConstructor(name)
 {;}
 
 
@@ -76,7 +76,7 @@ void LCLeptonPhysics::ConstructProcess()
   // Model for e+/e- nuclear reactions
    
   G4ElectroNuclearReaction* theElectronReaction =
-    new G4ElectroNuclearReaction();
+                                   new G4ElectroNuclearReaction();
 
   // Electron physics
 
@@ -86,7 +86,7 @@ void LCLeptonPhysics::ConstructProcess()
   pManager->AddProcess(new G4eBremsstrahlung(),    -1,-1, 3);  
 
   G4ElectronNuclearProcess* theElectronNuclearProcess =
-    new G4ElectronNuclearProcess();
+                                   new G4ElectronNuclearProcess();
   theElectronNuclearProcess->RegisterMe(theElectronReaction);
   pManager->AddProcess(theElectronNuclearProcess, -1, -1, 4);
 
@@ -99,7 +99,7 @@ void LCLeptonPhysics::ConstructProcess()
   pManager->AddProcess(new G4eplusAnnihilation(),   0,-1, 4);
 
   G4PositronNuclearProcess* thePositronNuclearProcess =
-    new G4PositronNuclearProcess();
+                                   new G4PositronNuclearProcess();
   thePositronNuclearProcess->RegisterMe(theElectronReaction);
   pManager->AddProcess(thePositronNuclearProcess, -1, -1, 5);
 
@@ -126,7 +126,7 @@ void LCLeptonPhysics::ConstructProcess()
   pManager->AddProcess(new G4hIonisation(),        -1, 2, 2);
  
   // Tau+
-
+  
   pManager = G4TauPlus::TauPlus()->GetProcessManager();
   pManager->AddProcess(new G4MultipleScattering(), -1, 1, 1);
   pManager->AddProcess(new G4hIonisation(),        -1, 2, 2);

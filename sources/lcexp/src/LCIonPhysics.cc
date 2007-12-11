@@ -30,7 +30,7 @@
 #include "G4LEAlphaInelastic.hh"
 
 LCIonPhysics::LCIonPhysics(const G4String& name)
-  :  G4VPhysicsConstructor(name)
+               :  G4VPhysicsConstructor(name)
 {;}
 
 

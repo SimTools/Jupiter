@@ -58,10 +58,6 @@
 #include "G4CascadeInterface.hh"
 #include "G4LEPionPlusInelastic.hh"
 #include "G4LEPionMinusInelastic.hh"
-#include "G4LEKaonPlusInelastic.hh"
-#include "G4LEKaonMinusInelastic.hh"
-#include "G4LEKaonZeroLInelastic.hh"
-#include "G4LEKaonZeroSInelastic.hh"
 #include "G4LEProtonInelastic.hh"
 #include "G4LENeutronInelastic.hh"
 #include "G4LFission.hh"
@@ -105,8 +101,9 @@
 #include "G4QGSParticipants.hh"
 #include "G4QGSModel.hh"
 
+
 LCHadronPhysics::LCHadronPhysics(const G4String& name)
-  :G4VPhysicsConstructor(name)
+                          :G4VPhysicsConstructor(name)
 {;}
 
 LCHadronPhysics::~LCHadronPhysics()
@@ -139,25 +136,29 @@ void LCHadronPhysics::ConstructProcess()
 
   // Hadronic inelastic models
 
-  // Bertini cascade model: use for p,n,pi+,pi- between 0 and 9.9 GeV
+  // Bertini cascade model: use between 0 and 9.9 GeV
+  // for p,n,pi+,pi-
+
   G4CascadeInterface* bertiniModel = new G4CascadeInterface();
   bertiniModel->SetMaxEnergy(9.9*GeV);
 
+  // Bertini cascade model: use between 0 and 13 GeV for 
+  // K+,K-,K0L,K0S,Lambda,Sigma+,Sigma-,Xi0,Xi-
+ 
+  G4CascadeInterface* bertiniModelStrange = new G4CascadeInterface();
+  bertiniModelStrange->SetMaxEnergy(13*GeV);
+
   // Low energy parameterized models : use between 9.5 and 25 GeV
   G4double LEPUpperLimit = 25*GeV;
+  G4double LEPLowerLimitForHyperons = 12*GeV;
   G4double LEPpnpiLimit = 9.5*GeV;
 
-  G4LEKaonZeroLInelastic* LEPk0LModel = new G4LEKaonZeroLInelastic();
-  LEPk0LModel->SetMaxEnergy(LEPUpperLimit);
-
-  G4LEKaonZeroSInelastic* LEPk0SModel = new G4LEKaonZeroSInelastic();
-  LEPk0SModel->SetMaxEnergy(LEPUpperLimit);
-
-  // Quark-Gluon String Model: use for p,n,pi+,pi- between 12 GeV and 100 TeV
+  // Quark-Gluon String Model: use for p,n,pi+,pi-,K+,K-,K0L,K0S 
+  // between 12 GeV and 100 TeV
 
   G4TheoFSGenerator* QGSPModel = new G4TheoFSGenerator();
   G4GeneratorPrecompoundInterface* theCascade = 
-    new G4GeneratorPrecompoundInterface();
+                                    new G4GeneratorPrecompoundInterface();
   G4ExcitationHandler* exHandler = new G4ExcitationHandler();
   G4PreCompoundModel* preCompound = new G4PreCompoundModel(exHandler);
   theCascade->SetDeExcitation(preCompound);
@@ -165,7 +166,7 @@ void LCHadronPhysics::ConstructProcess()
   G4QGSMFragmentation* frag = new G4QGSMFragmentation();
   G4ExcitedStringDecay* stringDecay = new G4ExcitedStringDecay(frag);
   G4QGSModel<G4QGSParticipants>* stringModel = 
-    new G4QGSModel<G4QGSParticipants>();
+                                   new G4QGSModel<G4QGSParticipants>();
   stringModel->SetFragmentationModel(stringDecay);
   QGSPModel->SetHighEnergyGenerator(stringModel);   
   QGSPModel->SetMinEnergy(12*GeV);
@@ -252,9 +253,7 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4KaonPlusInelasticProcess* kpinelProc = new G4KaonPlusInelasticProcess();
-  G4LEKaonPlusInelastic* LEPkpModel = new G4LEKaonPlusInelastic();
-  LEPkpModel->SetMaxEnergy(LEPUpperLimit);
-  kpinelProc->RegisterMe(LEPkpModel);
+  kpinelProc->RegisterMe(bertiniModelStrange);
   kpinelProc->RegisterMe(QGSPModel);
   pManager->AddDiscreteProcess(kpinelProc);
 
@@ -275,9 +274,7 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4KaonMinusInelasticProcess* kminelProc = new G4KaonMinusInelasticProcess();
-  G4LEKaonMinusInelastic* LEPkmModel = new G4LEKaonMinusInelastic();
-  LEPkmModel->SetMaxEnergy(LEPUpperLimit);
-  kminelProc->RegisterMe(LEPkmModel);
+  kminelProc->RegisterMe(bertiniModelStrange);
   kminelProc->RegisterMe(QGSPModel);
   pManager->AddDiscreteProcess(kminelProc);
 
@@ -298,7 +295,7 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4KaonZeroLInelasticProcess* k0LinelProc = new G4KaonZeroLInelasticProcess();
-  k0LinelProc->RegisterMe(LEPk0LModel);
+  k0LinelProc->RegisterMe(bertiniModelStrange);
   k0LinelProc->RegisterMe(QGSPModel);
   pManager->AddDiscreteProcess(k0LinelProc);
 
@@ -315,7 +312,7 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4KaonZeroSInelasticProcess* k0SinelProc = new G4KaonZeroSInelasticProcess();
-  k0SinelProc->RegisterMe(LEPk0SModel);
+  k0SinelProc->RegisterMe(bertiniModelStrange);
   k0SinelProc->RegisterMe(QGSPModel);
   pManager->AddDiscreteProcess(k0SinelProc);
 
@@ -337,7 +334,7 @@ void LCHadronPhysics::ConstructProcess()
   // hadron inelastic
   G4ProtonInelasticProcess* pinelProc = new G4ProtonInelasticProcess();
   G4ProtonInelasticCrossSection* proton_XC = 
-    new G4ProtonInelasticCrossSection();
+                                   new G4ProtonInelasticCrossSection();
   pinelProc->AddDataSet(proton_XC);
   pinelProc->RegisterMe(bertiniModel);
 
@@ -366,7 +363,7 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4AntiProtonInelasticProcess* apinelProc = 
-    new G4AntiProtonInelasticProcess();
+                                   new G4AntiProtonInelasticProcess();
   G4LEAntiProtonInelastic* LEPapModel = new G4LEAntiProtonInelastic(); 
   apinelProc->RegisterMe(LEPapModel);
   G4HEAntiProtonInelastic* HEPapModel = new G4HEAntiProtonInelastic(); 
@@ -375,7 +372,7 @@ void LCHadronPhysics::ConstructProcess()
 
   // anti-proton annihilation at rest
   G4AntiProtonAnnihilationAtRest* apAnnihil = 
-    new G4AntiProtonAnnihilationAtRest();
+                                 new G4AntiProtonAnnihilationAtRest();
   pManager->AddRestProcess(apAnnihil);
   
   ///////////////////
@@ -392,7 +389,7 @@ void LCHadronPhysics::ConstructProcess()
   // hadron inelastic
   G4NeutronInelasticProcess* ninelProc = new G4NeutronInelasticProcess();
   G4NeutronInelasticCrossSection* neutron_XC = 
-    new G4NeutronInelasticCrossSection();
+                                   new G4NeutronInelasticCrossSection();
   ninelProc->AddDataSet(neutron_XC);
   ninelProc->RegisterMe(bertiniModel);
 
@@ -433,7 +430,7 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4AntiNeutronInelasticProcess* aninelProc = 
-    new G4AntiNeutronInelasticProcess();
+                                  new G4AntiNeutronInelasticProcess();
   G4LEAntiNeutronInelastic* LEPanModel = new G4LEAntiNeutronInelastic(); 
   aninelProc->RegisterMe(LEPanModel);
   G4HEAntiNeutronInelastic* HEPanModel = new G4HEAntiNeutronInelastic(); 
@@ -442,7 +439,7 @@ void LCHadronPhysics::ConstructProcess()
 
   // anti-neutron annihilation at rest
   G4AntiNeutronAnnihilationAtRest* anAnnihil = 
-    new G4AntiNeutronAnnihilationAtRest();
+                                 new G4AntiNeutronAnnihilationAtRest();
   pManager->AddRestProcess(anAnnihil);
 
   ///////////////////
@@ -458,8 +455,10 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4LambdaInelasticProcess* linelProc = 
-    new G4LambdaInelasticProcess();
-  G4LELambdaInelastic* LEPlModel = new G4LELambdaInelastic(); 
+                                  new G4LambdaInelasticProcess();
+  linelProc->RegisterMe(bertiniModelStrange);
+  G4LELambdaInelastic* LEPlModel = new G4LELambdaInelastic();
+  LEPlModel->SetMinEnergy(LEPLowerLimitForHyperons); 
   linelProc->RegisterMe(LEPlModel);
   G4HELambdaInelastic* HEPlModel = new G4HELambdaInelastic(); 
   linelProc->RegisterMe(HEPlModel);
@@ -478,7 +477,7 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4AntiLambdaInelasticProcess* alinelProc = 
-    new G4AntiLambdaInelasticProcess();
+                                  new G4AntiLambdaInelasticProcess();
   G4LEAntiLambdaInelastic* LEPalModel = new G4LEAntiLambdaInelastic(); 
   alinelProc->RegisterMe(LEPalModel);
   G4HEAntiLambdaInelastic* HEPalModel = new G4HEAntiLambdaInelastic(); 
@@ -502,8 +501,10 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4SigmaMinusInelasticProcess* sminelProc = 
-    new G4SigmaMinusInelasticProcess();
+                                  new G4SigmaMinusInelasticProcess();
+  sminelProc->RegisterMe(bertiniModelStrange);
   G4LESigmaMinusInelastic* LEPsmModel = new G4LESigmaMinusInelastic(); 
+  LEPsmModel->SetMinEnergy(LEPLowerLimitForHyperons); 
   sminelProc->RegisterMe(LEPsmModel);
   G4HESigmaMinusInelastic* HEPsmModel = new G4HESigmaMinusInelastic(); 
   sminelProc->RegisterMe(HEPsmModel);
@@ -526,12 +527,12 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4AntiSigmaMinusInelasticProcess* asminelProc = 
-    new G4AntiSigmaMinusInelasticProcess();
+                                  new G4AntiSigmaMinusInelasticProcess();
   G4LEAntiSigmaMinusInelastic* LEPasmModel = 
-    new G4LEAntiSigmaMinusInelastic(); 
+                                  new G4LEAntiSigmaMinusInelastic(); 
   asminelProc->RegisterMe(LEPasmModel);
   G4HEAntiSigmaMinusInelastic* HEPasmModel = 
-    new G4HEAntiSigmaMinusInelastic(); 
+                                  new G4HEAntiSigmaMinusInelastic(); 
   asminelProc->RegisterMe(HEPasmModel);
   pManager->AddDiscreteProcess(asminelProc);
 
@@ -552,7 +553,9 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4SigmaPlusInelasticProcess* spinelProc = new G4SigmaPlusInelasticProcess();
-  G4LESigmaPlusInelastic* LEPspModel = new G4LESigmaPlusInelastic(); 
+  spinelProc->RegisterMe(bertiniModelStrange);
+  G4LESigmaPlusInelastic* LEPspModel = new G4LESigmaPlusInelastic();
+  LEPspModel->SetMinEnergy(LEPLowerLimitForHyperons); 
   spinelProc->RegisterMe(LEPspModel);
   G4HESigmaPlusInelastic* HEPspModel = new G4HESigmaPlusInelastic(); 
   spinelProc->RegisterMe(HEPspModel);
@@ -575,12 +578,12 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4AntiSigmaPlusInelasticProcess* aspinelProc = 
-    new G4AntiSigmaPlusInelasticProcess();
+                                  new G4AntiSigmaPlusInelasticProcess();
   G4LEAntiSigmaPlusInelastic* LEPaspModel = 
-    new G4LEAntiSigmaPlusInelastic(); 
+                                  new G4LEAntiSigmaPlusInelastic(); 
   aspinelProc->RegisterMe(LEPaspModel);
   G4HEAntiSigmaPlusInelastic* HEPaspModel = 
-    new G4HEAntiSigmaPlusInelastic(); 
+                                  new G4HEAntiSigmaPlusInelastic(); 
   aspinelProc->RegisterMe(HEPaspModel);
   pManager->AddDiscreteProcess(aspinelProc);
 
@@ -601,7 +604,9 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4XiMinusInelasticProcess* xminelProc = new G4XiMinusInelasticProcess();
+  xminelProc->RegisterMe(bertiniModelStrange);
   G4LEXiMinusInelastic* LEPxmModel = new G4LEXiMinusInelastic(); 
+  LEPxmModel->SetMinEnergy(LEPLowerLimitForHyperons); 
   xminelProc->RegisterMe(LEPxmModel);
   G4HEXiMinusInelastic* HEPxmModel = new G4HEXiMinusInelastic(); 
   xminelProc->RegisterMe(HEPxmModel);
@@ -624,7 +629,7 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4AntiXiMinusInelasticProcess* axminelProc = 
-    new G4AntiXiMinusInelasticProcess();
+                                  new G4AntiXiMinusInelasticProcess();
   G4LEAntiXiMinusInelastic* LEPaxmModel = new G4LEAntiXiMinusInelastic(); 
   axminelProc->RegisterMe(LEPaxmModel);
   G4HEAntiXiMinusInelastic* HEPaxmModel = new G4HEAntiXiMinusInelastic(); 
@@ -644,7 +649,9 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4XiZeroInelasticProcess* x0inelProc = new G4XiZeroInelasticProcess();
+  x0inelProc->RegisterMe(bertiniModelStrange);
   G4LEXiZeroInelastic* LEPx0Model = new G4LEXiZeroInelastic(); 
+  LEPx0Model->SetMinEnergy(LEPLowerLimitForHyperons); 
   x0inelProc->RegisterMe(LEPx0Model);
   G4HEXiZeroInelastic* HEPx0Model = new G4HEXiZeroInelastic(); 
   x0inelProc->RegisterMe(HEPx0Model);
@@ -663,7 +670,7 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4AntiXiZeroInelasticProcess* ax0inelProc = 
-    new G4AntiXiZeroInelasticProcess();
+                                new G4AntiXiZeroInelasticProcess();
   G4LEAntiXiZeroInelastic* LEPax0Model = new G4LEAntiXiZeroInelastic(); 
   ax0inelProc->RegisterMe(LEPax0Model);
   G4HEAntiXiZeroInelastic* HEPax0Model = new G4HEAntiXiZeroInelastic(); 
@@ -687,7 +694,7 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4OmegaMinusInelasticProcess* ominelProc = 
-    new G4OmegaMinusInelasticProcess();
+                                      new G4OmegaMinusInelasticProcess();
   G4LEOmegaMinusInelastic* LEPomModel = new G4LEOmegaMinusInelastic(); 
   ominelProc->RegisterMe(LEPomModel);
   G4HEOmegaMinusInelastic* HEPomModel = new G4HEOmegaMinusInelastic(); 
@@ -711,14 +718,13 @@ void LCHadronPhysics::ConstructProcess()
 
   // hadron inelastic
   G4AntiOmegaMinusInelasticProcess* aominelProc = 
-    new G4AntiOmegaMinusInelasticProcess();
+                                      new G4AntiOmegaMinusInelasticProcess();
   G4LEAntiOmegaMinusInelastic* LEPaomModel = 
-    new G4LEAntiOmegaMinusInelastic(); 
+                                      new G4LEAntiOmegaMinusInelastic(); 
   aominelProc->RegisterMe(LEPaomModel);
   G4HEAntiOmegaMinusInelastic* HEPaomModel = 
-    new G4HEAntiOmegaMinusInelastic(); 
+                                      new G4HEAntiOmegaMinusInelastic(); 
   aominelProc->RegisterMe(HEPaomModel);
   pManager->AddDiscreteProcess(aominelProc);
 
 }
-
