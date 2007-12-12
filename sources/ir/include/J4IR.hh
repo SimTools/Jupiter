@@ -44,6 +44,7 @@ private:
 	G4double ebeam, G4double bgrad);
 
   void  Assemble_BeamPipeMiddle();
+  void  Assemble_BeamPipeQC();
   
 private:  
   static G4String	fName;

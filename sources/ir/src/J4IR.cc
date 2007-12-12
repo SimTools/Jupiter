@@ -185,6 +185,9 @@ void J4IR::Assemble()
 		ebeam, bgrad);
     }
 
+    Assemble_BeamPipeQC();
+
+
 //
     fComponents.push_back(new J4IRCH2Mask(this,1,2,0,-1, FALSE));
     fComponents.push_back(new J4IRCH2Mask(this,1,2,1,-1, TRUE));
@@ -381,18 +384,6 @@ void J4IR::Assemble_Qx(const char *name, G4double rmin, G4double rmax,
     J4IRQMField* qc1fielde = new J4IRQMField(ebeam, -bgrad,rmin, rmax, zlen ) ;
     J4IRQMField* qc1fieldp = new J4IRQMField(ebeam,  bgrad,rmin, rmax, zlen ) ;
 
-    /*
-    G4int nbpsolids  = J4ParameterTable::GetValue("J4IR.BeamPipeMiddle.NumSolides", 4);
-    std::vector<double> zbppos;
-    zpos = J4ParameterTable::GetDValue("J4IR.BeamPipeMiddle.ZEdges","7.0 80.0 320.0 410.0", nsolids);
-    G4double zbegin=zbppos[nbpsolids-1]-5.0*mm;
-
-    J4ParameterList  *pl = J4ParameterList::GetInstance();
-    G4int nsolids  = pl->GetIRNSolids();
-    G4double zbend = pl->GetIRZEdges(nsolids-1);
-    G4double zbphlen=(zbend-zbegin)*0.5;
-    G4double zbpcnt =(zbend+zbegin)*0.5;
-    */
     G4double thickbp=J4ParameterTable::GetValue("J4IR.BeamPipeQC.Thickness",0.2)*cm;
     G4String matbp=J4ParameterTable::GetValue("J4IR.BeamPipeQC.Material","Aluminum");
     G4bool  visbp = J4ParameterTable::GetValue("J4IR.VisAtt.BeamPipeQC",true);
@@ -435,23 +426,72 @@ void J4IR::Assemble_Qx(const char *name, G4double rmin, G4double rmax,
 // Large angle case.  QC axis is along beam line	
     else {
       if( isDownStream ) { qcangle *= -1.0 ; }
-      G4String tname=G4String(name)+G4String(".plus");
+      G4String tname=G4String(name)+G4String(".Itself");
       J4IRSlantTubs *qcp=new J4IRSlantTubs(tname, rmin, rmax, 0.5*zlen,
   	  zcnt, qcangle, this, 1, 2, 0, -1, FALSE);
       qcp->SetAttribute(material, visatt, icolqc);
       fComponents.push_back(qcp);
       qcp->SetMField(qc1fielde);
 
-      tname=G4String(name)+G4String(".minus");
       J4IRSlantTubs *qcm=new J4IRSlantTubs(tname, rmin, rmax, 0.5*zlen,
 	 zcnt, qcangle, this, 1, 2, 1, -1, TRUE);
       qcm->SetAttribute(material, visatt, icolqc);
       fComponents.push_back(qcm);
       qcm->SetMField(qc1fieldp);
+
    }
 
 
 }
+
+//=====================================================================
+//* Assemble BeamPipe after BCAL for crossing angle is 14mrad
+void  J4IR::Assemble_BeamPipeQC()
+{
+    G4double qcangle=J4ParameterTable::GetValue("J4IR.Q.Angle",0.00)*rad;
+    if( std::abs(qcangle) < 0.001 ) return;
+
+    G4String matbp=J4ParameterTable::GetValue("J4IR.BeamPipeQC.Material","Aluminum");
+    G4bool  visbp = J4ParameterTable::GetValue("J4IR.VisAtt.BeamPipeQC",true);
+    std::vector<double> colb=J4ParameterTable::GetDValue("J4IR.Color.BeamPipeQC","0.0 0.5 0.5 1.0",4);
+    G4Color colbp(colb[0], colb[1], colb[2], colb[3]);  // cyan
+
+    G4int nbp=J4ParameterTable::GetValue("J4IR.NumberOfBeamPipeQC",1);
+    for(G4int n=0;n<nbp;n++) {
+      std::vector<double> bppara;  // thickness, rmax, zlen, zpos, sign
+      std::ostringstream sname;
+      sname << "J4IR.BeamPipeQC" << n << ".Geometry" << std::ends;
+      bppara=J4ParameterTable::GetDValue((sname.str()).c_str(),
+		 "0.2  1.0 500.0 451.0 1.0", 5);
+      for(G4int j=0;j<4;j++) { bppara[j] *= cm; }
+      G4double angle=qcangle;
+      if ( bppara[4] < 0.0 ) angle *= -1;
+
+      G4double rmin=bppara[1]-bppara[0];
+      G4double rmax=bppara[1];
+      G4double hzlen=0.5*bppara[2];
+      G4double zcnt=bppara[3]+hzlen;
+      G4String tname=sname.str().c_str();
+      G4String name=tname+G4String(".Itself");
+
+      std::cerr << "Assembling " << name << " rmin,rmax="
+		<< rmin << "," << rmax << "hzlen=" << hzlen
+		<< "zcnt=" << zcnt << std::endl;
+
+
+      J4IRSlantTubs *bpp=new J4IRSlantTubs(name, rmin, rmax, hzlen,
+  	  zcnt, angle, this, 1, 2, 0, -1, FALSE);
+      bpp->SetAttribute(matbp, visbp, colbp);
+      fComponents.push_back(bpp);
+
+      J4IRSlantTubs *bpm=new J4IRSlantTubs(name, rmin, rmax, hzlen,
+        	  zcnt, angle, this, 1, 2, 1, -1, TRUE);
+      bpm->SetAttribute(matbp, visbp, colbp);
+      fComponents.push_back(bpm);
+
+    }
+}
+
 
 //=====================================================================
 //* Cabling  ----------------------------------------------------------
