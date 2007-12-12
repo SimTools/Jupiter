@@ -67,21 +67,22 @@ void J4IRBCALLayer::Assemble()
 {   
   if(!GetLV()){
 
-    J4IRBCAL *parent=(J4IRBCAL*)GetMother();
-    if( parent->GetShape() != 0 ) {
-      std::cerr << "Fatal error i J4IRBCALLayer ....." << std::endl;
-      std::cerr << "Bcal shape for large crossing angle is not supported" ;
-      std::cerr << std::endl ;
-      exit(0);
-    }
-
-    G4Tubs *solid=(G4Tubs*)parent->GetSolid(); 
+    //    J4IRBCAL *parent=(J4IRBCAL*)GetMother();
+    //    if( parent->GetShape() != 0 ) {
+    //      std::cerr << "Fatal error i J4IRBCALLayer ....." << std::endl;
+    //      std::cerr << "Bcal shape for large crossing angle is not supported" ;
+    //      std::cerr << std::endl ;
+    //      exit(0);
+    //    }
+    //    G4Tubs *solid=(G4Tubs*)parent->GetSolid(); 
+    G4double rmin = J4ParameterTable::GetValue("J4IR.BCAL.InnerRadius",3.75)*cm;
+    G4double rmax = J4ParameterTable::GetValue("J4IR.BCAL.OuterRadius",20.0)*cm;
+    G4double zlen = J4ParameterTable::GetValue("J4IR.BCAL.ZLength",20.0)*cm;
 
     G4double tolerance=1.E-5*mm;
-    G4double rmin=solid->GetInnerRadius()+tolerance;
-    G4double rmax=solid->GetOuterRadius()-tolerance;
-    G4double hzp =solid->GetZHalfLength();
-
+    rmin += tolerance;
+    rmax -= tolerance;
+    G4double hzp   = zlen*0.5;
     G4double nb   =(G4double)GetNbrothers();
 
     // MakeSolid ---------------
@@ -144,10 +145,11 @@ G4RotationMatrix* J4IRBCALLayer::GetRotation()
 //* GetTranslate  --------------------------------------------------------
 G4ThreeVector& J4IRBCALLayer::GetTranslation()
 {
-  J4VComponent *parent=GetMother();
-  G4Tubs *solid=(G4Tubs*)parent->GetSolid(); 
+  //  J4VComponent *parent=GetMother();
+  //  G4Tubs *solid=(G4Tubs*)parent->GetSolid(); 
 
-  G4double hzp=solid->GetZHalfLength();
+  //  G4double hzp=solid->GetZHalfLength();
+  G4double hzp = J4ParameterTable::GetValue("J4IR.BCAL.ZLength",20.0)*cm*0.5;
   G4double nb=(G4double)GetNbrothers();
   G4double hzstep=hzp/nb;
 

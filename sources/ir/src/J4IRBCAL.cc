@@ -86,7 +86,7 @@ void J4IRBCAL::Assemble()
     else {
       fShape=1;
       G4String tubname=fName+".tubs";
-      G4VSolid *tube = new G4Tubs( tubname, rmin, rmax, zlen*0.5, 0, 2*M_PI);  
+      G4VSolid *tube = new G4Tubs( tubname, 0.0, rmax, zlen*0.5, 0, 2*M_PI);  
 
       G4double holeR1=J4ParameterTable::GetValue(
 		"J4IR.BCAL.HoleRadius.Upstream",2.0)*cm;
@@ -111,6 +111,8 @@ void J4IRBCAL::Assemble()
 		zcnt*(std::cos(qcangle)-1) );
       G4VSolid *solid=new J4SubtractionSolid(fName, tmp1, hole2, rotp, transp);
 
+      
+
       Register(solid);
       SetSolid(solid);	// Don't forgat call it!
     }
@@ -131,7 +133,7 @@ void J4IRBCAL::Assemble()
     // Install daughter PV -----------
 
     fLayers = 0 ;
-    if( fShape == 0 ) {
+//    if( fShape == 0 ) {
       G4int nlayer=J4ParameterTable::GetValue("J4IR.BCAL.NLayer",30);
       fLayers = new J4IRBCALLayer*[nlayer];
       Register(fLayers);
@@ -141,7 +143,7 @@ void J4IRBCAL::Assemble()
 	fLayers[i] -> InstallIn(this);
 	SetDaughter( fLayers[i] );
       } 
-    }  		  
+//    }  		  
   }     
 
   if( !GetSD() ) { Cabling(); }

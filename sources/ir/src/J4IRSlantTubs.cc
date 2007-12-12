@@ -42,7 +42,7 @@ J4IRSlantTubs::J4IRSlantTubs(G4String name, G4double rmin, G4double rmax,
          J4VIRAcceleratorComponent( name, parent, nclones,
                                     nbrothers, me, copyno,reflect  ),
 	fName(name), fRmin(rmin), fRmax(rmax), fHZlen(hzlen), fZcnt(zcnt),
-	fRotation(rot)
+	 fRotation(rot)
 {   
 	fMaterial="Vaccum";
 	fVisAtt=FALSE;
@@ -66,7 +66,10 @@ void J4IRSlantTubs::Assemble()
     // MakeSolid ---------------
     G4double absrot=std::abs(fRotation);
     G4double rotation=fRotation;
-    if( IsReflected() ) { rotation *= -1; }
+    if( IsReflected() ) { 
+      rotation *= -1; 
+    }
+
     G4double hzlen=fHZlen/std::cos(fRotation)+fRmax*std::tan(absrot);
    
     G4String tubname=fName+".tubs";
@@ -121,7 +124,12 @@ void J4IRSlantTubs::Cabling()
 //* GetRotation  --------------------------------------------------------
 G4RotationMatrix* J4IRSlantTubs::GetRotation(){
   G4RotationMatrix* rotM = new G4RotationMatrix();
-  rotM->rotateY(-fRotation);
+  G4double rotation=fRotation;
+  if( IsReflected() ) { 
+    rotation *= -1; 
+  }
+  rotM->rotateY(-rotation);
+
   return rotM;
 }
 //=====================================================================
