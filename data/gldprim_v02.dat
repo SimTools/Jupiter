@@ -27,6 +27,15 @@ J4IR.Q3.Geometry:1.0  4.2  35.0  1091.0   1.0        0
 J4IR.Q4.Geometry:1.8  4.6  164.0   600.0  -1.0    83.33
 J4IR.Q5.Geometry:2.4  6.2  164.0   794.0  -1.0   -50.00
 J4IR.Q6.Geometry:2.4  6.2  164.0   794.0  -1.0   -50.00
+#
+J4IR.NumberOfBeamPipeQC: 3
+#                        Thickness, rmax, zlen, zpos, sign
+J4IR.BeamPipeQC0.Geometry:0.2 1.0 675.0 451.0  1.0
+J4IR.BeamPipeQC1.Geometry:0.2 1.8 313.0 451.0  -1.0
+J4IR.BeamPipeQC2.Geometry:0.2 2.4 317.0 764.0  -1.0
+J4IR.VisAtt.BeamPipeQC:True
+J4IR.Color.BeamPipeQC:0.5 0.5 0.5 1.0
+J4IR.BeamPipeQC.Material:Aluminum
 #       
 # --- IR parameters independant on crossing angle       
 J4.IR.BoxEndZ:1700
@@ -46,7 +55,7 @@ J4IR.BCAL.ZLength:20
 J4IR.BCAL.ZPosition:430
 J4IR.CH2Mask.ZLength:25
 J4IR.CH2Mask.ZPosition:405
-J4IR.BCAL.InnerRadius:0
+J4IR.BCAL.InnerRadius:5.0
 J4IR.CH2Mask.InnerRadius:0
 J4IR.BCAL.HoleRadius.Upstream:1
 J4IR.BCAL.HoleRadius.Downstream:1.8
