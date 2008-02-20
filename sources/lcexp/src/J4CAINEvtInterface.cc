@@ -40,7 +40,7 @@ J4CAINEvtInterface::J4CAINEvtInterface(G4String file)
                     fMessenger(0)
 {
 
-  if ( file != "" ) OpenCainFile(file); 
+  if ( file != G4String("") ) OpenCainFile(file); 
 
   G4ThreeVector zero(0,0,0);
   particle_position = zero;

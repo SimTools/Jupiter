@@ -29,13 +29,19 @@ class J4TrackingActionMessenger: public G4UImessenger
   public:
     void SetNewValue(G4UIcommand * command,G4String newValues);
     G4String GetCurrentValue(G4UIcommand * command);
+    static G4int GetDebugLevel(){ return fDebugLevel; }
+    static G4String GetDebugLogFileName(){ return fDebugLogFileName; }
 
   private:
     J4TrackingAction * fTrackingAction;
+    static G4int fDebugLevel;
+    static G4String fDebugLogFileName;
 
   private: //commands
     G4UIdirectory *             fTrackingActionDir;
     G4UIcmdWithAnInteger *      fChooseStoredTrajectoryCmd;
+    G4UIcmdWithAnInteger *      fDebugLevelCmd;
+    G4UIcmdWithAString *        fDebugLogFileNameCmd;
 
 #ifdef __THEBE__
     G4UIcmdWithAnInteger *      fStoreDebugPrintFromCmd;

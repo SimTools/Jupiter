@@ -57,6 +57,8 @@ void LCPhysicsList::SetCuts()
   G4String  regname;
   G4ProductionCuts *cuts;
 
+#if G4VERSION_NUMBER < 910
+
   regname="BPandMask";
   region=G4RegionStore::GetInstance()->GetRegion(regname);
   if( region ){
@@ -76,6 +78,7 @@ void LCPhysicsList::SetCuts()
     cuts->SetProductionCut(1.0*cm,G4ProductionCuts::GetIndex("gamma"));
     region->SetProductionCuts(cuts);
   }
+#endif
 
   if (verboseLevel > 0) DumpCutValuesTable();
 }

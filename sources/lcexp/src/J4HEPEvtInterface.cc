@@ -27,7 +27,7 @@ J4HEPEvtInterface::J4HEPEvtInterface(G4String file)
                    fMessenger(0)
 {
 
-  if( file != "" ) OpenHEPEvtFile(file); 
+  if( file != G4String("") ) OpenHEPEvtFile(file); 
   G4ThreeVector zero(0,0,0);
   particle_position = zero;
   particle_time = 0.0;

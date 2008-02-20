@@ -16,6 +16,7 @@
 #include "G4UIcmdWithAnInteger.hh"
 #include "G4ios.hh"
 #include "G4Tokenizer.hh"
+#include "J4MaterialCatalog.hh"
 
 //-------------------------------------------------------------
 J4RunActionMessenger::J4RunActionMessenger(J4RunAction * runaction)
@@ -28,12 +29,19 @@ J4RunActionMessenger::J4RunActionMessenger(J4RunAction * runaction)
   fFileNameCmd->SetGuidance("Set a file name to output hit data");
   fFileNameCmd->SetParameterName("FileName",true);
   fFileNameCmd->SetDefaultValue("hit.dat");
+
+  fPrintCmd = new G4UIcmdWithAString("/jupiter/run/print",this);
+  fPrintCmd->SetGuidance("Print information");
+  fPrintCmd->SetParameterName("item",true);
+  fPrintCmd->SetDefaultValue("material");
+
 }
 
 //-----------------------------------------------------------------
 J4RunActionMessenger::~J4RunActionMessenger()
 {
   if (fFileNameCmd)    delete fFileNameCmd;
+  if (fPrintCmd)       delete fPrintCmd;
   if (fDirectory)      delete fDirectory;
 }
 
@@ -42,6 +50,9 @@ void J4RunActionMessenger::SetNewValue(G4UIcommand * command,G4String newValues)
 {
   if (command == fFileNameCmd) { 
     fRunAction->SetHitFileName(newValues);
+  }
+  else if ( command == fPrintCmd ) {
+    J4MaterialCatalog::Print();
   }
 
 }
@@ -55,6 +66,9 @@ G4String J4RunActionMessenger::GetCurrentValue(G4UIcommand * command)
   if (command == fFileNameCmd) { 
     cv = fRunAction->GetHitFileName();
   } 
+  else if ( command ==fPrintCmd) {
+    cv = " ";
+  }
 
   return cv;
 }

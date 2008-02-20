@@ -10,14 +10,18 @@
 #include "G4ios.hh"
 #include "G4Tokenizer.hh"
 
-#include "./iomanip"               
-#include "./strstream"
+// #include "./iomanip"               
+// #include "./strstream"
 
 J4GlobalMessenger::J4GlobalMessenger(J4Global * global)
   :fGlobal(global)
 {
   fGlobalDir = new G4UIdirectory("/jupiter/global/");
   fGlobalDir->SetGuidance("Global setting commands.");
+
+  fPrintCmd = new G4UIcmdWithAString("/jupiter/global/print",this);
+  fPrintCmd->SetGuidance("Print Information");
+  fPrintCmd->SetDefaultValue("Material");
 
 #ifdef __THEBE__
 
@@ -60,7 +64,9 @@ J4GlobalMessenger::~J4GlobalMessenger()
 
 #endif
 
+   delete fPrintCmd;
    delete fGlobalDir;
+   
 }
 
 #ifdef __THEBE__
@@ -73,6 +79,8 @@ void J4GlobalMessenger::SetNewValue(G4UIcommand * command, G4String newValues)
      fGlobal->SetErrorNevents(fErrorNeventsCmd->GetNewIntValue(newValues)); 
   } else if( command == fErrorOutputDeviceIDCmd) {
      fGlobal->SetErrorOutputDeviceID(fErrorOutputDeviceIDCmd->GetNewIntValue(newValues)); 
+  } else if( command == fPrintCmd ) {
+	J4MaterialCatalog::Print();
   }
 #else
 
@@ -89,6 +97,7 @@ G4String J4GlobalMessenger::GetCurrentValue(G4UIcommand *)
 #endif
 {
    G4String cv;
+
 
 #ifdef __THEBE__   
 

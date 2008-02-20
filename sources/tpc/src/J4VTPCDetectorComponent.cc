@@ -60,7 +60,7 @@ J4VMaterialStore* J4VTPCDetectorComponent::OpenMaterialStore()
    if (!fMaterialStore) {
       fMaterialStore = new J4TPCMaterialStore();
       Register(fMaterialStore); 
-      G4cerr << "*** Opend J4TPCMaterialStore ***" << G4endl;
+      G4cerr << "*** Opened J4TPCMaterialStore ***" << G4endl;
    }
     
    return fMaterialStore;

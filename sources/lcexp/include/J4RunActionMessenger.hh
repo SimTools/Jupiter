@@ -27,6 +27,7 @@ class J4RunActionMessenger: public G4UImessenger
   private: //commands
     G4UIdirectory              *fDirectory;
     G4UIcmdWithAString         *fFileNameCmd;
+    G4UIcmdWithAString         *fPrintCmd;
     
 };
 

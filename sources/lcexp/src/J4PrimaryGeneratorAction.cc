@@ -70,8 +70,8 @@ void J4PrimaryGeneratorAction::Initialize()
    if (fParticleGun) delete fParticleGun;
    if (fParticleBeam) delete fParticleBeam;
 
-   fHEPEvt  = new J4HEPEvtInterface ("");
-   fCAINEvt = new J4CAINEvtInterface("");
+   fHEPEvt  = new J4HEPEvtInterface (G4String(""));
+   fCAINEvt = new J4CAINEvtInterface(G4String(""));
    G4int n_particle = 1;
    fParticleGun           = new G4ParticleGun(n_particle);
    fParticleBeam          = new J4ParticleBeam(n_particle);

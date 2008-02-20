@@ -76,6 +76,8 @@ void J4VTXLayer::Assemble()
     // define geometry
     // MakeSolid ----------//
     OrderNewTubs (rmin, rmax, halfzlen, totalPhi );
+
+    G4cerr << "VTX Layer : rmin=" << rmin << " rmax=" << rmax << " hlfz=" << halfzlen << G4endl;
     // MakeLogicalVolume --//  
     MakeLVWith(OpenMaterialStore()->Order(list->GetLayerMaterial()));
     // SetVisAttribute ----//

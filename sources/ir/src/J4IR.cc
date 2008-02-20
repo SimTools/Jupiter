@@ -247,6 +247,7 @@ void J4IR::Assemble()
       SetDaughter(*iv);
     }
 
+#if G4VERSION_NUMBER < 910
     G4Region *bpregion=new G4Region("BPandMask");
     for( iv=fComponents.begin() ; iv!=fComponents.end(); iv++ ) {
       G4int ind=(*iv)->GetName().index("BPMiddle");
@@ -266,7 +267,7 @@ void J4IR::Assemble()
 	irregion->AddRootLogicalVolume((*iv)->GetLV());
       }
     }
-
+#endif
     //    irregion->AddRootLogicalVolume(GetLV());
 
   }     

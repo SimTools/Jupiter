@@ -14,6 +14,10 @@
 #include <iomanip>          
 #include <sstream>
 
+G4int J4TrackingActionMessenger::fDebugLevel=0;
+G4String J4TrackingActionMessenger::fDebugLogFileName=G4String("");
+
+// ===================================================================
 J4TrackingActionMessenger::J4TrackingActionMessenger(J4TrackingAction * tracking)
   :fTrackingAction(tracking)
 {
@@ -27,6 +31,18 @@ J4TrackingActionMessenger::J4TrackingActionMessenger(J4TrackingAction * tracking
   fChooseStoredTrajectoryCmd->SetGuidance("  2 : all ");
   fChooseStoredTrajectoryCmd->SetParameterName("N",true,true);
   fChooseStoredTrajectoryCmd->SetRange("N>-1");
+
+  fDebugLevelCmd=new G4UIcmdWithAnInteger("/jupiter/tracking/DebugLevel", this);
+  fDebugLevelCmd->SetGuidance("Debug flag");
+  fDebugLevelCmd->SetGuidance("  0 : Do nothing");
+  fDebugLevelCmd->SetGuidance("  1 : Print rad len/nucl. int length in each geometry");
+  fDebugLevelCmd->SetParameterName("DebugFlag",true,true);
+  fDebugLevelCmd->SetDefaultValue(0); 
+
+  fDebugLogFileNameCmd = new G4UIcmdWithAString("/jupiter/tracking/DebugLogFileName",this);
+  fDebugLogFileNameCmd->SetGuidance("Set a file name to output stepping information");
+  fDebugLogFileNameCmd->SetParameterName("FileName",true);
+  fDebugLogFileNameCmd->SetDefaultValue("stepping.dat");
 
   // set initial value to J4TrackingAction
   fTrackingAction->SetStoredTrajectoryID(0);
@@ -56,8 +72,9 @@ J4TrackingActionMessenger::~J4TrackingActionMessenger()
    delete fStoreDebugPrintFromCmd;
 
 #endif
-
-   delete fChooseStoredTrajectoryCmd;;
+   delete fDebugLogFileNameCmd;
+   delete fDebugLevelCmd;
+   delete fChooseStoredTrajectoryCmd;
    delete fTrackingActionDir;
 }
 
@@ -66,6 +83,12 @@ void J4TrackingActionMessenger::SetNewValue(G4UIcommand * command,G4String newVa
 
   if( command == fChooseStoredTrajectoryCmd ) {
      fTrackingAction->SetStoredTrajectoryID(fChooseStoredTrajectoryCmd->GetNewIntValue(newValues)); 
+  }
+  else if ( command == fDebugLevelCmd ) {
+     fDebugLevel=fDebugLevelCmd->GetNewIntValue(newValues);
+  }
+  else if ( command == fDebugLogFileNameCmd ) {
+    fDebugLogFileName=newValues;
   }
 
 #ifdef __THEBE__
@@ -85,6 +108,12 @@ G4String J4TrackingActionMessenger::GetCurrentValue(G4UIcommand * command)
    if ( command == fChooseStoredTrajectoryCmd ) {
       cv = fChooseStoredTrajectoryCmd->ConvertToString(fTrackingAction->GetStoredTrajectoryID()); 
    } 
+   else if ( command == fDebugLogFileNameCmd ) {
+      cv = fDebugLogFileName;
+   }
+   else if( command == fDebugLevelCmd ) {
+      cv = fDebugLevelCmd->ConvertToString(fDebugLevel); 
+   }
 
 #ifdef __THEBE__   
 

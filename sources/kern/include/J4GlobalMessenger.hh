@@ -36,6 +36,7 @@ class J4GlobalMessenger: public G4UImessenger
 
   private: //commands
     G4UIdirectory *             fGlobalDir;
+    G4UIcmdWithAString          *fPrintCmd;
 
 #ifdef __THEBE__
     G4UIcmdWithAnInteger *      fErrorNeventsCmd;

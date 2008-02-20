@@ -32,6 +32,7 @@ public:
   inline static  J4MaterialCatalog*  OpenCatalog();
   G4Material*    Order(const G4String& name,
                        G4MaterialPropertiesTable* mtable=0) const;
+  static void Print();
 
 private:  
   void  ReadMaterialCatalog();

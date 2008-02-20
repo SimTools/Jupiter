@@ -1,3 +1,4 @@
+
 // $Id$
 // This code implementation is the intellectual property of
 // the GEANT4 collaboration.
@@ -703,6 +704,7 @@ void J4PhysicsList::SetCuts()
   G4String  regname;
   G4ProductionCuts *cuts;
 
+#if G4VERSION_NUMBER < 910
   regname="BPandMask";
   region=G4RegionStore::GetInstance()->GetRegion(regname);
   if( region ){
@@ -722,6 +724,7 @@ void J4PhysicsList::SetCuts()
     cuts->SetProductionCut(1.0*cm,G4ProductionCuts::GetIndex("gamma"));
     region->SetProductionCuts(cuts);
   }
+#endif
 
   if (verboseLevel > 0) DumpCutValuesTable();
 }
