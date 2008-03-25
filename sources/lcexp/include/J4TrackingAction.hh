@@ -25,6 +25,7 @@
 #include "G4UserTrackingAction.hh"
 #include "J4StackingAction.hh"
 #include "J4VSubTrackingAction.hh"
+#include <limits>
 
 class J4TrackingActionMessenger;
 class J4Timer;
@@ -51,7 +52,7 @@ public:
   inline G4int    GetStoredDebugPrintID()         const { return fStoredDebugPrintID; }
 #endif
   void     Add(J4VSubTrackingAction *stap);
-  inline void     ResetTrackCounter(G4int n = INT_MIN)  { fTrackCounts = n;           }
+  inline void     ResetTrackCounter(G4int n = std::numeric_limits<int>::min())  { fTrackCounts = n;           }
 
   static J4TrackingAction *GetInstance() 
   { 

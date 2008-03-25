@@ -29,10 +29,10 @@ J4TrackingAction                   *J4TrackingAction::fgInstance = 0;
 //=====================================================================
 //* Constructor -------------------------------------------------------
 J4TrackingAction::J4TrackingAction()
-                : fCurrentTrackID(INT_MAX),
+                : fCurrentTrackID(std::numeric_limits<int>::max()),
                   fStoredTrajectoryID(1),
                   fMessenger(0),
-                  fTrackCounts(INT_MIN) 
+                  fTrackCounts(std::numeric_limits<int>::min()) 
 {
    if (fgInstance) {
       G4cerr << ">>>>>>> Error in J4TrackingAction::J4TrackingAction" << G4endl

@@ -13,6 +13,7 @@
 #include "J4CLXAddress.hh"
 #include "J4CLXParameterList.hh"
 #include "J4ParameterTable.hh"
+#include <limits>
 
 //=====================================================================
 //---------------------
@@ -78,7 +79,7 @@ G4int J4CLXAddress::GetGlobalCellID( G4bool isEM, G4int blockID,
   std::cout << "nEMTotal=" << nEMTotal << " " 
 	    << "nHDTotal=" << nHDTotal << " "
 	    << "nTotal=" << (nEMTotal+nHDTotal)*nBlocks << " "
-	    << "INT_MAX=" << INT_MAX << " "
+	    << "INT_MAX=" << std::numeric_limits<int>::max() << " "
 	    << std::endl;
 #endif
 
@@ -86,9 +87,9 @@ G4int J4CLXAddress::GetGlobalCellID( G4bool isEM, G4int blockID,
     ? ((( cellID*nEMStrips+stripID)*nEMTrapStrips+trapStripID)*nEMLayers+layerID)*nBlocks+blockID
     : ( nEMTotal+((cellID*nHDStrips+stripID)*nHDTrapStrips+trapStripID)*nHDLayers+layerID)*nBlocks+blockID;
 
-  if ( globalID > INT_MAX ) {
+  if ( globalID > std::numeric_limits<int>::max() ) {
    std::cerr << "**** Error! CAL globalID over to INT_MAX! " << globalID
-	     << " over " << INT_MAX << std::endl;
+	     << " over " << std::numeric_limits<int>::max() << std::endl;
   }
 
   if ( globalID < 0 ) {

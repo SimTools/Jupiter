@@ -13,6 +13,7 @@
 
 #include "J4VSubTrackingAction.hh"
 #include "globals.hh"
+#include <limits>
 
 class J4PHitKeeper : public J4VSubTrackingAction {
 public:
@@ -21,7 +22,7 @@ public:
    
   virtual void    PreTrackDoIt(const G4Track*);
           G4bool  IsNext();
-          void    Reset (G4int n = INT_MAX);
+          void    Reset (G4int n = std::numeric_limits<int>::max());
   inline  G4int   GetCurTrackID() { return fInTrackID; }
   inline  G4bool  IsPHitCreated() { return fIsPHitCreated; }
 

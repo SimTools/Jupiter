@@ -15,8 +15,8 @@
 //=====================================================================
 //* Constructor -------------------------------------------------------
 J4PHitKeeper::J4PHitKeeper()
-            : fInTrackID (INT_MAX),
-              fTopTrackID(INT_MAX),
+            : fInTrackID (std::numeric_limits<int>::max()),
+              fTopTrackID(std::numeric_limits<int>::max()),
               fIsPHitCreated(false)
 {
 }
@@ -44,8 +44,8 @@ void J4PHitKeeper::PreTrackDoIt(const G4Track *aTrack)
 #endif
 
   if (curTrackID < fTopTrackID) {
-     fInTrackID  = INT_MAX;
-     fTopTrackID = INT_MAX;
+     fInTrackID  = std::numeric_limits<int>::max();
+     fTopTrackID = std::numeric_limits<int>::max();
      fIsPHitCreated = false;
   }
 #ifdef __DEBUG__

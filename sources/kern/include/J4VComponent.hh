@@ -152,7 +152,7 @@ protected:
                              const G4ThreeVector &tubtlate = 0,
                              G4double             innerboxhalfx = 0,
                              G4double             innerboxhalfy = 0,
-                             G4double             innerboxhalfx = 0,
+                             G4double             innerboxhalfz = 0,
                              G4RotationMatrix    *pboxrot       = 0,
                              const G4ThreeVector &boxtlate      = 0 );
 

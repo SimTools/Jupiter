@@ -12,8 +12,9 @@
 
 #include "J4StackingAction.hh"
 #include "G4Track.hh"
+#include <limits>
 
-G4int J4StackingAction::fgTopOfStackID = INT_MAX;
+G4int J4StackingAction::fgTopOfStackID = std::numeric_limits<int>::max();
 
 //=====================================================================
 //* Constructor -------------------------------------------------------

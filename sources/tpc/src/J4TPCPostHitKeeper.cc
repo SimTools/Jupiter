@@ -36,7 +36,7 @@ J4TPCPostHitKeeper::~J4TPCPostHitKeeper()
 //* Destructor -------------------------------------------------------
 G4int J4TPCPostHitKeeper::GetCurPostHitID() const
 {
-  if (J4TPCPostHitKeeper::GetInstance()->GetCurTrackID() < INT_MAX) {
+  if (J4TPCPostHitKeeper::GetInstance()->GetCurTrackID() < std::numeric_limits<int>::max()) {
     return J4TPCPostHit::GetCurPostHitID();
   } else {
     return -1;
