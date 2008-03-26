@@ -251,7 +251,8 @@ private:
   G4int* fNSensors;
 
   // Position of Sensors in the Layer / in the Ladder
-  G4ThreeVector fxyzSensor[10][10];
+  //  G4ThreeVector fxyzSensor[10][10];
+  G4ThreeVector fxyzSensor[10][200];
 
   // Tile of ladder;
   G4double ftiltLadder;
@@ -262,8 +263,10 @@ private:
   G4double* frOuterLayer;
 
   //  Size and Position of Ladders;
-  G4ThreeVector fxyzLadder[10][50];
-  G4double fangleLadder[10][50];
+  //  G4ThreeVector fxyzLadder[10][50];
+  //  G4double fangleLadder[10][50];
+  G4ThreeVector fxyzLadder[10][200];
+  G4double fangleLadder[10][200];
   G4ThreeVector** fDxyzLadder;
 
   //  dr of layer

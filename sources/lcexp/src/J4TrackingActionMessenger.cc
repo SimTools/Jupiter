@@ -15,7 +15,7 @@
 #include <sstream>
 
 G4int J4TrackingActionMessenger::fDebugLevel=0;
-G4String J4TrackingActionMessenger::fDebugLogFileName=G4String("");
+G4String J4TrackingActionMessenger::fDebugLogFileName=G4String("stepping.dat");
 
 // ===================================================================
 J4TrackingActionMessenger::J4TrackingActionMessenger(J4TrackingAction * tracking)
