@@ -45,7 +45,7 @@ J4.IR.NumSolides:7
 J4.IR.REdges:1.35 3.2 3.2 8.2 29.5 29.5 29.5
 J4.IR.ZEdges:8.0 25.0 35.0 110.0 230.0 260.0 1300.0
 J4.IR.Shapes:0 1 0 1 0 0 0
-J4IR.BeamPipeIP.OuterRadius:1.55
+J4IR.BeamPipeIP.OuterRadius:1.35
 J4IR.BeamPipeIP.HalfZLength:8
 J4IR.BeamPipeMiddle.NumSolides:10
 J4IR.BeamPipeMiddle.REdges:1.35 3.2 3.2 8.2 8.2 9.24 16.2 16.2 5.0 5.0
