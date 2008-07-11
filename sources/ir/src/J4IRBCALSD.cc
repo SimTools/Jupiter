@@ -47,19 +47,19 @@ void J4IRBCALSD::DefineCells(J4IRBCALSensor *detector)
 
   fLayer=(J4IRBCALLayer*)detector->GetMother();
   fBCAL=(J4IRBCAL*)(fLayer->GetMother());
-  G4Tubs *sbmo=(G4Tubs*)fBCAL->GetSolid();
+//  G4Tubs *sbmo=(G4Tubs*)fBCAL->GetSolid();
+  G4Tubs *sbmo=(G4Tubs*)fLayer->GetSolid();
   G4double rminmo=sbmo->GetInnerRadius();
   G4double rmaxmo=sbmo->GetOuterRadius();
 
   G4double zmo=fBCAL->GetZpos();
-  //  std::cerr << "BCAL " <<  detector->GetMyID() << " zblock=" << zmo << std::endl;
+//   std::cerr << "BCAL " <<  detector->GetMyID() << " zblock=" << zmo << std::endl;
   // Zcoordinate of the front surface of this sensor(zsensor) is 
   // BCAL.z_center + Layer.z_center + Sensor.z_center - sensor_halfwidth
   G4double zsensor=detector->GetZCenter()+(fLayer->GetTranslation()).z()
     +(zmo+sbmo->GetZHalfLength())-zhlf;
-  //  std::cerr << "BCAL " <<  detector->GetName() << " zsensor=" << zsensor << std::endl;
-
-  //  string fbname[2]={string("Front"),string("Tail")};
+//  std::cerr << "BCAL " <<  detector->GetName() << " zsensor=" << zsensor << std::endl;
+ //  string fbname[2]={string("Front"),string("Tail")};
 // Cell sizes are defined by the fron surface of BCAL Fron or 
 // Tail, not by those at BCALSensor.  It defines ranges of costheta 
 // it is then transfered to the radius of BCALSensor.
@@ -68,19 +68,22 @@ void J4IRBCALSD::DefineCells(J4IRBCALSensor *detector)
 //  Here "Front" means the one closer to the IP  
 // Default parameters  
 // Radial division of Front BCAL: 2.2 cm -> 20.0cm : NDIVR=18; (DeltaR=0.988cm)
+
+//  std::cerr << " rmaxmo=" << rmaxmo << " rminmo=" << rminmo << std::endl;
+
   fNDivR = J4ParameterTable::GetValue(
 				 "J4IR.BCAL.NDIVR",5);
   fNDivPhi = J4ParameterTable::GetIValue("J4IR.BCAL.NDIVPhi",
 	 "18 24 30 36 43 49 55 62 68 74 80 87 93 99 106 112 118 124",fNDivR);
 
   G4double rstepmo=(rmaxmo-rminmo)/(G4double)fNDivR;
-  //  std::cerr << " fNDivR=" << fNDivR << std::endl;
-  //  std::cerr << " ind=" << ind << std::endl;
+//    std::cerr << " fNDivR=" << fNDivR << std::endl;
+//    std::cerr << " rstepmo=" << rstepmo << std::endl;
   for(G4int ir=0; ir<=fNDivR;ir++) {
 	  G4double r=(rminmo+rstepmo*(G4double)ir)/zmo*zsensor;
 	  fRbound.push_back(r);
 	  if( ir != fNDivR ) { fPhiStep.push_back(twopi/(G4double)fNDivPhi[ir]) ;
-	  //		  std::cerr << " PhiStep=" << fPhiStep[ir] << std::endl;
+//	    std::cerr << " PhiStep=" << fPhiStep[ir] << std::endl;
       }
    }   	
 
@@ -95,6 +98,8 @@ void J4IRBCALSD::GetRPhiBin(const G4ThreeVector x, G4int &ir, G4int &iphi)
 
   G4double r=x.perp();
   G4double phi=x.phi();
+
+//  std::cerr << " r=" << r << " phi=" << phi << std::endl;
   if( phi < 0.0 ) { phi += twopi; }
 
   iphi = 0;
@@ -153,6 +158,9 @@ G4bool J4IRBCALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ 
   SetNewStep(aStep);
 
   G4double              edep      = GetEnergyDeposit();
+
+//  std::cerr << " edep=" << edep << std::endl;
+
   if( edep <= 0.0 ) return FALSE;
 
 //  std::cerr << "J4IRBCALSD::ProcessHit was called." << std::endl;
@@ -172,6 +180,10 @@ G4bool J4IRBCALSD::ProcessHits( G4Step* aStep, G4TouchableHistory* /* ROhist */ 
   G4int ir;
   G4int iphi;
   GetRPhiBin(pre, ir, iphi);
+
+//  std::cerr << " x=" << pre.x() << " y=" << pre.y() << " z=" << pre.z()
+//            << std::endl;
+//  std::cerr << " IR=" << ir << " IPHI=" << iphi << std::endl;
 
   G4int cellID=ptrBCAL->GetMyID()*10000000+100000*ptrLayer->GetMyID()+ir*1000+iphi;
 //  std::cerr << " cellid=" << cellID << " ir=" << ir ;
