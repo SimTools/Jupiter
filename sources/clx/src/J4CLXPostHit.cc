@@ -34,7 +34,7 @@ J4CLXPostHit::J4CLXPostHit( J4VComponent         *detector,       // He is in "l
                             G4double              totalE,         // Total energy
                             const G4ThreeVector  &momentum,       // Momentum of perticle
                             const G4ThreeVector  &post )           // Post-position of track
- : J4VHit(detector, trackID, mothertrackID, particle, tof, 0., totalE, momentum, 0., post ),
+ : J4VHit(detector, trackID, mothertrackID, particle, tof, 0., totalE, momentum, G4ThreeVector(0.), post ),
    fCLXPreHitID(preHitID)
 {
   fCLXPostHitID = ++fgNhits;

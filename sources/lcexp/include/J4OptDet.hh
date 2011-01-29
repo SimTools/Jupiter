@@ -33,7 +33,7 @@ public:
 
   virtual void  InstallIn(J4VComponent *mother,
                           G4RotationMatrix     *prot  = 0,
-                          const G4ThreeVector  &tlate = 0 );
+                          const G4ThreeVector  &tlate = G4ThreeVector(0.) );
   inline G4double GetZCenter(){
     if( fShapeID == 0 ) { return (fGeom[2]+fGeom[3])*0.5; } //  TUBS 
     else if ( fShapeID == 1 ) { return (fGeom[4]+fGeom[5])*0.5; } // CONS 

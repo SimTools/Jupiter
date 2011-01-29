@@ -38,8 +38,8 @@ public:
   virtual void	Draw()      ;
   virtual void	Print() const ;
   void InstallIn(J4VComponent      *, // mother
-                               G4RotationMatrix  *prot=0,
-                                const G4ThreeVector     &tlate=0); 
+                 G4RotationMatrix  *prot=0,
+           const G4ThreeVector     &tlate=G4ThreeVector(0.)); 
 
   
 private:

@@ -38,7 +38,7 @@ public:
   virtual ~J4VIRAcceleratorComponent();
   virtual void  InstallIn(J4VComponent *mother,
                           G4RotationMatrix     *prot  = 0,
-                          const G4ThreeVector  &tlate = 0 );
+                          const G4ThreeVector  &tlate = G4ThreeVector(0.) );
 
   virtual G4RotationMatrix* GetRotation();
   virtual G4ThreeVector&  GetTranslation();

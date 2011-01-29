@@ -44,7 +44,7 @@ public:
   };
   virtual void  InstallIn(J4VComponent *mother,
                           G4RotationMatrix     *prot  = 0,
-                          const G4ThreeVector  &tlate = 0 );
+                          const G4ThreeVector  &tlate = G4ThreeVector(0.) );
   inline G4double GetZCenter(){
     return -fZpos[3]*0.5+(fZpos[1]+fZpos[2])*0.5; }
 

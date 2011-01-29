@@ -476,7 +476,7 @@ G4int J4TwistedSurface::DistanceToSurface(const G4ThreeVector &gp,
             G4int maxcount = 10;
             G4int l;
             G4double      lastdeltaY = deltaY; 
-            G4ThreeVector last = deltaY; 
+            G4ThreeVector last = G4ThreeVector(deltaY); 
             for (l=0; l<maxcount; l++) {
                G4ThreeVector surfacenormal = GetNormal(xxonsurface); 
                distance[k] = DistanceToPlaneWithV(p, v, xxonsurface, surfacenormal, xx[k]);

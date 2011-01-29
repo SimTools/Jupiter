@@ -36,7 +36,7 @@ public:
 
   virtual void  InstallIn(J4VComponent         *mother,
                           G4RotationMatrix     *prot  = 0,
-                          const G4ThreeVector  &tlate = 0 );
+                          const G4ThreeVector  &tlate = G4ThreeVector(0.) );
   virtual void	SwitchOn (G4String opt = "me")  ;
   virtual void	SwitchOff(G4String opt = "me") ;
   virtual void	Draw()      ;

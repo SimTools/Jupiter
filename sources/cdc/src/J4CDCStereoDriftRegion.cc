@@ -157,7 +157,7 @@ void J4CDCStereoDriftRegion::InstallIn(J4VComponent  *,
   Assemble();			// You MUST call Assemble(); at first.
   				// 
     
-  SetPVPlacement(0,0);
+  SetPVPlacement(0,G4ThreeVector(0.));
   
   if (!GetSD()) Cabling();
   

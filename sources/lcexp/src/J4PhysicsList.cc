@@ -77,7 +77,13 @@ void J4PhysicsList::ConstructProcess()
 #include "G4GammaConversion.hh"
 #include "G4PhotoElectricEffect.hh"
 
+#if 0
 #include "G4MultipleScattering.hh"
+#else
+#include "G4eMultipleScattering.hh"
+#include "G4hMultipleScattering.hh"
+#include "G4MuMultipleScattering.hh"
+#endif
 
 #include "G4eIonisation.hh"
 #include "G4eBremsstrahlung.hh"
@@ -117,7 +123,11 @@ void J4PhysicsList::ConstructEM()
     } else if (particleName == "e-") {
     //electron
       // Construct processes for electron
+#if 0
       G4VProcess* theeminusMultipleScattering = new G4MultipleScattering();
+#else
+      G4VProcess* theeminusMultipleScattering = new G4eMultipleScattering();
+#endif
       G4VProcess* theeminusIonisation = new G4eIonisation();
       G4VProcess* theeminusBremsstrahlung = new G4eBremsstrahlung();
       // add processes
@@ -137,7 +147,11 @@ void J4PhysicsList::ConstructEM()
     } else if (particleName == "e+") {
     //positron
       // Construct processes for positron
+#if 0
       G4VProcess* theeplusMultipleScattering = new G4MultipleScattering();
+#else
+      G4VProcess* theeplusMultipleScattering = new G4eMultipleScattering();
+#endif
       G4VProcess* theeplusIonisation = new G4eIonisation();
       G4VProcess* theeplusBremsstrahlung = new G4eBremsstrahlung();
       G4VProcess* theeplusAnnihilation = new G4eplusAnnihilation();
@@ -162,7 +176,11 @@ void J4PhysicsList::ConstructEM()
                particleName == "mu-"    ) {
     //muon  
      // Construct processes for muon+
+#if 0
      G4VProcess* aMultipleScattering = new G4MultipleScattering();
+#else
+     G4VProcess* aMultipleScattering = new G4MuMultipleScattering();
+#endif
      G4VProcess* aBremsstrahlung = new G4MuBremsstrahlung();
      G4VProcess* aPairProduction = new G4MuPairProduction();
      G4VProcess* anIonisation = new G4MuIonisation();
@@ -183,7 +201,11 @@ void J4PhysicsList::ConstructEM()
      
     } else if( particleName == "GenericIon" ) {
      G4VProcess* aionIonization = new G4hIonisation;
+#if 0
      G4VProcess* aMultipleScattering = new G4MultipleScattering();
+#else
+     G4VProcess* aMultipleScattering = new G4hMultipleScattering();
+#endif
      pmanager->AddProcess(aionIonization);
      pmanager->AddProcess(aMultipleScattering);
      // set ordering for AlongStepDoIt
@@ -198,7 +220,11 @@ void J4PhysicsList::ConstructEM()
 	      (particle->GetPDGCharge() != 0.0) && 
 	      (particle->GetParticleName() != "chargedgeantino")) {
      // all others charged particles except geantino
+#if 0
      G4VProcess* aMultipleScattering = new G4MultipleScattering();
+#else
+     G4VProcess* aMultipleScattering = new G4MuMultipleScattering();
+#endif
      G4VProcess* anIonisation = new G4hIonisation();
      // add processes
      pmanager->AddProcess(anIonisation);

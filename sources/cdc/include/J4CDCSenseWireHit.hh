@@ -43,9 +43,9 @@ public:
                     G4double              tof           = 0,
                     G4double              edep          = 0,
                     G4double              totalE        = 0,
-                    const G4ThreeVector  &momentum      = 0,
-                    const G4ThreeVector  &pre           = 0,
-                    const G4ThreeVector  &pos           = 0  );	
+                    const G4ThreeVector  &momentum      = G4ThreeVector(0.),
+                    const G4ThreeVector  &pre           = G4ThreeVector(0.),
+                    const G4ThreeVector  &pos           = G4ThreeVector(0.)  );	
   	 	            
   J4CDCSenseWireHit(const J4CDCSenseWireHit& right);
   

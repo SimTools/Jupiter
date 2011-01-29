@@ -45,12 +45,12 @@ public:
             G4double              tof           = 0, // TOF
             G4double              edep          = 0, // Energy Deposit
             G4double              totalE        = 0, // Total energy
-            const G4ThreeVector  &momentum      = 0, // Momentum of perticle
-            const G4ThreeVector  &pre           = 0, // Pre-position of track
-            const G4ThreeVector  &pos           = 0, // Post-position of track
+            const G4ThreeVector  &momentum      = G4ThreeVector(0.), // Momentum of perticle
+            const G4ThreeVector  &pre           = G4ThreeVector(0.), // Pre-position of track
+            const G4ThreeVector  &pos           = G4ThreeVector(0.), // Post-position of track
             const G4double        rotangle      = 0, // rotation angle of cell 
-            const G4ThreeVector  &wireEndpz     = 0, // wire position at +ve z endcap
-            const G4ThreeVector  &wireEndmz     = 0, // wire position at -ve z endcap 
+            const G4ThreeVector  &wireEndpz     = G4ThreeVector(0.), // wire position at +ve z endcap
+            const G4ThreeVector  &wireEndmz     = G4ThreeVector(0.), // wire position at -ve z endcap 
             const G4double        stereoangle   = 0, // stereo angle of cell 
             const G4double        rwaist        = 0, // waist radius of sense wire surface 
             const G4int           hitnumber     = 0); // unique hit number 

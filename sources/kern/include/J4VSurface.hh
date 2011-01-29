@@ -269,7 +269,7 @@ class J4VSurface
                                  fDistance[i] = kInfinity;
                                  fAreacode[i] = kOutside;
                                  fIsValid[i]  = FALSE;
-                                 fXX[i] = xx[i];
+                                 fXX[i] = G4ThreeVector(xx[i]);
                               }
                               fNXX   = 0;
                               fLastp.set(kInfinity, kInfinity, kInfinity);

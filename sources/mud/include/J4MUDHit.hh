@@ -45,9 +45,9 @@ public:
             G4double              tof           = 0,
             G4double              edep          = 0,
             G4double              totalE        = 0,
-            const G4ThreeVector & momentum      = 0,
-            const G4ThreeVector & pre           = 0,
-            const G4ThreeVector & post          = 0  );
+            const G4ThreeVector & momentum      = G4ThreeVector(0.),
+            const G4ThreeVector & pre           = G4ThreeVector(0.),
+            const G4ThreeVector & post          = G4ThreeVector(0.) );
   	 	            
   //J4MUDHit( const J4MUDHit& right );
   

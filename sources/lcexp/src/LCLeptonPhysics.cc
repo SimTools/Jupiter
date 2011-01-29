@@ -14,7 +14,13 @@
 #include "G4ProcessManager.hh"
 
 // processes
+#if 0
 #include "G4MultipleScattering.hh"
+#else
+#include "G4eMultipleScattering.hh"
+#include "G4hMultipleScattering.hh"
+#include "G4MuMultipleScattering.hh"
+#endif
 #include "G4eIonisation.hh"
 #include "G4eBremsstrahlung.hh"
 #include "G4eplusAnnihilation.hh"
@@ -81,7 +87,11 @@ void LCLeptonPhysics::ConstructProcess()
   // Electron physics
 
   pManager = G4Electron::Electron()->GetProcessManager();
+#if 0
   pManager->AddProcess(new G4MultipleScattering(), -1, 1, 1);
+#else
+  pManager->AddProcess(new G4eMultipleScattering(), -1, 1, 1);
+#endif
   pManager->AddProcess(new G4eIonisation(),        -1, 2, 2);
   pManager->AddProcess(new G4eBremsstrahlung(),    -1,-1, 3);  
 
@@ -93,7 +103,11 @@ void LCLeptonPhysics::ConstructProcess()
   // Positron physics
 
   pManager = G4Positron::Positron()->GetProcessManager(); 
+#if 0
   pManager->AddProcess(new G4MultipleScattering(), -1, 1, 1);
+#else
+  pManager->AddProcess(new G4eMultipleScattering(), -1, 1, 1);
+#endif
   pManager->AddProcess(new G4eIonisation(),        -1, 2, 2);
   pManager->AddProcess(new G4eBremsstrahlung(),    -1,-1, 3);  
   pManager->AddProcess(new G4eplusAnnihilation(),   0,-1, 4);
@@ -106,7 +120,11 @@ void LCLeptonPhysics::ConstructProcess()
   // Muon-
 
   pManager = G4MuonMinus::MuonMinus()->GetProcessManager(); 
+#if 0
   pManager->AddProcess(new G4MultipleScattering(), -1, 1, 1);
+#else
+  pManager->AddProcess(new G4MuMultipleScattering(), -1, 1, 1);
+#endif
   pManager->AddProcess(new G4MuIonisation(),       -1, 2, 2);
   pManager->AddProcess(new G4MuBremsstrahlung(),   -1,-1, 3);  
   pManager->AddProcess(new G4MuPairProduction(),   -1,-1, 4);
@@ -114,7 +132,11 @@ void LCLeptonPhysics::ConstructProcess()
   // Muon+
 
   pManager = G4MuonPlus::MuonPlus()->GetProcessManager(); 
+#if 0
   pManager->AddProcess(new G4MultipleScattering(), -1, 1, 1);
+#else
+  pManager->AddProcess(new G4MuMultipleScattering(), -1, 1, 1);
+#endif
   pManager->AddProcess(new G4MuIonisation(),       -1, 2, 2);
   pManager->AddProcess(new G4MuBremsstrahlung(),   -1,-1, 3);  
   pManager->AddProcess(new G4MuPairProduction(),   -1,-1, 4);
@@ -122,13 +144,21 @@ void LCLeptonPhysics::ConstructProcess()
   // Tau-
 
   pManager = G4TauMinus::TauMinus()->GetProcessManager();
+#if 0
   pManager->AddProcess(new G4MultipleScattering(), -1, 1, 1);
+#else
+  pManager->AddProcess(new G4MuMultipleScattering(), -1, 1, 1);
+#endif
   pManager->AddProcess(new G4hIonisation(),        -1, 2, 2);
  
   // Tau+
   
   pManager = G4TauPlus::TauPlus()->GetProcessManager();
+#if 0
   pManager->AddProcess(new G4MultipleScattering(), -1, 1, 1);
+#else
+  pManager->AddProcess(new G4MuMultipleScattering(), -1, 1, 1);
+#endif
   pManager->AddProcess(new G4hIonisation(),        -1, 2, 2);
 
 }

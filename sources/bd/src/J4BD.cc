@@ -52,7 +52,7 @@ void J4BD::Assemble()
   if (!GetLV()) {
     // MakeSolid ----------//
     OrderNewBox (list->GetBDOuterHalfX(), list->GetBDOuterHalfY(), list->GetBDOuterHalfZ(), 
-                 0, 0, 0, 
+                 0, 0, G4ThreeVector(0.), 
                  list->GetBDInnerHalfX(), list->GetBDInnerHalfY(), list->GetBDInnerHalfZ());
                      
     // MakeLogicalVolume --//  

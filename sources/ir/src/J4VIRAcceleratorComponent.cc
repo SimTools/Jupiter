@@ -94,7 +94,7 @@ void J4VIRAcceleratorComponent::InstallIn(J4VComponent      *, // mother
   // Placement function into mother object...
   G4ThreeVector position = tlate;
   G4RotationMatrix* rotation = prot;
-  if ( prot == 0 && tlate==0 ) {
+  if ( prot == 0 && tlate==G4ThreeVector(0.) ) {
     rotation = GetRotation();
     position = GetTranslation();
 

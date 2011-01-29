@@ -76,7 +76,7 @@ public:
   //===== member functions 
   virtual void	 InstallIn(J4VComponent         *mother, 
                            G4RotationMatrix     *prot  = 0, 
-                           const G4ThreeVector  &tlate = 0 ) = 0; 
+                           const G4ThreeVector  &tlate = G4ThreeVector(0.) ) = 0; 
   virtual void   Draw()        = 0;
   virtual void   Print() const = 0;
   virtual void   OutputAll(G4HCofThisEvent *HCTE     ) ;
@@ -123,7 +123,7 @@ protected:
   					     
   //===== PVPlacement method
   virtual void SetPVPlacement(G4RotationMatrix    *pRot  = 0,
-                              const G4ThreeVector &tlate = 0);
+                              const G4ThreeVector &tlate = G4ThreeVector(0.));
   virtual void SetPVReplica  (const EAxis    pAxis, 
                               G4double       step,
                               const G4double offset = 0);
@@ -149,12 +149,12 @@ protected:
                              G4double             outerboxhalfz,
                              G4double             innertubrad   = 0,
                              G4RotationMatrix    *ptubrot = 0,
-                             const G4ThreeVector &tubtlate = 0,
+                             const G4ThreeVector &tubtlate = G4ThreeVector(0.),
                              G4double             innerboxhalfx = 0,
                              G4double             innerboxhalfy = 0,
                              G4double             innerboxhalfz = 0,
                              G4RotationMatrix    *pboxrot       = 0,
-                             const G4ThreeVector &boxtlate      = 0 );
+                             const G4ThreeVector &boxtlate      = G4ThreeVector(0.) );
 
 
 private:

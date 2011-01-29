@@ -15,7 +15,13 @@
 #include "G4IonConstructor.hh"
 
 // processes
+#if 0
 #include "G4MultipleScattering.hh"
+#else
+#include "G4eMultipleScattering.hh"
+#include "G4hMultipleScattering.hh"
+#include "G4MuMultipleScattering.hh"
+#endif
 #include "G4hIonisation.hh"
 #include "G4ionIonisation.hh"
 #include "G4HadronElasticProcess.hh"
@@ -67,7 +73,11 @@ void LCIonPhysics::ConstructProcess()
   pManager = G4Deuteron::Deuteron()->GetProcessManager();
 
   // EM processes
+#if 0
   pManager->AddProcess(new G4MultipleScattering(), -1, 1, 1);
+#else
+  pManager->AddProcess(new G4hMultipleScattering(), -1, 1, 1);
+#endif
   pManager->AddProcess(new G4hIonisation(),        -1, 2, 2);
 
   // hadron elastic
@@ -88,7 +98,11 @@ void LCIonPhysics::ConstructProcess()
   pManager = G4Triton::Triton()->GetProcessManager(); 
 
   // EM processes
+#if 0
   pManager->AddProcess(new G4MultipleScattering(), -1, 1, 1);
+#else
+  pManager->AddProcess(new G4hMultipleScattering(), -1, 1, 1);
+#endif
   pManager->AddProcess(new G4hIonisation(),        -1, 2, 2);
 
   // hadron elastic
@@ -109,7 +123,11 @@ void LCIonPhysics::ConstructProcess()
   pManager = G4He3::He3()->GetProcessManager(); 
 
   // EM processes
+#if 0
   pManager->AddProcess(new G4MultipleScattering(), -1, 1, 1);
+#else
+  pManager->AddProcess(new G4hMultipleScattering(), -1, 1, 1);
+#endif
   pManager->AddProcess(new G4ionIonisation(),      -1, 2, 2);
 
   // hadron elastic 
@@ -126,7 +144,11 @@ void LCIonPhysics::ConstructProcess()
   pManager = G4Alpha::Alpha()->GetProcessManager(); 
 
   // EM processes
+#if 0
   pManager->AddProcess(new G4MultipleScattering(), -1, 1, 1);
+#else
+  pManager->AddProcess(new G4hMultipleScattering(), -1, 1, 1);
+#endif
   pManager->AddProcess(new G4ionIonisation(),      -1, 2, 2);
   
   // hadron elastic
@@ -147,7 +169,11 @@ void LCIonPhysics::ConstructProcess()
   pManager = G4GenericIon::GenericIon()->GetProcessManager();
 
   // Only EM processes for generic ion
+#if 0
   pManager->AddProcess(new G4MultipleScattering(), -1, 1, 1);
+#else
+  pManager->AddProcess(new G4hMultipleScattering(), -1, 1, 1);
+#endif
   pManager->AddProcess(new G4ionIonisation(),      -1, 2, 2);
  
 }
