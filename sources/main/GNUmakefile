@@ -85,6 +85,8 @@ include $(G4INSTALL)/config/binmake.gmk
 CXXFLAGS_WITHOUT_O := $(filter-out -O%, $(CXXFLAGS))
 
 ifeq ($(G4SYSTEM),Darwin-g++)
+LDFLAGS += -L/usr/X11R6/lib -lGLU -lGL
+
 $(G4TMPDIR)/J4DetectorConstruction.o: src/J4DetectorConstruction.cc
 	$(CXX) $(CXXFLAGS_WITHOUT_O) $(CPPFLAGS) -c -o $@ \
 	  src/J4DetectorConstruction.cc
