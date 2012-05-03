@@ -55,7 +55,10 @@ void J4HEPEvtInterface::OpenHEPEvtFile(G4String file)
 
   fInputStream.open(fFileName, std::ios::in);
   if (!fInputStream) {
-     G4Exception("J4HEPEvtInterface:: check filename and retry. cannot open file " +fFileName );
+     G4String errorMessage = "Cannot open file: " + fFileName;
+     G4Exception("J4HEPEvtInterface::OpenHEPEvtFile",
+                 "", FatalException,
+                 errorMessage);
   } else {
      std::cout << "HEPEvt input file : " << fFileName << " is opened." << std::endl;
   }
@@ -108,7 +111,9 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
   for (G4int i=0; i<nSkips; i++) {  
      fInputStream >> NHEP;
      if (fInputStream.eof()) {
-        G4Exception("End-Of-File : HEPEvt input file");
+        G4Exception("J4HEPEvtInterface::GeneratePrimaryVertex",
+                    "", JustWarning,
+                    "End-Of-File: HEPEvt input file");
         return;
      }
      
@@ -151,7 +156,9 @@ void J4HEPEvtInterface::GeneratePrimaryVertex(G4Event* evt)
 
   fInputStream >> NHEP;
   if (fInputStream.eof()) {
-     G4Exception("End-Of-File : HEPEvt input file");
+     G4Exception("J4CDCDriftRegionHit::Output",
+                 "", JustWarning,
+                 "End-Of-File : HEPEvt input file");
      return;
   }
   

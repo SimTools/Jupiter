@@ -24,7 +24,9 @@ J4ParameterListStore::J4ParameterListStore()
 {
 
    if (fgParameterListStore) {
-      G4Exception("J4ParameterListStore constructed twice."); 
+      G4Exception("J4ParameterListStor::J4ParameterListStor",
+                  "", FatalException,
+                  "constructed twice.");
    }  
    fgParameterListStore = this;
 

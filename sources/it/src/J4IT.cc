@@ -117,7 +117,9 @@ void J4IT::Assemble()
 	std::cerr << "Error ... Illegal IT geometry parameter " << std::endl;
         std::cerr << " Z coordinate of the first endcap IT must be larger than ";
         std::cerr << " central beryllium beam pipe " << std::endl;
-        G4Exception("Input parameter error for J4IT casued abnormal termination");
+        G4Exception("J4IT::Assemble",
+                    "", FatalException,
+                    "Input parameter error for J4IT caused abnormal termination");
     }
 
     G4VSolid *tmpv0 = new G4Tubs(bpname, rmin, rmax, z0, 0, 2*M_PI);

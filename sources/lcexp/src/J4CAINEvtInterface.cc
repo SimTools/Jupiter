@@ -74,7 +74,10 @@ void J4CAINEvtInterface::OpenCainFile(G4String evfile)
 
   fInputStream.open(fFileName);
   if (!fInputStream) {
-     G4Exception("G4CAINEvtInterface:: check filename and retry. cannot open file "+fFileName);
+     G4String errorMessage = "Cannot open file" + fFileName;
+     G4Exception("J4CAINEvtInterface::OpenCainFile",
+                 "", FatalException,
+                 errorMessage);
   } else {
      std::cout << "CAIN input file : " << fFileName << " is opened." << std::endl;
   }
@@ -214,7 +217,9 @@ void J4CAINEvtInterface::GeneratePrimaryVertex(G4Event* evt)
     default:
       std::stringstream sout;
       sout << "Error: Undefined particle id " << tb.id << " is obtained" << std::ends;
-      G4Exception(sout.str());
+      G4Exception("J4CainEvtInterface::GeneratePrimaryVertex",
+	          "", EventMustBeAborted,
+	          sout.str().data());
       return;
     }
 

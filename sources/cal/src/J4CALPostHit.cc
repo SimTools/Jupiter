@@ -54,8 +54,9 @@ void J4CALPostHit::Output(G4HCofThisEvent *)
         
   std::ofstream& ofs = GetOutputFileStream();
   if (! ofs.good()) {
-    G4String errorMessage= "J4CALPostHit::Output(): write error.";
-    G4Exception(errorMessage);
+    G4Exception("J4CALPostHit::Output",
+                "", FatalException,
+                "Write error");
   } else {
 
      G4ThreeVector pos = GetPostPosition();

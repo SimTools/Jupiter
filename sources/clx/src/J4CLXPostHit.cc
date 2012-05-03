@@ -56,8 +56,9 @@ void J4CLXPostHit::Output(G4HCofThisEvent *)
 #if 0
   std::ofstream& ofs = GetOutputFileStream();
   if (! ofs.good()) {
-    G4String errorMessage= "J4CLXPostHit::Output(): write error.";
-    G4Exception(errorMessage);
+    G4Exception("J4CLXPostHit::Output",
+                "", FatalException,
+                "Write error");
   } else {
 
      G4ThreeVector pos = GetPostPosition();

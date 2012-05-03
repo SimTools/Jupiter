@@ -61,8 +61,9 @@ void J4TPCPostHit::Output(G4HCofThisEvent *)
         
   std::ofstream& ofs = GetOutputFileStream();
   if (! ofs.good()) {
-    G4String errorMessage= "J4TPCPostHit::Output(): write error.";
-    G4Exception(errorMessage);
+    G4Exception("J4TPCPostHit::Output",
+                "", FatalException,
+                "Write error");
   } else {
 
      G4ThreeVector pos = GetPostPosition();

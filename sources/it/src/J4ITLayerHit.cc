@@ -59,8 +59,9 @@ void J4ITLayerHit::Output(G4HCofThisEvent* /* HCTE */)
         
   std::ofstream& ofs = GetOutputFileStream();
   if (! ofs.good()) {
-    G4String errorMessage= "J4ITLayerHit::Output(): write error.";
-    G4Exception(errorMessage);
+    G4Exception("J4ITLayerHit::Output",
+                "", FatalException,
+                "Write error");
   } else {
 
      G4ThreeVector pre  = GetPrePosition();

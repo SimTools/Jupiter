@@ -86,8 +86,9 @@ void J4CDCDriftRegionHit::Output(G4HCofThisEvent *)
 	
   std::ofstream& ofs = GetOutputFileStream();
   if (! ofs.good()) {
-    G4String errorMessage= "J4CDCDriftRegionHit::Output(): write error.";
-    G4Exception(errorMessage);
+    G4Exception("J4CDCDriftRegionHit::Output",
+                "", FatalException,
+                "Write error");
   } else {
      ofs << std::setw(1) << layerNo << " " 
          << std::setw(1) << wireNo << " " 

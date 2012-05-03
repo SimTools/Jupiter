@@ -89,7 +89,9 @@ void J4ParameterTable::LoadFile(const char* fname)
   if ( fin.fail() ) {
     std::cerr << "Fatal error in J4ParameterTable::LoadFIle";
     std::cerr << "Failed to open " << fname << endl;
-    G4Exception("Fatal error in J4ParameterTable::LoadFile");
+    G4Exception("J4ParameterTable::LoadFile",
+                "", FatalException,
+                "Fail to open parameter file");
   } 
   string instr;
   string pname;

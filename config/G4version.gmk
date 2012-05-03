@@ -1,2 +1,4 @@
-G4VER := $(shell sed -ne 's;^\#define  *G4VERSION_NUMBER  *\([0-9]*\).*;\1;p' $(G4INSTALL)/include/G4Version.hh)
+G4VERSIONHH := $(shell find $(G4INSTALL)/include -name G4Version.hh)
+#G4VER := $(shell sed -ne 's;^\#define  *G4VERSION_NUMBER  *\([0-9]*\).*;\1;p' $(G4INSTALL)/include/G4Version.hh)
+G4VER := $(shell sed -ne 's;^\#define  *G4VERSION_NUMBER  *\([0-9]*\).*;\1;p' $(G4VERSIONHH))
 CPPFLAGS += -D__G4VERSION__=$(G4VER)

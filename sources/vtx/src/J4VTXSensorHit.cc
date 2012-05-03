@@ -82,8 +82,9 @@ void J4VTXSensorHit::Output(G4HCofThisEvent* /* HCTE */)
   
   std::ofstream& ofs = GetOutputFileStream();
   if(! ofs.good()) {
-    G4String errorMessage= "J4VTXSensorHit::Output(): write error.";
-    G4Exception(errorMessage);
+    G4Exception("J4VTXSensorHit::Output",
+                "", FatalException,
+                "Write error");
   }  
   else
   {

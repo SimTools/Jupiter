@@ -85,8 +85,9 @@ void J4CDCStereoDriftRegionHit::Output(G4HCofThisEvent *)
 	
   std::ofstream& ofs = GetOutputFileStream();
   if(! ofs.good()) {
-    G4String errorMessage= "J4CDCStereoDriftRegionHit::Output(): write error.";
-    G4Exception(errorMessage);
+    G4Exception("J4CDCStereoDriftRegionHit::Output",
+                "", FatalException,
+                "Write error");
   }  
   else
   {

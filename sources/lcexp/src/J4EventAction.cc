@@ -90,9 +90,11 @@ void J4EventAction::BeginOfEventAction(const G4Event* anEvent)
          fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), std::ios::out);
          if(! fErrorOfs.good()) {
             G4String errorMessage=
-            "*** EventAction::BeginOfEventAction():fail to open a file ("
+            "*** Fail to open a file ("
             + J4Global::GetErrorOutputFilename() + ").";
-            G4Exception(errorMessage);
+            G4Exception("J4EventAction::BeginOfEventAction",
+                        "", EventMustBeAborted,
+	                errorMessage);
          } else {
             J4Global::SetErrorOutputStream(fErrorOfs);
          }
@@ -163,8 +165,9 @@ void J4EventAction::EndOfEventAction(const G4Event* anEvent)
   
   std::ofstream& ofs= ((J4RunAction*)usrRunAction)-> GetOutputFileStream();
   if(! ofs.good()) {
-    G4String errorMessage= "EventAction::EndOfEventAction(): write error.";
-    G4Exception(errorMessage);
+    G4Exception("EventAction::EndOfEventAction",
+                "", FatalException,
+                "Write error");
   }
   
  

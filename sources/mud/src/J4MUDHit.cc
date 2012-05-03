@@ -58,8 +58,9 @@ void J4MUDHit::Output( G4HCofThisEvent* /* HCTE */ )
 
   std::ofstream& ofs = GetOutputFileStream();
   if ( !ofs.good() ) {
-    G4String errorMessage= "J4MUDHit::Output(): write error.";
-    G4Exception(errorMessage);
+    G4Exception("J4MUDHit::Output",
+                "", FatalException,
+                "Write error");
   } else {
 
      const G4ThreeVector& pre  = GetPrePosition();

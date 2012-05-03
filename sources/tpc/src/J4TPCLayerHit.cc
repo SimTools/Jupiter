@@ -58,8 +58,9 @@ void J4TPCLayerHit::Output(G4HCofThisEvent *)
         
   std::ofstream& ofs = GetOutputFileStream();
   if (! ofs.good()) {
-    G4String errorMessage= "J4TPCLayerHit::Output(): write error.";
-    G4Exception(errorMessage);
+    G4Exception("J4TPCLayerHit::Output",
+                "", FatalException,
+                "Write error");
   } else {
 
      G4ThreeVector pre  = GetPrePosition();

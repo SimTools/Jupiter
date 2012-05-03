@@ -38,7 +38,9 @@ J4PrimaryGeneratorAction::J4PrimaryGeneratorAction()
                           fIsInitialized(false),fAbortRun(false), fInitialSeed(0)
 {
    if (fPrimaryGeneratorAction) {
-      G4Exception("J4PrimaryGeneratorAction constructed twice."); 
+      G4Exception("J4PrimaryGeneratorAction::J4PrimaryGeneratorAction",
+                  "", FatalException,
+                  "Constructed twice");
    } 
 
    fPrimaryGeneratorAction = this;

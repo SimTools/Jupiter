@@ -182,9 +182,11 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
             fErrorOfs.open(J4Global::GetErrorOutputFilename().c_str(), std::ios::out);
             if(! fErrorOfs.good()) {
                G4String errorMessage=
-               "*** J4TrackingAction::PreUserTrackingAction:fail to open a file ("
+               "*** fail to open a file ("
                + J4Global::GetErrorOutputFilename() + ").";
-               G4Exception(errorMessage);
+               G4Exception("J4TrackingAction::UserPreTrackingAction",
+	                   "", FatalException,
+	                   errorMessage);
             } 
          }
 
@@ -199,8 +201,10 @@ void J4TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
             fErrorOfs.open("/dev/null", std::ios::out);
             if(! fErrorOfs.good()) {
                G4String errorMessage=
-               "*** J4TrackingAction::PreUserTrackingAction:fail to open a file (/dev/null) .";
-               G4Exception(errorMessage);
+               "*** fail to open a file (/dev/null) .";
+               G4Exception("J4TrackingAction::UserPreTrackingAction",
+	                   "", FatalException,
+	                   errorMessage);
             }
             callNo++;
          } 

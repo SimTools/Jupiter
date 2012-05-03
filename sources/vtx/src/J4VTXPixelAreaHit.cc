@@ -83,8 +83,9 @@ void J4VTXPixelAreaHit::Output(G4HCofThisEvent* /* HCTE */)
   
   std::ofstream& ofs = GetOutputFileStream();
   if(! ofs.good()) {
-    G4String errorMessage= "J4VTXPixelAreaHit::Output(): write error.";
-    G4Exception(errorMessage);
+    G4Exception("J4VTXPixelAreaHit::Output",
+                "", FatalException,
+                "Write error");
   }  
   else
   {

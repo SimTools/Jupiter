@@ -15,7 +15,8 @@ ifndef G4WORKDIR
 endif
 
 # Folowing lines are included to use object dependantly with version number
-G4Version = $(shell grep define $(G4INSTALL)/include/G4Version.hh |grep G4VERSION_NUMBER | sed -e 's/  / /g'  | cut -d" " -f3 )
+#G4Version = $(shell grep define $(G4INSTALL)/include/G4Version.hh |grep G4VERSION_NUMBER | sed -e 's/  / /g'  | cut -d" " -f3 )
+G4Version = $(shell grep define $(G4INCLUDE)/G4Version.hh |grep G4VERSION_NUMBER | sed -e 's/  / /g'  | cut -d" " -f3 )
 
 USEG4PropagatorInField=$(shell test $(G4Version) -gt 820 && echo yes)
 
@@ -25,10 +26,11 @@ all:: bin
 
 includes:
 
-G4LIBS = $(shell \
-         $(G4INSTALL)/lib/$(G4SYSTEM)/liblist \
-          -d $(JUPITERROOT)/tmp/$(G4SYSTEM) \
-          < $(G4INSTALL)/lib/$(G4SYSTEM)/libname.map)
+#G4LIBS = $(shell \
+#         $(G4INSTALL)/lib/$(G4SYSTEM)/liblist \
+#          -d $(JUPITERROOT)/tmp/$(G4SYSTEM) \
+#          < $(G4INSTALL)/lib/$(G4SYSTEM)/libname.map)
+G4LIBS = $(shell geant4-config --libs)
 
 
 include $(G4INSTALL)/config/architecture.gmk
