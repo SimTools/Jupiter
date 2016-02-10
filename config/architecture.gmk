@@ -6,10 +6,19 @@ endif
 ifeq ($(GCCVER),4)
    CPPFLAGS  += -D__USEISOCXX__
 endif
+ifeq ($(GCCVER),5)
+   CPPFLAGS  += -D__USEISOCXX__
+endif
 endif
 
 UNAME_MACHINE := $(shell uname -m)
+UNAME_ARCH := $(shell uname -s)
 ifeq ($(UNAME_MACHINE),x86_64)
+ifeq ($(UNAME_ARCH),Darwin)
+   X11LIBS   := -L/opt/X11/lib  -lXmu -lXt -lXext -lX11 -lSM -lICE
+   CXXFLAGS  += -fno-common
+else
    X11LIBS   := -L/usr/X11R6/lib64  -lXmu -lXt -lXext -lX11 -lSM -lICE
    CXXFLAGS  += -fPIC
+endif
 endif
